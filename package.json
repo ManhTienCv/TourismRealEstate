@@ -1,0 +1,24 @@
+{
+  "name": "tie-platform",
+  "version": "1.0.0",
+  "private": true,
+  "description": "TIE — Modular Architecture, Home Configuration & Construction Tracking Platform",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspaces --if-present",
+    "dev:web": "npm run dev --workspace=@tie/web",
+    "dev:api": "npm run dev --workspace=@tie/api",
+    "build": "npm run build --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
+    "db:push": "npm run prisma:push --workspace=@tie/api",
+    "db:seed": "npm run prisma:seed --workspace=@tie/api",
+    "db:generate": "npm run prisma:generate --workspace=@tie/api",
+    "db:check": "ts-node check-db.ts"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.5"
+  }
+}

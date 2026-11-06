@@ -1,0 +1,120 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum LandStatus {
+  owned
+  looking
+  evaluating
+}
+
+model HousingSolution {
+  id          String   @id @default(uuid())
+  name        String
+  slug        String   @unique
+  tagline     String
+  description String
+  svgIconUrl  String   @map("svg_icon_url")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  standardPlans     SolutionStandardPlan[]
+  portfolioProjects PortfolioProject[]
+  projectEstimates  ProjectEstimate[]
+
+  @@map("housing_solutions")
+}
+
+model StandardPlan {
+  id               String   @id @default(uuid())
+  name             String
+  slug             String   @unique
+  tagline          String
+  bedrooms         Float
+  bathrooms        Float
+  sqftArea         Int      @map("sqft_area")
+  baseCostPerSqft  Decimal  @map("base_cost_per_sqft") @db.Decimal(10, 2)
+  exteriorImageUrl String   @map("exterior_image_url")
+  axon3dImageUrl   String   @map("axon_3d_image_url")
+  floorplan2dUrl   String   @map("floorplan_2d_url")
+  specsJson        Json     @map("specs_json") // JSONB: dimensions, roof pitch, structural zones
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+
+  housingSolutions  SolutionStandardPlan[]
+  portfolioProjects PortfolioProject[]
+  projectEstimates  ProjectEstimate[]
+
+  @@map("standard_plans")
+}
+
+model SolutionStandardPlan {
+  id                String @id @default(uuid())
+  housingSolutionId String @map("housing_solution_id")
+  standardPlanId    String @map("standard_plan_id")
+
+  housingSolution HousingSolution @relation(fields: [housingSolutionId], references: [id], onDelete: Cascade)
+  standardPlan    StandardPlan    @relation(fields: [standardPlanId], references: [id], onDelete: Cascade)
+
+  @@unique([housingSolutionId, standardPlanId])
+  @@map("solution_standard_plans")
+}
+
+model PortfolioProject {
+  id                String   @id @default(uuid())
+  title             String
+  slug              String   @unique
+  location          String
+  actualSqft        Int      @map("actual_sqft")
+  standardPlanId    String   @map("standard_plan_id")
+  housingSolutionId String   @map("housing_solution_id")
+  clientName        String   @map("client_name")
+  clientQuote       String   @map("client_quote")
+  heroImageUrl      String   @map("hero_image_url")
+  galleryUrls       Json     @map("gallery_urls") // JSONB: array of image URLs and captions
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  standardPlan    StandardPlan    @relation(fields: [standardPlanId], references: [id])
+  housingSolution HousingSolution @relation(fields: [housingSolutionId], references: [id])
+
+  @@map("portfolio_projects")
+}
+
+model ProjectEstimate {
+  id                String     @id @default(uuid())
+  referenceCode     String     @unique @map("reference_code")
+  clientName        String     @map("client_name")
+  clientEmail       String     @map("client_email")
+  housingSolutionId String     @map("housing_solution_id")
+  standardPlanId    String     @map("standard_plan_id")
+  landStatus        LandStatus @map("land_status")
+  customConfig      Json       @map("custom_config") // JSONB: terrain, finish_tier, cladding, addons[]
+  costBreakdown     Json       @map("cost_breakdown") // JSONB: hard_cost, site_cost, soft_cost, contingency, total_cost
+  createdAt         DateTime   @default(now()) @map("created_at")
+
+  housingSolution HousingSolution @relation(fields: [housingSolutionId], references: [id])
+  standardPlan    StandardPlan    @relation(fields: [standardPlanId], references: [id])
+
+  @@map("project_estimates")
+}
+
+model FieldReport {
+  id                 String   @id @default(uuid())
+  projectCode        String   @unique @map("project_code")
+  clientEmail        String   @map("client_email")
+  currentStage       Int      @map("current_stage") // 1 to 6
+  stageHistory       Json     @map("stage_history") // JSONB: 6-stage lifecycle details, inspection signs, timestamps
+  estimatedBudget    Decimal  @map("estimated_budget") @db.Decimal(12, 2)
+  actualSpent        Decimal  @map("actual_spent") @db.Decimal(12, 2)
+  variancePercentage Float    @map("variance_percentage")
+  createdAt          DateTime @default(now()) @map("created_at")
+  updatedAt          DateTime @updatedAt @map("updated_at")
+
+  @@map("field_reports")
+}
