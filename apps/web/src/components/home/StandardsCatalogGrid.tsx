@@ -1,8 +1,8 @@
-import React, { useState, useRef, useMemo } from 'react';
-import { SEED_STANDARD_PLANS, SEED_HOUSING_SOLUTIONS, StandardPlan } from '@tie/shared';
+import React, { useRef, useMemo } from 'react';
+import { SEED_STANDARD_PLANS, SEED_HOUSING_SOLUTIONS } from '@tie/shared';
 import { useConfiguratorStore } from '../../store/useConfiguratorStore';
-import { ChevronLeft, ChevronRight, ArrowRight, X, Sparkles } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { ArrowRight, X } from 'lucide-react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 
 // Authentic wide architectural photography matching Banghi.mp4 p4_54s & p5_55s
 const STANDARDS_GALLERY = [
@@ -55,52 +55,20 @@ export const StandardsCatalogGrid: React.FC = () => {
     openPlanDetail,
   } = useConfiguratorStore();
 
-  const carouselRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
 
-  // Mouse Drag-to-Scroll support
-  const [isDragging, setIsDragging] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [startScrollLeft, setStartScrollLeft] = useState(0);
+  // Scroll-driven Horizontal Scroll for Architectural Standards
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start start', 'end end'],
+  });
+
+  // Translates the horizontal track across X axis as user scrolls vertically
+  const x = useTransform(scrollYProgress, [0, 1], ['0%', '-65%']);
 
   const activeSolution = useMemo(() => {
     return SEED_HOUSING_SOLUTIONS.find((s) => s.slug === filterSolutionSlug);
   }, [filterSolutionSlug]);
-
-  const scrollLeft = () => {
-    if (carouselRef.current) {
-      carouselRef.current.scrollBy({ left: -460, behavior: 'smooth' });
-    }
-  };
-
-  const scrollRight = () => {
-    if (carouselRef.current) {
-      carouselRef.current.scrollBy({ left: 460, behavior: 'smooth' });
-    }
-  };
-
-  // Drag handlers
-  const handleMouseDown = (e: React.MouseEvent) => {
-    if (!carouselRef.current) return;
-    setIsDragging(true);
-    setStartX(e.pageX - carouselRef.current.offsetLeft);
-    setStartScrollLeft(carouselRef.current.scrollLeft);
-  };
-
-  const handleMouseLeave = () => {
-    setIsDragging(false);
-  };
-
-  const handleMouseUp = () => {
-    setIsDragging(false);
-  };
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging || !carouselRef.current) return;
-    e.preventDefault();
-    const x = e.pageX - carouselRef.current.offsetLeft;
-    const walk = (x - startX) * 1.5;
-    carouselRef.current.scrollLeft = startScrollLeft - walk;
-  };
 
   const handlePlanClick = (slug: string) => {
     const plan = SEED_STANDARD_PLANS.find((p) => p.slug === slug);
@@ -110,24 +78,28 @@ export const StandardsCatalogGrid: React.FC = () => {
   };
 
   return (
-    <section id="standards-section" className="py-24 bg-tie-bg border-b border-tie-border/60 overflow-hidden">
-      <div className="max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12">
+    <section
+      id="standards-section"
+      ref={sectionRef}
+      className="relative h-[260vh] sm:h-[300vh] bg-tie-bg"
+    >
+      {/* Sticky Viewport Container */}
+      <div className="sticky top-0 h-screen w-full flex flex-col justify-center overflow-hidden">
         
-        {/* Section Header (Exact Match to Banghi.mp4 p4_54s & p5_55s) */}
-        <div className="text-center max-w-3xl mx-auto mb-14 space-y-4">
+        {/* Section Header */}
+        <div className="text-center max-w-3xl mx-auto mb-6 sm:mb-8 px-4 shrink-0">
           <h2 className="font-serif text-4xl sm:text-5xl lg:text-[54px] font-normal tracking-tight text-[#1A2E20] leading-tight">
             It all starts with our Standards...
           </h2>
-          <p className="text-base sm:text-lg text-[#555148] font-sans leading-relaxed max-w-2xl mx-auto">
+          <p className="mt-3 text-base sm:text-lg text-[#555148] font-sans leading-relaxed max-w-2xl mx-auto">
             They’re more than home plans, they’re home products—designed for real land, real budgets, and real life. TIE Standards combine timeless design with construction-ready details, making it faster and easier to build a home that feels anything but standard.
           </p>
         </div>
 
-        {/* Filter Indicator & Carousel Arrow Controls */}
-        <div className="flex items-center justify-between mb-6 px-2">
-          {/* Active Solution Filter Badge */}
+        {/* Subtitle / Filter Indicator */}
+        <div className="max-w-[1720px] w-full mx-auto px-6 sm:px-12 lg:px-20 mb-4 flex items-center justify-between shrink-0">
           {activeSolution ? (
-            <div className="inline-flex items-center space-x-2 text-xs font-mono bg-white px-3 py-1.5 rounded-full border border-tie-border shadow-xs">
+            <div className="inline-flex items-center space-x-2 text-xs font-mono bg-white px-3.5 py-1.5 rounded-full border border-tie-border shadow-xs">
               <span className="text-[#555148]">Filtered by Program:</span>
               <span className="font-semibold text-tie-pine">{activeSolution.title}</span>
               <button
@@ -143,90 +115,65 @@ export const StandardsCatalogGrid: React.FC = () => {
               8 Architectural Standards
             </div>
           )}
-
-          {/* Left / Right Chevron Controls */}
-          <div className="flex items-center space-x-2">
-            <button
-              onClick={scrollLeft}
-              className="w-10 h-10 rounded-full bg-white hover:bg-[#FAF8F5] border border-tie-border shadow-xs flex items-center justify-center text-tie-ink transition-colors active:scale-95"
-              title="Scroll Previous"
-            >
-              <ChevronLeft className="w-5 h-5" />
-            </button>
-            <button
-              onClick={scrollRight}
-              className="w-10 h-10 rounded-full bg-white hover:bg-[#FAF8F5] border border-tie-border shadow-xs flex items-center justify-center text-tie-ink transition-colors active:scale-95"
-              title="Scroll Next"
-            >
-              <ChevronRight className="w-5 h-5" />
-            </button>
-          </div>
         </div>
 
-        {/* CINEMATIC HORIZONTAL SCROLLING CARDS (Matching Banghi.mp4 p4_54s & p5_55s) */}
-        <div
-          ref={carouselRef}
-          onMouseDown={handleMouseDown}
-          onMouseLeave={handleMouseLeave}
-          onMouseUp={handleMouseUp}
-          onMouseMove={handleMouseMove}
-          className={`flex space-x-6 sm:space-x-8 overflow-x-auto pb-10 pt-2 px-2 scrollbar-none snap-x snap-mandatory ${
-            isDragging ? 'cursor-grabbing select-none' : 'cursor-grab'
-          }`}
-          style={{
-            scrollbarWidth: 'none',
-            msOverflowStyle: 'none',
-          }}
-        >
-          {STANDARDS_GALLERY.map((item) => {
-            const plan = SEED_STANDARD_PLANS.find((p) => p.slug === item.slug);
-            const isMatch = !filterSolutionSlug || (plan && plan.idealSolutions.includes(filterSolutionSlug));
+        {/* Scroll-driven Horizontal Cards Track */}
+        <div className="w-full overflow-hidden">
+          <motion.div
+            style={{ x }}
+            className="flex gap-6 sm:gap-8 pl-6 sm:pl-12 lg:pl-20 pr-16 lg:pr-32 w-max"
+          >
+            {STANDARDS_GALLERY.map((item) => {
+              const plan = SEED_STANDARD_PLANS.find((p) => p.slug === item.slug);
+              const isMatch = !filterSolutionSlug || (plan && plan.idealSolutions.includes(filterSolutionSlug));
 
-            return (
-              <div
-                key={item.slug}
-                onClick={() => handlePlanClick(item.slug)}
-                className={`shrink-0 snap-start w-[360px] sm:w-[440px] md:w-[480px] lg:w-[500px] cursor-pointer group transition-opacity duration-300 ${
-                  isMatch ? 'opacity-100' : 'opacity-40 hover:opacity-80'
-                }`}
-              >
-                {/* Large Horizontal Photo Card with Soft Curves (rounded-3xl / rounded-[28px]) */}
-                <div className="relative aspect-[16/11] rounded-3xl overflow-hidden bg-white border border-[#E8E4DC] shadow-md group-hover:shadow-xl transition-all duration-300">
-                  <img
-                    src={item.imageUrl}
-                    alt={item.cleanName}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
-                    loading="lazy"
-                  />
+              return (
+                <div
+                  key={item.slug}
+                  onClick={() => handlePlanClick(item.slug)}
+                  className={`shrink-0 w-[340px] sm:w-[420px] md:w-[460px] lg:w-[480px] cursor-pointer group transition-opacity duration-300 select-none ${
+                    isMatch ? 'opacity-100' : 'opacity-40 hover:opacity-80'
+                  }`}
+                >
+                  {/* Large Horizontal Photo Card with Soft Curves */}
+                  <div className="relative aspect-[16/11] rounded-2xl sm:rounded-3xl overflow-hidden bg-white border border-[#DCD9CE] shadow-sm group-hover:shadow-lg transition-all duration-300">
+                    <img
+                      src={item.imageUrl}
+                      alt={item.cleanName}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                      loading="lazy"
+                    />
 
-                  {/* Subtle Gradient Overlay for depth */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    {/* Subtle Gradient Overlay for depth */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-                  {/* Floating Specs Badge on Hover */}
-                  {plan && (
-                    <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-white text-xs font-mono drop-shadow opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/40 backdrop-blur-md px-4 py-2 rounded-full border border-white/20">
-                      <span>{plan.sqft} SQFT &bull; {plan.bedrooms} BED / {plan.bathrooms} BATH</span>
-                      <span className="text-[#D2E2B0] font-semibold flex items-center space-x-1">
-                        <span>Inspect</span>
-                        <ArrowRight className="w-3.5 h-3.5" />
-                      </span>
-                    </div>
-                  )}
+                    {/* Floating Specs Badge on Hover */}
+                    {plan && (
+                      <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-white text-xs font-mono drop-shadow opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/40 backdrop-blur-md px-4 py-2 rounded-full border border-white/20">
+                        <span>{plan.sqft} SQFT &bull; {plan.bedrooms} BED / {plan.bathrooms} BATH</span>
+                        <span className="text-[#D2E2B0] font-semibold flex items-center space-x-1">
+                          <span>Inspect</span>
+                          <ArrowRight className="w-3.5 h-3.5" />
+                        </span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Elegant Serif Title Below Card */}
+                  <div className="mt-4 px-1 flex items-center justify-between">
+                    <h3 className="font-serif text-2xl sm:text-3xl font-normal text-[#1A2E20] group-hover:text-[#567D42] transition-colors tracking-tight">
+                      {item.cleanName}
+                    </h3>
+                  </div>
                 </div>
-
-                {/* Elegant Serif Title Below Card (Matching video p4_54s & p5_55s) */}
-                <div className="mt-4 px-1 flex items-center justify-between">
-                  <h3 className="font-serif text-2xl sm:text-3xl font-normal text-[#1A2E20] group-hover:text-[#567D42] transition-colors tracking-tight">
-                    {item.cleanName}
-                  </h3>
-                </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </motion.div>
         </div>
 
       </div>
     </section>
   );
 };
+
 export default StandardsCatalogGrid;
