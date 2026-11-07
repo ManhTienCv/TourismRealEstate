@@ -284,7 +284,7 @@ const Archetype3DCard: React.FC<ArchetypeCardProps> = ({ sol, onLearnMore }) => 
     <div
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className="shrink-0 w-[290px] sm:w-[320px] h-[430px] [perspective:1200px] select-none"
+      className="shrink-0 w-[320px] sm:w-[352px] h-[474px] [perspective:1200px] select-none"
       style={{ perspective: '1200px' }}
     >
       {/* 3D Flippable Inner Card Container */}
@@ -314,7 +314,7 @@ const Archetype3DCard: React.FC<ArchetypeCardProps> = ({ sol, onLearnMore }) => 
 
           {/* Bottom Label (Large Serif font) */}
           <div className="w-full pt-2">
-            <h3 className="font-serif text-2xl sm:text-[26px] font-normal text-tie-ink tracking-tight">
+            <h3 className="font-serif text-2xl sm:text-[29px] font-normal text-tie-ink tracking-tight">
               {sol.title}
             </h3>
           </div>
@@ -380,7 +380,7 @@ export const UseCaseSelector: React.FC = () => {
   });
 
   // Translates the horizontal track across X axis as user scrolls vertically
-  const x = useTransform(scrollYProgress, [0, 1], ['0%', '-58%']);
+  const x = useTransform(scrollYProgress, [0, 1], ['0%', '-60%']);
 
   return (
     <section
@@ -392,8 +392,8 @@ export const UseCaseSelector: React.FC = () => {
       <div className="sticky top-0 h-screen w-full flex flex-col justify-center overflow-hidden">
         
         {/* Section Header: Centered Editorial Headline */}
-        <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-12 px-4 shrink-0">
-          <h2 className="font-serif text-4xl sm:text-5xl lg:text-[54px] font-normal tracking-tight text-tie-ink leading-tight">
+        <div className="text-center max-w-4xl mx-auto mb-8 sm:mb-12 px-4 shrink-0">
+          <h2 className="font-serif text-4xl sm:text-5xl lg:text-[60px] font-normal tracking-tight text-tie-ink leading-tight">
             Whatever type of place you have
             <br />
             in mind

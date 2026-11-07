@@ -53,7 +53,7 @@ const SOLUTION_DETAILS: Record<string, SolutionContent> = {
     ],
     recommendedPlanSlugs: ['small-bar', 'medium-bar', 'small-l'],
     illustration: (
-      <svg className="w-full max-w-[420px] h-auto text-[#4D6D3A] stroke-current fill-none stroke-[1.4]" viewBox="0 0 160 160">
+      <svg className="w-full max-w-[462px] h-auto text-[#4D6D3A] stroke-current fill-none stroke-[1.4]" viewBox="0 0 160 160">
         {/* House being watered */}
         <polygon points="105 125, 120 108, 135 125" fill="#E8F0DC" />
         <rect x="110" y="125" width="20" height="15" fill="#FFFFFF" />
@@ -127,7 +127,7 @@ const SOLUTION_DETAILS: Record<string, SolutionContent> = {
     ],
     recommendedPlanSlugs: ['big-bar', 'big-l', 'dogtrot'],
     illustration: (
-      <svg className="w-full max-w-[420px] h-auto text-[#4D6D3A] stroke-current fill-none stroke-[1.4]" viewBox="0 0 160 160">
+      <svg className="w-full max-w-[462px] h-auto text-[#4D6D3A] stroke-current fill-none stroke-[1.4]" viewBox="0 0 160 160">
         {/* Background Country Houses on hill */}
         <path d="M 80 85 Q 115 75, 145 88" strokeDasharray="2 2" strokeWidth="1" />
         <polygon points="110 75, 120 66, 130 75" fill="#E8F0DC" />
@@ -190,7 +190,7 @@ const SOLUTION_DETAILS: Record<string, SolutionContent> = {
     ],
     recommendedPlanSlugs: ['dogtrot', 'small-l', 'medium-bar'],
     illustration: (
-      <svg className="w-full max-w-[420px] h-auto text-[#4D6D3A] stroke-current fill-none stroke-[1.4]" viewBox="0 0 160 160">
+      <svg className="w-full max-w-[462px] h-auto text-[#4D6D3A] stroke-current fill-none stroke-[1.4]" viewBox="0 0 160 160">
         <circle cx="50" cy="45" r="5" fill="#D2E2B0" />
         <line x1="50" y1="36" x2="50" y2="33" />
         <line x1="50" y1="54" x2="50" y2="57" />
@@ -235,7 +235,7 @@ const SOLUTION_DETAILS: Record<string, SolutionContent> = {
     ],
     recommendedPlanSlugs: ['adu', 'small-bar'],
     illustration: (
-      <svg className="w-full max-w-[420px] h-auto text-[#4D6D3A] stroke-current fill-none stroke-[1.4]" viewBox="0 0 160 160">
+      <svg className="w-full max-w-[462px] h-auto text-[#4D6D3A] stroke-current fill-none stroke-[1.4]" viewBox="0 0 160 160">
         <polygon points="60 60, 80 44, 100 60" fill="#E8F0DC" />
         <rect x="65" y="60" width="30" height="24" fill="#FFFFFF" />
         <rect x="75" y="70" width="10" height="14" fill="#4D6D3A" />
@@ -277,7 +277,7 @@ const SOLUTION_DETAILS: Record<string, SolutionContent> = {
     ],
     recommendedPlanSlugs: ['medium-bar', 'dogtrot', 'small-l'],
     illustration: (
-      <svg className="w-full max-w-[420px] h-auto text-[#4D6D3A] stroke-current fill-none stroke-[1.4]" viewBox="0 0 160 160">
+      <svg className="w-full max-w-[462px] h-auto text-[#4D6D3A] stroke-current fill-none stroke-[1.4]" viewBox="0 0 160 160">
         <polygon points="50 70, 75 50, 100 70" fill="#E8F0DC" />
         <rect x="55" y="70" width="40" height="25" fill="#FFFFFF" />
         <path d="M 40 136 Q 140 136, 145 136" strokeDasharray="3 3" strokeWidth="1" />
@@ -308,7 +308,7 @@ export const SolutionDetailView: React.FC = () => {
     <div className="w-full min-h-screen bg-[#FAF8F5] text-tie-ink pt-24 pb-28">
       
       {/* 1. Top Breadcrumb & Back Navigation */}
-      <div className="max-w-[1440px] mx-auto px-6 sm:px-12 lg:px-16 pt-4 pb-8">
+      <div className="max-w-[1584px] mx-auto px-6 sm:px-12 lg:px-16 pt-4 pb-8">
         <button
           onClick={closeSolutionDetail}
           className="inline-flex items-center space-x-2 text-sm font-sans font-medium text-tie-muted hover:text-tie-ink transition-colors group"
@@ -319,7 +319,7 @@ export const SolutionDetailView: React.FC = () => {
       </div>
 
       {/* 2. Hero Section matching Banghi1.mp4 178s & 280s */}
-      <section className="max-w-[1440px] mx-auto px-6 sm:px-12 lg:px-16 py-8 lg:py-16">
+      <section className="max-w-[1584px] mx-auto px-6 sm:px-12 lg:px-16 py-8 lg:py-16">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           
           {/* Left Column: Category Eyebrow + Serif Headline + CTA */}
@@ -390,7 +390,7 @@ export const SolutionDetailView: React.FC = () => {
       </section>
 
       {/* 3. Editorial Storytelling Section (3 Pillars of Value) */}
-      <section className="max-w-[1440px] mx-auto px-6 sm:px-12 lg:px-16 py-20 border-t border-[#E8E4DC]">
+      <section className="max-w-[1584px] mx-auto px-6 sm:px-12 lg:px-16 py-20 border-t border-[#E8E4DC]">
         <div className="max-w-3xl mb-16 space-y-4">
           <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-normal text-tie-ink tracking-tight">
             Designed for real land. Built for the long haul.
@@ -422,7 +422,7 @@ export const SolutionDetailView: React.FC = () => {
       </section>
 
       {/* 4. Curated Standards Section (Recommended Plans) */}
-      <section className="max-w-[1440px] mx-auto px-6 sm:px-12 lg:px-16 py-20 border-t border-[#E8E4DC]">
+      <section className="max-w-[1584px] mx-auto px-6 sm:px-12 lg:px-16 py-20 border-t border-[#E8E4DC]">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
           <div>
             <div className="text-[#567D42] text-xs sm:text-sm font-sans font-semibold tracking-wider uppercase mb-2">
@@ -519,7 +519,7 @@ export const SolutionDetailView: React.FC = () => {
       </section>
 
       {/* 5. Bottom Call to Action Banner */}
-      <section className="max-w-[1440px] mx-auto px-6 sm:px-12 lg:px-16 pt-20">
+      <section className="max-w-[1584px] mx-auto px-6 sm:px-12 lg:px-16 pt-20">
         <div className="rounded-[40px] bg-[#183D24] text-white p-10 sm:p-16 lg:p-20 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8">
           <div className="space-y-4 max-w-xl">
             <div className="inline-block text-[#D2E2B0] text-xs font-mono uppercase tracking-widest">

@@ -64,7 +64,7 @@ export const StandardsCatalogGrid: React.FC = () => {
   });
 
   // Translates the horizontal track across X axis as user scrolls vertically
-  const x = useTransform(scrollYProgress, [0, 1], ['0%', '-65%']);
+  const x = useTransform(scrollYProgress, [0, 1], ['0%', '-68%']);
 
   const activeSolution = useMemo(() => {
     return SEED_HOUSING_SOLUTIONS.find((s) => s.slug === filterSolutionSlug);
@@ -87,8 +87,8 @@ export const StandardsCatalogGrid: React.FC = () => {
       <div className="sticky top-0 h-screen w-full flex flex-col justify-center overflow-hidden">
         
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-6 sm:mb-8 px-4 shrink-0">
-          <h2 className="font-serif text-4xl sm:text-5xl lg:text-[54px] font-normal tracking-tight text-[#1A2E20] leading-tight">
+        <div className="text-center max-w-4xl mx-auto mb-6 sm:mb-8 px-4 shrink-0">
+          <h2 className="font-serif text-4xl sm:text-5xl lg:text-[60px] font-normal tracking-tight text-[#1A2E20] leading-tight">
             It all starts with our Standards...
           </h2>
           <p className="mt-3 text-base sm:text-lg text-[#555148] font-sans leading-relaxed max-w-2xl mx-auto">
@@ -97,7 +97,7 @@ export const StandardsCatalogGrid: React.FC = () => {
         </div>
 
         {/* Subtitle / Filter Indicator */}
-        <div className="max-w-[1720px] w-full mx-auto px-6 sm:px-12 lg:px-20 mb-4 flex items-center justify-between shrink-0">
+        <div className="max-w-[1892px] w-full mx-auto px-6 sm:px-12 lg:px-20 mb-4 flex items-center justify-between shrink-0">
           {activeSolution ? (
             <div className="inline-flex items-center space-x-2 text-xs font-mono bg-white px-3.5 py-1.5 rounded-full border border-tie-border shadow-xs">
               <span className="text-[#555148]">Filtered by Program:</span>
@@ -131,7 +131,7 @@ export const StandardsCatalogGrid: React.FC = () => {
                 <div
                   key={item.slug}
                   onClick={() => handlePlanClick(item.slug)}
-                  className={`shrink-0 w-[340px] sm:w-[420px] md:w-[460px] lg:w-[480px] cursor-pointer group transition-opacity duration-300 select-none ${
+                  className={`shrink-0 w-[374px] sm:w-[462px] md:w-[506px] lg:w-[528px] cursor-pointer group transition-opacity duration-300 select-none ${
                     isMatch ? 'opacity-100' : 'opacity-40 hover:opacity-80'
                   }`}
                 >

@@ -7,7 +7,7 @@ export const PreFooterBanner: React.FC = () => {
 
   return (
     <section className="bg-[#D2E2B0] text-[#1A2E20] py-14 sm:py-20 px-4 sm:px-8 lg:px-12 border-t border-b border-[#BED49A] overflow-hidden">
-      <div className="max-w-[1440px] mx-auto flex flex-col md:flex-row items-center justify-between gap-8 lg:gap-12">
+      <div className="max-w-[1584px] mx-auto flex flex-col md:flex-row items-center justify-between gap-8 lg:gap-12">
         
         {/* Left: Whimsical Daydreaming Character + Thought Bubble (Banghi.mp4 p6_655ms) */}
         <div className="flex items-center space-x-6 sm:space-x-8 text-center md:text-left">

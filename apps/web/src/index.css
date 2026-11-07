@@ -7,6 +7,13 @@
     color-scheme: light;
   }
 
+  html {
+    /* Tăng kích cỡ chữ và tỷ lệ form chuẩn rem toàn trang thêm 10% (16px -> 17.6px) */
+    font-size: 110%;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
   body {
     background-color: #F7F5F0;
     color: #1C1B18;

@@ -46,7 +46,7 @@ export const RealizedPortfolioSection: React.FC = () => {
     <section id="portfolio-section" className="relative w-full bg-[#FAF8F5]">
       
       {/* 1. Intro Editorial Header on Cream Background */}
-      <div className="py-20 max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <div className="py-20 max-w-[1584px] mx-auto px-4 sm:px-6 lg:px-8 text-center">
         {/* Hand-drawn Green Wavy SVG Connector Line */}
         <div className="flex justify-center -mt-6 mb-6">
           <svg
@@ -113,7 +113,7 @@ export const RealizedPortfolioSection: React.FC = () => {
               </div>
 
               {/* Right Column: Compact Inset Image with Generous Breathing Room */}
-              <div className="w-6/12 max-w-[520px] pointer-events-auto">
+              <div className="w-6/12 max-w-[572px] pointer-events-auto">
                 <div className="w-full aspect-[16/10] rounded-2xl overflow-hidden shadow-2xl bg-neutral-900 group-hover:scale-[1.01] transition-transform duration-500 ease-out">
                   <img
                     src={project.interiorImage}

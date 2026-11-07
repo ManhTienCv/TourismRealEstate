@@ -258,7 +258,7 @@ export const MegaMenuNavbar: React.FC = () => {
         } ${isMenuOpen ? 'rounded-b-[36px] sm:rounded-b-[44px]' : ''}`}
       >
         {/* Top Navbar Row */}
-        <div className="max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12 h-20 flex items-center justify-between">
+        <div className="max-w-[1584px] mx-auto px-4 sm:px-8 lg:px-12 h-20 flex items-center justify-between">
           
           {/* Brand Wordmark (Exact Huts Bold Typography: Clean "TIE") */}
           <div
@@ -417,7 +417,7 @@ export const MegaMenuNavbar: React.FC = () => {
               transition={{ duration: 0.25, ease: 'easeOut' }}
               className="overflow-hidden border-t border-[#E8E4DC]/60"
             >
-              <div className="max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-12 pt-6 pb-12">
+              <div className="max-w-[1584px] mx-auto px-6 sm:px-10 lg:px-12 pt-6 pb-12">
                 
                 {/* 1. STANDARDS MEGAMENU: 3x3 Grid with Thumbnails (Banghi.mp4 frame_11.0s) */}
                 {activeMenu === 'standards' && (

@@ -8,7 +8,7 @@ export const TrustMetricsSection: React.FC = () => {
 
   return (
     <section className="py-20 sm:py-28 bg-tie-bg border-b border-tie-border/60 overflow-hidden">
-      <div className="max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12 space-y-24">
+      <div className="max-w-[1584px] mx-auto px-4 sm:px-8 lg:px-12 space-y-24">
         
         {/* 1. CLIENT TESTIMONIAL BLOCK (Banghi.mp4 p6_63s) */}
         <div className="space-y-10">

@@ -64,7 +64,7 @@ export const NarrativeJourneySection: React.FC = () => {
 
   return (
     <section id="narrative-section" className="relative py-16 sm:py-24 bg-tie-bg overflow-hidden border-b border-tie-border/60">
-      <div className="max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12 relative">
+      <div className="max-w-[1584px] mx-auto px-4 sm:px-8 lg:px-12 relative">
         
         {/* 1. TOP GREEN HAND-DRAWN LOOPING ARROW (Huts reference: whimsical double loop doodle pointing to 'We do it across the country') */}
         <div className="flex justify-center -mt-6 sm:-mt-10 mb-8 sm:mb-12">
@@ -96,7 +96,7 @@ export const NarrativeJourneySection: React.FC = () => {
           {/* LEFT: INTERACTIVE STACKED PHOTO DECK (Fan/Deck of photos with natural rotations) */}
           <div className="lg:col-span-6 flex justify-center">
             <div
-              className="relative w-full max-w-[480px] h-[340px] sm:h-[400px] cursor-pointer select-none group"
+              className="relative w-full max-w-[528px] h-[374px] sm:h-[440px] cursor-pointer select-none group"
               onClick={shuffleDeck}
               title="Click photo to shuffle"
             >
@@ -177,7 +177,7 @@ export const NarrativeJourneySection: React.FC = () => {
 
           {/* RIGHT: EDITORIAL COPY & SIGNATURE HUTS DUAL BUTTON (p4_46s) */}
           <div className="lg:col-span-6 space-y-6 max-w-xl">
-            <h2 className="font-serif text-4xl sm:text-5xl lg:text-[52px] font-normal tracking-tight text-[#1C1B18] leading-[1.12]">
+            <h2 className="font-serif text-4xl sm:text-5xl lg:text-[58px] font-normal tracking-tight text-[#1C1B18] leading-[1.12]">
               We do it across the country
             </h2>
 

@@ -45,7 +45,7 @@ export const Footer: React.FC = () => {
 
   return (
     <footer className="bg-[#0E370B] text-[#F8F6EA] rounded-t-[36px] sm:rounded-t-[48px] pt-16 sm:pt-20 pb-12 sm:pb-16 overflow-hidden">
-      <div className="max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-16">
+      <div className="max-w-[1584px] mx-auto px-6 sm:px-10 lg:px-16">
         
         {/* Main Footer Row: Big TIE Wordmark (Left) + 4 Categorized Columns (Right) */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
