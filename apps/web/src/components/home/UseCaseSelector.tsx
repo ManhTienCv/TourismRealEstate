@@ -1,8 +1,8 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useRef } from 'react';
 import { SEED_HOUSING_SOLUTIONS, HousingSolution } from '@tie/shared';
 import { useConfiguratorStore } from '../../store/useConfiguratorStore';
-import { ChevronLeft, ChevronRight, RotateCcw, ArrowRight } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { ArrowRight } from 'lucide-react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 
 // Character Line Art SVGs matching exact frames from Banghi.mp4 (p3_36s, p3_40s, p3_42s)
 const CharacterIllustrations: Record<string, React.ReactNode> = {
@@ -248,92 +248,29 @@ const CharacterIllustrations: Record<string, React.ReactNode> = {
 };
 
 export const UseCaseSelector: React.FC = () => {
-  const { filterSolutionSlug, setFilterSolutionSlug, openSolutionDetail } = useConfiguratorStore();
-  const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
-  const [scrollPos, setScrollPos] = useState(0);
-  const carouselRef = useRef<HTMLDivElement>(null);
+  const { openSolutionDetail } = useConfiguratorStore();
+  const sectionRef = useRef<HTMLDivElement>(null);
 
-  // Drag-to-scroll state for desktop trackpad/mouse
-  const [isDragging, setIsDragging] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [startScrollLeft, setStartScrollLeft] = useState(0);
+  // Scroll-driven Horizontal Scroll: Tracking vertical progress through the tall container
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start start', 'end end'],
+  });
 
-  // Monitor horizontal scroll to drive smooth 3D Y-Axis Cylindrical Rotation
-  const handleScroll = () => {
-    if (carouselRef.current) {
-      setScrollPos(carouselRef.current.scrollLeft);
-    }
-  };
-
-  useEffect(() => {
-    const el = carouselRef.current;
-    if (!el) return;
-    el.addEventListener('scroll', handleScroll, { passive: true });
-    return () => el.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  // Toggle 3D card flip
-  const toggleFlip = (slug: string, e?: React.MouseEvent) => {
-    if (e) e.stopPropagation();
-    setFlippedCards((prev) => ({
-      ...prev,
-      [slug]: !prev[slug],
-    }));
-  };
-
-  const handleSelectSolution = (slug: string) => {
-    if (filterSolutionSlug === slug) {
-      setFilterSolutionSlug(null);
-    } else {
-      setFilterSolutionSlug(slug);
-    }
-
-    const el = document.getElementById('standards-section');
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  const scrollLeft = () => {
-    if (carouselRef.current) {
-      carouselRef.current.scrollBy({ left: -340, behavior: 'smooth' });
-    }
-  };
-
-  const scrollRight = () => {
-    if (carouselRef.current) {
-      carouselRef.current.scrollBy({ left: 340, behavior: 'smooth' });
-    }
-  };
-
-  // Mouse Drag Handlers
-  const handleMouseDown = (e: React.MouseEvent) => {
-    if (!carouselRef.current) return;
-    setIsDragging(true);
-    setStartX(e.pageX - carouselRef.current.offsetLeft);
-    setStartScrollLeft(carouselRef.current.scrollLeft);
-  };
-
-  const handleMouseLeave = () => {
-    setIsDragging(false);
-  };
-
-  const handleMouseUp = () => {
-    setIsDragging(false);
-  };
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging || !carouselRef.current) return;
-    e.preventDefault();
-    const x = e.pageX - carouselRef.current.offsetLeft;
-    const walk = (x - startX) * 1.4;
-    carouselRef.current.scrollLeft = startScrollLeft - walk;
-  };
+  // Translates the horizontal track across X axis as user scrolls vertically
+  const x = useTransform(scrollYProgress, [0, 1], ['0%', '-58%']);
 
   return (
-    <section id="solutions-section" className="py-24 bg-tie-bg overflow-hidden border-b border-tie-border/60">
-      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
+    <section
+      id="solutions-section"
+      ref={sectionRef}
+      className="relative h-[260vh] sm:h-[300vh] bg-tie-bg"
+    >
+      {/* Sticky Viewport Container */}
+      <div className="sticky top-0 h-screen w-full flex flex-col justify-center overflow-hidden">
         
-        {/* Section Header (Centered Editorial Serif matching Banghi.mp4 p3_36s) */}
-        <div className="text-center max-w-3xl mx-auto mb-14 space-y-3">
+        {/* Section Header: Centered Editorial Headline */}
+        <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-12 px-4 shrink-0">
           <h2 className="font-serif text-4xl sm:text-5xl lg:text-[54px] font-normal tracking-tight text-tie-ink leading-tight">
             Whatever type of place you have
             <br />
@@ -341,98 +278,33 @@ export const UseCaseSelector: React.FC = () => {
           </h2>
         </div>
 
-        {/* Carousel Arrow Controls */}
-        <div className="flex items-center justify-end space-x-2 mb-4 px-2">
-          <button
-            onClick={scrollLeft}
-            className="w-10 h-10 rounded-full bg-white hover:bg-[#FAF8F5] border border-tie-border shadow-xs flex items-center justify-center text-tie-ink transition-colors active:scale-95"
-            title="Scroll Previous"
+        {/* Scroll-driven Horizontal Track */}
+        <div className="w-full overflow-hidden">
+          <motion.div
+            style={{ x }}
+            className="flex gap-6 sm:gap-7 pl-6 sm:pl-16 lg:pl-24 pr-16 lg:pr-32 w-max"
           >
-            <ChevronLeft className="w-5 h-5" />
-          </button>
-          <button
-            onClick={scrollRight}
-            className="w-10 h-10 rounded-full bg-white hover:bg-[#FAF8F5] border border-tie-border shadow-xs flex items-center justify-center text-tie-ink transition-colors active:scale-95"
-            title="Scroll Next"
-          >
-            <ChevronRight className="w-5 h-5" />
-          </button>
-        </div>
-
-        {/* 3D PERSPECTIVE CAROUSEL CONTAINER (Cylindrical 3D Scroll Depth) */}
-        <div
-          ref={carouselRef}
-          onMouseDown={handleMouseDown}
-          onMouseLeave={handleMouseLeave}
-          onMouseUp={handleMouseUp}
-          onMouseMove={handleMouseMove}
-          className={`flex space-x-6 overflow-x-auto pb-10 pt-4 px-4 scrollbar-none snap-x snap-mandatory ${
-            isDragging ? 'cursor-grabbing select-none' : 'cursor-grab'
-          }`}
-          style={{
-            scrollbarWidth: 'none',
-            msOverflowStyle: 'none',
-            perspective: '1400px',
-            perspectiveOrigin: 'center center',
-          }}
-        >
-          {SEED_HOUSING_SOLUTIONS.map((sol: HousingSolution, index: number) => {
-            const isFlipped = Boolean(flippedCards[sol.slug]);
-            const isSelected = filterSolutionSlug === sol.slug;
-
-            // Calculate dynamic 3D Y-Axis Tilt based on horizontal position (Banghi.mp4 3D effect)
-            const cardStep = 344; // Card width (320px) + Gap (24px)
-            const cardLeftInView = index * cardStep - scrollPos;
-
-            let tiltY = 0;
-            let scale = 1;
-            let opacity = 1;
-
-            if (cardLeftInView < 40) {
-              const ratio = Math.min(1, Math.max(0, (40 - cardLeftInView) / cardStep));
-              tiltY = -ratio * 52; // Rotates backwards up to -52deg along Y-axis on the left edge
-              scale = 1 - ratio * 0.12; // Gently reduces scale to 0.88
-              opacity = 1 - ratio * 0.35; // Fades smoothly into the distance
-            }
-
-            return (
+            {SEED_HOUSING_SOLUTIONS.map((sol: HousingSolution) => (
               <div
                 key={sol.id}
-                className="shrink-0 snap-center w-[290px] sm:w-[320px] h-[430px]"
-                style={{
-                  perspective: '1200px',
-                  transformOrigin: 'left center',
-                  transform: `rotateY(${tiltY}deg) scale(${scale})`,
-                  opacity: opacity,
-                  transition: isDragging ? 'none' : 'transform 0.15s ease-out, opacity 0.15s ease-out',
-                }}
+                onClick={() => openSolutionDetail(sol.slug)}
+                className="group shrink-0 w-[290px] sm:w-[320px] h-[430px] [perspective:1200px] select-none cursor-pointer"
+                style={{ perspective: '1200px' }}
+                title={`Learn about ${sol.title}`}
               >
-                {/* 3D Flippable Inner Card Container */}
+                {/* 3D Flippable Inner Card Container (Rotates on Hover) */}
                 <div
-                  className={`relative w-full h-full transition-transform duration-700 ease-out preserve-3d cursor-pointer ${
-                    isFlipped ? 'rotate-y-180' : ''
-                  }`}
-                  onClick={() => toggleFlip(sol.slug)}
+                  className="relative w-full h-full [transform-style:preserve-3d] transition-transform duration-700 ease-out group-hover:[transform:rotateY(180deg)]"
+                  style={{ transformStyle: 'preserve-3d' }}
                 >
                   
-                  {/* FRONT SIDE: Minimalist White Card (Images 3, 4, 5) */}
+                  {/* FRONT SIDE: Minimalist Cream Card */}
                   <div
-                    className={`absolute inset-0 backface-hidden rounded-3xl bg-white border p-6 sm:p-7 flex flex-col items-center justify-between text-center shadow-tie-soft transition-all duration-300 hover:shadow-tie-card ${
-                      isSelected
-                        ? 'border-tie-pine ring-2 ring-tie-pine bg-tie-pine/[0.02]'
-                        : 'border-[#EBE7DF] hover:border-tie-pine/50'
-                    }`}
+                    className="absolute inset-0 [backface-visibility:hidden] rounded-2xl bg-[#F9F8F3] border border-[#DCD9CE] p-6 sm:p-7 flex flex-col items-center justify-between text-center shadow-none transition-colors duration-300 group-hover:border-tie-pine/50"
+                    style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }}
                   >
-                    {/* Top Pill / Subtitle Tag */}
-                    <div className="w-full flex items-center justify-between text-[11px] font-mono text-tie-muted">
-                      <span>0{index + 1} &bull; ARCHETYPE</span>
-                      <span className="text-tie-pine font-semibold tracking-wider hover:underline">
-                        FLIP &rarr;
-                      </span>
-                    </div>
-
-                    {/* Whimsical Character Line Art (Matching Banghi.mp4 frames) */}
-                    <div className="my-auto py-2 transition-transform duration-500 hover:scale-105">
+                    {/* Character Line Art in Center */}
+                    <div className="my-auto py-2 transition-transform duration-500 group-hover:scale-105 flex items-center justify-center">
                       {CharacterIllustrations[sol.slug] || (
                         <div className="w-48 h-48 flex items-center justify-center text-tie-pine">
                           <svg className="w-32 h-32 stroke-current fill-none" viewBox="0 0 64 64">
@@ -443,99 +315,59 @@ export const UseCaseSelector: React.FC = () => {
                       )}
                     </div>
 
-                    {/* Bottom Label (Exact Centered Serif as in Banghi.mp4) */}
-                    <div className="w-full pt-3">
-                      <h3
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          openSolutionDetail(sol.slug);
-                        }}
-                        className="font-serif text-2xl font-normal text-tie-ink tracking-tight hover:text-[#567D42] transition-colors cursor-pointer"
-                        title={`View ${sol.title} story & details`}
-                      >
+                    {/* Bottom Label (Large Serif font) */}
+                    <div className="w-full pt-2">
+                      <h3 className="font-serif text-2xl sm:text-[26px] font-normal text-tie-ink tracking-tight">
                         {sol.title}
                       </h3>
                     </div>
                   </div>
 
-                  {/* BACK SIDE: 3D Flipped Specifications & Action (Image 4) */}
+                  {/* BACK SIDE: Minimalist Details & Underline Link (Rotated 180deg) */}
                   <div
-                    className="absolute inset-0 backface-hidden rotate-y-180 rounded-3xl bg-white border border-tie-pine p-6 sm:p-7 flex flex-col justify-between text-left shadow-tie-card"
-                    onClick={(e) => e.stopPropagation()}
+                    className="absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)] rounded-2xl bg-[#F9F8F3] border border-[#DCD9CE] p-6 sm:p-7 flex flex-col justify-between text-center shadow-none transition-colors duration-300 group-hover:border-tie-pine"
+                    style={{
+                      backfaceVisibility: 'hidden',
+                      WebkitBackfaceVisibility: 'hidden',
+                      transform: 'rotateY(180deg)',
+                    }}
                   >
-                    <div className="space-y-4">
-                      <div className="flex items-center justify-between border-b border-tie-border pb-3">
-                        <span className="font-serif text-xl font-bold text-tie-ink">
-                          {sol.title}
-                        </span>
-                        <button
-                          onClick={(e) => toggleFlip(sol.slug, e)}
-                          className="p-1 rounded-full text-tie-muted hover:text-tie-ink hover:bg-tie-surface transition-colors"
-                          title="Flip back"
-                        >
-                          <RotateCcw className="w-4 h-4" />
-                        </button>
+                    {/* Top: Scaled Down Illustration */}
+                    <div className="w-full flex items-center justify-center h-28 overflow-hidden shrink-0">
+                      <div className="scale-[0.58] origin-center opacity-85">
+                        {CharacterIllustrations[sol.slug]}
                       </div>
+                    </div>
 
-                      <p className="text-xs text-tie-muted font-sans leading-relaxed">
+                    {/* Center: Title & Short Description */}
+                    <div className="space-y-2 px-1 my-auto">
+                      <h3 className="font-serif text-xl sm:text-2xl font-normal text-tie-ink tracking-tight">
+                        {sol.title}
+                      </h3>
+                      <p className="text-xs sm:text-[13px] text-tie-muted font-sans leading-relaxed line-clamp-3">
                         {sol.description}
                       </p>
-
-                      {/* Specs Pill List */}
-                      <div className="space-y-2 pt-2 text-xs font-mono">
-                        <div className="flex justify-between text-tie-muted">
-                          <span>IDEAL STANDARDS:</span>
-                          <span className="font-semibold text-tie-ink">
-                            {sol.idealPlans?.join(', ').toUpperCase() || 'ADU, DOGTROT'}
-                          </span>
-                        </div>
-                        <div className="flex justify-between text-tie-muted">
-                          <span>TARGET TIMELINE:</span>
-                          <span className="font-semibold text-tie-pine">16–22 WEEKS</span>
-                        </div>
-                        <div className="flex justify-between text-tie-muted">
-                          <span>ESTIMATED BUDGET:</span>
-                          <span className="font-semibold text-tie-terracotta">
-                            ${(sol.recommendedBudget.min / 1000).toFixed(0)}K – ${(sol.recommendedBudget.max / 1000).toFixed(0)}K
-                          </span>
-                        </div>
-                      </div>
                     </div>
 
-                    {/* Actions on Back */}
-                    <div className="space-y-2 pt-3 border-t border-tie-border">
-                      <button
-                        onClick={() => openSolutionDetail(sol.slug)}
-                        className="w-full py-2.5 px-4 rounded-full bg-[#183D24] hover:bg-[#122A1A] text-white text-xs font-mono font-semibold transition-all flex items-center justify-center space-x-2 shadow-xs"
-                      >
-                        <span>Explore Story & Plans</span>
-                        <ArrowRight className="w-3.5 h-3.5" />
-                      </button>
-
-                      <button
-                        onClick={() => handleSelectSolution(sol.slug)}
-                        className="w-full py-2 px-4 rounded-full border border-tie-border hover:border-tie-pine text-tie-ink text-xs font-mono transition-all flex items-center justify-center space-x-1"
-                      >
-                        <span>Filter The Standards</span>
-                      </button>
-
-                      <button
-                        onClick={(e) => toggleFlip(sol.slug, e)}
-                        className="w-full py-1 text-[11px] font-mono text-tie-muted hover:text-tie-ink text-center"
-                      >
-                        Flip back to illustration
-                      </button>
+                    {/* Bottom: Minimalist Underline Link */}
+                    <div className="w-full pt-2 flex justify-center shrink-0">
+                      <span className="inline-flex items-center gap-1.5 text-xs font-sans font-medium text-tie-ink group-hover:text-tie-pine border-b border-tie-ink/30 group-hover:border-tie-pine pb-0.5 transition-all duration-300">
+                        <span>Learn about the {sol.title}</span>
+                        <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform duration-300" />
+                      </span>
                     </div>
+
                   </div>
 
                 </div>
               </div>
-            );
-          })}
+            ))}
+          </motion.div>
         </div>
 
       </div>
     </section>
   );
 };
+
 export default UseCaseSelector;
