@@ -66,17 +66,22 @@ export const NarrativeJourneySection: React.FC = () => {
     <section id="narrative-section" className="relative py-16 sm:py-24 bg-tie-bg overflow-hidden border-b border-tie-border/60">
       <div className="max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12 relative">
         
-        {/* 1. TOP GREEN HAND-DRAWN ARROW pointing down (Banghi.mp4 p4_46s) */}
-        <div className="flex justify-center -mt-6 mb-12 sm:mb-16">
-          <svg className="w-7 h-14 text-[#567D42] overflow-visible" viewBox="0 0 28 52" fill="none">
+        {/* 1. TOP GREEN HAND-DRAWN LOOPING ARROW (Huts reference: whimsical double loop doodle pointing to 'We do it across the country') */}
+        <div className="flex justify-center -mt-6 sm:-mt-10 mb-8 sm:mb-12">
+          <svg
+            className="w-28 sm:w-36 md:w-44 h-auto text-[#567D42] overflow-visible select-none pointer-events-none"
+            viewBox="0 0 170 200"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
             <path
-              d="M 14 0 C 11 16, 17 28, 14 44"
+              d="M 10.0 10.0 C 10.3 11.3, 10.2 15.3, 12.0 18.0 C 13.8 20.7, 16.2 23.0, 21.0 26.0 C 25.8 29.0, 31.5 32.0, 40.5 36.0 C 49.5 40.0, 69.8 46.7, 75.0 50.0 C 80.2 53.3, 72.1 54.3, 71.5 56.0 C 70.9 57.7, 70.8 58.3, 71.5 60.0 C 72.2 61.7, 74.6 64.7, 76.0 66.0 C 77.4 67.3, 78.7 68.0, 80.0 68.0 C 81.3 68.0, 83.1 67.0, 84.0 66.0 C 84.9 65.0, 86.0 64.0, 85.5 62.0 C 85.0 60.0, 80.8 55.7, 81.0 54.0 C 81.2 52.3, 84.4 52.0, 86.7 52.0 C 89.0 52.0, 92.0 52.3, 95.0 54.0 C 98.0 55.7, 101.9 59.0, 104.5 62.0 C 107.1 65.0, 108.8 68.0, 110.5 72.0 C 112.2 76.0, 113.7 78.3, 114.5 86.0 C 115.3 93.7, 116.0 112.3, 115.5 118.0 C 115.0 123.7, 111.7 119.0, 111.5 120.0 C 111.3 121.0, 114.5 121.3, 114.5 124.0 C 114.5 126.7, 112.6 133.0, 111.5 136.0 C 110.4 139.0, 109.6 140.7, 108.0 142.0 C 106.4 143.3, 104.6 145.0, 102.0 144.0 C 99.4 143.0, 93.8 139.0, 92.5 136.0 C 91.2 133.0, 92.8 128.7, 94.5 126.0 C 96.2 123.3, 98.7 121.0, 103.0 120.0 C 107.3 119.0, 115.2 118.7, 120.5 120.0 C 125.8 121.3, 131.3 125.3, 135.0 128.0 C 138.7 130.7, 140.4 133.0, 142.5 136.0 C 144.6 139.0, 146.0 141.0, 147.5 146.0 C 149.0 151.0, 151.1 159.2, 151.5 166.0 C 151.9 172.8, 150.2 183.5, 150.0 187.0"
               stroke="currentColor"
               strokeWidth="2.4"
               strokeLinecap="round"
             />
             <path
-              d="M 7 36 L 14 45 L 21 36"
+              d="M 142 174 L 150 187 L 159 174"
               stroke="currentColor"
               strokeWidth="2.4"
               strokeLinecap="round"
