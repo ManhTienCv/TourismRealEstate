@@ -3,16 +3,8 @@ import { useConfiguratorStore } from '../../store/useConfiguratorStore';
 import { smoothScrollTo } from '../../utils/smoothScroll';
 import { ArrowRight } from 'lucide-react';
 
-// Featured Realized Projects matching exact Huts.com portfolio specification
+// Featured Realized Projects matching exact Huts.com portfolio specification (3 curated projects)
 const FEATURED_REALIZED_PROJECTS = [
-  {
-    id: 'blueberry-hill-adu',
-    slug: 'berkshires-adu-studio',
-    title: 'Blueberry\nHill ADU',
-    exteriorImage: 'https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&w=2400&q=85',
-    interiorImage: 'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1400&q=85',
-    pills: ['ADU', 'Studio', '1 Bath', '<500 Sqft', 'ADU'],
-  },
   {
     id: 'break-house',
     slug: 'break-house',
