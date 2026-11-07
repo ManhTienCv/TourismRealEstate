@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { SEED_HOUSING_SOLUTIONS, HousingSolution } from '@tie/shared';
 import { useConfiguratorStore } from '../../store/useConfiguratorStore';
 import { ArrowRight } from 'lucide-react';
@@ -247,6 +247,128 @@ const CharacterIllustrations: Record<string, React.ReactNode> = {
   ),
 };
 
+interface ArchetypeCardProps {
+  sol: HousingSolution;
+  onLearnMore: (slug: string) => void;
+}
+
+const Archetype3DCard: React.FC<ArchetypeCardProps> = ({ sol, onLearnMore }) => {
+  const [isFlipped, setIsFlipped] = useState(false);
+  const hoverTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Khi con trỏ chuột dừng lại một tí (320ms) thì mới kích hoạt lật thẻ
+  // Tránh việc lật thẻ vô thức ngoài ý muốn khi đang cuộn chuột lướt trang
+  const handleMouseEnter = () => {
+    hoverTimerRef.current = setTimeout(() => {
+      setIsFlipped(true);
+    }, 320);
+  };
+
+  const handleMouseLeave = () => {
+    if (hoverTimerRef.current) {
+      clearTimeout(hoverTimerRef.current);
+      hoverTimerRef.current = null;
+    }
+    setIsFlipped(false);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (hoverTimerRef.current) {
+        clearTimeout(hoverTimerRef.current);
+      }
+    };
+  }, []);
+
+  return (
+    <div
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      className="shrink-0 w-[290px] sm:w-[320px] h-[430px] [perspective:1200px] select-none"
+      style={{ perspective: '1200px' }}
+    >
+      {/* 3D Flippable Inner Card Container */}
+      <div
+        className="relative w-full h-full [transform-style:preserve-3d] transition-transform duration-700 ease-out"
+        style={{
+          transformStyle: 'preserve-3d',
+          transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
+        }}
+      >
+        {/* FRONT SIDE: Minimalist Cream Card */}
+        <div
+          className="absolute inset-0 [backface-visibility:hidden] rounded-2xl bg-[#F9F8F3] border border-[#DCD9CE] p-6 sm:p-7 flex flex-col items-center justify-between text-center shadow-none transition-colors duration-300 hover:border-tie-pine/50"
+          style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }}
+        >
+          {/* Character Line Art in Center */}
+          <div className="my-auto py-2 transition-transform duration-500 flex items-center justify-center">
+            {CharacterIllustrations[sol.slug] || (
+              <div className="w-48 h-48 flex items-center justify-center text-tie-pine">
+                <svg className="w-32 h-32 stroke-current fill-none" viewBox="0 0 64 64">
+                  <polygon points="12 44, 32 20, 52 44" strokeWidth="1.5" />
+                  <rect x="24" y="32" width="16" height="12" strokeWidth="1.5" />
+                </svg>
+              </div>
+            )}
+          </div>
+
+          {/* Bottom Label (Large Serif font) */}
+          <div className="w-full pt-2">
+            <h3 className="font-serif text-2xl sm:text-[26px] font-normal text-tie-ink tracking-tight">
+              {sol.title}
+            </h3>
+          </div>
+        </div>
+
+        {/* BACK SIDE: Minimalist Details & Underline Link (Rotated 180deg) */}
+        <div
+          className="absolute inset-0 [backface-visibility:hidden] rounded-2xl bg-[#F9F8F3] border border-tie-pine/40 p-6 sm:p-7 flex flex-col justify-between text-center shadow-none transition-colors duration-300"
+          style={{
+            backfaceVisibility: 'hidden',
+            WebkitBackfaceVisibility: 'hidden',
+            transform: 'rotateY(180deg)',
+          }}
+        >
+          {/* Top: Scaled Down Illustration */}
+          <div className="w-full flex items-center justify-center h-28 overflow-hidden shrink-0">
+            <div className="scale-[0.58] origin-center opacity-85">
+              {CharacterIllustrations[sol.slug]}
+            </div>
+          </div>
+
+          {/* Center: Title & Short Description */}
+          <div className="space-y-2 px-1 my-auto">
+            <h3 className="font-serif text-xl sm:text-2xl font-normal text-tie-ink tracking-tight">
+              {sol.title}
+            </h3>
+            <p className="text-xs sm:text-[13px] text-tie-muted font-sans leading-relaxed line-clamp-3">
+              {sol.description}
+            </p>
+          </div>
+
+          {/* Bottom: Minimalist Underline Link (CHỈ CLICK VÀO DÒNG LINK NÀY MỚI CHUYỂN TRANG) */}
+          <div className="w-full pt-2 flex justify-center shrink-0">
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                onLearnMore(sol.slug);
+              }}
+              className="inline-flex items-center gap-1.5 text-xs font-sans font-medium text-tie-ink hover:text-tie-pine border-b border-tie-ink/30 hover:border-tie-pine pb-0.5 transition-all duration-300 cursor-pointer group/link"
+              title={`Learn about the ${sol.title}`}
+            >
+              <span>Learn about the {sol.title}</span>
+              <ArrowRight className="w-3.5 h-3.5 group-hover/link:translate-x-1 transition-transform duration-300" />
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  );
+};
+
 export const UseCaseSelector: React.FC = () => {
   const { openSolutionDetail } = useConfiguratorStore();
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -285,82 +407,11 @@ export const UseCaseSelector: React.FC = () => {
             className="flex gap-6 sm:gap-7 pl-6 sm:pl-16 lg:pl-24 pr-16 lg:pr-32 w-max"
           >
             {SEED_HOUSING_SOLUTIONS.map((sol: HousingSolution) => (
-              <div
+              <Archetype3DCard
                 key={sol.id}
-                onClick={() => openSolutionDetail(sol.slug)}
-                className="group shrink-0 w-[290px] sm:w-[320px] h-[430px] [perspective:1200px] select-none cursor-pointer"
-                style={{ perspective: '1200px' }}
-                title={`Learn about ${sol.title}`}
-              >
-                {/* 3D Flippable Inner Card Container (Rotates on Hover) */}
-                <div
-                  className="relative w-full h-full [transform-style:preserve-3d] transition-transform duration-700 ease-out group-hover:[transform:rotateY(180deg)]"
-                  style={{ transformStyle: 'preserve-3d' }}
-                >
-                  
-                  {/* FRONT SIDE: Minimalist Cream Card */}
-                  <div
-                    className="absolute inset-0 [backface-visibility:hidden] rounded-2xl bg-[#F9F8F3] border border-[#DCD9CE] p-6 sm:p-7 flex flex-col items-center justify-between text-center shadow-none transition-colors duration-300 group-hover:border-tie-pine/50"
-                    style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }}
-                  >
-                    {/* Character Line Art in Center */}
-                    <div className="my-auto py-2 transition-transform duration-500 group-hover:scale-105 flex items-center justify-center">
-                      {CharacterIllustrations[sol.slug] || (
-                        <div className="w-48 h-48 flex items-center justify-center text-tie-pine">
-                          <svg className="w-32 h-32 stroke-current fill-none" viewBox="0 0 64 64">
-                            <polygon points="12 44, 32 20, 52 44" strokeWidth="1.5" />
-                            <rect x="24" y="32" width="16" height="12" strokeWidth="1.5" />
-                          </svg>
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Bottom Label (Large Serif font) */}
-                    <div className="w-full pt-2">
-                      <h3 className="font-serif text-2xl sm:text-[26px] font-normal text-tie-ink tracking-tight">
-                        {sol.title}
-                      </h3>
-                    </div>
-                  </div>
-
-                  {/* BACK SIDE: Minimalist Details & Underline Link (Rotated 180deg) */}
-                  <div
-                    className="absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)] rounded-2xl bg-[#F9F8F3] border border-[#DCD9CE] p-6 sm:p-7 flex flex-col justify-between text-center shadow-none transition-colors duration-300 group-hover:border-tie-pine"
-                    style={{
-                      backfaceVisibility: 'hidden',
-                      WebkitBackfaceVisibility: 'hidden',
-                      transform: 'rotateY(180deg)',
-                    }}
-                  >
-                    {/* Top: Scaled Down Illustration */}
-                    <div className="w-full flex items-center justify-center h-28 overflow-hidden shrink-0">
-                      <div className="scale-[0.58] origin-center opacity-85">
-                        {CharacterIllustrations[sol.slug]}
-                      </div>
-                    </div>
-
-                    {/* Center: Title & Short Description */}
-                    <div className="space-y-2 px-1 my-auto">
-                      <h3 className="font-serif text-xl sm:text-2xl font-normal text-tie-ink tracking-tight">
-                        {sol.title}
-                      </h3>
-                      <p className="text-xs sm:text-[13px] text-tie-muted font-sans leading-relaxed line-clamp-3">
-                        {sol.description}
-                      </p>
-                    </div>
-
-                    {/* Bottom: Minimalist Underline Link */}
-                    <div className="w-full pt-2 flex justify-center shrink-0">
-                      <span className="inline-flex items-center gap-1.5 text-xs font-sans font-medium text-tie-ink group-hover:text-tie-pine border-b border-tie-ink/30 group-hover:border-tie-pine pb-0.5 transition-all duration-300">
-                        <span>Learn about the {sol.title}</span>
-                        <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform duration-300" />
-                      </span>
-                    </div>
-
-                  </div>
-
-                </div>
-              </div>
+                sol={sol}
+                onLearnMore={openSolutionDetail}
+              />
             ))}
           </motion.div>
         </div>
