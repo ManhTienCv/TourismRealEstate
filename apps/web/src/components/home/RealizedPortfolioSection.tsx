@@ -1,9 +1,8 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { useConfiguratorStore } from '../../store/useConfiguratorStore';
 import { ArrowRight } from 'lucide-react';
-import { motion, useScroll, useTransform } from 'framer-motion';
 
-// Featured Realized Projects matching exact video Banghi1.1.mp4 and Stacking Cards Scroll specifications
+// Featured Realized Projects matching exact Huts.com portfolio specification
 const FEATURED_REALIZED_PROJECTS = [
   {
     id: 'blueberry-hill-adu',
@@ -39,90 +38,9 @@ const FEATURED_REALIZED_PROJECTS = [
   },
 ];
 
-interface StackingCardProps {
-  project: (typeof FEATURED_REALIZED_PROJECTS)[0];
-  index: number;
-  total: number;
-}
-
-const StackingProjectCard: React.FC<StackingCardProps> = ({ project, index }) => {
-  const { openProjectDetail } = useConfiguratorStore();
-  const cardRef = useRef<HTMLDivElement>(null);
-
-  // Parallax scroll tracking for depth feel
-  const { scrollYProgress } = useScroll({
-    target: cardRef,
-    offset: ['start end', 'end start'],
-  });
-
-  // Parallax: Background exterior photo moves slightly slower than foreground content
-  const bgY = useTransform(scrollYProgress, [0, 1], ['-6%', '6%']);
-  const bgScale = useTransform(scrollYProgress, [0, 0.5, 1], [1.06, 1.03, 1.0]);
-
-  return (
-    <div
-      ref={cardRef}
-      style={{
-        zIndex: index + 10,
-        top: 0,
-      }}
-      onClick={() => openProjectDetail(project.slug)}
-      className="sticky top-0 w-full h-screen min-h-[600px] overflow-hidden flex items-center select-none cursor-pointer group shadow-[0_-25px_50px_rgba(0,0,0,0.45)] bg-[#121A14]"
-    >
-      {/* 1. Full-bleed Parallax Exterior Photography */}
-      <div className="absolute inset-0 w-full h-full overflow-hidden">
-        <motion.img
-          style={{ y: bgY, scale: bgScale }}
-          src={project.exteriorImage}
-          alt={project.title.replace('\n', ' ')}
-          className="absolute inset-0 w-full h-[116%] -top-[8%] object-cover object-center group-hover:scale-105 transition-transform duration-1000 ease-out"
-          loading="lazy"
-        />
-        {/* Subtle Dark Vignette & Gradient for High Contrast Typography */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
-        <div className="absolute inset-0 bg-black/15" />
-      </div>
-
-      {/* 2. Foreground Content: Split Two-Column Layout */}
-      <div className="relative z-10 w-full max-w-[1720px] mx-auto px-6 sm:px-12 lg:px-20 py-12 lg:py-16 flex flex-col lg:flex-row items-center justify-between gap-10">
-        
-        {/* Left Column: Project Title & Dark Translucent Pills */}
-        <div className="w-full lg:w-1/2 flex flex-col justify-center space-y-6 pt-6 lg:pt-0">
-          <h3 className="font-serif text-5xl sm:text-7xl lg:text-[84px] font-normal leading-[1.04] tracking-tight text-white drop-shadow-xl whitespace-pre-line">
-            {project.title}
-          </h3>
-
-          {/* Translucent Dark Rounded Pills */}
-          <div className="flex flex-wrap items-center gap-2 sm:gap-2.5">
-            {project.pills.map((pill, pIdx) => (
-              <span
-                key={pIdx}
-                className="bg-black/45 backdrop-blur-md border border-white/20 text-white/95 text-xs sm:text-[13px] font-sans px-4 py-1.5 rounded-full shadow-md select-none"
-              >
-                {pill}
-              </span>
-            ))}
-          </div>
-        </div>
-
-        {/* Right Column: Floating Rounded Interior Card */}
-        <div className="w-full lg:w-auto flex justify-center lg:justify-end">
-          <div className="w-full sm:w-[480px] md:w-[540px] lg:w-[600px] xl:w-[660px] aspect-[4/3] rounded-[28px] sm:rounded-[36px] overflow-hidden shadow-2xl bg-[#1E2620] relative transform group-hover:scale-[1.015] transition-transform duration-700 ease-out">
-            <img
-              src={project.interiorImage}
-              alt={`${project.title.replace('\n', ' ')} interior`}
-              className="w-full h-full object-cover"
-              loading="lazy"
-            />
-          </div>
-        </div>
-
-      </div>
-    </div>
-  );
-};
-
 export const RealizedPortfolioSection: React.FC = () => {
+  const { openProjectDetail } = useConfiguratorStore();
+
   return (
     <section id="portfolio-section" className="relative w-full bg-[#FAF8F5]">
       
@@ -150,15 +68,63 @@ export const RealizedPortfolioSection: React.FC = () => {
         </p>
       </div>
 
-      {/* 2. Stacking Cards Scroll (Sticky Overlapping Sections with Parallax) */}
+      {/* 2. Clip-path Wipe Transition with Fixed Content Overlay (Sticky Curtain Reveal) */}
       <div className="relative w-full">
-        {FEATURED_REALIZED_PROJECTS.map((project, idx) => (
-          <StackingProjectCard
+        {FEATURED_REALIZED_PROJECTS.map((project, index) => (
+          <div
             key={project.id}
-            project={project}
-            index={idx}
-            total={FEATURED_REALIZED_PROJECTS.length}
-          />
+            onClick={() => openProjectDetail(project.slug)}
+            className="relative w-full h-screen overflow-hidden rounded-none select-none cursor-pointer group [clip-path:inset(0)]"
+            style={{
+              zIndex: index + 1,
+              clipPath: 'inset(0)',
+              WebkitClipPath: 'inset(0)',
+            }}
+          >
+            {/* Background Layer: Full-bleed background image with subtle dark overlay */}
+            <img
+              src={project.exteriorImage}
+              alt={project.title.replace('\n', ' ')}
+              className="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-700 ease-out"
+              loading="lazy"
+            />
+            <div className="absolute inset-0 bg-black/20" />
+            <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/20 to-transparent" />
+
+            {/* Fixed Inner Content: Stays locked in exact same viewport position, sliced cleanly by clip-path */}
+            <div className="fixed inset-0 pointer-events-none flex items-center justify-between max-w-7xl mx-auto px-8 md:px-16">
+              
+              {/* Left Column: Title & Glassmorphism Pill Tags */}
+              <div className="w-5/12 pointer-events-auto text-white">
+                <h3 className="font-serif text-5xl md:text-6xl lg:text-7xl leading-[1.1] tracking-tight whitespace-pre-line mb-6 drop-shadow-md">
+                  {project.title}
+                </h3>
+                <div className="flex flex-wrap items-center gap-2">
+                  {project.pills.map((pill, pIdx) => (
+                    <span
+                      key={pIdx}
+                      className="px-3.5 py-1.5 text-xs font-medium rounded-full bg-white/15 backdrop-blur-md border border-white/20 text-white shadow-sm"
+                    >
+                      {pill}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Right Column: Compact Inset Image with Generous Breathing Room */}
+              <div className="w-6/12 max-w-[520px] pointer-events-auto">
+                <div className="w-full aspect-[16/10] rounded-2xl overflow-hidden shadow-2xl bg-neutral-900 group-hover:scale-[1.01] transition-transform duration-500 ease-out">
+                  <img
+                    src={project.interiorImage}
+                    alt={`${project.title.replace('\n', ' ')} interior`}
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                </div>
+              </div>
+
+            </div>
+          </div>
         ))}
       </div>
 
