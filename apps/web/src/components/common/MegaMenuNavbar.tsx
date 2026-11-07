@@ -140,23 +140,57 @@ export const MegaMenuNavbar: React.FC = () => {
     setActiveTab,
     openConfigurator,
     openPlanDetail,
-    setFilterSolutionSlug,
+    openSolutionDetail,
+    closeSolutionDetail,
+    selectedSolutionSlug,
   } = useConfiguratorStore();
 
   const [activeMenu, setActiveMenu] = useState<MenuType>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+  const lastScrollYRef = useRef(0);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Scroll listener for seamless transparent -> solid header transition (Matching Banghi.mp4 00:00 - 00:10)
+  // Scroll listener: transparent/solid background + smart auto-hide on scroll down, reveal on scroll up (Matching Banghi1.mp4 30s-45s)
   useEffect(() => {
+    let ticking = false;
+
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 40);
+      const currentScrollY = window.scrollY;
+
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setIsScrolled(currentScrollY > 40);
+
+          // If a dropdown or mobile menu is active, keep navbar visible
+          if (activeMenu !== null || mobileMenuOpen) {
+            setIsVisible(true);
+          } else if (currentScrollY <= 60) {
+            // Near the top of the page: always visible
+            setIsVisible(true);
+          } else {
+            const diff = currentScrollY - lastScrollYRef.current;
+            // 6px threshold to avoid micro-scroll jitter
+            if (diff > 6) {
+              // Scrolling down (reading content) -> slide navbar UP out of view
+              setIsVisible(false);
+            } else if (diff < -6) {
+              // Scrolling up (returning to top) -> slide navbar DOWN into view
+              setIsVisible(true);
+            }
+          }
+
+          lastScrollYRef.current = currentScrollY;
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
-    handleScroll();
+
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [activeMenu, mobileMenuOpen]);
 
   const handleMouseEnter = (menu: MenuType) => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -190,13 +224,11 @@ export const MegaMenuNavbar: React.FC = () => {
 
   const handleSolutionSelect = (slug: string) => {
     setActiveMenu(null);
-    setActiveTab('home');
-    setFilterSolutionSlug(slug);
-    const el = document.getElementById('standards-section');
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
+    openSolutionDetail(slug);
   };
 
   const scrollToSection = (id: string, tab: 'home' | 'standards' | 'portfolio' | 'field-report') => {
+    closeSolutionDetail();
     setActiveTab(tab);
     setMobileMenuOpen(false);
     setActiveMenu(null);
@@ -208,16 +240,18 @@ export const MegaMenuNavbar: React.FC = () => {
     }
   };
 
-  // Header background is solid cream when scrolled, on non-home tabs, or whenever a MegaMenu is active
+  // Header background is solid cream when scrolled, on non-home tabs, when in solution detail view, or whenever a MegaMenu is active
   const isMenuOpen = activeMenu !== null;
-  const isSolid = isScrolled || activeTab !== 'home' || isMenuOpen;
+  const isSolid = isScrolled || activeTab !== 'home' || isMenuOpen || selectedSolutionSlug !== null;
   const isTransparent = !isSolid;
 
   return (
     <>
       <header
         onMouseLeave={handleMouseLeave}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out ${
+          isVisible ? 'translate-y-0' : '-translate-y-full pointer-events-none shadow-none'
+        } ${
           isSolid
             ? 'bg-[#FAF8F5] text-tie-ink shadow-2xl border-b border-[#E8E4DC]'
             : 'bg-transparent text-white'
@@ -638,4 +672,3 @@ export const MegaMenuNavbar: React.FC = () => {
     </>
   );
 };
-export default MegaMenuNavbar;

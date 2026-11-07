@@ -248,7 +248,7 @@ const CharacterIllustrations: Record<string, React.ReactNode> = {
 };
 
 export const UseCaseSelector: React.FC = () => {
-  const { filterSolutionSlug, setFilterSolutionSlug } = useConfiguratorStore();
+  const { filterSolutionSlug, setFilterSolutionSlug, openSolutionDetail } = useConfiguratorStore();
   const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
   const [scrollPos, setScrollPos] = useState(0);
   const carouselRef = useRef<HTMLDivElement>(null);
@@ -445,7 +445,14 @@ export const UseCaseSelector: React.FC = () => {
 
                     {/* Bottom Label (Exact Centered Serif as in Banghi.mp4) */}
                     <div className="w-full pt-3">
-                      <h3 className="font-serif text-2xl font-normal text-tie-ink tracking-tight">
+                      <h3
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          openSolutionDetail(sol.slug);
+                        }}
+                        className="font-serif text-2xl font-normal text-tie-ink tracking-tight hover:text-[#567D42] transition-colors cursor-pointer"
+                        title={`View ${sol.title} story & details`}
+                      >
                         {sol.title}
                       </h3>
                     </div>
@@ -496,18 +503,25 @@ export const UseCaseSelector: React.FC = () => {
                     </div>
 
                     {/* Actions on Back */}
-                    <div className="space-y-2 pt-4 border-t border-tie-border">
+                    <div className="space-y-2 pt-3 border-t border-tie-border">
                       <button
-                        onClick={() => handleSelectSolution(sol.slug)}
-                        className="w-full py-2.5 px-4 rounded-full bg-[#567D42] hover:bg-[#466635] text-white text-xs font-mono font-semibold transition-all flex items-center justify-center space-x-2"
+                        onClick={() => openSolutionDetail(sol.slug)}
+                        className="w-full py-2.5 px-4 rounded-full bg-[#183D24] hover:bg-[#122A1A] text-white text-xs font-mono font-semibold transition-all flex items-center justify-center space-x-2 shadow-xs"
                       >
-                        <span>Filter The Standards</span>
+                        <span>Explore Story & Plans</span>
                         <ArrowRight className="w-3.5 h-3.5" />
                       </button>
 
                       <button
+                        onClick={() => handleSelectSolution(sol.slug)}
+                        className="w-full py-2 px-4 rounded-full border border-tie-border hover:border-tie-pine text-tie-ink text-xs font-mono transition-all flex items-center justify-center space-x-1"
+                      >
+                        <span>Filter The Standards</span>
+                      </button>
+
+                      <button
                         onClick={(e) => toggleFlip(sol.slug, e)}
-                        className="w-full py-1.5 text-[11px] font-mono text-tie-muted hover:text-tie-ink text-center"
+                        className="w-full py-1 text-[11px] font-mono text-tie-muted hover:text-tie-ink text-center"
                       >
                         Flip back to illustration
                       </button>

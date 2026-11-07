@@ -1,19 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { useConfiguratorStore } from '../../store/useConfiguratorStore';
-import { ArrowRight, Sparkles } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowRight } from 'lucide-react';
+import { motion } from 'framer-motion';
 
-// Authentic country modular home photography matching Banghi.mp4 (Frame 00 & Frame 04)
+// Authentic country modular home photography matching Banghi.mp4 and Banghi1.mp4
 const HERO_SHOTS = [
   {
     id: 'ground',
     url: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2600&q=85',
-    alt: 'Modern black timber gabled country home with lawn and forest',
+    alt: 'Modern black timber gabled country home with lawn and autumn forest',
   },
   {
     id: 'aerial',
     url: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=2600&q=85',
-    alt: 'Aerial flycam view of country modular house in forest canopy',
+    alt: 'Aerial flycam bird-eye view of country modular house in forest canopy',
+  },
+  {
+    id: 'under-construction',
+    url: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=2600&q=85',
+    alt: 'Precision timber framed home in peaceful rural landscape',
   },
 ];
 
@@ -21,24 +26,31 @@ export const HeroSection: React.FC = () => {
   const { openConfigurator } = useConfiguratorStore();
   const [currentShotIndex, setCurrentShotIndex] = useState(0);
 
-  // Gentle 8-second cycle between ground shot and aerial shot (Matching Banghi.mp4 00:00 - 00:08)
+  // Gentle 7-second ambient cycle between drone angles matching Banghi1.mp4
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentShotIndex((prev) => (prev + 1) % HERO_SHOTS.length);
-    }, 8000);
+    }, 7000);
     return () => clearInterval(timer);
   }, []);
 
   return (
     <section className="relative w-full min-h-[92vh] sm:min-h-screen flex items-center justify-center overflow-hidden">
       
-      {/* FULL-BLEED HERO BACKGROUND (Cycling between ground perspective and aerial view) */}
+      {/* FULL-BLEED HERO BACKGROUND (With slow cinematic Ken-Burns drift) */}
       <div className="absolute inset-0 w-full h-full">
         {HERO_SHOTS.map((shot, idx) => (
-          <img
+          <motion.img
             key={shot.id}
             src={shot.url}
             alt={shot.alt}
+            initial={{ scale: 1, x: 0 }}
+            animate={
+              idx === currentShotIndex
+                ? { scale: [1, 1.05], x: [0, -8] }
+                : { scale: 1, x: 0 }
+            }
+            transition={{ duration: 7, ease: 'easeOut' }}
             className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-1000 ease-in-out ${
               idx === currentShotIndex ? 'opacity-100' : 'opacity-0'
             }`}

@@ -29,6 +29,7 @@ export interface ConfiguratorState {
   isConfiguratorOpen: boolean; // Controls GetStartedWizard drawer/modal
   selectedPlanForDetail: StandardPlan | null;
   selectedProjectSlug: string | null;
+  selectedSolutionSlug: string | null; // Controls Solution Detail View (Starter Home, Forever Home, etc.)
 
   // Catalog Filters
   filterSolutionSlug: string | null;
@@ -56,6 +57,8 @@ export interface ConfiguratorState {
   closePlanDetail: () => void;
   openProjectDetail: (slug: string) => void;
   closeProjectDetail: () => void;
+  openSolutionDetail: (slug: string) => void;
+  closeSolutionDetail: () => void;
 
   setFilterSolutionSlug: (slug: string | null) => void;
   setFilterBeds: (beds: number | null) => void;
@@ -197,6 +200,7 @@ export const useConfiguratorStore = create<ConfiguratorState>((set, get) => ({
   isConfiguratorOpen: false,
   selectedPlanForDetail: null,
   selectedProjectSlug: null,
+  selectedSolutionSlug: null,
 
   filterSolutionSlug: null,
   filterBeds: null,
@@ -257,6 +261,14 @@ export const useConfiguratorStore = create<ConfiguratorState>((set, get) => ({
 
   openProjectDetail: (slug) => set({ selectedProjectSlug: slug }),
   closeProjectDetail: () => set({ selectedProjectSlug: null }),
+
+  openSolutionDetail: (slug) => {
+    set({ selectedSolutionSlug: slug, activeTab: 'home' });
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  },
+  closeSolutionDetail: () => set({ selectedSolutionSlug: null }),
 
   setFilterSolutionSlug: (slug) => set({ filterSolutionSlug: slug }),
   setFilterBeds: (beds) => set({ filterBeds: beds }),

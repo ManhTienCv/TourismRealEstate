@@ -54,6 +54,9 @@ build/
 *.mov
 *.webm
 *.avi
+brain/
+*.jpg
+*.png
 
 # Student folders & lists
 list student/

@@ -13,9 +13,10 @@ import { PlanDetailModal } from './components/standards/PlanDetailModal';
 import { GetStartedWizard } from './components/configurator/GetStartedWizard';
 import { FieldReportPortal } from './components/field-report/FieldReportPortal';
 import { PortfolioGalleryModal } from './components/portfolio/PortfolioGalleryModal';
+import { SolutionDetailView } from './components/solutions/SolutionDetailView';
 
 export const App: React.FC = () => {
-  const { activeTab } = useConfiguratorStore();
+  const { activeTab, selectedSolutionSlug } = useConfiguratorStore();
 
   return (
     <div className="min-h-screen bg-tie-bg text-tie-ink flex flex-col font-sans selection:bg-tie-pine selection:text-tie-bg">
@@ -26,6 +27,8 @@ export const App: React.FC = () => {
       <main className="flex-1">
         {activeTab === 'field-report' ? (
           <FieldReportPortal />
+        ) : selectedSolutionSlug ? (
+          <SolutionDetailView />
         ) : (
           <>
             {/* 01. Hero with wide cinematic photography, headline & pro-forma teaser */}
