@@ -71,4 +71,12 @@ list-todo/
 list-todo
 todo/
 todos/
+
+# Prompt specifications & instruction guides (keep local only)
+*PROMPT*
+*prompt*
+PROMPTS_*.md
+PROMPTS_PHASE2_BANGHI1.md
+PROMPTS_UI_UX_HUTS.md
+
 Thumbs.db
