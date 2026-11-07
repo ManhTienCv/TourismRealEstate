@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useConfiguratorStore } from '../../store/useConfiguratorStore';
+import { smoothScrollTo } from '../../utils/smoothScroll';
 import { SEED_STANDARD_PLANS } from '@tie/shared';
 import {
   Menu,
@@ -233,10 +234,9 @@ export const MegaMenuNavbar: React.FC = () => {
     setMobileMenuOpen(false);
     setActiveMenu(null);
     if (id) {
-      const el = document.getElementById(id);
-      if (el) el.scrollIntoView({ behavior: 'smooth' });
+      smoothScrollTo(id, { offset: -70, duration: 1.2 });
     } else {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      smoothScrollTo(0, { duration: 1.2 });
     }
   };
 

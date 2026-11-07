@@ -1,4 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import Lenis from 'lenis';
+import 'lenis/dist/lenis.css';
+import { setLenis } from './utils/smoothScroll';
 import { useConfiguratorStore } from './store/useConfiguratorStore';
 import { MegaMenuNavbar } from './components/common/MegaMenuNavbar';
 import { Footer } from './components/common/Footer';
@@ -17,6 +20,32 @@ import { SolutionDetailView } from './components/solutions/SolutionDetailView';
 
 export const App: React.FC = () => {
   const { activeTab, selectedSolutionSlug } = useConfiguratorStore();
+
+  // Initialize Lenis Momentum / Inertia Scrolling (Matches Huts.com smooth luxury scroll physics)
+  useEffect(() => {
+    const lenis = new Lenis({
+      lerp: 0.08, // 0.08 = Silky smooth luxury momentum scroll
+      wheelMultiplier: 1.0,
+      smoothWheel: true,
+      touchMultiplier: 1.5,
+    });
+
+    setLenis(lenis);
+
+    let rafId: number;
+    function raf(time: number) {
+      lenis.raf(time);
+      rafId = requestAnimationFrame(raf);
+    }
+
+    rafId = requestAnimationFrame(raf);
+
+    return () => {
+      cancelAnimationFrame(rafId);
+      lenis.destroy();
+      setLenis(null);
+    };
+  }, []);
 
   return (
     <div className="min-h-screen bg-tie-bg text-tie-ink flex flex-col font-sans selection:bg-tie-pine selection:text-tie-bg">

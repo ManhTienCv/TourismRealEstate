@@ -1,5 +1,6 @@
 import React from 'react';
 import { useConfiguratorStore } from '../../store/useConfiguratorStore';
+import { smoothScrollTo } from '../../utils/smoothScroll';
 import { ArrowRight } from 'lucide-react';
 
 // Featured Realized Projects matching exact Huts.com portfolio specification
@@ -131,19 +132,13 @@ export const RealizedPortfolioSection: React.FC = () => {
       {/* 3. Outro CTA: "See More Projects" */}
       <div className="py-20 bg-[#FAF8F5] flex items-center justify-center space-x-3">
         <button
-          onClick={() => {
-            const el = document.getElementById('portfolio-section');
-            if (el) el.scrollIntoView({ behavior: 'smooth' });
-          }}
+          onClick={() => smoothScrollTo('portfolio-section', { offset: -40, duration: 1.2 })}
           className="px-8 py-3.5 rounded-full text-sm font-sans font-medium text-[#1A2E20] bg-white border border-[#1A2E20]/30 hover:border-[#1A2E20] hover:bg-[#F3EFEA] transition-all duration-200 shadow-sm"
         >
           See More Projects
         </button>
         <button
-          onClick={() => {
-            const el = document.getElementById('portfolio-section');
-            if (el) el.scrollIntoView({ behavior: 'smooth' });
-          }}
+          onClick={() => smoothScrollTo('portfolio-section', { offset: -40, duration: 1.2 })}
           className="w-12 h-12 rounded-full bg-white border border-[#1A2E20]/30 hover:border-[#1A2E20] hover:bg-[#F3EFEA] flex items-center justify-center text-[#1A2E20] transition-all duration-200 group shadow-sm"
           title="See More Projects"
         >
