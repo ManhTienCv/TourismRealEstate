@@ -444,13 +444,13 @@ export const UseCaseSelector: React.FC = () => {
   });
 
   // Translates the horizontal track across X axis as user scrolls vertically
-  const x = useTransform(scrollYProgress, [0, 1], ['0%', '-60%']);
+  const x = useTransform(scrollYProgress, [0, 0.92], ['0%', '-68%']);
 
   return (
     <section
       id="solutions-section"
       ref={sectionRef}
-      className="relative h-[260vh] sm:h-[300vh] bg-[#FAF8F1] overflow-hidden"
+      className="relative h-[200vh] sm:h-[240vh] bg-[#FAF8F1]"
     >
       {/* Sticky Viewport Container */}
       <div className="sticky top-0 h-screen w-full flex flex-col justify-center overflow-hidden">

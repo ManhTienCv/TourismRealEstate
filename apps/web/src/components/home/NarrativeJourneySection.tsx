@@ -51,10 +51,10 @@ export const NarrativeJourneySection: React.FC = () => {
   // 2. Middle Connector Arrow: Scroll-triggered SVG path length
   const { scrollYProgress: connectorProgress } = useScroll({
     target: connectorArrowRef,
-    offset: ['start 95%', 'end 45%'],
+    offset: ['start 85%', 'center 45%'],
   });
   const connectorPathLength = useTransform(connectorProgress, [0, 1], [0, 1]);
-  const connectorHeadOpacity = useTransform(connectorProgress, [0.82, 1], [0, 1]);
+  const connectorHeadOpacity = useTransform(connectorProgress, [0.8, 1], [0, 1]);
 
   // Move top photo to back of stack
   const moveTopCardToBack = () => {
@@ -131,7 +131,7 @@ export const NarrativeJourneySection: React.FC = () => {
         {/* ========================================================= */}
         {/* 2. SECTION: "WE DO IT ACROSS THE COUNTRY"                 */}
         {/* ========================================================= */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center mb-8 sm:mb-12">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center mb-4 sm:mb-6">
           
           {/* LEFT: DRAGGABLE PHYSICS PHOTO STACK (Interactive Card Stack Shuffle) */}
           <div className="lg:col-span-6 flex justify-center">
@@ -213,24 +213,24 @@ export const NarrativeJourneySection: React.FC = () => {
         {/* ========================================================= */}
         <div
           ref={connectorArrowRef}
-          className="relative w-full h-[200px] sm:h-[240px] md:h-[280px] -mt-4 sm:-mt-8 -mb-6 sm:-mb-10 pointer-events-none z-20 flex justify-center overflow-visible"
+          className="relative w-full h-[150px] sm:h-[190px] md:h-[220px] -mt-6 sm:-mt-10 -mb-8 sm:-mb-12 pointer-events-none z-20 flex justify-center overflow-visible"
         >
           <svg
-            viewBox="0 0 1000 260"
+            viewBox="0 0 1000 220"
             fill="none"
             className="w-full max-w-[1300px] h-full overflow-visible"
           >
             {/* Arched stem sweeping smoothly from right across top and down, matching HUTS */}
             <motion.path
-              d="M 590 0 C 440 25, 365 85, 345 230"
+              d="M 590 0 C 510 20, 390 70, 390 190"
               stroke="#4A772F"
               strokeWidth="2.4"
               strokeLinecap="round"
               style={{ pathLength: connectorPathLength }}
             />
-            {/* Downward pointing arrowhead (\/) matching HUTS Image 1 */}
+            {/* Downward pointing arrowhead (\/) matching HUTS Image 3 */}
             <motion.path
-              d="M 335 208 L 345 230 L 356 212"
+              d="M 378 170 L 390 190 L 402 170"
               stroke="#4A772F"
               strokeWidth="2.4"
               strokeLinecap="round"
@@ -243,7 +243,7 @@ export const NarrativeJourneySection: React.FC = () => {
         {/* ========================================================= */}
         {/* 4. "USING A PROCESS BUILT AROUND YOU" (Sherpa Fireplace) */}
         {/* ========================================================= */}
-        <div id="process-section" className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center min-h-[75vh] lg:min-h-[85vh] pt-6 pb-28 sm:pb-36 lg:pb-44">
+        <div id="process-section" className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center pt-2 sm:pt-4 pb-16 sm:pb-20 lg:pb-24">
           
           {/* Left Column: Headline, Narrative & Reusable Pill Arrow Button */}
           <div className="lg:col-span-6 space-y-7">
