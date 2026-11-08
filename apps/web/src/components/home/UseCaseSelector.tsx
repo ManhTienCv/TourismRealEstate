@@ -4,6 +4,13 @@ import { useConfiguratorStore } from '../../store/useConfiguratorStore';
 import { ArrowRight } from 'lucide-react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 
+// AI-generated Editorial Spot Illustrations (Risograph Monoline Ink matching HUTS)
+const AVAILABLE_ILLUSTRATIONS: Record<string, string> = {
+  'starter-home': '/illustrations/starter-home-transparent.png',
+  'forever-home': '/illustrations/forever-home-transparent.png',
+  'second-home': '/illustrations/second-home-transparent.png',
+};
+
 // Character Line Art SVGs matching exact frames from Banghi.mp4 (p3_36s, p3_40s, p3_42s)
 const CharacterIllustrations: Record<string, React.ReactNode> = {
   // 1. Starter Home: Man kneeling with watering can watering small house with flower blooming on roof
@@ -319,13 +326,22 @@ const Archetype3DCard: React.FC<ArchetypeCardProps> = ({ sol, onLearnMore, isScr
         >
           {/* Character Line Art in Center */}
           <div className="my-auto py-2 transition-transform duration-500 flex items-center justify-center">
-            {CharacterIllustrations[sol.slug] || (
-              <div className="w-48 h-48 flex items-center justify-center text-tie-pine">
-                <svg className="w-32 h-32 stroke-current fill-none" viewBox="0 0 64 64">
-                  <polygon points="12 44, 32 20, 52 44" strokeWidth="1.5" />
-                  <rect x="24" y="32" width="16" height="12" strokeWidth="1.5" />
-                </svg>
-              </div>
+            {AVAILABLE_ILLUSTRATIONS[sol.slug] ? (
+              <img
+                src={AVAILABLE_ILLUSTRATIONS[sol.slug]}
+                alt={sol.title}
+                className="w-52 h-52 object-contain select-none pointer-events-none drop-shadow-xs"
+                draggable={false}
+              />
+            ) : (
+              CharacterIllustrations[sol.slug] || (
+                <div className="w-48 h-48 flex items-center justify-center text-tie-pine">
+                  <svg className="w-32 h-32 stroke-current fill-none" viewBox="0 0 64 64">
+                    <polygon points="12 44, 32 20, 52 44" strokeWidth="1.5" />
+                    <rect x="24" y="32" width="16" height="12" strokeWidth="1.5" />
+                  </svg>
+                </div>
+              )
             )}
           </div>
 
@@ -348,9 +364,18 @@ const Archetype3DCard: React.FC<ArchetypeCardProps> = ({ sol, onLearnMore, isScr
         >
           {/* Top: Scaled Down Illustration */}
           <div className="w-full flex items-center justify-center h-28 overflow-hidden shrink-0">
-            <div className="scale-[0.58] origin-center opacity-85">
-              {CharacterIllustrations[sol.slug]}
-            </div>
+            {AVAILABLE_ILLUSTRATIONS[sol.slug] ? (
+              <img
+                src={AVAILABLE_ILLUSTRATIONS[sol.slug]}
+                alt={sol.title}
+                className="h-24 w-24 object-contain select-none pointer-events-none opacity-90 drop-shadow-xs"
+                draggable={false}
+              />
+            ) : (
+              <div className="scale-[0.58] origin-center opacity-85">
+                {CharacterIllustrations[sol.slug]}
+              </div>
+            )}
           </div>
 
           {/* Center: Title & Short Description */}
