@@ -51,10 +51,10 @@ export const NarrativeJourneySection: React.FC = () => {
   // 2. Middle Connector Arrow: Scroll-triggered SVG path length
   const { scrollYProgress: connectorProgress } = useScroll({
     target: connectorArrowRef,
-    offset: ['start 92%', 'end 50%'],
+    offset: ['start 95%', 'end 45%'],
   });
   const connectorPathLength = useTransform(connectorProgress, [0, 1], [0, 1]);
-  const connectorHeadOpacity = useTransform(connectorProgress, [0.85, 1], [0, 1]);
+  const connectorHeadOpacity = useTransform(connectorProgress, [0.82, 1], [0, 1]);
 
   // Move top photo to back of stack
   const moveTopCardToBack = () => {
@@ -213,26 +213,26 @@ export const NarrativeJourneySection: React.FC = () => {
         {/* ========================================================= */}
         <div
           ref={connectorArrowRef}
-          className="relative w-full h-[220px] md:h-[260px] -mt-6 -mb-14 pointer-events-none z-20 flex justify-center overflow-visible"
+          className="relative w-full h-[200px] sm:h-[240px] md:h-[280px] -mt-4 sm:-mt-8 -mb-6 sm:-mb-10 pointer-events-none z-20 flex justify-center overflow-visible"
         >
           <svg
-            viewBox="0 0 400 260"
+            viewBox="0 0 1000 260"
             fill="none"
-            className="w-[360px] md:w-[440px] h-full overflow-visible"
+            className="w-full max-w-[1300px] h-full overflow-visible"
           >
-            {/* Thân đường cong dài uốn từ phải sang trái xuống section dưới */}
+            {/* Arched stem sweeping smoothly from right across top and down, matching HUTS */}
             <motion.path
-              d="M 250 10 C 255 130, 160 150, 95 245"
+              d="M 590 0 C 440 25, 365 85, 345 230"
               stroke="#4A772F"
-              strokeWidth="2"
+              strokeWidth="2.4"
               strokeLinecap="round"
               style={{ pathLength: connectorPathLength }}
             />
-            {/* Đầu mũi tên hiện ra khi nét vẽ chạy gần tới đích */}
+            {/* Downward pointing arrowhead (\/) matching HUTS Image 1 */}
             <motion.path
-              d="M 85 228 L 94 247 L 114 239"
+              d="M 335 208 L 345 230 L 356 212"
               stroke="#4A772F"
-              strokeWidth="2"
+              strokeWidth="2.4"
               strokeLinecap="round"
               strokeLinejoin="round"
               style={{ opacity: connectorHeadOpacity }}
@@ -243,22 +243,22 @@ export const NarrativeJourneySection: React.FC = () => {
         {/* ========================================================= */}
         {/* 4. "USING A PROCESS BUILT AROUND YOU" (Sherpa Fireplace) */}
         {/* ========================================================= */}
-        <div id="process-section" className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center pt-2 pb-12 sm:pb-16">
+        <div id="process-section" className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center min-h-[75vh] lg:min-h-[85vh] pt-6 pb-28 sm:pb-36 lg:pb-44">
           
           {/* Left Column: Headline, Narrative & Reusable Pill Arrow Button */}
-          <div className="lg:col-span-6 space-y-6">
-            <h3 className="font-serif text-3xl sm:text-4xl md:text-[44px] lg:text-[48px] font-normal text-tie-ink leading-[1.15] tracking-tight">
+          <div className="lg:col-span-6 space-y-7">
+            <h3 className="font-serif text-4xl sm:text-5xl lg:text-[54px] xl:text-[60px] font-normal text-[#182215] leading-[1.12] tracking-tight">
               Using a process built
               <br />
               around you
             </h3>
             
-            <p className="font-sans text-sm sm:text-base text-[#555148] leading-relaxed max-w-lg">
+            <p className="font-sans text-base sm:text-[17px] lg:text-[18px] text-[#4A463D] leading-[1.68] max-w-xl">
               We deliver properties differently think of us as your sherpa on the path to your perfect property. Our people-first process goes far beyond floor plans—we coordinate every player needed to take you from a spark of an idea to raw land to a finished home. It's a start-to-finish approach that's proven, vetted, and simply the best way to build.
             </p>
 
             {/* Reusable Unified Pill Arrow Button */}
-            <div className="pt-2">
+            <div className="pt-3 sm:pt-4">
               <PillArrowButton
                 label="How It Works"
                 onClick={handleHowItWorksClick}
@@ -272,7 +272,7 @@ export const NarrativeJourneySection: React.FC = () => {
             <img
               src="/sherpa_fireplace_transparent.png"
               alt="Architectural sherpa enjoying tea by a stone fireplace"
-              className="w-72 sm:w-80 md:w-96 lg:w-[460px] h-auto object-contain select-none pointer-events-none drop-shadow-xs"
+              className="w-80 sm:w-96 md:w-[480px] lg:w-[540px] xl:w-[580px] h-auto object-contain select-none pointer-events-none drop-shadow-xs"
             />
           </div>
 
