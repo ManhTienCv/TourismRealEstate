@@ -8,7 +8,6 @@ import { Footer } from './components/common/Footer';
 import { HeroSection } from './components/home/HeroSection';
 import { UseCaseSelector } from './components/home/UseCaseSelector';
 import { NarrativeJourneySection } from './components/home/NarrativeJourneySection';
-import { ZoningFinancialSection } from './components/home/ZoningFinancialSection';
 import { StandardsCatalogGrid } from './components/home/StandardsCatalogGrid';
 import { RealizedPortfolioSection } from './components/home/RealizedPortfolioSection';
 import { TrustMetricsSection } from './components/home/TrustMetricsSection';
@@ -18,8 +17,6 @@ import { GetStartedWizard } from './components/configurator/GetStartedWizard';
 import { FieldReportPortal } from './components/field-report/FieldReportPortal';
 import { PortfolioGalleryModal } from './components/portfolio/PortfolioGalleryModal';
 import { SolutionDetailView } from './components/solutions/SolutionDetailView';
-import { WhatIsAStandardSection } from './components/standards/WhatIsAStandardSection';
-import { StepByStepProcessSection } from './components/standards/StepByStepProcessSection';
 import { WhatIsAStandardView } from './components/standards/WhatIsAStandardView';
 
 export const App: React.FC = () => {
@@ -72,19 +69,10 @@ export const App: React.FC = () => {
             {/* 02. "Whatever type of place you have in mind" (8 Botanical white cards) */}
             <UseCaseSelector />
 
-            {/* 03. The signature Green Wavy Line Journey ("Start with what you know" & "Turnkey process") */}
+            {/* 03. "We do it across the country" & "Using a process built around you" (Exact Match to User Image 1) */}
             <NarrativeJourneySection />
 
-            {/* 03.5. Zoning Landscape, Drone Foundation & Financial Conditions (Prompt 2.3) */}
-            <ZoningFinancialSection />
-
-            {/* 04. What is a Standard? Architectural Grid & Constructability (Prompt 2.4) */}
-            <WhatIsAStandardSection />
-
-            {/* 04.5. The Step-by-Step Satellite Parcel Map & 5-Stage Accordion (Prompt 2.4) */}
-            <StepByStepProcessSection />
-
-            {/* 05. "It all starts with our Standards" (Modular 3D Axonometric cards) */}
+            {/* 04. "It all starts with our Standards" (Modular 3D Axonometric cards) */}
             <StandardsCatalogGrid />
 
             {/* 06. "And we can build it for you on your land" (Realized Projects Photography stack) */}
