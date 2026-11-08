@@ -207,9 +207,9 @@ export const MegaMenuNavbar: React.FC = () => {
   const handleStandardItemClick = (slug: string) => {
     setActiveMenu(null);
     if (slug === 'what-is-a-standard') {
-      setActiveTab('home');
-      const el = document.getElementById('standards-section');
-      if (el) el.scrollIntoView({ behavior: 'smooth' });
+      closeSolutionDetail();
+      setActiveTab('standards');
+      smoothScrollTo(0, { duration: 0.8 });
       return;
     }
 
@@ -217,9 +217,9 @@ export const MegaMenuNavbar: React.FC = () => {
     if (plan) {
       openPlanDetail(plan);
     } else {
+      closeSolutionDetail();
       setActiveTab('home');
-      const el = document.getElementById('standards-section');
-      if (el) el.scrollIntoView({ behavior: 'smooth' });
+      smoothScrollTo('standards-section', { offset: -70, duration: 1.0 });
     }
   };
 

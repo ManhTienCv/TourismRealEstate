@@ -3,7 +3,7 @@ import { useConfiguratorStore } from '../../store/useConfiguratorStore';
 import { SEED_STANDARD_PLANS } from '@tie/shared';
 
 export const Footer: React.FC = () => {
-  const { setActiveTab, openConfigurator, openPlanDetail, setFilterSolutionSlug } = useConfiguratorStore();
+  const { setActiveTab, openConfigurator, openPlanDetail, setFilterSolutionSlug, closeSolutionDetail } = useConfiguratorStore();
 
   // 1. Housing Solutions Link Handler
   const handleSolutionClick = (slug: string) => {
@@ -17,14 +17,17 @@ export const Footer: React.FC = () => {
   // 2. Standards Link Handler
   const handleStandardClick = (slug?: string) => {
     if (!slug || slug === 'what-is-a-standard') {
-      const el = document.getElementById('standards-section');
-      if (el) el.scrollIntoView({ behavior: 'smooth' });
+      closeSolutionDetail();
+      setActiveTab('standards');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
     const plan = SEED_STANDARD_PLANS.find((p) => p.slug === slug);
     if (plan) {
       openPlanDetail(plan);
     } else {
+      closeSolutionDetail();
+      setActiveTab('home');
       const el = document.getElementById('standards-section');
       if (el) el.scrollIntoView({ behavior: 'smooth' });
     }

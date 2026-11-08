@@ -18,6 +18,9 @@ import { GetStartedWizard } from './components/configurator/GetStartedWizard';
 import { FieldReportPortal } from './components/field-report/FieldReportPortal';
 import { PortfolioGalleryModal } from './components/portfolio/PortfolioGalleryModal';
 import { SolutionDetailView } from './components/solutions/SolutionDetailView';
+import { WhatIsAStandardSection } from './components/standards/WhatIsAStandardSection';
+import { StepByStepProcessSection } from './components/standards/StepByStepProcessSection';
+import { WhatIsAStandardView } from './components/standards/WhatIsAStandardView';
 
 export const App: React.FC = () => {
   const { activeTab, selectedSolutionSlug } = useConfiguratorStore();
@@ -57,6 +60,8 @@ export const App: React.FC = () => {
       <main className="flex-1">
         {activeTab === 'field-report' ? (
           <FieldReportPortal />
+        ) : activeTab === 'standards' ? (
+          <WhatIsAStandardView />
         ) : selectedSolutionSlug ? (
           <SolutionDetailView />
         ) : (
@@ -73,16 +78,22 @@ export const App: React.FC = () => {
             {/* 03.5. Zoning Landscape, Drone Foundation & Financial Conditions (Prompt 2.3) */}
             <ZoningFinancialSection />
 
-            {/* 04. "It all starts with our Standards" (Modular 3D Axonometric cards) */}
+            {/* 04. What is a Standard? Architectural Grid & Constructability (Prompt 2.4) */}
+            <WhatIsAStandardSection />
+
+            {/* 04.5. The Step-by-Step Satellite Parcel Map & 5-Stage Accordion (Prompt 2.4) */}
+            <StepByStepProcessSection />
+
+            {/* 05. "It all starts with our Standards" (Modular 3D Axonometric cards) */}
             <StandardsCatalogGrid />
 
-            {/* 05. "And we can build it for you on your land" (Realized Projects Photography stack) */}
+            {/* 06. "And we can build it for you on your land" (Realized Projects Photography stack) */}
             <RealizedPortfolioSection />
 
-            {/* 06. Client Testimonial & 4 Massive Stat Counters (200K+, 18, ±5.0%, 5,000+) */}
+            {/* 07. Client Testimonial & 4 Massive Stat Counters (200K+, 18, ±5.0%, 5,000+) */}
             <TrustMetricsSection />
 
-            {/* 07. Pistachio Pre-Footer Banner ("Let’s find that place you’ve been dreaming about") */}
+            {/* 08. Pistachio Pre-Footer Banner ("Let’s find that place you’ve been dreaming about") */}
             <PreFooterBanner />
           </>
         )}
