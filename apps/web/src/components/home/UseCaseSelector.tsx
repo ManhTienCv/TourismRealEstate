@@ -467,7 +467,7 @@ export const UseCaseSelector: React.FC = () => {
         const trackWidth = trackRef.current.scrollWidth;
         const viewportWidth = window.innerWidth;
         // 64px ensures the last card has generous right breathing room without clipping
-        const needed = Math.max(0, trackWidth - viewportWidth + 64);
+        const needed = Math.max(0, trackWidth - viewportWidth);
         setMaxTranslate(needed);
       }
     };
@@ -484,7 +484,7 @@ export const UseCaseSelector: React.FC = () => {
   });
 
   // Translates the horizontal track smoothly across X axis
-  const x = useTransform(scrollYProgress, [0, 0.88], [0, -maxTranslate]);
+  const x = useTransform(scrollYProgress, [0, 1], [0, -maxTranslate], { clamp: true });
 
   return (
     <section

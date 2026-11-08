@@ -100,7 +100,7 @@ export const NarrativeJourneySection: React.FC = () => {
   };
 
   return (
-    <section id="narrative-section" className="relative pt-8 pb-4 sm:pt-12 sm:pb-8 bg-[#FAF8F1] overflow-visible border-b border-[#E2DFD3]/60">
+    <section id="narrative-section" className="relative pt-10 pb-10 sm:pt-14 sm:pb-14 bg-[#FAF8F1] overflow-visible">
       <div className="max-w-[1584px] mx-auto px-4 sm:px-8 lg:px-12 relative">
         
         {/* ========================================================= */}
@@ -139,7 +139,7 @@ export const NarrativeJourneySection: React.FC = () => {
       {/* 2. SECTION: "WE DO IT ACROSS THE COUNTRY" (Matching HUTS) */}
       {/* ========================================================= */}
       <div className="max-w-[1060px] mx-auto px-6 md:px-12">
-        <div className="grid grid-cols-1 lg:grid-cols-12 items-center gap-10 lg:gap-14 mb-2">
+        <div className="grid grid-cols-1 lg:grid-cols-12 items-center gap-10 lg:gap-14 mb-6 sm:mb-8">
           
           {/* LEFT: DRAGGABLE PHYSICS PHOTO STACK (Interactive Card Stack Shuffle) */}
           <div className="lg:col-span-6 flex justify-center">
@@ -224,26 +224,26 @@ export const NarrativeJourneySection: React.FC = () => {
       {/* ========================================================================= */}
       <div
         ref={connectorArrowRef}
-        className="relative w-full max-w-[1060px] mx-auto px-6 md:px-12 h-[90px] sm:h-[110px] md:h-[125px] -my-1 sm:-my-2 pointer-events-none z-20 overflow-visible"
+        className="relative w-full max-w-[1060px] mx-auto px-6 md:px-12 h-[150px] sm:h-[170px] md:h-[190px] my-4 sm:my-6 pointer-events-none z-20 overflow-visible"
       >
         <svg
-          viewBox="0 0 1060 125"
+          viewBox="0 0 1060 190"
           fill="none"
           className="w-full h-full overflow-visible"
         >
-          {/* Smooth curved arch sweeping from right under button to left directly above 'built' */}
+          {/* Grand elegant calligraphy arch sweeping from right under 'See Our Projects' -> gracefully plunging downward above 'built' */}
           <motion.path
-            d="M 640 2 C 580 8, 440 24, 380 105"
+            d="M 660 14 C 590 -10, 410 30, 360 155"
             stroke="#4A772F"
-            strokeWidth="2.2"
+            strokeWidth="2.3"
             strokeLinecap="round"
             style={{ pathLength: connectorPathLength }}
           />
-          {/* Downward pointing arrowhead (\/) directly above 'built' */}
+          {/* Downward pointing crisp arrowhead (\/) pointing directly at 'built' */}
           <motion.path
-            d="M 369 88 L 380 105 L 391 88"
+            d="M 347 130 L 360 155 L 373 130"
             stroke="#4A772F"
-            strokeWidth="2.2"
+            strokeWidth="2.3"
             strokeLinecap="round"
             strokeLinejoin="round"
             style={{ opacity: connectorHeadOpacity }}
@@ -256,7 +256,7 @@ export const NarrativeJourneySection: React.FC = () => {
       {/* ========================================================= */}
       <div
         id="process-section"
-        className="max-w-[1060px] mx-auto px-6 md:px-12 pt-1 md:pt-2 pb-24 md:pb-32"
+        className="max-w-[1060px] mx-auto px-6 md:px-12 pt-4 md:pt-6 pb-28 md:pb-36"
       >
         <div className="grid grid-cols-1 md:grid-cols-12 items-center gap-10 lg:gap-14">
           

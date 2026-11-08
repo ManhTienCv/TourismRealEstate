@@ -9,7 +9,7 @@ const STANDARDS_GALLERY = [
   {
     slug: 'small-bar',
     cleanName: 'Small Bar',
-    imageUrl: 'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1400&q=85',
+    imageUrl: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1400&q=85',
   },
   {
     slug: 'medium-bar',
@@ -44,7 +44,7 @@ const STANDARDS_GALLERY = [
   {
     slug: 'adu',
     cleanName: 'ADU',
-    imageUrl: 'https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&w=1400&q=85',
+    imageUrl: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=1400&q=85',
   },
 ];
 
@@ -64,7 +64,7 @@ export const StandardsCatalogGrid: React.FC = () => {
   });
 
   // Translates the horizontal track across X axis as user scrolls vertically
-  const x = useTransform(scrollYProgress, [0, 1], ['0%', '-68%']);
+  const x = useTransform(scrollYProgress, [0, 1], ['0%', '-64%'], { clamp: true });
 
   const activeSolution = useMemo(() => {
     return SEED_HOUSING_SOLUTIONS.find((s) => s.slug === filterSolutionSlug);
@@ -81,7 +81,7 @@ export const StandardsCatalogGrid: React.FC = () => {
     <section
       id="standards-section"
       ref={sectionRef}
-      className="relative h-[260vh] sm:h-[300vh] bg-tie-bg"
+      className="relative h-[220vh] sm:h-[240vh] bg-[#FAF8F1]"
     >
       {/* Sticky Viewport Container */}
       <div className="sticky top-0 h-screen w-full flex flex-col justify-center overflow-hidden">
@@ -99,7 +99,7 @@ export const StandardsCatalogGrid: React.FC = () => {
         {/* Subtitle / Filter Indicator */}
         <div className="max-w-[1892px] w-full mx-auto px-6 sm:px-12 lg:px-20 mb-4 flex items-center justify-between shrink-0">
           {activeSolution ? (
-            <div className="inline-flex items-center space-x-2 text-xs font-mono bg-[#FAF8F1] px-3.5 py-1.5 rounded-full border border-tie-border shadow-xs">
+            <div className="inline-flex items-center space-x-2 text-xs font-mono bg-[#FAF8F1] px-3.5 py-1.5 rounded-full border border-[#E2DFD3] shadow-xs">
               <span className="text-[#555148]">Filtered by Program:</span>
               <span className="font-semibold text-tie-pine">{activeSolution.title}</span>
               <button
@@ -136,7 +136,7 @@ export const StandardsCatalogGrid: React.FC = () => {
                   }`}
                 >
                   {/* Large Horizontal Photo Card with Soft Curves */}
-                  <div className="relative aspect-[16/11] rounded-2xl sm:rounded-3xl overflow-hidden bg-[#FAF8F1] border border-[#DCD9CE] shadow-sm group-hover:shadow-lg transition-all duration-300">
+                  <div className="relative aspect-[16/11] rounded-2xl sm:rounded-3xl overflow-hidden bg-[#FAF8F1] border border-[#E2DFD3] shadow-sm group-hover:shadow-lg transition-all duration-300">
                     <img
                       src={item.imageUrl}
                       alt={item.cleanName}
