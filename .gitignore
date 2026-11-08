@@ -57,6 +57,7 @@ build/
 brain/
 *.jpg
 *.png
+!apps/web/public/**
 
 # Student folders & lists
 list student/
