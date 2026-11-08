@@ -130,7 +130,8 @@ const PlusCrossIcon: React.FC<{ isOpen: boolean; isTransparent: boolean }> = ({ 
     <Plus
       className={`w-3 h-3 transition-transform duration-200 ease-in-out ${
         isOpen ? 'rotate-45' : 'rotate-0'
-      } ${isOpen ? 'text-tie-ink' : isTransparent ? 'text-white/80' : 'text-tie-ink/70'}`}
+      } ${isOpen ? 'text-tie-ink' : isTransparent ? 'text-white' : 'text-tie-ink'}`}
+      strokeWidth={2.5}
     />
   </span>
 );
@@ -258,15 +259,15 @@ export const MegaMenuNavbar: React.FC = () => {
         } ${isMenuOpen ? 'rounded-b-[36px] sm:rounded-b-[44px]' : ''}`}
       >
         {/* Top Navbar Row */}
-        <div className="max-w-[1584px] mx-auto px-4 sm:px-8 lg:px-12 h-20 flex items-center justify-between">
+        <div className="max-w-[1584px] mx-auto px-6 sm:px-10 lg:px-12 h-20 flex items-center justify-between">
           
-          {/* Brand Wordmark (Exact Huts Bold Typography: Clean "TIE") */}
+          {/* Brand Wordmark (Exact Huts Bold Sans Typography: Clean "TIE") */}
           <div
             onClick={() => scrollToSection('', 'home')}
-            className="cursor-pointer flex items-center space-x-2 group"
+            className="cursor-pointer flex items-center space-x-2 group shrink-0"
           >
             <span
-              className={`font-serif text-3xl sm:text-4xl font-extrabold tracking-tight transition-colors ${
+              className={`font-sans text-3xl md:text-[34px] font-black tracking-tight leading-none transition-colors ${
                 isTransparent ? 'text-white' : 'text-tie-ink'
               }`}
             >
@@ -274,120 +275,110 @@ export const MegaMenuNavbar: React.FC = () => {
             </span>
           </div>
 
-          {/* Desktop Navigation Links with dynamic "+" to "×" transition (Matching Banghi.mp4) */}
-          <nav className="hidden lg:flex items-center space-x-6 xl:space-x-8 font-sans text-sm font-medium">
-            
-            {/* 1. Housing Solutions */}
-            <div
-              className="relative"
-              onMouseEnter={() => handleMouseEnter('solutions')}
-            >
+          {/* Right Group: Navigation Links & CTA Button gathered together (Matching HUTS) */}
+          <div className="flex items-center gap-6 lg:gap-7 ml-auto">
+
+            {/* Desktop Navigation Links with dynamic "+" to "×" transition */}
+            <nav className="hidden lg:flex items-center gap-6 lg:gap-7 font-sans text-[14px] md:text-[15px] font-medium tracking-tight">
+              
+              {/* 1. Housing Solutions */}
+              <div
+                className="relative"
+                onMouseEnter={() => handleMouseEnter('solutions')}
+              >
+                <button
+                  onClick={() => scrollToSection('solutions-section', 'home')}
+                  className={`py-2 transition-colors flex items-center gap-1.5 ${
+                    activeMenu === 'solutions'
+                      ? isTransparent ? 'text-white font-semibold' : 'text-tie-ink font-semibold'
+                      : isTransparent
+                      ? 'text-white hover:text-white/80'
+                      : 'text-tie-ink hover:text-[#567D42]'
+                  }`}
+                >
+                  <span>Housing Solutions</span>
+                  <PlusCrossIcon isOpen={activeMenu === 'solutions'} isTransparent={isTransparent} />
+                </button>
+              </div>
+
+              {/* 2. Standards */}
+              <div
+                className="relative"
+                onMouseEnter={() => handleMouseEnter('standards')}
+              >
+                <button
+                  onClick={() => scrollToSection('standards-section', 'standards')}
+                  className={`py-2 transition-colors flex items-center gap-1.5 ${
+                    activeMenu === 'standards'
+                      ? isTransparent ? 'text-white font-semibold' : 'text-tie-ink font-semibold'
+                      : isTransparent
+                      ? 'text-white hover:text-white/80'
+                      : 'text-tie-ink hover:text-[#567D42]'
+                  }`}
+                >
+                  <span>Standards</span>
+                  <PlusCrossIcon isOpen={activeMenu === 'standards'} isTransparent={isTransparent} />
+                </button>
+              </div>
+
+              {/* 3. How It Works */}
+              <div
+                className="relative"
+                onMouseEnter={() => handleMouseEnter('how-it-works')}
+              >
+                <button
+                  onClick={() => scrollToSection('process-section', 'home')}
+                  className={`py-2 transition-colors flex items-center gap-1.5 ${
+                    activeMenu === 'how-it-works'
+                      ? isTransparent ? 'text-white font-semibold' : 'text-tie-ink font-semibold'
+                      : isTransparent
+                      ? 'text-white hover:text-white/80'
+                      : 'text-tie-ink hover:text-[#567D42]'
+                  }`}
+                >
+                  <span>How It Works</span>
+                  <PlusCrossIcon isOpen={activeMenu === 'how-it-works'} isTransparent={isTransparent} />
+                </button>
+              </div>
+
+              {/* 4. Portfolio / Realized Projects */}
               <button
-                onClick={() => scrollToSection('solutions-section', 'home')}
-                className={`py-2 transition-colors flex items-center space-x-1.5 ${
-                  activeMenu === 'solutions'
-                    ? 'text-tie-ink font-semibold'
-                    : isTransparent
-                    ? 'text-white hover:text-[#D2E2B0]'
+                onClick={() => scrollToSection('portfolio-section', 'portfolio')}
+                className={`py-2 transition-colors ${
+                  isTransparent
+                    ? 'text-white hover:text-white/80'
                     : 'text-tie-ink hover:text-[#567D42]'
                 }`}
               >
-                <span>Housing Solutions</span>
-                <PlusCrossIcon isOpen={activeMenu === 'solutions'} isTransparent={isTransparent} />
+                <span>Portfolio</span>
               </button>
-            </div>
 
-            {/* 2. Standards */}
-            <div
-              className="relative"
-              onMouseEnter={() => handleMouseEnter('standards')}
-            >
-              <button
-                onClick={() => scrollToSection('standards-section', 'standards')}
-                className={`py-2 transition-colors flex items-center space-x-1.5 ${
-                  activeMenu === 'standards'
-                    ? 'text-tie-ink font-semibold'
-                    : isTransparent
-                    ? 'text-white hover:text-[#D2E2B0]'
-                    : 'text-tie-ink hover:text-[#567D42]'
-                }`}
+              {/* 5. Resources */}
+              <div
+                className="relative"
+                onMouseEnter={() => handleMouseEnter('resources')}
               >
-                <span>Standards</span>
-                <PlusCrossIcon isOpen={activeMenu === 'standards'} isTransparent={isTransparent} />
-              </button>
-            </div>
+                <button
+                  onClick={() => scrollToSection('process-section', 'home')}
+                  className={`py-2 transition-colors flex items-center gap-1.5 ${
+                    activeMenu === 'resources'
+                      ? isTransparent ? 'text-white font-semibold' : 'text-tie-ink font-semibold'
+                      : isTransparent
+                      ? 'text-white hover:text-white/80'
+                      : 'text-tie-ink hover:text-[#567D42]'
+                  }`}
+                >
+                  <span>Resources</span>
+                  <PlusCrossIcon isOpen={activeMenu === 'resources'} isTransparent={isTransparent} />
+                </button>
+              </div>
 
-            {/* 3. How It Works */}
-            <div
-              className="relative"
-              onMouseEnter={() => handleMouseEnter('how-it-works')}
-            >
-              <button
-                onClick={() => scrollToSection('process-section', 'home')}
-                className={`py-2 transition-colors flex items-center space-x-1.5 ${
-                  activeMenu === 'how-it-works'
-                    ? 'text-tie-ink font-semibold'
-                    : isTransparent
-                    ? 'text-white hover:text-[#D2E2B0]'
-                    : 'text-tie-ink hover:text-[#567D42]'
-                }`}
-              >
-                <span>How it Works</span>
-                <PlusCrossIcon isOpen={activeMenu === 'how-it-works'} isTransparent={isTransparent} />
-              </button>
-            </div>
+            </nav>
 
-            {/* 4. Portfolio / Realized Projects */}
-            <button
-              onClick={() => scrollToSection('portfolio-section', 'portfolio')}
-              className={`py-2 transition-colors ${
-                isTransparent
-                  ? 'text-white hover:text-[#D2E2B0]'
-                  : 'text-tie-ink hover:text-[#567D42]'
-              }`}
-            >
-              <span>Portfolio</span>
-            </button>
-
-            {/* 5. Field Report Client Portal */}
-            <button
-              onClick={() => scrollToSection('field-report-section', 'field-report')}
-              className={`py-2 transition-colors flex items-center space-x-1.5 ${
-                isTransparent
-                  ? 'text-white hover:text-[#D2E2B0]'
-                  : 'text-tie-ink hover:text-[#567D42]'
-              }`}
-            >
-              <span>Field Report</span>
-              <span className="w-1.5 h-1.5 rounded-full bg-[#A8C86D] animate-pulse" />
-            </button>
-
-            {/* 6. Resources */}
-            <div
-              className="relative"
-              onMouseEnter={() => handleMouseEnter('resources')}
-            >
-              <button
-                onClick={() => scrollToSection('process-section', 'home')}
-                className={`py-2 transition-colors flex items-center space-x-1.5 ${
-                  activeMenu === 'resources'
-                    ? 'text-tie-ink font-semibold'
-                    : isTransparent
-                    ? 'text-white hover:text-[#D2E2B0]'
-                    : 'text-tie-ink hover:text-[#567D42]'
-                }`}
-              >
-                <span>Resources</span>
-                <PlusCrossIcon isOpen={activeMenu === 'resources'} isTransparent={isTransparent} />
-              </button>
-            </div>
-          </nav>
-
-          {/* Right CTA Button: Signature Huts Light Pistachio / Lime Pill Button (Matching Banghi.mp4) */}
-          <div className="flex items-center space-x-3">
+            {/* Right CTA Button: Signature Huts Vibrant Lime Pill Button */}
             <button
               onClick={() => openConfigurator()}
-              className="px-5 py-2 rounded-full text-xs sm:text-sm font-semibold text-[#1C1B18] bg-[#D2E2B0] hover:bg-[#C4D9A0] shadow-sm transition-all duration-200 active:scale-95"
+              className="px-6 py-2.5 md:py-3 rounded-full bg-[#d2ef72] hover:bg-[#c5e859] text-[#182215] text-[14px] md:text-[15px] font-medium transition-colors active:scale-95 shadow-xs shrink-0"
             >
               Get Started
             </button>
@@ -403,6 +394,7 @@ export const MegaMenuNavbar: React.FC = () => {
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
+
           </div>
 
         </div>
