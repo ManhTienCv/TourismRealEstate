@@ -15,22 +15,22 @@ const AVAILABLE_ILLUSTRATIONS: Record<string, string> = {
 const CharacterIllustrations: Record<string, React.ReactNode> = {
   // 1. Starter Home: Man kneeling with watering can watering small house with flower blooming on roof
   'starter-home': (
-    <svg className="w-52 h-52 text-[#4D6D3A] stroke-current fill-none stroke-[1.35]" viewBox="0 0 160 160">
+    <svg className="w-52 h-52 text-[#2D4C23] stroke-current fill-none stroke-[1.75]" viewBox="0 0 160 160">
       {/* Little House being watered */}
-      <polygon points="105 125, 120 108, 135 125" fill="#E8F0DC" />
+      <polygon points="105 125, 120 108, 135 125" fill="#E9F7C2" />
       <rect x="110" y="125" width="20" height="15" fill="#FFFFFF" />
-      <rect x="115" y="132" width="6" height="8" fill="#4D6D3A" />
+      <rect x="115" y="132" width="6" height="8" fill="#2D4C23" />
       <rect x="123" y="127" width="5" height="5" />
       {/* Flower sprouting from chimney/roof */}
       <path d="M 120 108 Q 122 96, 126 90" strokeWidth="1.6" />
-      <circle cx="126" cy="88" r="3.5" fill="#D2E2B0" />
+      <circle cx="126" cy="88" r="3.5" fill="#D1F06E" />
       <path d="M 126 84 L 126 92 M 122 88 L 130 88" strokeWidth="1.2" />
       {/* Water droplets */}
       <line x1="98" y1="108" x2="105" y2="116" strokeDasharray="1.5 2.5" strokeWidth="1.2" />
       <line x1="95" y1="112" x2="102" y2="120" strokeDasharray="1.5 2.5" strokeWidth="1.2" />
       <line x1="92" y1="116" x2="99" y2="124" strokeDasharray="1.5 2.5" strokeWidth="1.2" />
       {/* Watering Can */}
-      <path d="M 82 108 L 94 104 L 98 108 L 86 112 Z" fill="#E8F0DC" />
+      <path d="M 82 108 L 94 104 L 98 108 L 86 112 Z" fill="#E9F7C2" />
       <path d="M 80 102 Q 86 94, 88 104" strokeWidth="1.2" />
       <path d="M 94 104 L 99 107" />
       {/* Kneeling Character */}
@@ -50,29 +50,29 @@ const CharacterIllustrations: Record<string, React.ReactNode> = {
       {/* Kneeling legs & Trousers */}
       <path d="M 54 102 Q 48 114, 52 126 Q 60 132, 70 130" strokeWidth="1.5" />
       <path d="M 70 102 Q 68 116, 76 128 Q 84 132, 90 128" strokeWidth="1.5" />
-      <ellipse cx="72" cy="132" rx="7" ry="3" fill="#4D6D3A" />
-      <ellipse cx="90" cy="130" rx="6" ry="3" fill="#4D6D3A" />
+      <ellipse cx="72" cy="132" rx="7" ry="3" fill="#2D4C23" />
+      <ellipse cx="90" cy="130" rx="6" ry="3" fill="#2D4C23" />
       <path d="M 40 136 Q 140 136, 145 136" strokeDasharray="3 3" strokeWidth="1" />
     </svg>
   ),
 
   // 2. Forever Home: Family looking towards countryside homes
   'forever-home': (
-    <svg className="w-52 h-52 text-[#4D6D3A] stroke-current fill-none stroke-[1.35]" viewBox="0 0 160 160">
+    <svg className="w-52 h-52 text-[#2D4C23] stroke-current fill-none stroke-[1.75]" viewBox="0 0 160 160">
       {/* Background Country Houses on hill */}
       <path d="M 80 85 Q 115 75, 145 88" strokeDasharray="2 2" strokeWidth="1" />
-      <polygon points="110 75, 120 66, 130 75" fill="#E8F0DC" />
+      <polygon points="110 75, 120 66, 130 75" fill="#E9F7C2" />
       <rect x="113" y="75" width="14" height="10" fill="#FFFFFF" />
-      <polygon points="132 78, 138 72, 144 78" fill="#E8F0DC" />
+      <polygon points="132 78, 138 72, 144 78" fill="#E9F7C2" />
       <rect x="134" y="78" width="8" height="8" fill="#FFFFFF" />
-      <circle cx="106" cy="74" r="4" strokeDasharray="1.5 1.5" fill="#D2E2B0" />
-      <circle cx="147" cy="76" r="3" strokeDasharray="1.5 1.5" fill="#D2E2B0" />
+      <circle cx="106" cy="74" r="4" strokeDasharray="1.5 1.5" fill="#D1F06E" />
+      <circle cx="147" cy="76" r="3" strokeDasharray="1.5 1.5" fill="#D1F06E" />
       {/* Father (Center) */}
       <circle cx="72" cy="72" r="9" />
       <path d="M 70 70 L 76 70" />
       <circle cx="70" cy="71" r="2.5" />
       <circle cx="76" cy="71" r="2.5" />
-      <path d="M 62 82 Q 72 79, 82 82 L 84 116 L 60 116 Z" fill="#E8F0DC" />
+      <path d="M 62 82 Q 72 79, 82 82 L 84 116 L 60 116 Z" fill="#E9F7C2" />
       {/* Child on shoulders */}
       <circle cx="72" cy="48" r="6" />
       <path d="M 72 44 Q 76 42, 78 45" />
@@ -85,20 +85,20 @@ const CharacterIllustrations: Record<string, React.ReactNode> = {
       <path d="M 84 82 Q 92 80, 100 84 L 98 122 L 84 122 Z" fill="#FFFFFF" />
       {/* Son in front */}
       <circle cx="102" cy="98" r="6" />
-      <path d="M 96 104 Q 102 102, 108 104 L 106 130 L 96 130 Z" fill="#E8F0DC" />
+      <path d="M 96 104 Q 102 102, 108 104 L 106 130 L 96 130 Z" fill="#E9F7C2" />
       <path d="M 45 138 Q 90 134, 135 138" strokeDasharray="3 3" strokeWidth="1" />
     </svg>
   ),
 
   // 3. Second Home: Person relaxing on sun lounger with sunglasses by water
   'second-home': (
-    <svg className="w-52 h-52 text-[#4D6D3A] stroke-current fill-none stroke-[1.35]" viewBox="0 0 160 160">
-      <circle cx="50" cy="45" r="5" fill="#D2E2B0" />
+    <svg className="w-52 h-52 text-[#2D4C23] stroke-current fill-none stroke-[1.75]" viewBox="0 0 160 160">
+      <circle cx="50" cy="45" r="5" fill="#D1F06E" />
       <line x1="50" y1="36" x2="50" y2="33" />
       <line x1="50" y1="54" x2="50" y2="57" />
       <line x1="41" y1="45" x2="38" y2="45" />
       <line x1="59" y1="45" x2="62" y2="45" />
-      <polygon points="40 76, 50 68, 60 76" fill="#E8F0DC" />
+      <polygon points="40 76, 50 68, 60 76" fill="#E9F7C2" />
       <rect x="43" y="76" width="14" height="10" fill="#FFFFFF" />
       <path d="M 64 78 Q 74 76, 84 78 Q 94 80, 104 78" strokeDasharray="2 2" strokeWidth="1" />
       <path d="M 68 84 Q 78 82, 88 84 Q 98 86, 108 84" strokeDasharray="2 2" strokeWidth="1" />
@@ -109,27 +109,27 @@ const CharacterIllustrations: Record<string, React.ReactNode> = {
       <line x1="126" y1="110" x2="128" y2="134" strokeWidth="1.5" />
       {/* Person */}
       <circle cx="128" cy="88" r="8" />
-      <rect x="124" y="86" width="9" height="4" rx="1.5" fill="#4D6D3A" />
-      <path d="M 122 95 Q 112 102, 100 108 L 94 116 Q 106 114, 118 105 Z" fill="#E8F0DC" />
+      <rect x="124" y="86" width="9" height="4" rx="1.5" fill="#2D4C23" />
+      <path d="M 122 95 Q 112 102, 100 108 L 94 116 Q 106 114, 118 105 Z" fill="#E9F7C2" />
       <path d="M 94 116 Q 84 118, 72 118" strokeWidth="1.8" />
       <path d="M 72 118 Q 68 114, 68 122" strokeWidth="1.5" />
-      <path d="M 112 120 Q 118 114, 124 120 L 122 130 L 110 130 Z" fill="#D2E2B0" />
+      <path d="M 112 120 Q 118 114, 124 120 L 122 130 L 110 130 Z" fill="#D1F06E" />
       <path d="M 45 136 Q 95 134, 145 136" strokeDasharray="3 3" strokeWidth="1" />
     </svg>
   ),
 
   // 4. Hybrid Home: Person walking, split between country nature and modern city
   'hybrid-home': (
-    <svg className="w-52 h-52 text-[#4D6D3A] stroke-current fill-none stroke-[1.35]" viewBox="0 0 160 160">
+    <svg className="w-52 h-52 text-[#2D4C23] stroke-current fill-none stroke-[1.75]" viewBox="0 0 160 160">
       <line x1="80" y1="35" x2="80" y2="135" strokeDasharray="3 3" strokeWidth="1.2" />
       {/* Left: Nature */}
       <path d="M 35 110 Q 55 98, 80 106" strokeWidth="1" />
-      <circle cx="50" cy="98" r="6" fill="#D2E2B0" />
+      <circle cx="50" cy="98" r="6" fill="#D1F06E" />
       <line x1="50" y1="104" x2="50" y2="114" />
       <path d="M 52 58 Q 56 52, 60 58 Q 64 52, 68 58" strokeWidth="1.2" />
       <path d="M 40 70 Q 44 66, 42 74" />
       {/* Right: City Highrises */}
-      <rect x="86" y="55" width="22" height="60" fill="#E8F0DC" />
+      <rect x="86" y="55" width="22" height="60" fill="#E9F7C2" />
       <line x1="92" y1="62" x2="96" y2="62" />
       <line x1="92" y1="70" x2="96" y2="70" />
       <line x1="92" y1="78" x2="96" y2="78" />
@@ -140,27 +140,27 @@ const CharacterIllustrations: Record<string, React.ReactNode> = {
       {/* Striding Figure */}
       <circle cx="80" cy="72" r="8" />
       <path d="M 74 68 Q 80 64, 86 68" />
-      <path d="M 74 80 L 86 80 L 84 105 L 76 105 Z" fill="#E8F0DC" />
+      <path d="M 74 80 L 86 80 L 84 105 L 76 105 Z" fill="#E9F7C2" />
       <path d="M 76 105 Q 68 116, 62 128" strokeWidth="1.8" />
       <path d="M 84 105 Q 92 116, 100 126" strokeWidth="1.8" />
-      <ellipse cx="60" cy="129" rx="5" ry="2.5" fill="#4D6D3A" />
-      <ellipse cx="102" cy="127" rx="5" ry="2.5" fill="#4D6D3A" />
+      <ellipse cx="60" cy="129" rx="5" ry="2.5" fill="#2D4C23" />
+      <ellipse cx="102" cy="127" rx="5" ry="2.5" fill="#2D4C23" />
     </svg>
   ),
 
   // 5. ADU: Woman juggling two mini houses in mid-air
   'adu': (
-    <svg className="w-52 h-52 text-[#4D6D3A] stroke-current fill-none stroke-[1.35]" viewBox="0 0 160 160">
+    <svg className="w-52 h-52 text-[#2D4C23] stroke-current fill-none stroke-[1.75]" viewBox="0 0 160 160">
       <g transform="translate(38, 48) rotate(-15)">
-        <polygon points="10 18, 20 8, 30 18" fill="#D2E2B0" />
+        <polygon points="10 18, 20 8, 30 18" fill="#D1F06E" />
         <rect x="13" y="18" width="14" height="12" fill="#FFFFFF" />
-        <rect x="17" y="22" width="4" height="4" fill="#4D6D3A" />
+        <rect x="17" y="22" width="4" height="4" fill="#2D4C23" />
       </g>
       <path d="M 52 82 Q 46 64, 52 48" strokeDasharray="2 2" strokeWidth="1" />
       <g transform="translate(102, 48) rotate(15)">
-        <polygon points="10 18, 20 8, 30 18" fill="#E8F0DC" />
+        <polygon points="10 18, 20 8, 30 18" fill="#E9F7C2" />
         <rect x="13" y="18" width="14" height="12" fill="#FFFFFF" />
-        <rect x="19" y="22" width="4" height="4" fill="#4D6D3A" />
+        <rect x="19" y="22" width="4" height="4" fill="#2D4C23" />
       </g>
       <path d="M 108 82 Q 114 64, 108 48" strokeDasharray="2 2" strokeWidth="1" />
       {/* Woman figure */}
@@ -168,9 +168,9 @@ const CharacterIllustrations: Record<string, React.ReactNode> = {
       <circle cx="76" cy="74" r="3" />
       <circle cx="84" cy="74" r="3" />
       <line x1="79" y1="74" x2="81" y2="74" />
-      <ellipse cx="80" cy="62" rx="5" ry="4" fill="#E8F0DC" />
+      <ellipse cx="80" cy="62" rx="5" ry="4" fill="#E9F7C2" />
       <path d="M 76 79 Q 80 84, 84 79" strokeWidth="1.2" />
-      <path d="M 72 84 Q 80 88, 88 84 Q 86 92, 80 92 Q 74 92, 72 84" fill="#D2E2B0" />
+      <path d="M 72 84 Q 80 88, 88 84 Q 86 92, 80 92 Q 74 92, 72 84" fill="#D1F06E" />
       <path d="M 66 90 Q 80 88, 94 90 L 92 128 L 68 128 Z" fill="#FFFFFF" />
       <path d="M 74 98 L 78 102 M 82 98 L 86 102" strokeWidth="1" />
       <path d="M 68 94 Q 52 92, 54 80" strokeWidth="1.8" />
@@ -183,10 +183,10 @@ const CharacterIllustrations: Record<string, React.ReactNode> = {
 
   // 6. Investment Property: Two hands placing roof block onto modular house (Banghi.mp4 p3_40s)
   'investment-property': (
-    <svg className="w-52 h-52 text-[#4D6D3A] stroke-current fill-none stroke-[1.35]" viewBox="0 0 160 160">
+    <svg className="w-52 h-52 text-[#2D4C23] stroke-current fill-none stroke-[1.75]" viewBox="0 0 160 160">
       {/* Upper Module being placed */}
       <g transform="translate(10, -8)">
-        <polygon points="80 50, 116 50, 110 64, 74 64" fill="#D2E2B0" />
+        <polygon points="80 50, 116 50, 110 64, 74 64" fill="#D1F06E" />
         <rect x="74" y="64" width="36" height="14" fill="#FFFFFF" />
         <line x1="82" y1="68" x2="88" y2="68" />
         <line x1="96" y1="68" x2="102" y2="68" />
@@ -196,12 +196,12 @@ const CharacterIllustrations: Record<string, React.ReactNode> = {
       <path d="M 134 46 Q 126 52, 118 56" strokeWidth="1.3" />
       <path d="M 136 52 Q 128 58, 122 60" strokeWidth="1.3" />
       {/* Lower Main Building with stippling and terraced base */}
-      <polygon points="50 96, 75 80, 125 80, 150 96" fill="#E8F0DC" />
+      <polygon points="50 96, 75 80, 125 80, 150 96" fill="#E9F7C2" />
       <rect x="52" y="96" width="96" height="32" fill="#FFFFFF" />
       {/* Windows & Door */}
-      <rect x="62" y="104" width="16" height="12" fill="#E8F0DC" />
-      <rect x="86" y="104" width="16" height="12" fill="#E8F0DC" />
-      <rect x="118" y="102" width="14" height="26" fill="#4D6D3A" />
+      <rect x="62" y="104" width="16" height="12" fill="#E9F7C2" />
+      <rect x="86" y="104" width="16" height="12" fill="#E9F7C2" />
+      <rect x="118" y="102" width="14" height="26" fill="#2D4C23" />
       {/* Motion lines */}
       <path d="M 64 66 Q 60 72, 64 78" strokeDasharray="1.5 2" />
       <path d="M 126 66 Q 130 72, 126 78" strokeDasharray="1.5 2" />
@@ -211,20 +211,20 @@ const CharacterIllustrations: Record<string, React.ReactNode> = {
 
   // 7. Micro-Hospitality: Two hands holding organic plot with cabins nestled in nature (p3_42s)
   'micro-hospitality': (
-    <svg className="w-52 h-52 text-[#4D6D3A] stroke-current fill-none stroke-[1.35]" viewBox="0 0 160 160">
+    <svg className="w-52 h-52 text-[#2D4C23] stroke-current fill-none stroke-[1.75]" viewBox="0 0 160 160">
       {/* Hands cradling landscape */}
       <path d="M 80 134 C 60 134, 45 120, 50 98 L 56 104" strokeWidth="1.6" />
       <path d="M 80 134 C 100 134, 115 120, 110 98 L 104 104" strokeWidth="1.6" />
       {/* Floating Island Parcel */}
-      <ellipse cx="80" cy="98" rx="42" ry="14" fill="#E8F0DC" />
+      <ellipse cx="80" cy="98" rx="42" ry="14" fill="#E9F7C2" />
       {/* Cabins on the island */}
-      <polygon points="62 88, 70 78, 78 88" fill="#D2E2B0" />
+      <polygon points="62 88, 70 78, 78 88" fill="#D1F06E" />
       <rect x="65" y="88" width="10" height="8" fill="#FFFFFF" />
       <polygon points="82 84, 92 72, 102 84" fill="#FFFFFF" />
-      <rect x="85" y="84" width="14" height="11" fill="#4D6D3A" />
+      <rect x="85" y="84" width="14" height="11" fill="#2D4C23" />
       {/* Pine Trees on island */}
-      <polygon points="54 84, 57 76, 60 84" fill="#4D6D3A" />
-      <polygon points="106 86, 110 77, 114 86" fill="#4D6D3A" />
+      <polygon points="54 84, 57 76, 60 84" fill="#2D4C23" />
+      <polygon points="106 86, 110 77, 114 86" fill="#2D4C23" />
       {/* Foliage swirls */}
       <path d="M 42 70 Q 48 64, 52 72" strokeDasharray="1.5 2" />
       <path d="M 112 64 Q 118 58, 122 66" strokeDasharray="1.5 2" />
@@ -233,18 +233,18 @@ const CharacterIllustrations: Record<string, React.ReactNode> = {
 
   // 8. Multi-Gen Compound: Multi-building cluster on rural meadow (p3_42s)
   'multi-generation-compound': (
-    <svg className="w-52 h-52 text-[#4D6D3A] stroke-current fill-none stroke-[1.35]" viewBox="0 0 160 160">
+    <svg className="w-52 h-52 text-[#2D4C23] stroke-current fill-none stroke-[1.75]" viewBox="0 0 160 160">
       {/* Main Gabled Pavilion */}
-      <polygon points="46 92, 62 74, 78 92" fill="#D2E2B0" />
+      <polygon points="46 92, 62 74, 78 92" fill="#D1F06E" />
       <rect x="50" y="92" width="24" height="24" fill="#FFFFFF" />
-      <rect x="58" y="100" width="8" height="16" fill="#4D6D3A" />
+      <rect x="58" y="100" width="8" height="16" fill="#2D4C23" />
       {/* Guest Wing Pavilion */}
-      <polygon points="82 86, 100 68, 118 86" fill="#E8F0DC" />
+      <polygon points="82 86, 100 68, 118 86" fill="#E9F7C2" />
       <rect x="86" y="86" width="28" height="30" fill="#FFFFFF" />
-      <rect x="92" y="94" width="8" height="8" fill="#E8F0DC" />
+      <rect x="92" y="94" width="8" height="8" fill="#E9F7C2" />
       {/* Studio ADU Pavilion */}
       <polygon points="120 102, 132 88, 144 102" fill="#FFFFFF" />
-      <rect x="123" y="102" width="18" height="16" fill="#D2E2B0" />
+      <rect x="123" y="102" width="18" height="16" fill="#D1F06E" />
       {/* Connecting garden pathways */}
       <path d="M 74 112 Q 80 114, 86 112" strokeWidth="1.5" strokeDasharray="2 2" />
       <path d="M 114 112 Q 118 114, 123 112" strokeWidth="1.5" strokeDasharray="2 2" />
@@ -306,37 +306,37 @@ const Archetype3DCard: React.FC<ArchetypeCardProps> = ({ sol, onLearnMore, isScr
       onMouseEnter={handleMouseEnterOrMove}
       onMouseMove={handleMouseEnterOrMove}
       onMouseLeave={handleMouseLeave}
-      className={`shrink-0 w-[320px] sm:w-[352px] h-[474px] [perspective:1200px] select-none ${
+      className={`shrink-0 w-[380px] sm:w-[400px] md:w-[420px] h-[410px] md:h-[440px] [perspective:1200px] select-none rounded-[20px] ${
         isScrolling ? 'pointer-events-none' : ''
       }`}
       style={{ perspective: '1200px' }}
     >
       {/* 3D Flippable Inner Card Container */}
       <div
-        className="relative w-full h-full [transform-style:preserve-3d] transition-transform duration-700 ease-out"
+        className="relative w-full h-full [transform-style:preserve-3d] transition-transform duration-700 ease-out rounded-[20px]"
         style={{
           transformStyle: 'preserve-3d',
           transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
         }}
       >
-        {/* FRONT SIDE: Minimalist Cream Card */}
+        {/* FRONT SIDE: Warm Cream Card (Matches HUTS #FAF8F1 & Vibrant Lime) */}
         <div
-          className="absolute inset-0 [backface-visibility:hidden] rounded-2xl bg-[#F9F8F3] border border-[#DCD9CE] p-6 sm:p-7 flex flex-col items-center justify-between text-center shadow-none transition-colors duration-300 hover:border-tie-pine/50"
+          className="absolute inset-0 [backface-visibility:hidden] rounded-[20px] bg-[#FAF8F1] border border-[#E2DFD3] p-7 md:p-8 flex flex-col justify-between items-center text-center shadow-none transition-colors duration-300"
           style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }}
         >
-          {/* Character Line Art in Center */}
-          <div className="my-auto py-2 transition-transform duration-500 flex items-center justify-center">
+          {/* Character Line Art in Center (occupies ~70% of card height) */}
+          <div className="w-full h-[250px] md:h-[270px] flex items-center justify-center my-auto transition-transform duration-500">
             {AVAILABLE_ILLUSTRATIONS[sol.slug] ? (
               <img
                 src={AVAILABLE_ILLUSTRATIONS[sol.slug]}
                 alt={sol.title}
-                className="w-52 h-52 object-contain select-none pointer-events-none drop-shadow-xs"
+                className="w-52 h-52 md:w-60 md:h-60 object-contain select-none pointer-events-none drop-shadow-xs"
                 draggable={false}
               />
             ) : (
               CharacterIllustrations[sol.slug] || (
-                <div className="w-48 h-48 flex items-center justify-center text-tie-pine">
-                  <svg className="w-32 h-32 stroke-current fill-none" viewBox="0 0 64 64">
+                <div className="w-52 h-52 md:w-60 md:h-60 flex items-center justify-center text-[#2D4C23]">
+                  <svg className="w-36 h-36 stroke-current fill-none" viewBox="0 0 64 64">
                     <polygon points="12 44, 32 20, 52 44" strokeWidth="1.5" />
                     <rect x="24" y="32" width="16" height="12" strokeWidth="1.5" />
                   </svg>
@@ -345,9 +345,9 @@ const Archetype3DCard: React.FC<ArchetypeCardProps> = ({ sol, onLearnMore, isScr
             )}
           </div>
 
-          {/* Bottom Label (Large Serif font) */}
-          <div className="w-full pt-2">
-            <h3 className="font-serif text-2xl sm:text-[29px] font-normal text-tie-ink tracking-tight">
+          {/* Bottom Label (Large Serif font text-[26px] md:text-[28px]) */}
+          <div className="w-full pt-1 pb-1">
+            <h3 className="font-serif text-[25px] sm:text-[26px] md:text-[28px] font-normal text-[#182215] tracking-tight text-center leading-tight">
               {sol.title}
             </h3>
           </div>
@@ -355,7 +355,7 @@ const Archetype3DCard: React.FC<ArchetypeCardProps> = ({ sol, onLearnMore, isScr
 
         {/* BACK SIDE: Minimalist Details & Underline Link (Rotated 180deg) */}
         <div
-          className="absolute inset-0 [backface-visibility:hidden] rounded-2xl bg-[#F9F8F3] border border-tie-pine/40 p-6 sm:p-7 flex flex-col justify-between text-center shadow-none transition-colors duration-300"
+          className="absolute inset-0 [backface-visibility:hidden] rounded-[20px] bg-[#FAF8F1] border border-[#E2DFD3] p-6 sm:p-7 md:p-8 flex flex-col justify-between text-center shadow-sm transition-colors duration-300"
           style={{
             backfaceVisibility: 'hidden',
             WebkitBackfaceVisibility: 'hidden',
@@ -363,27 +363,27 @@ const Archetype3DCard: React.FC<ArchetypeCardProps> = ({ sol, onLearnMore, isScr
           }}
         >
           {/* Top: Scaled Down Illustration */}
-          <div className="w-full flex items-center justify-center h-28 overflow-hidden shrink-0">
+          <div className="w-full flex items-center justify-center h-24 md:h-28 overflow-hidden shrink-0">
             {AVAILABLE_ILLUSTRATIONS[sol.slug] ? (
               <img
                 src={AVAILABLE_ILLUSTRATIONS[sol.slug]}
                 alt={sol.title}
-                className="h-24 w-24 object-contain select-none pointer-events-none opacity-90 drop-shadow-xs"
+                className="h-20 w-20 md:h-24 md:w-24 object-contain select-none pointer-events-none opacity-90 drop-shadow-xs"
                 draggable={false}
               />
             ) : (
-              <div className="scale-[0.58] origin-center opacity-85">
+              <div className="scale-[0.55] md:scale-[0.62] origin-center opacity-85">
                 {CharacterIllustrations[sol.slug]}
               </div>
             )}
           </div>
 
           {/* Center: Title & Short Description */}
-          <div className="space-y-2 px-1 my-auto">
-            <h3 className="font-serif text-xl sm:text-2xl font-normal text-tie-ink tracking-tight">
+          <div className="space-y-2 px-2 my-auto">
+            <h3 className="font-serif text-2xl md:text-[25px] font-normal text-[#182215] tracking-tight leading-snug">
               {sol.title}
             </h3>
-            <p className="text-xs sm:text-[13px] text-tie-muted font-sans leading-relaxed line-clamp-3">
+            <p className="text-xs sm:text-sm text-[#555148] font-sans leading-relaxed line-clamp-3 max-w-xs mx-auto">
               {sol.description}
             </p>
           </div>
@@ -396,11 +396,11 @@ const Archetype3DCard: React.FC<ArchetypeCardProps> = ({ sol, onLearnMore, isScr
                 e.stopPropagation();
                 onLearnMore(sol.slug);
               }}
-              className="inline-flex items-center gap-1.5 text-xs font-sans font-medium text-tie-ink hover:text-tie-pine border-b border-tie-ink/30 hover:border-tie-pine pb-0.5 transition-all duration-300 cursor-pointer group/link"
+              className="inline-flex items-center gap-1.5 text-xs sm:text-[13px] font-sans font-medium text-[#182215] hover:text-[#2D4C23] border-b border-[#182215]/30 hover:border-[#2D4C23] pb-0.5 transition-all duration-300 cursor-pointer group/link"
               title={`Learn about the ${sol.title}`}
             >
               <span>Learn about the {sol.title}</span>
-              <ArrowRight className="w-3.5 h-3.5 group-hover/link:translate-x-1 transition-transform duration-300" />
+              <ArrowRight className="w-3.5 h-3.5 group-hover/link:translate-x-1 transition-transform duration-300 text-[#2D4C23]" />
             </button>
           </div>
 
@@ -450,25 +450,25 @@ export const UseCaseSelector: React.FC = () => {
     <section
       id="solutions-section"
       ref={sectionRef}
-      className="relative h-[260vh] sm:h-[300vh] bg-tie-bg"
+      className="relative h-[260vh] sm:h-[300vh] bg-[#FAF8F1] overflow-hidden"
     >
       {/* Sticky Viewport Container */}
       <div className="sticky top-0 h-screen w-full flex flex-col justify-center overflow-hidden">
         
         {/* Section Header: Centered Editorial Headline */}
         <div className="text-center max-w-4xl mx-auto mb-8 sm:mb-12 px-4 shrink-0">
-          <h2 className="font-serif text-4xl sm:text-5xl lg:text-[60px] font-normal tracking-tight text-tie-ink leading-tight">
+          <h2 className="font-serif text-4xl sm:text-5xl lg:text-[60px] font-normal tracking-tight text-[#182215] leading-tight">
             Whatever type of place you have
             <br />
             in mind
           </h2>
         </div>
 
-        {/* Scroll-driven Horizontal Track */}
+        {/* Scroll-driven Horizontal Track (Wide cards with viewport edge bleed) */}
         <div className="w-full overflow-hidden">
           <motion.div
             style={{ x }}
-            className="flex gap-6 sm:gap-7 pl-6 sm:pl-16 lg:pl-24 pr-16 lg:pr-32 w-max"
+            className="flex gap-5 md:gap-6 pl-4 sm:pl-8 lg:pl-16 pr-8 lg:pr-24 w-max"
           >
             {SEED_HOUSING_SOLUTIONS.map((sol: HousingSolution) => (
               <Archetype3DCard
