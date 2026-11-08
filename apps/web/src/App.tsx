@@ -8,6 +8,7 @@ import { Footer } from './components/common/Footer';
 import { HeroSection } from './components/home/HeroSection';
 import { UseCaseSelector } from './components/home/UseCaseSelector';
 import { NarrativeJourneySection } from './components/home/NarrativeJourneySection';
+import { ZoningFinancialSection } from './components/home/ZoningFinancialSection';
 import { StandardsCatalogGrid } from './components/home/StandardsCatalogGrid';
 import { RealizedPortfolioSection } from './components/home/RealizedPortfolioSection';
 import { TrustMetricsSection } from './components/home/TrustMetricsSection';
@@ -68,6 +69,9 @@ export const App: React.FC = () => {
 
             {/* 03. The signature Green Wavy Line Journey ("Start with what you know" & "Turnkey process") */}
             <NarrativeJourneySection />
+
+            {/* 03.5. Zoning Landscape, Drone Foundation & Financial Conditions (Prompt 2.3) */}
+            <ZoningFinancialSection />
 
             {/* 04. "It all starts with our Standards" (Modular 3D Axonometric cards) */}
             <StandardsCatalogGrid />

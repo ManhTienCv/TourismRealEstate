@@ -2,6 +2,7 @@ import React from 'react';
 import { useConfiguratorStore } from '../../store/useConfiguratorStore';
 import { SEED_STANDARD_PLANS, HousingSolutionSlug } from '@tie/shared';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { ZoningFinancialSection } from '../home/ZoningFinancialSection';
 
 interface SolutionContent {
   slug: string;
@@ -518,7 +519,10 @@ export const SolutionDetailView: React.FC = () => {
         </div>
       </section>
 
-      {/* 5. Bottom Call to Action Banner */}
+      {/* 5. Zoning Feasibility & Financial Conditions (Prompt 2.3) */}
+      <ZoningFinancialSection />
+
+      {/* 6. Bottom Call to Action Banner */}
       <section className="max-w-[1584px] mx-auto px-6 sm:px-12 lg:px-16 pt-20">
         <div className="rounded-[40px] bg-[#183D24] text-white p-10 sm:p-16 lg:p-20 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8">
           <div className="space-y-4 max-w-xl">
