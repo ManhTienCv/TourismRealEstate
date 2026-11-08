@@ -1,51 +1,40 @@
 import React, { useState, useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform, PanInfo } from 'framer-motion';
 import { useConfiguratorStore } from '../../store/useConfiguratorStore';
 import { PillArrowButton } from '../common/PillArrowButton';
 
-// 4 High-fidelity realized architectural project photos (Banghi.mp4 p4_46s & p4_50s)
-const STACKED_PROJECT_PHOTOS = [
+// 4 High-fidelity realized architectural project photos (HUTS style clean borderless deck)
+const INITIAL_CARDS = [
   {
-    id: 'deck-1',
-    url: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1000&q=85',
-    title: 'Catskills Forest Compound',
-    location: 'Woodstock, NY',
-    plan: 'Big Bar + Studio',
+    id: 'card-1',
+    image: '/projects/dogtrot_full.jpg',
+    alt: 'The Catskills Dogtrot',
+    baseRotate: -4,
   },
   {
-    id: 'deck-2',
-    url: 'https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&w=1000&q=85',
-    title: 'Birchwood Hill ADU',
-    location: 'Rhinebeck, NY',
-    plan: 'ADU 480',
+    id: 'card-2',
+    image: '/projects/blueberry_hill_full.jpg',
+    alt: 'Blueberry Hill ADU',
+    baseRotate: 5,
   },
   {
-    id: 'deck-3',
-    url: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1000&q=85',
-    title: 'The Overlook Dogtrot',
-    location: 'High Falls, NY',
-    plan: 'Dogtrot 1850',
+    id: 'card-3',
+    image: '/projects/break_house_full.jpg',
+    alt: 'The Break House Retreat',
+    baseRotate: -7,
   },
   {
-    id: 'deck-4',
-    url: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1000&q=85',
-    title: 'Sonoma Valley Big L',
-    location: 'Sonoma, CA',
-    plan: 'Big L 2200',
+    id: 'card-4',
+    image: '/projects/arrowhead_full.jpg',
+    alt: 'The Arrowhead Studio',
+    baseRotate: 3,
   },
-];
-
-// Natural staggered rotation & scale values for 4 stacked cards
-const CARD_TRANSFORMS = [
-  { rotate: -3, scale: 1.0, zIndex: 40 },
-  { rotate: 5, scale: 0.96, zIndex: 30 },
-  { rotate: -7, scale: 0.92, zIndex: 20 },
-  { rotate: 3, scale: 0.88, zIndex: 10 },
 ];
 
 export const NarrativeJourneySection: React.FC = () => {
   const { setActiveTab, openConfigurator } = useConfiguratorStore();
-  const [deck, setDeck] = useState(STACKED_PROJECT_PHOTOS);
+  const [cards, setCards] = useState(INITIAL_CARDS);
+  const isDraggingRef = useRef(false);
 
   // Scroll tracking refs for SVG path drawing
   const topArrowRef = useRef<HTMLDivElement>(null);
@@ -67,9 +56,32 @@ export const NarrativeJourneySection: React.FC = () => {
   const connectorPathLength = useTransform(connectorProgress, [0, 1], [0, 1]);
   const connectorHeadOpacity = useTransform(connectorProgress, [0.8, 1], [0, 1]);
 
-  // Shuffle Deck motion (move top photo to back with spring physics)
-  const shuffleDeck = () => {
-    setDeck((prev) => [...prev.slice(1), prev[0]]);
+  // Move top photo to back of stack
+  const moveTopCardToBack = () => {
+    setCards((prev) => {
+      const [first, ...rest] = prev;
+      return [...rest, first];
+    });
+  };
+
+  const handleDragStart = () => {
+    isDraggingRef.current = true;
+  };
+
+  const handleDragEnd = (_: any, info: PanInfo) => {
+    const distance = Math.hypot(info.offset.x, info.offset.y);
+    if (distance > 60) {
+      moveTopCardToBack();
+    }
+    setTimeout(() => {
+      isDraggingRef.current = false;
+    }, 50);
+  };
+
+  const handleClick = () => {
+    if (!isDraggingRef.current) {
+      moveTopCardToBack();
+    }
   };
 
   const handleSeeProjects = () => {
@@ -123,67 +135,51 @@ export const NarrativeJourneySection: React.FC = () => {
           
           {/* LEFT: DRAGGABLE PHYSICS PHOTO STACK (Interactive Card Stack Shuffle) */}
           <div className="lg:col-span-6 flex justify-center">
-            <div className="relative w-[340px] sm:w-[380px] md:w-[440px] aspect-square select-none">
-              {deck.map((photo, index) => {
+            <div className="relative w-[340px] sm:w-[380px] md:w-[440px] aspect-square flex items-center justify-center select-none">
+              {cards.map((card, index) => {
                 const isTop = index === 0;
-                const transform = CARD_TRANSFORMS[index] || CARD_TRANSFORMS[CARD_TRANSFORMS.length - 1];
 
                 return (
                   <motion.div
-                    key={photo.id}
-                    layout
+                    key={card.id}
                     drag={isTop}
-                    dragElastic={0.7}
+                    dragSnapToOrigin={true}
+                    dragElastic={0.6}
                     dragMomentum={false}
-                    onDragEnd={(_, info) => {
-                      if (!isTop) return;
-                      const distance = Math.hypot(info.offset.x, info.offset.y);
-                      if (distance > 80) {
-                        shuffleDeck();
-                      }
-                    }}
-                    onClick={() => {
-                      if (isTop) shuffleDeck();
-                    }}
+                    onDragStart={handleDragStart}
+                    onDragEnd={handleDragEnd}
+                    onClick={isTop ? handleClick : undefined}
                     animate={{
-                      scale: transform.scale,
-                      rotate: transform.rotate,
-                      zIndex: transform.zIndex,
+                      x: 0,
+                      y: 0,
+                      rotate: card.baseRotate,
+                      scale: 1 - index * 0.03,
+                      zIndex: cards.length - index,
+                    }}
+                    whileDrag={{
+                      scale: 1.05,
+                      zIndex: 50,
+                      cursor: 'grabbing',
                     }}
                     transition={{
                       type: 'spring',
                       stiffness: 260,
                       damping: 22,
                     }}
-                    style={{ zIndex: transform.zIndex }}
-                    className={`absolute inset-0 rounded-3xl shadow-xl overflow-hidden border-4 border-white bg-tie-surface origin-center ${
+                    style={{
+                      zIndex: cards.length - index,
+                    }}
+                    className={`absolute inset-0 rounded-[28px] md:rounded-[32px] overflow-hidden shadow-xl bg-tie-surface origin-center select-none ${
                       isTop ? 'cursor-grab active:cursor-grabbing shadow-2xl' : 'pointer-events-none'
                     }`}
                   >
                     <img
-                      src={photo.url}
-                      alt={photo.title}
+                      src={card.image}
+                      alt={card.alt}
                       className="w-full h-full object-cover select-none pointer-events-none"
+                      draggable={false}
                       loading={isTop ? 'eager' : 'lazy'}
                     />
-                    
-                    {/* Atmospheric Gradient */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-transparent to-transparent pointer-events-none" />
-
-                    {/* Meta Info Bar at Bottom of Photo */}
-                    <div className="absolute bottom-4 left-5 right-5 flex items-end justify-between text-white pointer-events-none">
-                      <div>
-                        <p className="font-serif text-lg sm:text-xl font-bold leading-tight drop-shadow-sm">
-                          {photo.title}
-                        </p>
-                        <p className="font-mono text-xs text-white/85 drop-shadow-xs">
-                          {photo.location} &bull; {photo.plan}
-                        </p>
-                      </div>
-                      <span className="font-mono text-[11px] bg-white/20 backdrop-blur-md px-2.5 py-1 rounded-full text-white/90 border border-white/30">
-                        {index + 1}/{deck.length}
-                      </span>
-                    </div>
                   </motion.div>
                 );
               })}
