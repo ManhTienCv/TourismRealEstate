@@ -8,10 +8,11 @@
     "apps/*"
   ],
   "scripts": {
+    "postinstall": "npm run db:generate --if-present",
     "dev": "npm run dev --workspaces --if-present",
     "dev:web": "npm run dev --workspace=@tie/web",
     "dev:api": "npm run dev --workspace=@tie/api",
-    "build": "npm run build --workspaces --if-present",
+    "build": "npm run build --workspace=@tie/shared && npm run db:generate && npm run build --workspace=@tie/api && npm run build --workspace=@tie/web",
     "lint": "npm run lint --workspaces --if-present",
     "db:push": "npm run prisma:push --workspace=@tie/api",
     "db:seed": "npm run prisma:seed --workspace=@tie/api",

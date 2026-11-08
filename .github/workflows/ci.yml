@@ -22,8 +22,17 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Typecheck and build all workspaces
-        run: npm run build
+      - name: Generate Prisma client
+        run: npm run db:generate
+
+      - name: Build shared packages
+        run: npm run build --workspace=@tie/shared
+
+      - name: Build API backend
+        run: npm run build --workspace=@tie/api
+
+      - name: Build Web frontend
+        run: npm run build --workspace=@tie/web
 
       - name: Lint verification
         run: npm run lint
