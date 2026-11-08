@@ -1,6 +1,6 @@
 import React from 'react';
 import { useConfiguratorStore } from '../../store/useConfiguratorStore';
-import { ArrowRight } from 'lucide-react';
+import { PillArrowButton } from '../common/PillArrowButton';
 
 export const PreFooterBanner: React.FC = () => {
   const { openConfigurator } = useConfiguratorStore();
@@ -85,22 +85,13 @@ export const PreFooterBanner: React.FC = () => {
           </div>
         </div>
 
-        {/* Right: Signature HUTS Dual Button (Pill + Circle Arrow Button) */}
-        <div className="shrink-0 flex items-center space-x-2.5">
-          <button
+        {/* Right: Signature HUTS Dual Button (Reusable PillArrowButton) */}
+        <div className="shrink-0">
+          <PillArrowButton
+            label="Get Started"
             onClick={() => openConfigurator()}
-            className="px-8 py-3.5 rounded-full text-sm font-semibold text-[#1A2E20] bg-white hover:bg-[#FAF8F5] shadow-xs transition-all duration-200 active:scale-95"
-          >
-            Get Started
-          </button>
-          
-          <button
-            onClick={() => openConfigurator()}
-            className="w-12 h-12 rounded-full bg-white hover:bg-[#FAF8F5] text-[#1A2E20] shadow-xs flex items-center justify-center transition-all duration-200 active:scale-95 group"
-            title="Get Started"
-          >
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-          </button>
+            variant="dark"
+          />
         </div>
 
       </div>

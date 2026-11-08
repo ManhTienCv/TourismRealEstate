@@ -1,3 +1,4 @@
+import { PillArrowButton } from '../common/PillArrowButton';
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Check, ArrowRight, Compass, FileSpreadsheet, ShieldCheck } from 'lucide-react';
@@ -282,20 +283,12 @@ export const ZoningFinancialSection: React.FC = () => {
               Need a customized pro-forma for your exact parcel or county? Run our interactive estimator to calculate development budgets, modular timelines, and return metrics.
             </p>
 
-            <div className="flex items-center space-x-3">
-              <button
+            <div>
+              <PillArrowButton
+                label="Model Your Pro-Forma"
                 onClick={() => openConfigurator()}
-                className="px-8 py-3.5 rounded-full bg-[#183D24] hover:bg-[#122A1A] text-white text-sm font-sans font-medium transition-all shadow-sm hover:shadow-md active:scale-95"
-              >
-                Model Your Pro-Forma
-              </button>
-              <button
-                onClick={() => openConfigurator()}
-                className="w-12 h-12 rounded-full bg-[#183D24] hover:bg-[#122A1A] text-white flex items-center justify-center transition-all shadow-sm hover:shadow-md active:scale-95 group"
-                title="Model Your Pro-Forma"
-              >
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-              </button>
+                variant="dark"
+              />
             </div>
           </div>
 

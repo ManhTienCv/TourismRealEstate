@@ -1,3 +1,4 @@
+import { PillArrowButton } from '../common/PillArrowButton';
 import React from 'react';
 import { useConfiguratorStore } from '../../store/useConfiguratorStore';
 import { SEED_STANDARD_PLANS, HousingSolutionSlug } from '@tie/shared';
@@ -361,21 +362,13 @@ export const SolutionDetailView: React.FC = () => {
               {content.storyQuote}
             </p>
 
-            {/* CTA Button Duo: Forest Green Pill + Companion Arrow */}
-            <div className="pt-4 flex items-center space-x-3">
-              <button
+            {/* Reusable Unified Pill Arrow Button */}
+            <div className="pt-4">
+              <PillArrowButton
+                label={content.buttonLabel}
                 onClick={() => openConfigurator(undefined, content.slug as HousingSolutionSlug)}
-                className="px-8 py-4 rounded-full bg-[#183D24] hover:bg-[#122A1A] text-white text-base font-sans font-medium transition-all shadow-md hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0"
-              >
-                {content.buttonLabel}
-              </button>
-              <button
-                onClick={() => openConfigurator(undefined, content.slug as HousingSolutionSlug)}
-                className="w-13 h-13 rounded-full bg-[#183D24] hover:bg-[#122A1A] text-white flex items-center justify-center transition-all shadow-md group"
-                title={content.buttonLabel}
-              >
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-0.5 transition-transform" />
-              </button>
+                variant="dark"
+              />
             </div>
 
           </div>
@@ -538,13 +531,11 @@ export const SolutionDetailView: React.FC = () => {
           </div>
 
           <div className="flex flex-col sm:flex-row items-center gap-4">
-            <button
+            <PillArrowButton
+              label="Launch Build Estimator"
               onClick={() => openConfigurator(undefined, content.slug as HousingSolutionSlug)}
-              className="px-8 py-4 rounded-full bg-white text-[#183D24] font-medium text-sm sm:text-base hover:bg-[#FAF8F5] transition-all shadow-lg flex items-center space-x-2"
-            >
-              <span>Launch Build Estimator</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
+              variant="light"
+            />
           </div>
         </div>
       </section>

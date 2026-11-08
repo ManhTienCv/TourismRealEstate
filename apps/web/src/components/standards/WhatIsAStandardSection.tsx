@@ -1,5 +1,6 @@
 import React from 'react';
-import { ArrowRight, CheckCircle2 } from 'lucide-react';
+import { CheckCircle2 } from 'lucide-react';
+import { PillArrowButton } from '../common/PillArrowButton';
 import { useConfiguratorStore } from '../../store/useConfiguratorStore';
 import { smoothScrollTo } from '../../utils/smoothScroll';
 
@@ -67,18 +68,13 @@ export const WhatIsAStandardSection: React.FC = () => {
             with ease of construction
           </h1>
 
-          {/* Dual Pill CTA Button Group (Exact Huts forest green style) */}
+          {/* Reusable Unified Pill Arrow Button */}
           <div className="pt-2 flex justify-center">
-            <button
-              type="button"
+            <PillArrowButton
+              label="Find Your Home"
               onClick={handleFindHomeClick}
-              className="inline-flex items-center gap-2.5 px-7 py-3 rounded-full bg-[#4E7037] hover:bg-[#43622F] text-white font-sans text-sm sm:text-base font-medium shadow-sm transition-all duration-200 active:scale-95 group cursor-pointer"
-            >
-              <span>Find Your Home</span>
-              <span className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center group-hover:translate-x-0.5 transition-transform">
-                <ArrowRight className="w-3.5 h-3.5" />
-              </span>
-            </button>
+              variant="dark"
+            />
           </div>
         </div>
 
