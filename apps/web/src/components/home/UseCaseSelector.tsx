@@ -232,6 +232,26 @@ const CharacterIllustrations: Record<string, React.ReactNode> = {
   ),
 
   // 8. Multi-Gen Compound: Multi-building cluster on rural meadow (p3_42s)
+  'multi-gen-compound': (
+    <svg className="w-52 h-52 text-[#2D4C23] stroke-current fill-none stroke-[1.75]" viewBox="0 0 160 160">
+      {/* Main Gabled Pavilion */}
+      <polygon points="46 92, 62 74, 78 92" fill="#D1F06E" />
+      <rect x="50" y="92" width="24" height="24" fill="#FFFFFF" />
+      <rect x="58" y="100" width="8" height="16" fill="#2D4C23" />
+      {/* Guest Wing Pavilion */}
+      <polygon points="82 86, 100 68, 118 86" fill="#E9F7C2" />
+      <rect x="86" y="86" width="28" height="30" fill="#FFFFFF" />
+      <rect x="92" y="94" width="8" height="8" fill="#E9F7C2" />
+      {/* Studio ADU Pavilion */}
+      <polygon points="120 102, 132 88, 144 102" fill="#FFFFFF" />
+      <rect x="123" y="102" width="18" height="16" fill="#D1F06E" />
+      {/* Connecting garden pathways */}
+      <path d="M 74 112 Q 80 114, 86 112" strokeWidth="1.5" strokeDasharray="2 2" />
+      <path d="M 114 112 Q 118 114, 123 112" strokeWidth="1.5" strokeDasharray="2 2" />
+      {/* Surrounding landscape */}
+      <path d="M 35 134 Q 90 130, 145 134" strokeDasharray="3 3" strokeWidth="1" />
+    </svg>
+  ),
   'multi-generation-compound': (
     <svg className="w-52 h-52 text-[#2D4C23] stroke-current fill-none stroke-[1.75]" viewBox="0 0 160 160">
       {/* Main Gabled Pavilion */}
@@ -306,7 +326,7 @@ const Archetype3DCard: React.FC<ArchetypeCardProps> = ({ sol, onLearnMore, isScr
       onMouseEnter={handleMouseEnterOrMove}
       onMouseMove={handleMouseEnterOrMove}
       onMouseLeave={handleMouseLeave}
-      className={`shrink-0 w-[380px] sm:w-[400px] md:w-[420px] h-[410px] md:h-[440px] [perspective:1200px] select-none rounded-[20px] ${
+      className={`shrink-0 w-[390px] sm:w-[410px] md:w-[430px] h-[420px] md:h-[450px] [perspective:1200px] select-none rounded-[20px] ${
         isScrolling ? 'pointer-events-none' : ''
       }`}
       style={{ perspective: '1200px' }}
@@ -347,7 +367,7 @@ const Archetype3DCard: React.FC<ArchetypeCardProps> = ({ sol, onLearnMore, isScr
 
           {/* Bottom Label (Large Serif font text-[26px] md:text-[28px]) */}
           <div className="w-full pt-1 pb-1">
-            <h3 className="font-serif text-[25px] sm:text-[26px] md:text-[28px] font-normal text-[#182215] tracking-tight text-center leading-tight">
+            <h3 className="font-serif text-[26px] sm:text-[28px] md:text-[30px] font-normal text-[#182215] tracking-tight text-center leading-tight">
               {sol.title}
             </h3>
           </div>
@@ -437,27 +457,47 @@ export const UseCaseSelector: React.FC = () => {
     };
   }, []);
 
-  // Scroll-driven Horizontal Scroll: Tracking vertical progress through the tall container
+    const trackRef = useRef<HTMLDivElement>(null);
+  const [maxTranslate, setMaxTranslate] = useState(0);
+
+  // Measure actual scrollable distance to prevent empty white void on right
+  useEffect(() => {
+    const updateMaxTranslate = () => {
+      if (trackRef.current) {
+        const trackWidth = trackRef.current.scrollWidth;
+        const viewportWidth = window.innerWidth;
+        // 64px ensures the last card has generous right breathing room without clipping
+        const needed = Math.max(0, trackWidth - viewportWidth + 64);
+        setMaxTranslate(needed);
+      }
+    };
+
+    updateMaxTranslate();
+    window.addEventListener('resize', updateMaxTranslate);
+    return () => window.removeEventListener('resize', updateMaxTranslate);
+  }, []);
+
+  // Scroll-driven Horizontal Scroll: Tracking vertical progress through the container
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ['start start', 'end end'],
   });
 
-  // Translates the horizontal track across X axis as user scrolls vertically
-  const x = useTransform(scrollYProgress, [0, 0.92], ['0%', '-68%']);
+  // Translates the horizontal track smoothly across X axis
+  const x = useTransform(scrollYProgress, [0, 0.88], [0, -maxTranslate]);
 
   return (
     <section
       id="solutions-section"
       ref={sectionRef}
-      className="relative h-[200vh] sm:h-[240vh] bg-[#FAF8F1]"
+      className="relative h-[160vh] sm:h-[180vh] bg-[#FAF8F1]"
     >
       {/* Sticky Viewport Container */}
       <div className="sticky top-0 h-screen w-full flex flex-col justify-center overflow-hidden">
         
         {/* Section Header: Centered Editorial Headline */}
         <div className="text-center max-w-4xl mx-auto mb-8 sm:mb-12 px-4 shrink-0">
-          <h2 className="font-serif text-4xl sm:text-5xl lg:text-[60px] font-normal tracking-tight text-[#182215] leading-tight">
+          <h2 className="font-serif text-[42px] sm:text-[52px] lg:text-[62px] font-normal tracking-tight text-[#182215] leading-[1.1]">
             Whatever type of place you have
             <br />
             in mind
@@ -467,6 +507,7 @@ export const UseCaseSelector: React.FC = () => {
         {/* Scroll-driven Horizontal Track (Wide cards with viewport edge bleed) */}
         <div className="w-full overflow-hidden">
           <motion.div
+            ref={trackRef}
             style={{ x }}
             className="flex gap-5 md:gap-6 pl-4 sm:pl-8 lg:pl-16 pr-8 lg:pr-24 w-max"
           >

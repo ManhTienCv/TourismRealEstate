@@ -21,21 +21,21 @@ export const PillArrowButton: React.FC<PillArrowButtonProps> = ({
 }) => {
   const baseBorder =
     variant === 'dark'
-      ? 'border-[#182215]/70 text-[#182215] bg-transparent group-hover:bg-[#182215] group-hover:text-white group-hover:border-[#182215]'
-      : 'border-white/40 text-white bg-transparent group-hover:bg-white group-hover:text-[#1b3b2b] group-hover:border-white';
+      ? 'border-[#182215]/80 text-[#182215] bg-transparent group-hover:bg-[#182215] group-hover:text-white group-hover:border-[#182215]'
+      : 'border-white/60 text-white bg-transparent group-hover:bg-white group-hover:text-[#1b3b2b] group-hover:border-white';
 
   const content = (
     <>
       {/* Pill with Label Text */}
       <span
-        className={`px-6 py-2.5 rounded-full border text-xs sm:text-sm font-medium tracking-tight transition-all duration-300 shadow-xs ${baseBorder}`}
+        className={`px-6 sm:px-7 py-3 rounded-full border text-sm sm:text-[15px] font-medium tracking-tight transition-all duration-300 shadow-xs ${baseBorder}`}
       >
         {label}
       </span>
 
       {/* Circle with Arrow Icon */}
       <span
-        className={`w-10 h-10 rounded-full border flex items-center justify-center transition-all duration-300 shadow-xs shrink-0 ${baseBorder}`}
+        className={`w-11 h-11 sm:w-12 sm:h-12 rounded-full border flex items-center justify-center transition-all duration-300 shadow-xs shrink-0 ${baseBorder}`}
       >
         <svg
           className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5"
