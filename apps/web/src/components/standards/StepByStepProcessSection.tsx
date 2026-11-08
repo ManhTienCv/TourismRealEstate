@@ -165,7 +165,7 @@ export const StepByStepProcessSection: React.FC = () => {
   );
 
   return (
-    <section id="step-by-step-section" className="w-full bg-[#FAF8F5] text-tie-ink py-20 sm:py-28">
+    <section id="step-by-step-section" className="w-full bg-[#FAF8F1] text-tie-ink py-20 sm:py-28">
       <div className="max-w-[1584px] mx-auto px-6 sm:px-10 lg:px-14">
         
         {/* Section Header */}

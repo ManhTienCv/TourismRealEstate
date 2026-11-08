@@ -12,7 +12,7 @@ const INITIAL_CARDS = [
   },
   {
     id: 'card-2',
-    image: 'https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&w=1000&q=85',
+    image: 'https://images.unsplash.com/photo-1449844908441-8829872d2607?auto=format&fit=crop&w=1000&q=85',
     alt: 'Birchwood Hill ADU',
   },
   {
@@ -22,7 +22,7 @@ const INITIAL_CARDS = [
   },
   {
     id: 'card-4',
-    image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1000&q=85',
+    image: 'https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=1000&q=85',
     alt: 'Sonoma Valley Big L',
   },
 ];
@@ -178,7 +178,7 @@ export const NarrativeJourneySection: React.FC = () => {
                     style={{
                       zIndex: cards.length - index,
                     }}
-                    className={`absolute inset-0 rounded-[20px] overflow-hidden shadow-xl bg-tie-surface origin-center select-none ${
+                    className={`absolute inset-0 rounded-[20px] overflow-hidden shadow-xl bg-[#FAF8F1] origin-center select-none ${
                       isTop ? 'cursor-grab active:cursor-grabbing shadow-2xl' : 'pointer-events-none'
                     }`}
                   >

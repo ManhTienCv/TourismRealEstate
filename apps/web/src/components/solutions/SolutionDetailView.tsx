@@ -307,7 +307,7 @@ export const SolutionDetailView: React.FC = () => {
   );
 
   return (
-    <div className="w-full min-h-screen bg-[#FAF8F5] text-tie-ink pt-24 pb-28">
+    <div className="w-full min-h-screen bg-[#FAF8F1] text-tie-ink pt-24 pb-28">
       
       {/* 1. Top Breadcrumb & Back Navigation */}
       <div className="max-w-[1584px] mx-auto px-6 sm:px-12 lg:px-16 pt-4 pb-8">
@@ -375,7 +375,7 @@ export const SolutionDetailView: React.FC = () => {
 
           {/* Right Column: Giant Hand-drawn Monoline Illustration */}
           <div className="lg:col-span-5 flex justify-center lg:justify-end items-center">
-            <div className="w-full max-w-[440px] aspect-square rounded-[36px] bg-[#FAF8F5] border border-[#E8E4DC] p-8 flex items-center justify-center shadow-xs">
+            <div className="w-full max-w-[440px] aspect-square rounded-[36px] bg-[#FAF8F1] border border-[#E8E4DC] p-8 flex items-center justify-center shadow-xs">
               {content.illustration}
             </div>
           </div>
@@ -399,7 +399,7 @@ export const SolutionDetailView: React.FC = () => {
           {content.pillars.map((pillar) => (
             <div
               key={pillar.number}
-              className="p-8 rounded-3xl bg-white border border-[#E8E4DC] space-y-4 shadow-xs hover:shadow-md transition-shadow"
+              className="p-8 rounded-3xl bg-[#FAF8F1] border border-[#E8E4DC] space-y-4 shadow-xs hover:shadow-md transition-shadow"
             >
               <div className="font-serif text-3xl sm:text-4xl text-[#567D42] font-semibold">
                 {pillar.number}
@@ -436,7 +436,7 @@ export const SolutionDetailView: React.FC = () => {
           {compatiblePlans.map((plan) => (
             <div
               key={plan.id}
-              className="group rounded-3xl bg-white border border-[#E8E4DC] overflow-hidden shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between"
+              className="group rounded-3xl bg-[#FAF8F1] border border-[#E8E4DC] overflow-hidden shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between"
             >
               {/* Plan Thumbnail Rendering */}
               <div

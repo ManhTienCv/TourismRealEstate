@@ -9,12 +9,12 @@ export default {
     extend: {
       colors: {
         tie: {
-          bg: '#F7F5F0',          // Primary warm alabaster/architectural paper background
-          surface: '#EFECE6',     // Secondary card/section surface
-          'surface-light': '#FDFCFA', // Elevated card surface (not #FFFFFF, subtle warm tone)
+          bg: '#FAF8F1',          // Primary warm alabaster/architectural paper background
+          surface: '#F3EFE6',     // Secondary card/section surface
+          'surface-light': '#FAF8F1', // Elevated card surface (not #FFFFFF, subtle warm tone)
           border: '#E2DDD5',      // Subtle warm hairline borders
           'border-strong': '#CEC7BC',
-          ink: '#1C1B18',         // Primary deep charcoal typography
+          ink: '#182215',         // Primary deep charcoal typography
           muted: '#68645E',       // Secondary body copy & descriptions
           subtle: '#9A958D',      // Caption / micro copy
           pine: {

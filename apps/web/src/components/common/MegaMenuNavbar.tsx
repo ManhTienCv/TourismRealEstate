@@ -254,7 +254,7 @@ export const MegaMenuNavbar: React.FC = () => {
           isVisible ? 'translate-y-0' : '-translate-y-full pointer-events-none shadow-none'
         } ${
           isSolid
-            ? 'bg-[#FAF8F5] text-tie-ink shadow-2xl border-b border-[#E8E4DC]'
+            ? 'bg-[#FAF8F1] text-[#182215] shadow-none border-none'
             : 'bg-transparent text-white'
         } ${isMenuOpen ? 'rounded-b-[36px] sm:rounded-b-[44px]' : ''}`}
       >
@@ -423,10 +423,10 @@ export const MegaMenuNavbar: React.FC = () => {
                       <div
                         key={item.slug}
                         onClick={() => handleStandardItemClick(item.slug)}
-                        className="flex items-start space-x-4 p-2 rounded-2xl hover:bg-white/90 border border-transparent hover:border-[#E8E4DC] cursor-pointer transition-all duration-200 group"
+                        className="flex items-start space-x-4 p-2 rounded-2xl hover:bg-[#F3EFE6] border border-transparent hover:border-[#E8E4DC] cursor-pointer transition-all duration-200 group"
                       >
                         {/* Rounded-xl/2xl Thumbnail matching video */}
-                        <div className="w-[84px] h-[64px] sm:w-[96px] sm:h-[72px] shrink-0 rounded-xl sm:rounded-2xl overflow-hidden bg-white border border-[#E8E4DC] shadow-xs">
+                        <div className="w-[84px] h-[64px] sm:w-[96px] sm:h-[72px] shrink-0 rounded-xl sm:rounded-2xl overflow-hidden bg-[#FAF8F1] border border-[#E2DFD3] shadow-xs">
                           <img
                             src={item.imageUrl}
                             alt={item.title}
@@ -460,7 +460,7 @@ export const MegaMenuNavbar: React.FC = () => {
                     {/* Card 1: The TIE Approach */}
                     <div
                       onClick={() => scrollToSection('process-section', 'home')}
-                      className="flex items-start space-x-5 p-6 rounded-2xl bg-white border border-[#E8E4DC] shadow-sm hover:border-[#567D42]/40 hover:shadow-md transition-all cursor-pointer group"
+                      className="flex items-start space-x-5 p-6 rounded-2xl bg-[#FAF8F1] border border-[#E2DFD3] shadow-sm hover:border-[#567D42]/40 hover:shadow-md transition-all cursor-pointer group"
                     >
                       <div className="w-16 h-16 shrink-0 rounded-2xl bg-[#F4F1EA] group-hover:bg-[#E8F0DC] border border-[#E4DFD5] flex items-center justify-center transition-colors">
                         <svg className="w-8 h-8 text-[#567D42] stroke-current fill-none stroke-[1.6]" viewBox="0 0 24 24">
@@ -485,7 +485,7 @@ export const MegaMenuNavbar: React.FC = () => {
                     {/* Card 2: Our Services */}
                     <div
                       onClick={() => scrollToSection('process-section', 'home')}
-                      className="flex items-start space-x-5 p-6 rounded-2xl bg-white border border-[#E8E4DC] shadow-sm hover:border-[#567D42]/40 hover:shadow-md transition-all cursor-pointer group"
+                      className="flex items-start space-x-5 p-6 rounded-2xl bg-[#FAF8F1] border border-[#E2DFD3] shadow-sm hover:border-[#567D42]/40 hover:shadow-md transition-all cursor-pointer group"
                     >
                       <div className="w-16 h-16 shrink-0 rounded-2xl bg-[#F4F1EA] group-hover:bg-[#E8F0DC] border border-[#E4DFD5] flex items-center justify-center transition-colors">
                         <svg className="w-8 h-8 text-[#567D42] stroke-current fill-none stroke-[1.6]" viewBox="0 0 24 24">
@@ -517,9 +517,9 @@ export const MegaMenuNavbar: React.FC = () => {
                       <div
                         key={sol.slug}
                         onClick={() => handleSolutionSelect(sol.slug)}
-                        className="flex items-start space-x-4 p-2 rounded-2xl hover:bg-white/90 border border-transparent hover:border-[#E8E4DC] cursor-pointer transition-all duration-200 group"
+                        className="flex items-start space-x-4 p-2 rounded-2xl hover:bg-[#F3EFE6] border border-transparent hover:border-[#E8E4DC] cursor-pointer transition-all duration-200 group"
                       >
-                        <div className="w-14 h-14 sm:w-16 sm:h-16 shrink-0 rounded-2xl bg-white group-hover:bg-[#E8F0DC] border border-[#E8E4DC] group-hover:border-[#A8C86D] flex items-center justify-center p-2.5 transition-colors">
+                        <div className="w-14 h-14 sm:w-16 sm:h-16 shrink-0 rounded-2xl bg-[#FAF8F1] group-hover:bg-[#E8F0DC] border border-[#E8E4DC] group-hover:border-[#A8C86D] flex items-center justify-center p-2.5 transition-colors">
                           <svg className="w-9 h-9 text-[#567D42] stroke-current fill-none stroke-[1.4]" viewBox="0 0 32 32">
                             <polygon points="6 26, 16 10, 26 26" />
                             <rect x="13" y="19" width="6" height="7" fill="#E8F0DC" />
@@ -549,7 +549,7 @@ export const MegaMenuNavbar: React.FC = () => {
                   >
                     <div
                       onClick={() => scrollToSection('standards-section', 'home')}
-                      className="p-5 rounded-2xl bg-white border border-[#E8E4DC] hover:border-[#567D42]/40 transition-all cursor-pointer group"
+                      className="p-5 rounded-2xl bg-[#FAF8F1] border border-[#E2DFD3] hover:border-[#567D42]/40 transition-all cursor-pointer group"
                     >
                       <h4 className="font-serif text-lg font-bold text-[#1C1B18] group-hover:text-[#567D42] transition-colors">
                         Architectural Standards Guide
@@ -561,7 +561,7 @@ export const MegaMenuNavbar: React.FC = () => {
 
                     <div
                       onClick={() => scrollToSection('field-report-section', 'field-report')}
-                      className="p-5 rounded-2xl bg-white border border-[#E8E4DC] hover:border-[#567D42]/40 transition-all cursor-pointer group"
+                      className="p-5 rounded-2xl bg-[#FAF8F1] border border-[#E2DFD3] hover:border-[#567D42]/40 transition-all cursor-pointer group"
                     >
                       <h4 className="font-serif text-lg font-bold text-[#1C1B18] group-hover:text-[#567D42] transition-colors">
                         Active Field Reports
@@ -573,7 +573,7 @@ export const MegaMenuNavbar: React.FC = () => {
 
                     <div
                       onClick={() => openConfigurator()}
-                      className="p-5 rounded-2xl bg-white border border-[#E8E4DC] hover:border-[#567D42]/40 transition-all cursor-pointer group"
+                      className="p-5 rounded-2xl bg-[#FAF8F1] border border-[#E2DFD3] hover:border-[#567D42]/40 transition-all cursor-pointer group"
                     >
                       <h4 className="font-serif text-lg font-bold text-[#1C1B18] group-hover:text-[#567D42] transition-colors">
                         Interactive Pro-Forma Calculator
@@ -612,7 +612,7 @@ export const MegaMenuNavbar: React.FC = () => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="fixed top-20 left-0 right-0 z-40 lg:hidden bg-[#FAF8F5] text-tie-ink border-b border-[#E8E4DC] px-6 py-6 space-y-4 shadow-tie-float"
+            className="fixed top-20 left-0 right-0 z-40 lg:hidden bg-[#FAF8F1] text-tie-ink border-b border-[#E8E4DC] px-6 py-6 space-y-4 shadow-tie-float"
           >
             <div className="space-y-2">
               <button

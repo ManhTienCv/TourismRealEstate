@@ -18,7 +18,7 @@ export const WhatIsAStandardSection: React.FC = () => {
   };
 
   return (
-    <section id="what-is-a-standard" className="w-full bg-[#FAF8F5] text-tie-ink pt-20 sm:pt-28 pb-16 sm:pb-24 border-b border-[#E2DDD5]/70">
+    <section id="what-is-a-standard" className="w-full bg-[#FAF8F1] text-tie-ink pt-20 sm:pt-28 pb-16 sm:pb-24 border-b border-[#E2DDD5]/70">
       <div className="max-w-[1584px] mx-auto px-6 sm:px-10 lg:px-14">
         
         {/* ========================================================= */}

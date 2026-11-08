@@ -99,7 +99,7 @@ export const StandardsCatalogGrid: React.FC = () => {
         {/* Subtitle / Filter Indicator */}
         <div className="max-w-[1892px] w-full mx-auto px-6 sm:px-12 lg:px-20 mb-4 flex items-center justify-between shrink-0">
           {activeSolution ? (
-            <div className="inline-flex items-center space-x-2 text-xs font-mono bg-white px-3.5 py-1.5 rounded-full border border-tie-border shadow-xs">
+            <div className="inline-flex items-center space-x-2 text-xs font-mono bg-[#FAF8F1] px-3.5 py-1.5 rounded-full border border-tie-border shadow-xs">
               <span className="text-[#555148]">Filtered by Program:</span>
               <span className="font-semibold text-tie-pine">{activeSolution.title}</span>
               <button
@@ -136,7 +136,7 @@ export const StandardsCatalogGrid: React.FC = () => {
                   }`}
                 >
                   {/* Large Horizontal Photo Card with Soft Curves */}
-                  <div className="relative aspect-[16/11] rounded-2xl sm:rounded-3xl overflow-hidden bg-white border border-[#DCD9CE] shadow-sm group-hover:shadow-lg transition-all duration-300">
+                  <div className="relative aspect-[16/11] rounded-2xl sm:rounded-3xl overflow-hidden bg-[#FAF8F1] border border-[#DCD9CE] shadow-sm group-hover:shadow-lg transition-all duration-300">
                     <img
                       src={item.imageUrl}
                       alt={item.cleanName}

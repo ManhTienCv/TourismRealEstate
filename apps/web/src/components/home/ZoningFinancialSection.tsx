@@ -92,7 +92,7 @@ export const ZoningFinancialSection: React.FC = () => {
 
             {/* Khối "Design Considerations" liệt kê các tiêu chí thiết kế có icon tròn xanh lá (✓) */}
             <div className="pt-2">
-              <div className="p-6 sm:p-7 rounded-2xl bg-white border border-[#E8E4DC] space-y-4 shadow-xs">
+              <div className="p-6 sm:p-7 rounded-2xl bg-[#FAF8F1] border border-[#E8E4DC] space-y-4 shadow-xs">
                 <div className="text-xs font-mono font-semibold uppercase tracking-wider text-[#1C1B18] border-b border-[#E8E4DC] pb-3">
                   Design Considerations
                 </div>
@@ -183,7 +183,7 @@ export const ZoningFinancialSection: React.FC = () => {
 
             {/* Khối "Zoning Navigation" chi tiết */}
             <div className="pt-2">
-              <div className="p-6 sm:p-7 rounded-2xl bg-white border border-[#E8E4DC] space-y-4 shadow-xs">
+              <div className="p-6 sm:p-7 rounded-2xl bg-[#FAF8F1] border border-[#E8E4DC] space-y-4 shadow-xs">
                 <div className="text-xs font-mono font-semibold uppercase tracking-wider text-[#1C1B18] border-b border-[#E8E4DC] pb-3">
                   Municipal Navigation
                 </div>

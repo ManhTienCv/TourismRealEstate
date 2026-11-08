@@ -16,7 +16,7 @@ export const TrustMetricsSection: React.FC = () => {
             But, don’t take it from us...
           </h2>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-white rounded-3xl p-6 sm:p-10 lg:p-12 border border-[#E8E4DC] shadow-sm">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-[#FAF8F1] rounded-3xl p-6 sm:p-10 lg:p-12 border border-[#E8E4DC] shadow-sm">
             {/* Left: Giant Olive Green Quotation & Review */}
             <div className="lg:col-span-7 space-y-6">
               <span className="font-serif text-7xl sm:text-8xl text-[#567D42] leading-none block -mb-6 select-none font-bold">

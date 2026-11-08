@@ -35,7 +35,7 @@ export const RealizedPortfolioSection: React.FC = () => {
   const { openProjectDetail } = useConfiguratorStore();
 
   return (
-    <section id="portfolio-section" className="relative w-full bg-[#FAF8F5]">
+    <section id="portfolio-section" className="relative w-full bg-[#FAF8F1]">
       
       {/* 1. Intro Editorial Header on Cream Background */}
       <div className="py-20 max-w-[1584px] mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -122,7 +122,7 @@ export const RealizedPortfolioSection: React.FC = () => {
       </div>
 
       {/* 3. Outro CTA: Reusable Unified Pill Arrow Button */}
-      <div className="py-20 bg-[#FAF8F5] flex items-center justify-center">
+      <div className="py-20 bg-[#FAF8F1] flex items-center justify-center">
         <PillArrowButton
           label="See More Projects"
           onClick={() => smoothScrollTo('portfolio-section', { offset: -40, duration: 1.2 })}

@@ -15,7 +15,7 @@ export const WhatIsAStandardView: React.FC = () => {
   }, []);
 
   return (
-    <div className="w-full bg-[#FAF8F5] text-tie-ink">
+    <div className="w-full bg-[#FAF8F1] text-tie-ink">
       {/* Top Breadcrumb & Return to Home */}
       <div className="max-w-[1584px] mx-auto px-6 sm:px-10 lg:px-14 pt-28 pb-4">
         <button
