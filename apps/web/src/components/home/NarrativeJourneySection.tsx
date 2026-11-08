@@ -7,26 +7,26 @@ import { PillArrowButton } from '../common/PillArrowButton';
 const INITIAL_CARDS = [
   {
     id: 'card-1',
-    image: '/projects/dogtrot_full.jpg',
-    alt: 'The Catskills Dogtrot',
+    image: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1000&q=85',
+    alt: 'Catskills Forest Compound',
     baseRotate: -4,
   },
   {
     id: 'card-2',
-    image: '/projects/blueberry_hill_full.jpg',
-    alt: 'Blueberry Hill ADU',
+    image: 'https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&w=1000&q=85',
+    alt: 'Birchwood Hill ADU',
     baseRotate: 5,
   },
   {
     id: 'card-3',
-    image: '/projects/break_house_full.jpg',
-    alt: 'The Break House Retreat',
+    image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1000&q=85',
+    alt: 'The Overlook Dogtrot',
     baseRotate: -7,
   },
   {
     id: 'card-4',
-    image: '/projects/arrowhead_full.jpg',
-    alt: 'The Arrowhead Studio',
+    image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1000&q=85',
+    alt: 'Sonoma Valley Big L',
     baseRotate: 3,
   },
 ];
@@ -51,10 +51,10 @@ export const NarrativeJourneySection: React.FC = () => {
   // 2. Middle Connector Arrow: Scroll-triggered SVG path length
   const { scrollYProgress: connectorProgress } = useScroll({
     target: connectorArrowRef,
-    offset: ['start 90%', 'center 55%'],
+    offset: ['start 92%', 'end 50%'],
   });
   const connectorPathLength = useTransform(connectorProgress, [0, 1], [0, 1]);
-  const connectorHeadOpacity = useTransform(connectorProgress, [0.8, 1], [0, 1]);
+  const connectorHeadOpacity = useTransform(connectorProgress, [0.85, 1], [0, 1]);
 
   // Move top photo to back of stack
   const moveTopCardToBack = () => {
@@ -95,7 +95,7 @@ export const NarrativeJourneySection: React.FC = () => {
   };
 
   return (
-    <section id="narrative-section" className="relative py-16 sm:py-24 bg-tie-bg overflow-hidden border-b border-tie-border/60">
+    <section id="narrative-section" className="relative pt-16 pb-8 sm:pt-20 sm:pb-12 bg-[#FAF8F1] overflow-visible border-b border-[#E2DFD3]/60">
       <div className="max-w-[1584px] mx-auto px-4 sm:px-8 lg:px-12 relative">
         
         {/* ========================================================= */}
@@ -131,7 +131,7 @@ export const NarrativeJourneySection: React.FC = () => {
         {/* ========================================================= */}
         {/* 2. SECTION: "WE DO IT ACROSS THE COUNTRY"                 */}
         {/* ========================================================= */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center mb-20 sm:mb-28">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center mb-8 sm:mb-12">
           
           {/* LEFT: DRAGGABLE PHYSICS PHOTO STACK (Interactive Card Stack Shuffle) */}
           <div className="lg:col-span-6 flex justify-center">
@@ -211,19 +211,28 @@ export const NarrativeJourneySection: React.FC = () => {
         {/* ========================================================= */}
         {/* 3. MIDDLE CONNECTOR ARROW: SCROLL-TRIGGERED PATH DRAWING */}
         {/* ========================================================= */}
-        <div ref={connectorArrowRef} className="flex justify-center -mt-6 sm:-mt-10 mb-8 sm:mb-12">
-          <svg className="w-28 sm:w-36 md:w-44 h-auto text-[#4a7c38] overflow-visible select-none pointer-events-none" viewBox="0 0 100 120" fill="none">
+        <div
+          ref={connectorArrowRef}
+          className="relative w-full h-[220px] md:h-[260px] -mt-6 -mb-14 pointer-events-none z-20 flex justify-center overflow-visible"
+        >
+          <svg
+            viewBox="0 0 400 260"
+            fill="none"
+            className="w-[360px] md:w-[440px] h-full overflow-visible"
+          >
+            {/* Thân đường cong dài uốn từ phải sang trái xuống section dưới */}
             <motion.path
-              d="M 85 0 C 85 35, 45 35, 30 75 C 24 90, 22 105, 22 112"
-              stroke="currentColor"
-              strokeWidth="2.2"
+              d="M 250 10 C 255 130, 160 150, 95 245"
+              stroke="#4A772F"
+              strokeWidth="2"
               strokeLinecap="round"
               style={{ pathLength: connectorPathLength }}
             />
+            {/* Đầu mũi tên hiện ra khi nét vẽ chạy gần tới đích */}
             <motion.path
-              d="M 15 104 L 22 114 L 29 104"
-              stroke="currentColor"
-              strokeWidth="2.2"
+              d="M 85 228 L 94 247 L 114 239"
+              stroke="#4A772F"
+              strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
               style={{ opacity: connectorHeadOpacity }}
