@@ -250,18 +250,32 @@ const CharacterIllustrations: Record<string, React.ReactNode> = {
 interface ArchetypeCardProps {
   sol: HousingSolution;
   onLearnMore: (slug: string) => void;
+  isScrolling: boolean;
 }
 
-const Archetype3DCard: React.FC<ArchetypeCardProps> = ({ sol, onLearnMore }) => {
+const Archetype3DCard: React.FC<ArchetypeCardProps> = ({ sol, onLearnMore, isScrolling }) => {
   const [isFlipped, setIsFlipped] = useState(false);
   const hoverTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Khi con trỏ chuột dừng lại một tí (320ms) thì mới kích hoạt lật thẻ
-  // Tránh việc lật thẻ vô thức ngoài ý muốn khi đang cuộn chuột lướt trang
-  const handleMouseEnter = () => {
+  // Nếu người dùng bắt đầu cuộn trang thì hủy bộ đếm lật thẻ ngay và đưa thẻ về mặt trước
+  useEffect(() => {
+    if (isScrolling) {
+      if (hoverTimerRef.current) {
+        clearTimeout(hoverTimerRef.current);
+        hoverTimerRef.current = null;
+      }
+      setIsFlipped(false);
+    }
+  }, [isScrolling]);
+
+  const handleMouseEnterOrMove = () => {
+    // Đang cuộn trang thì tuyệt đối không tự lật thẻ đi ngang qua trỏ chuột
+    if (isScrolling || isFlipped || hoverTimerRef.current) return;
+
     hoverTimerRef.current = setTimeout(() => {
       setIsFlipped(true);
-    }, 320);
+      hoverTimerRef.current = null;
+    }, 220); // Giữ chuột trên thẻ 220ms mới lật giống HUTS
   };
 
   const handleMouseLeave = () => {
@@ -269,7 +283,7 @@ const Archetype3DCard: React.FC<ArchetypeCardProps> = ({ sol, onLearnMore }) => 
       clearTimeout(hoverTimerRef.current);
       hoverTimerRef.current = null;
     }
-    setIsFlipped(false);
+    setIsFlipped(false); // Đưa chuột ra ngoài thì úp lại ngay
   };
 
   useEffect(() => {
@@ -282,9 +296,12 @@ const Archetype3DCard: React.FC<ArchetypeCardProps> = ({ sol, onLearnMore }) => 
 
   return (
     <div
-      onMouseEnter={handleMouseEnter}
+      onMouseEnter={handleMouseEnterOrMove}
+      onMouseMove={handleMouseEnterOrMove}
       onMouseLeave={handleMouseLeave}
-      className="shrink-0 w-[320px] sm:w-[352px] h-[474px] [perspective:1200px] select-none"
+      className={`shrink-0 w-[320px] sm:w-[352px] h-[474px] [perspective:1200px] select-none ${
+        isScrolling ? 'pointer-events-none' : ''
+      }`}
       style={{ perspective: '1200px' }}
     >
       {/* 3D Flippable Inner Card Container */}
@@ -372,6 +389,28 @@ const Archetype3DCard: React.FC<ArchetypeCardProps> = ({ sol, onLearnMore }) => 
 export const UseCaseSelector: React.FC = () => {
   const { openSolutionDetail } = useConfiguratorStore();
   const sectionRef = useRef<HTMLDivElement>(null);
+  const [isScrolling, setIsScrolling] = useState(false);
+  const scrollTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Lắng nghe sự kiện cuộn: Khóa hover khi đang cuộn, chỉ mở lại sau 150ms khi dừng hẳn
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolling(true);
+      if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
+
+      scrollTimeoutRef.current = setTimeout(() => {
+        setIsScrolling(false);
+      }, 150);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('wheel', handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('wheel', handleScroll);
+      if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
+    };
+  }, []);
 
   // Scroll-driven Horizontal Scroll: Tracking vertical progress through the tall container
   const { scrollYProgress } = useScroll({
@@ -411,6 +450,7 @@ export const UseCaseSelector: React.FC = () => {
                 key={sol.id}
                 sol={sol}
                 onLearnMore={openSolutionDetail}
+                isScrolling={isScrolling}
               />
             ))}
           </motion.div>
