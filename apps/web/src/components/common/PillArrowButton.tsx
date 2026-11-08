@@ -21,7 +21,7 @@ export const PillArrowButton: React.FC<PillArrowButtonProps> = ({
 }) => {
   const baseBorder =
     variant === 'dark'
-      ? 'border-[#182215]/60 text-[#182215] bg-transparent group-hover:bg-[#182215] group-hover:text-white group-hover:border-[#182215]'
+      ? 'border-[#182215]/70 text-[#182215] bg-transparent group-hover:bg-[#182215] group-hover:text-white group-hover:border-[#182215]'
       : 'border-white/40 text-white bg-transparent group-hover:bg-white group-hover:text-[#1b3b2b] group-hover:border-white';
 
   const content = (
