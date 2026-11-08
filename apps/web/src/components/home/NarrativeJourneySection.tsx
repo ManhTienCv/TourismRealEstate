@@ -208,57 +208,63 @@ export const NarrativeJourneySection: React.FC = () => {
 
         </div>
 
-        {/* ========================================================= */}
-        {/* 3. MIDDLE CONNECTOR ARROW: SCROLL-TRIGGERED PATH DRAWING */}
-        {/* ========================================================= */}
-        <div
-          ref={connectorArrowRef}
-          className="relative w-full h-[150px] sm:h-[190px] md:h-[220px] -mt-6 sm:-mt-10 -mb-8 sm:-mb-12 pointer-events-none z-20 flex justify-center overflow-visible"
-        >
-          <svg
-            viewBox="0 0 1000 220"
-            fill="none"
-            className="w-full max-w-[1300px] h-full overflow-visible"
-          >
-            {/* Arched stem sweeping smoothly from right across top and down, matching HUTS */}
-            <motion.path
-              d="M 590 0 C 510 20, 390 70, 390 190"
-              stroke="#4A772F"
-              strokeWidth="2.4"
-              strokeLinecap="round"
-              style={{ pathLength: connectorPathLength }}
-            />
-            {/* Downward pointing arrowhead (\/) matching HUTS Image 3 */}
-            <motion.path
-              d="M 378 170 L 390 190 L 402 170"
-              stroke="#4A772F"
-              strokeWidth="2.4"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              style={{ opacity: connectorHeadOpacity }}
-            />
-          </svg>
-        </div>
+      </div>
 
-        {/* ========================================================= */}
-        {/* 4. "USING A PROCESS BUILT AROUND YOU" (Sherpa Fireplace) */}
-        {/* ========================================================= */}
-        <div id="process-section" className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center pt-2 sm:pt-4 pb-16 sm:pb-20 lg:pb-24">
+      {/* ========================================================= */}
+      {/* 3. MIDDLE CONNECTOR ARROW: SCROLL-TRIGGERED S-CURVE ARROW */}
+      {/* ========================================================= */}
+      <div
+        ref={connectorArrowRef}
+        className="relative w-full max-w-[1060px] mx-auto px-6 md:px-12 h-[130px] sm:h-[150px] md:h-[170px] -mt-2 sm:-mt-4 -mb-4 sm:-mb-6 pointer-events-none z-20 overflow-visible"
+      >
+        <svg
+          viewBox="0 0 1060 170"
+          fill="none"
+          className="w-full h-full overflow-visible"
+        >
+          {/* Organic S-curve stem sweeping horizontally across middle and curving down directly above 'built' */}
+          <motion.path
+            d="M 680 0 C 630 80, 410 45, 360 145"
+            stroke="#4A772F"
+            strokeWidth="2.2"
+            strokeLinecap="round"
+            style={{ pathLength: connectorPathLength }}
+          />
+          {/* Downward pointing arrowhead (\/) directly above 'built' */}
+          <motion.path
+            d="M 349 127 L 360 145 L 371 127"
+            stroke="#4A772F"
+            strokeWidth="2.2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            style={{ opacity: connectorHeadOpacity }}
+          />
+        </svg>
+      </div>
+
+      {/* ========================================================= */}
+      {/* 4. "USING A PROCESS BUILT AROUND YOU" (Sherpa Fireplace) */}
+      {/* ========================================================= */}
+      <div
+        id="process-section"
+        className="max-w-[1060px] mx-auto px-6 md:px-12 pt-4 md:pt-6 pb-28 md:pb-36"
+      >
+        <div className="grid grid-cols-1 md:grid-cols-12 items-center gap-12 lg:gap-16">
           
           {/* Left Column: Headline, Narrative & Reusable Pill Arrow Button */}
-          <div className="lg:col-span-6 space-y-7">
-            <h3 className="font-serif text-4xl sm:text-5xl lg:text-[54px] xl:text-[60px] font-normal text-[#182215] leading-[1.12] tracking-tight">
+          <div className="md:col-span-6 space-y-6">
+            <h3 className="font-serif text-[40px] md:text-[46px] text-[#182215] leading-[1.12] tracking-tight mb-6 max-w-[380px]">
               Using a process built
               <br />
               around you
             </h3>
             
-            <p className="font-sans text-base sm:text-[17px] lg:text-[18px] text-[#4A463D] leading-[1.68] max-w-xl">
+            <p className="text-[15px] md:text-[16px] leading-[1.6] text-[#2c3527] font-normal mb-8 max-w-[410px]">
               We deliver properties differently think of us as your sherpa on the path to your perfect property. Our people-first process goes far beyond floor plans—we coordinate every player needed to take you from a spark of an idea to raw land to a finished home. It's a start-to-finish approach that's proven, vetted, and simply the best way to build.
             </p>
 
             {/* Reusable Unified Pill Arrow Button */}
-            <div className="pt-3 sm:pt-4">
+            <div className="pt-1">
               <PillArrowButton
                 label="How It Works"
                 onClick={handleHowItWorksClick}
@@ -268,16 +274,15 @@ export const NarrativeJourneySection: React.FC = () => {
           </div>
 
           {/* Right Column: Hand-drawn Sherpa Drinking Tea by Stone Fireplace */}
-          <div className="lg:col-span-6 flex justify-center lg:justify-end">
+          <div className="md:col-span-6 flex justify-center md:justify-end md:mt-8">
             <img
               src="/sherpa_fireplace_transparent.png"
               alt="Architectural sherpa enjoying tea by a stone fireplace"
-              className="w-80 sm:w-96 md:w-[480px] lg:w-[540px] xl:w-[580px] h-auto object-contain select-none pointer-events-none drop-shadow-xs"
+              className="w-full max-w-[420px] h-auto object-contain select-none pointer-events-none drop-shadow-xs"
             />
           </div>
 
         </div>
-
       </div>
     </section>
   );
