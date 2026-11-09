@@ -1,10 +1,22 @@
 import React from 'react';
 
-// AI-generated Editorial Spot Illustrations (Risograph Monoline Ink matching HUTS)
+// Editorial Spot Illustrations (Risograph Monoline Ink matching HUTS)
 export const AVAILABLE_ILLUSTRATIONS: Record<string, string> = {
   'starter-home': '/illustrations/starter-home-transparent.png',
   'forever-home': '/illustrations/forever-home-transparent.png',
   'second-home': '/illustrations/second-home-transparent.png',
+  'hybrid-home': '/illustrations/hybrid-home-transparent.png',
+  'adu': '/illustrations/adu-transparent.png',
+  'investment-property': '/illustrations/investment-property-transparent.png',
+  'micro-hospitality': '/illustrations/micro-hospitality-transparent.png',
+  'multi-gen-compound': '/illustrations/multi-gen-compound-transparent.png',
+  // Aliases for robustness
+  'the-backyard-adu': '/illustrations/adu-transparent.png',
+  'the-yield-portfolio-asset': '/illustrations/investment-property-transparent.png',
+  'the-work-live-hybrid': '/illustrations/hybrid-home-transparent.png',
+  'work-live': '/illustrations/hybrid-home-transparent.png',
+  'multi-generation-compound': '/illustrations/multi-gen-compound-transparent.png',
+  'the-multi-gen-family-compound': '/illustrations/multi-gen-compound-transparent.png',
 };
 
 // Character Line Art SVGs matching exact frames from Banghi.mp4 (p3_36s, p3_40s, p3_42s)

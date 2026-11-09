@@ -134,7 +134,7 @@ export const MegaMenuNavbar: React.FC = () => {
             className="cursor-pointer flex items-center space-x-2 group shrink-0"
           >
             <span
-              className={`font-sans text-[36px] md:text-[42px] font-black tracking-[-0.04em] leading-none transition-colors select-none ${
+              className={`font-sans text-[26px] md:text-[28px] font-black tracking-[-0.03em] leading-none transition-colors select-none ${
                 isTransparent ? 'text-white' : 'text-tie-ink'
               }`}
             >
@@ -143,10 +143,10 @@ export const MegaMenuNavbar: React.FC = () => {
           </div>
 
           {/* Right Group: Navigation Links & CTA Button gathered together */}
-          <div className="flex items-center gap-6 lg:gap-7 ml-auto">
+          <div className="flex items-center gap-5 lg:gap-6.5 ml-auto">
 
             {/* Desktop Navigation Links */}
-            <nav className="hidden lg:flex items-center gap-6 lg:gap-7 font-sans text-[14px] md:text-[15px] font-medium tracking-tight">
+            <nav className="hidden lg:flex items-center gap-5 lg:gap-6.5 font-sans text-[13px] md:text-[13.5px] font-normal tracking-normal">
               
               {/* 1. Housing Solutions */}
               <div
@@ -157,10 +157,10 @@ export const MegaMenuNavbar: React.FC = () => {
                   onClick={() => scrollToSection('solutions-section', 'home')}
                   className={`py-2 transition-colors flex items-center gap-1.5 ${
                     activeMenu === 'solutions'
-                      ? isTransparent ? 'text-white font-semibold' : 'text-tie-ink font-semibold'
+                      ? isTransparent ? 'text-white font-medium' : 'text-tie-ink font-medium'
                       : isTransparent
                       ? 'text-white hover:text-white/80'
-                      : 'text-tie-ink hover:text-[#567D42]'
+                      : 'text-tie-ink/85 hover:text-tie-ink'
                   }`}
                 >
                   <span>Housing Solutions</span>
@@ -177,10 +177,10 @@ export const MegaMenuNavbar: React.FC = () => {
                   onClick={() => scrollToSection('standards-section', 'standards')}
                   className={`py-2 transition-colors flex items-center gap-1.5 ${
                     activeMenu === 'standards'
-                      ? isTransparent ? 'text-white font-semibold' : 'text-tie-ink font-semibold'
+                      ? isTransparent ? 'text-white font-medium' : 'text-tie-ink font-medium'
                       : isTransparent
                       ? 'text-white hover:text-white/80'
-                      : 'text-tie-ink hover:text-[#567D42]'
+                      : 'text-tie-ink/85 hover:text-tie-ink'
                   }`}
                 >
                   <span>Standards</span>
@@ -197,10 +197,10 @@ export const MegaMenuNavbar: React.FC = () => {
                   onClick={() => scrollToSection('process-section', 'home')}
                   className={`py-2 transition-colors flex items-center gap-1.5 ${
                     activeMenu === 'how-it-works'
-                      ? isTransparent ? 'text-white font-semibold' : 'text-tie-ink font-semibold'
+                      ? isTransparent ? 'text-white font-medium' : 'text-tie-ink font-medium'
                       : isTransparent
                       ? 'text-white hover:text-white/80'
-                      : 'text-tie-ink hover:text-[#567D42]'
+                      : 'text-tie-ink/85 hover:text-tie-ink'
                   }`}
                 >
                   <span>How It Works</span>
@@ -214,7 +214,7 @@ export const MegaMenuNavbar: React.FC = () => {
                 className={`py-2 transition-colors ${
                   isTransparent
                     ? 'text-white hover:text-white/80'
-                    : 'text-tie-ink hover:text-[#567D42]'
+                    : 'text-tie-ink/85 hover:text-tie-ink'
                 }`}
               >
                 <span>Portfolio</span>
@@ -229,10 +229,10 @@ export const MegaMenuNavbar: React.FC = () => {
                   onClick={() => scrollToSection('process-section', 'home')}
                   className={`py-2 transition-colors flex items-center gap-1.5 ${
                     activeMenu === 'resources'
-                      ? isTransparent ? 'text-white font-semibold' : 'text-tie-ink font-semibold'
+                      ? isTransparent ? 'text-white font-medium' : 'text-tie-ink font-medium'
                       : isTransparent
                       ? 'text-white hover:text-white/80'
-                      : 'text-tie-ink hover:text-[#567D42]'
+                      : 'text-tie-ink/85 hover:text-tie-ink'
                   }`}
                 >
                   <span>Resources</span>
@@ -245,7 +245,7 @@ export const MegaMenuNavbar: React.FC = () => {
             {/* Right CTA Button: Signature Vibrant Lime Pill Button */}
             <button
               onClick={() => openConfigurator()}
-              className="px-6 py-2.5 md:py-3 rounded-full bg-[#d2ef72] hover:bg-[#c5e859] text-[#182215] text-[14px] md:text-[15px] font-medium transition-colors active:scale-95 shadow-xs shrink-0"
+              className="px-5 py-2 md:py-2.5 rounded-full bg-[#d2ef72] hover:bg-[#c5e859] text-[#182215] text-[13px] md:text-[13.5px] font-medium transition-colors active:scale-95 shadow-xs shrink-0"
             >
               Get Started
             </button>

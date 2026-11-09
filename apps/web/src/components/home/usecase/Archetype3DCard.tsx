@@ -55,36 +55,36 @@ export const Archetype3DCard: React.FC<ArchetypeCardProps> = ({ sol, onLearnMore
       onMouseEnter={handleMouseEnterOrMove}
       onMouseMove={handleMouseEnterOrMove}
       onMouseLeave={handleMouseLeave}
-      className={`shrink-0 snap-start w-[390px] sm:w-[410px] md:w-[430px] h-[420px] md:h-[450px] [perspective:1200px] select-none rounded-[20px] ${
+      className={`shrink-0 snap-start w-[315px] sm:w-[335px] md:w-[355px] lg:w-[365px] h-[435px] sm:h-[450px] md:h-[470px] [perspective:1200px] select-none rounded-[24px] ${
         isScrolling ? 'pointer-events-none' : ''
       }`}
       style={{ perspective: '1200px' }}
     >
       {/* 3D Flippable Inner Card Container */}
       <div
-        className="relative w-full h-full [transform-style:preserve-3d] transition-transform duration-700 ease-out rounded-[20px]"
+        className="relative w-full h-full [transform-style:preserve-3d] transition-transform duration-700 ease-out rounded-[24px]"
         style={{
           transformStyle: 'preserve-3d',
           transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
         }}
       >
-        {/* FRONT SIDE: Warm Cream Card (Matches HUTS #FAF8F1 & Vibrant Lime) */}
+        {/* FRONT SIDE: Crisp White Surface + Delicate Hairline Border (Matches HUTS Image 2) */}
         <div
-          className="absolute inset-0 [backface-visibility:hidden] rounded-[20px] bg-[#FAF8F1] border border-[#E2DFD3] p-7 md:p-8 flex flex-col justify-between items-center text-center shadow-none transition-colors duration-300"
+          className="absolute inset-0 [backface-visibility:hidden] rounded-[24px] bg-white border border-[#E7E2D6] p-7 md:p-8 flex flex-col justify-between items-center text-center shadow-[0_2px_12px_rgba(24,34,21,0.03)] transition-all duration-300"
           style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }}
         >
           {/* Character Line Art in Center (occupies ~70% of card height) */}
-          <div className="w-full h-[250px] md:h-[270px] flex items-center justify-center my-auto transition-transform duration-500">
+          <div className="w-full h-[240px] md:h-[260px] flex items-center justify-center my-auto transition-transform duration-500">
             {AVAILABLE_ILLUSTRATIONS[sol.slug] ? (
               <img
                 src={AVAILABLE_ILLUSTRATIONS[sol.slug]}
                 alt={sol.title}
-                className="w-52 h-52 md:w-60 md:h-60 object-contain select-none pointer-events-none drop-shadow-xs"
+                className="w-48 h-48 md:w-56 md:h-56 object-contain select-none pointer-events-none drop-shadow-xs"
                 draggable={false}
               />
             ) : (
               CharacterIllustrations[sol.slug] || (
-                <div className="w-52 h-52 md:w-60 md:h-60 flex items-center justify-center text-[#2D4C23]">
+                <div className="w-48 h-48 md:w-56 md:h-56 flex items-center justify-center text-[#2D4C23]">
                   <svg className="w-36 h-36 stroke-current fill-none" viewBox="0 0 64 64">
                     <polygon points="12 44, 32 20, 52 44" strokeWidth="1.5" />
                     <rect x="24" y="32" width="16" height="12" strokeWidth="1.5" />
@@ -94,9 +94,9 @@ export const Archetype3DCard: React.FC<ArchetypeCardProps> = ({ sol, onLearnMore
             )}
           </div>
 
-          {/* Bottom Label (Large Serif font text-[26px] md:text-[28px]) */}
+          {/* Bottom Label (Large Serif font text-[24px] md:text-[27px]) */}
           <div className="w-full pt-1 pb-1">
-            <h3 className="font-serif text-[26px] sm:text-[28px] md:text-[30px] font-normal text-[#182215] tracking-tight text-center leading-tight">
+            <h3 className="font-serif text-[24px] sm:text-[26px] md:text-[27px] font-normal text-[#182215] tracking-tight text-center leading-tight">
               {sol.title}
             </h3>
           </div>
@@ -104,7 +104,7 @@ export const Archetype3DCard: React.FC<ArchetypeCardProps> = ({ sol, onLearnMore
 
         {/* BACK SIDE: Minimalist Details & Underline Link (Rotated 180deg) */}
         <div
-          className="absolute inset-0 [backface-visibility:hidden] rounded-[20px] bg-[#FAF8F1] border border-[#E2DFD3] p-6 sm:p-7 md:p-8 flex flex-col justify-between text-center shadow-sm transition-colors duration-300"
+          className="absolute inset-0 [backface-visibility:hidden] rounded-[24px] bg-white border border-[#E7E2D6] p-6 sm:p-7 md:p-8 flex flex-col justify-between text-center shadow-[0_2px_12px_rgba(24,34,21,0.03)] transition-all duration-300"
           style={{
             backfaceVisibility: 'hidden',
             WebkitBackfaceVisibility: 'hidden',

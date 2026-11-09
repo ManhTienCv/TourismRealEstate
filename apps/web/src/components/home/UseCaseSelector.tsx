@@ -14,7 +14,7 @@ export const UseCaseSelector: React.FC = () => {
     offset: ['start start', 'end end'],
   });
 
-  const x = useTransform(scrollYProgress, [0, 1], ['0%', '-52%']);
+  const x = useTransform(scrollYProgress, [0, 1], ['0%', '-56%']);
 
   return (
     <section
