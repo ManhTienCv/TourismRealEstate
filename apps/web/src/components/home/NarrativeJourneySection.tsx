@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import { motion, PanInfo } from 'framer-motion';
 import { useConfiguratorStore } from '../../store/useConfiguratorStore';
 import { PillArrowButton } from '../common/PillArrowButton';
+import { DoubleLoopArrow } from './narrative/DoubleLoopArrow';
 
 // 4 High-fidelity realized architectural project photos (HUTS style clean borderless deck)
 const INITIAL_CARDS = [
@@ -86,7 +87,12 @@ export const NarrativeJourneySection: React.FC = () => {
       {/* ========================================================= */}
       <div className="max-w-[1140px] mx-auto px-6 md:px-12 relative">
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 items-center gap-12 max-w-[1140px] mx-auto py-12 lg:py-16">
+        {/* Hand-drawn Double-Loop Arrow (Transition from Archetype cards above) */}
+        <div className="flex justify-center lg:justify-start lg:pl-[24%] xl:pl-[26%] -mb-8 sm:-mb-12 pointer-events-none z-20">
+          <DoubleLoopArrow />
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 items-center gap-12 max-w-[1140px] mx-auto py-8 lg:py-12">
           
           {/* LEFT: DRAGGABLE PHYSICS PHOTO STACK */}
           <div className="lg:col-span-6 flex justify-center">
