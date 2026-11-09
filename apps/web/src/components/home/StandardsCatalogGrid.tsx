@@ -153,7 +153,7 @@ export const StandardsCatalogGrid: React.FC = () => {
   return (
     <section
       id="standards-section"
-      className="relative pt-8 sm:pt-10 md:pt-12 pb-16 sm:pb-20 md:pb-24 bg-[#FAF8F1] overflow-hidden select-none"
+      className="relative pt-2 sm:pt-4 md:pt-6 pb-16 sm:pb-20 md:pb-24 bg-[#FAF8F1] overflow-hidden select-none"
     >
       {/* Section Header */}
       <div className="text-center max-w-4xl mx-auto mb-6 sm:mb-8 px-4">

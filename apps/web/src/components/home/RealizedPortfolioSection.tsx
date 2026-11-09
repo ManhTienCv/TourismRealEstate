@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 import { useConfiguratorStore } from '../../store/useConfiguratorStore';
 import { smoothScrollTo } from '../../utils/smoothScroll';
 import { PillArrowButton } from '../common/PillArrowButton';
@@ -34,48 +34,6 @@ const FEATURED_REALIZED_PROJECTS = [
 export const RealizedPortfolioSection: React.FC = () => {
   const { openProjectDetail } = useConfiguratorStore();
 
-  const firstProjectRef = useRef<HTMLDivElement>(null);
-  const lastProjectRef = useRef<HTMLDivElement>(null);
-
-  // Track boundaries to seamlessly switch between fixed viewport alignment and attached flow
-  const [isFirstEntering, setIsFirstEntering] = useState(false);
-  const [isLastExiting, setIsLastExiting] = useState(false);
-
-  useEffect(() => {
-    let ticking = false;
-
-    const checkBounds = () => {
-      if (firstProjectRef.current) {
-        const rect0 = firstProjectRef.current.getBoundingClientRect();
-        const firstEntering = rect0.top > 0;
-        setIsFirstEntering((prev) => (prev !== firstEntering ? firstEntering : prev));
-      }
-
-      if (lastProjectRef.current) {
-        const rectLast = lastProjectRef.current.getBoundingClientRect();
-        // When the last project reaches top <= 0, it has finished wiping in and begins scrolling up into "See More Projects"
-        const lastExiting = rectLast.top <= 0;
-        setIsLastExiting((prev) => (prev !== lastExiting ? lastExiting : prev));
-      }
-      ticking = false;
-    };
-
-    const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(checkBounds);
-        ticking = true;
-      }
-    };
-
-    checkBounds();
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    window.addEventListener('resize', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('resize', handleScroll);
-    };
-  }, []);
-
   return (
     <section id="portfolio-section" className="relative w-full bg-[#FAF8F1]">
       
@@ -103,38 +61,22 @@ export const RealizedPortfolioSection: React.FC = () => {
         </p>
       </div>
 
-      {/* 2. Clip-path Wipe Transition with Fixed Content Overlay (Sticky Curtain Reveal) */}
+      {/* 2. Pure Sticky Deck Curtain Transitions (Exact HUTS behavior) */}
+      {/* Each project card is sticky top-0 h-screen. The subsequent cards wipe over it from bottom to top. */}
+      {/* When the last card finishes wiping in and the container ends, the entire card (background + title + pills + inset image) */}
+      {/* scrolls up intact into the Outro CTA ("See More Projects") without any bottom cutoff or coordinate jump! */}
       <div className="relative w-full">
         {FEATURED_REALIZED_PROJECTS.map((project, index) => {
-          const isFirst = index === 0;
-          const isLast = index === FEATURED_REALIZED_PROJECTS.length - 1;
-
-          // Positioning logic:
-          // - While entering Project 0: attached to Project 0 (absolute inset-0)
-          // - During transition between projects: pinned to viewport center (fixed inset-0) for seamless curtain wipe
-          // - When scrolling out of Project 2 towards "See More Projects": anchored to Project 2 (absolute inset-0) so card & text float up intact
-          let positionClass = 'fixed inset-0';
-          if (isFirst && isFirstEntering) {
-            positionClass = 'absolute inset-0';
-          } else if (isLast && isLastExiting) {
-            positionClass = 'absolute inset-0';
-          }
-
           return (
             <div
               key={project.id}
-              ref={isFirst ? firstProjectRef : isLast ? lastProjectRef : undefined}
               onClick={() => openProjectDetail(project.slug)}
-              className={`relative w-full h-screen h-[100dvh] select-none cursor-pointer ${
-                isLast && isLastExiting ? 'overflow-visible' : 'overflow-hidden [clip-path:inset(0)]'
-              }`}
+              className="sticky top-0 w-full h-screen h-[100dvh] select-none cursor-pointer overflow-hidden shadow-2xl"
               style={{
-                zIndex: index + 1,
-                clipPath: isLast && isLastExiting ? 'none' : 'inset(0)',
-                WebkitClipPath: isLast && isLastExiting ? 'none' : 'inset(0)',
+                zIndex: index + 10,
               }}
             >
-              {/* Background Layer: Full-bleed background image with subtle dark overlay (NO hover scale) */}
+              {/* Background Layer: Full-bleed exterior photography */}
               <img
                 src={project.exteriorImage}
                 alt={project.title.replace('\n', ' ')}
@@ -144,8 +86,8 @@ export const RealizedPortfolioSection: React.FC = () => {
               <div className="absolute inset-0 bg-black/20" />
               <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/20 to-transparent" />
 
-              {/* Inner Content: Expanded to w-[82vw] max-w-[1260px] with wide inset image */}
-              <div className={`${positionClass} w-[82vw] max-w-[1260px] mx-auto pointer-events-none flex items-center justify-between gap-8`}>
+              {/* Inner Content Layer: Always anchored to card, perfectly centered at all screen sizes */}
+              <div className="relative w-[82vw] max-w-[1260px] h-full mx-auto pointer-events-none flex items-center justify-between gap-8 z-10">
                 
                 {/* Left Column: Title & 1-line Glassmorphism Pill Tags */}
                 <div className="w-[50%] lg:w-[560px] pointer-events-auto text-white">
@@ -182,8 +124,8 @@ export const RealizedPortfolioSection: React.FC = () => {
         })}
       </div>
 
-      {/* 3. Outro CTA: Reusable Unified Pill Arrow Button */}
-      <div className="pt-10 pb-4 bg-[#FAF8F1] flex items-center justify-center">
+      {/* 3. Outro CTA: Reusable Unified Pill Arrow Button (Relative z-20 so it flows directly below Project 3) */}
+      <div className="relative z-20 pt-14 pb-10 bg-[#FAF8F1] flex items-center justify-center">
         <PillArrowButton
           label="See More Projects"
           onClick={() => smoothScrollTo('portfolio-section', { offset: -40, duration: 1.2 })}
@@ -194,3 +136,5 @@ export const RealizedPortfolioSection: React.FC = () => {
     </section>
   );
 };
+
+export default RealizedPortfolioSection;

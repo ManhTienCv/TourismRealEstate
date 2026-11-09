@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { motion, useScroll, useTransform, PanInfo } from 'framer-motion';
+import { motion, PanInfo } from 'framer-motion';
 import { useConfiguratorStore } from '../../store/useConfiguratorStore';
 import { PillArrowButton } from '../common/PillArrowButton';
 
@@ -40,26 +40,6 @@ export const NarrativeJourneySection: React.FC = () => {
   const [cards, setCards] = useState(INITIAL_CARDS);
   const isDraggingRef = useRef(false);
 
-  // Scroll tracking refs for SVG path drawing
-  const topArrowRef = useRef<HTMLDivElement>(null);
-  const connectorArrowRef = useRef<HTMLDivElement>(null);
-
-  // 1. Top Whimsical Looping Arrow: Scroll-triggered SVG path length
-  const { scrollYProgress: topProgress } = useScroll({
-    target: topArrowRef,
-    offset: ['start 90%', 'center 50%'],
-  });
-  const topPathLength = useTransform(topProgress, [0, 1], [0, 1]);
-  const topHeadOpacity = useTransform(topProgress, [0.8, 1], [0, 1]);
-
-  // 2. Middle Connector Arrow: Scroll-triggered SVG path length
-  const { scrollYProgress: connectorProgress } = useScroll({
-    target: connectorArrowRef,
-    offset: ['start 90%', 'start 50%'],
-  });
-  const connectorPathLength = useTransform(connectorProgress, [0, 1], [0, 1]);
-  const connectorHeadOpacity = useTransform(connectorProgress, [0.75, 0.95], [0, 1]);
-
   // Move top photo to back of stack
   const moveTopCardToBack = () => {
     setCards((prev) => {
@@ -99,43 +79,45 @@ export const NarrativeJourneySection: React.FC = () => {
   };
 
   return (
-    <section id="narrative-section" className="relative pt-2 sm:pt-4 pb-10 sm:pb-14 bg-[#FAF8F1] overflow-visible select-none">
+    <section id="narrative-section" className="relative pt-6 sm:pt-8 pb-4 sm:pb-6 bg-[#FAF8F1] overflow-visible select-none">
       
       {/* ========================================================= */}
-      {/* 1. TOP GREEN LOOP-DE-LOOP ARROW (Exact Match to HUTS Sample Image 5) */}
+      {/* 1. SECTION: "WE DO IT ACROSS THE COUNTRY" (Matching HUTS Image 5) */}
       {/* ========================================================= */}
-      <div ref={topArrowRef} className="flex justify-center -mb-8 sm:-mb-12 pointer-events-none relative z-10">
-        <svg
-          className="w-28 sm:w-36 md:w-40 h-auto text-[#4A772F] overflow-visible select-none pointer-events-none"
-          viewBox="0 0 180 200"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          {/* Scroll-animated loopy doodle path with clear upper loop matching HUTS */}
-          <motion.path
-            d="M 30 20 C 65 38, 102 46, 112 32 C 122 18, 108 6, 92 14 C 78 22, 86 46, 104 54 C 122 62, 128 112, 130 175"
-            stroke="#4A772F"
-            strokeWidth="2.4"
-            strokeLinecap="round"
-            style={{ pathLength: topPathLength }}
-          />
-          {/* Clean downward pointing arrowhead */}
-          <motion.path
-            d="M 120 158 L 130 175 L 140 158"
-            stroke="#4A772F"
-            strokeWidth="2.4"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            style={{ opacity: topHeadOpacity }}
-          />
-        </svg>
-      </div>
+      <div className="max-w-[1060px] mx-auto px-6 md:px-12 relative">
 
-      {/* ========================================================= */}
-      {/* 2. SECTION: "WE DO IT ACROSS THE COUNTRY" (Matching HUTS) */}
-      {/* ========================================================= */}
-      <div className="max-w-[1060px] mx-auto px-6 md:px-12">
-        <div className="grid grid-cols-1 lg:grid-cols-12 items-center gap-10 lg:gap-14 mb-4 sm:mb-6">
+        {/* TOP WHIMSICAL LOOPY ARROW (Exact Match to HUTS Sample Image 5) */}
+        {/* Positioned gracefully above the right column headline, pointing down into the section */}
+        <div className="hidden md:flex justify-end pr-28 lg:pr-36 -mb-6 pointer-events-none relative z-10">
+          <svg
+            className="w-24 sm:w-28 md:w-32 h-auto text-[#4A772F] overflow-visible select-none pointer-events-none"
+            viewBox="0 0 160 170"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            {/* Whimsical double-loop doodle matching HUTS Image 5 */}
+            <motion.path
+              d="M 25 18 C 50 32, 85 45, 96 30 C 108 14, 95 2, 78 12 C 60 22, 68 50, 88 56 C 105 62, 114 96, 115 142"
+              stroke="#4A772F"
+              strokeWidth="2.2"
+              strokeLinecap="round"
+              initial={{ pathLength: 0.9, opacity: 0.85 }}
+              whileInView={{ pathLength: 1, opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, ease: 'easeOut' }}
+            />
+            {/* Crisp downward pointing arrowhead */}
+            <path
+              d="M 106 128 L 115 142 L 125 128"
+              stroke="#4A772F"
+              strokeWidth="2.2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 items-center gap-10 lg:gap-14 mb-2 sm:mb-4">
           
           {/* LEFT: DRAGGABLE PHYSICS PHOTO STACK */}
           <div className="lg:col-span-6 flex justify-center">
@@ -215,44 +197,45 @@ export const NarrativeJourneySection: React.FC = () => {
       </div>
 
       {/* ========================================================================= */}
-      {/* 3. MIDDLE CONNECTOR ARROW: SEAMLESS S-CURVE CONNECTING SECTIONS (IMAGE 1) */}
-      {/* Curves gracefully from under 'See Our Projects' -> plunges above 'built' */}
+      {/* 2. MIDDLE CONNECTOR ARROW: SEAMLESS ARCH CONNECTING SECTIONS (HUTS Image 4) */}
+      {/* Sweeps gracefully from under 'See Our Projects' -> plunges above 'Using a process built...' */}
       {/* ========================================================================= */}
       <div
-        ref={connectorArrowRef}
-        className="relative w-full max-w-[1060px] mx-auto px-6 md:px-12 h-[100px] sm:h-[120px] pointer-events-none z-20 overflow-visible my-1"
+        className="relative w-full max-w-[1060px] mx-auto px-6 md:px-12 h-[90px] sm:h-[110px] pointer-events-none z-20 overflow-visible my-1"
       >
         <svg
-          viewBox="0 0 1060 120"
+          viewBox="0 0 1060 110"
           fill="none"
           className="w-full h-full overflow-visible"
         >
-          {/* Grand elegant calligraphy arch sweeping from under 'See Our Projects' -> gracefully plunging downward above 'built' */}
+          {/* Grand elegant calligraphy arch sweeping from under 'See Our Projects' -> plunging downward above the left column */}
           <motion.path
-            d="M 640 10 C 530 -15, 410 30, 395 100"
+            d="M 620 8 C 540 18, 450 48, 415 92"
             stroke="#4A772F"
-            strokeWidth="2.4"
+            strokeWidth="2.2"
             strokeLinecap="round"
-            style={{ pathLength: connectorPathLength }}
+            initial={{ pathLength: 0.95, opacity: 0.9 }}
+            whileInView={{ pathLength: 1, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: 'easeOut' }}
           />
-          {/* Downward pointing crisp symmetric arrowhead (\/) pointing directly down at 'built' */}
-          <motion.path
-            d="M 384 82 L 395 100 L 406 82"
+          {/* Downward pointing crisp symmetric arrowhead (\/) pointing down-left at the title below */}
+          <path
+            d="M 405 76 L 415 92 L 426 78"
             stroke="#4A772F"
-            strokeWidth="2.4"
+            strokeWidth="2.2"
             strokeLinecap="round"
             strokeLinejoin="round"
-            style={{ opacity: connectorHeadOpacity }}
           />
         </svg>
       </div>
 
       {/* ========================================================= */}
-      {/* 4. "USING A PROCESS BUILT AROUND YOU" (Target Image 1)   */}
+      {/* 3. "USING A PROCESS BUILT AROUND YOU" (Target HUTS Image 4) */}
       {/* ========================================================= */}
       <div
         id="process-section"
-        className="max-w-[1060px] mx-auto px-6 md:px-12 pt-2 md:pt-4 pb-8 md:pb-12"
+        className="max-w-[1060px] mx-auto px-6 md:px-12 pt-0 pb-4 md:pb-6"
       >
         <div className="grid grid-cols-1 md:grid-cols-12 items-center gap-10 lg:gap-14">
           
