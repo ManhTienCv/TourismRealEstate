@@ -144,37 +144,6 @@ export const NarrativeJourneySection: React.FC = () => {
 
           {/* RIGHT: EDITORIAL COPY & SYNCHRONIZED PILL ARROW BUTTON */}
           <div className="lg:col-span-6 space-y-5 relative">
-            
-            {/* TOP WHIMSICAL LOOPY ARROW: Anchored directly above "We do it across the country" */}
-            <div className="hidden lg:block absolute -top-24 sm:-top-28 left-6 sm:left-12 pointer-events-none z-10">
-              <svg
-                className="w-24 sm:w-28 md:w-32 h-auto text-[#4A772F] overflow-visible select-none pointer-events-none"
-                viewBox="0 0 160 170"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                {/* Whimsical double-loop doodle matching HUTS Image 5 */}
-                <motion.path
-                  d="M 25 18 C 50 32, 85 45, 96 30 C 108 14, 95 2, 78 12 C 60 22, 68 50, 88 56 C 105 62, 114 96, 115 142"
-                  stroke="#4A772F"
-                  strokeWidth="2.2"
-                  strokeLinecap="round"
-                  initial={{ pathLength: 0.9, opacity: 0.85 }}
-                  whileInView={{ pathLength: 1, opacity: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.8, ease: 'easeOut' }}
-                />
-                {/* Crisp downward pointing arrowhead */}
-                <path
-                  d="M 106 128 L 115 142 L 125 128"
-                  stroke="#4A772F"
-                  strokeWidth="2.2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </div>
-
             <h2 className="font-serif text-[38px] md:text-[44px] lg:text-[46px] text-[#182215] tracking-tight leading-[1.12] mb-5 font-normal lg:whitespace-nowrap">
               We do it across the country
             </h2>
@@ -197,32 +166,32 @@ export const NarrativeJourneySection: React.FC = () => {
       </div>
 
       {/* ========================================================================= */}
-      {/* 2. MIDDLE CONNECTOR ARROW: SEAMLESS ARCH CONNECTING SECTIONS (HUTS Image 4) */}
+      {/* 2. MIDDLE CONNECTOR ARROW: ELEGANT SWEEPING S-CURVE (Matches HUTS Image 3) */}
       {/* Sweeps gracefully from under 'See Our Projects' -> plunges above 'Using a process built...' */}
       {/* ========================================================================= */}
       <div
-        className="relative w-full max-w-[1140px] mx-auto px-6 md:px-12 h-[130px] sm:h-[150px] pointer-events-none z-20 overflow-visible my-1"
+        className="relative w-full max-w-[1140px] mx-auto px-6 md:px-12 h-[190px] sm:h-[220px] md:h-[240px] pointer-events-none z-20 overflow-visible my-2 sm:my-4"
       >
         <svg
-          viewBox="0 0 1140 150"
+          viewBox="0 0 1140 240"
           fill="none"
           className="w-full h-full overflow-visible"
         >
-          {/* Deep elegant swoop arching from under 'See Our Projects' -> gracefully plunging downward above the left column */}
+          {/* Authentic sweeping S-curve matching exact HUTS geometry */}
           <motion.path
-            d="M 680 15 C 590 -10, 460 25, 415 125"
-            stroke="#4A772F"
+            d="M 710 15 C 712 70, 680 115, 570 140 C 470 162, 425 185, 420 215"
+            stroke="#365327"
             strokeWidth="2.4"
             strokeLinecap="round"
-            initial={{ pathLength: 0.95, opacity: 0.9 }}
+            initial={{ pathLength: 0.9, opacity: 0.85 }}
             whileInView={{ pathLength: 1, opacity: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: 'easeOut' }}
+            transition={{ duration: 0.9, ease: 'easeOut' }}
           />
-          {/* Downward pointing crisp symmetric arrowhead (\/) pointing down-left at the title below */}
+          {/* Downward pointing crisp hand-drawn arrowhead */}
           <path
-            d="M 402 108 L 415 125 L 428 110"
-            stroke="#4A772F"
+            d="M 408 198 L 420 215 L 433 202"
+            stroke="#365327"
             strokeWidth="2.4"
             strokeLinecap="round"
             strokeLinejoin="round"
