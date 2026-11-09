@@ -9,6 +9,9 @@ on:
 jobs:
   build-and-lint:
     runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/tie_db?schema=public"
+      NODE_ENV: production
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
