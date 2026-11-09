@@ -110,14 +110,14 @@ export const RealizedPortfolioSection: React.FC = () => {
           const isLast = index === FEATURED_REALIZED_PROJECTS.length - 1;
 
           // Positioning logic:
-          // - While entering Project 0: attached to Project 0 (absolute)
-          // - During transition between projects: pinned to viewport center (fixed) for seamless curtain wipe
-          // - When scrolling out of Project 2 towards "See More Projects": anchored to top 100vh of Project 2 (absolute) so card & text float up intact
+          // - While entering Project 0: attached to Project 0 (absolute inset-0)
+          // - During transition between projects: pinned to viewport center (fixed inset-0) for seamless curtain wipe
+          // - When scrolling out of Project 2 towards "See More Projects": anchored to Project 2 (absolute inset-0) so card & text float up intact
           let positionClass = 'fixed inset-0';
           if (isFirst && isFirstEntering) {
-            positionClass = 'absolute top-0 left-0 right-0 h-screen';
+            positionClass = 'absolute inset-0';
           } else if (isLast && isLastExiting) {
-            positionClass = 'absolute top-0 left-0 right-0 h-screen';
+            positionClass = 'absolute inset-0';
           }
 
           return (
@@ -125,7 +125,7 @@ export const RealizedPortfolioSection: React.FC = () => {
               key={project.id}
               ref={isFirst ? firstProjectRef : isLast ? lastProjectRef : undefined}
               onClick={() => openProjectDetail(project.slug)}
-              className={`relative w-full ${isLast ? 'h-[130vh]' : 'h-screen'} select-none cursor-pointer ${
+              className={`relative w-full h-screen h-[100dvh] select-none cursor-pointer ${
                 isLast && isLastExiting ? 'overflow-visible' : 'overflow-hidden [clip-path:inset(0)]'
               }`}
               style={{
@@ -144,19 +144,19 @@ export const RealizedPortfolioSection: React.FC = () => {
               <div className="absolute inset-0 bg-black/20" />
               <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/20 to-transparent" />
 
-              {/* Inner Content: Perfectly aligned across projects, stays rock-solid on hover */}
-              <div className={`${positionClass} w-full pointer-events-none flex items-center justify-between max-w-7xl mx-auto px-8 md:px-16`}>
+              {/* Inner Content: Narrows to max-w-[1100px] with side margins, stays rock-solid on hover */}
+              <div className={`${positionClass} w-full pointer-events-none flex items-center justify-between max-w-[1100px] mx-auto px-8 md:px-12 gap-8`}>
                 
-                {/* Left Column: Title & Glassmorphism Pill Tags (Static, no hover displacement) */}
-                <div className="w-5/12 pointer-events-auto text-white">
-                  <h3 className="font-serif text-5xl md:text-6xl lg:text-7xl leading-[1.1] tracking-tight whitespace-pre-line mb-6 drop-shadow-md">
+                {/* Left Column: Title & 1-line Glassmorphism Pill Tags (w-[52%]) */}
+                <div className="w-[52%] pointer-events-auto text-white">
+                  <h3 className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-[64px] leading-[1.08] tracking-tight whitespace-pre-line mb-6 drop-shadow-md font-normal">
                     {project.title}
                   </h3>
-                  <div className="flex flex-wrap items-center gap-2">
+                  <div className="flex items-center flex-nowrap gap-2 whitespace-nowrap overflow-hidden">
                     {project.pills.map((pill, pIdx) => (
                       <span
                         key={pIdx}
-                        className="px-3.5 py-1.5 text-xs font-medium rounded-full bg-white/15 backdrop-blur-md border border-white/20 text-white shadow-sm"
+                        className="px-3 py-1 text-[11px] md:text-xs rounded-full bg-black/35 backdrop-blur-md border border-white/20 text-white font-medium shrink-0 shadow-sm"
                       >
                         {pill}
                       </span>
@@ -164,13 +164,13 @@ export const RealizedPortfolioSection: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Right Column: Inset Image (Completely static coordinates on hover, zero jitter) */}
-                <div className="w-6/12 max-w-[572px] pointer-events-auto">
-                  <div className="w-full aspect-[16/10] rounded-2xl overflow-hidden shadow-2xl bg-neutral-900">
+                {/* Right Column: Inset Image with w-[42%] max-w-[460px], aspect-[16/10], rounded-[14px] */}
+                <div className="w-[42%] max-w-[460px] pointer-events-auto">
+                  <div className="w-full aspect-[16/10] rounded-[14px] overflow-hidden shadow-2xl bg-neutral-900 border border-white/10">
                     <img
                       src={project.interiorImage}
                       alt={`${project.title.replace('\n', ' ')} interior`}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover select-none pointer-events-none"
                       loading="lazy"
                     />
                   </div>
