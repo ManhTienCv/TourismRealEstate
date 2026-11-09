@@ -2,21 +2,21 @@ import React from 'react';
 
 // Editorial Spot Illustrations (Risograph Monoline Ink matching HUTS)
 export const AVAILABLE_ILLUSTRATIONS: Record<string, string> = {
-  'starter-home': '/illustrations/starter-home-transparent.png',
-  'forever-home': '/illustrations/forever-home-transparent.png',
-  'second-home': '/illustrations/second-home-transparent.png',
-  'hybrid-home': '/illustrations/hybrid-home-transparent.png',
-  'adu': '/illustrations/adu-transparent.png',
-  'investment-property': '/illustrations/investment-property-transparent.png',
-  'micro-hospitality': '/illustrations/micro-hospitality-transparent.png',
-  'multi-gen-compound': '/illustrations/multi-gen-compound-transparent.png',
+  'starter-home': '/illustrations/starter-home-transparent.png?v=2',
+  'forever-home': '/illustrations/forever-home-transparent.png?v=2',
+  'second-home': '/illustrations/second-home-transparent.png?v=2',
+  'hybrid-home': '/illustrations/hybrid-home-transparent.png?v=2',
+  'adu': '/illustrations/adu-transparent.png?v=2',
+  'investment-property': '/illustrations/investment-property-transparent.png?v=2',
+  'micro-hospitality': '/illustrations/micro-hospitality-transparent.png?v=2',
+  'multi-gen-compound': '/illustrations/multi-gen-compound-transparent.png?v=2',
   // Aliases for robustness
-  'the-backyard-adu': '/illustrations/adu-transparent.png',
-  'the-yield-portfolio-asset': '/illustrations/investment-property-transparent.png',
-  'the-work-live-hybrid': '/illustrations/hybrid-home-transparent.png',
-  'work-live': '/illustrations/hybrid-home-transparent.png',
-  'multi-generation-compound': '/illustrations/multi-gen-compound-transparent.png',
-  'the-multi-gen-family-compound': '/illustrations/multi-gen-compound-transparent.png',
+  'the-backyard-adu': '/illustrations/adu-transparent.png?v=2',
+  'the-yield-portfolio-asset': '/illustrations/investment-property-transparent.png?v=2',
+  'the-work-live-hybrid': '/illustrations/hybrid-home-transparent.png?v=2',
+  'work-live': '/illustrations/hybrid-home-transparent.png?v=2',
+  'multi-generation-compound': '/illustrations/multi-gen-compound-transparent.png?v=2',
+  'the-multi-gen-family-compound': '/illustrations/multi-gen-compound-transparent.png?v=2',
 };
 
 // Character Line Art SVGs matching exact frames from Banghi.mp4 (p3_36s, p3_40s, p3_42s)
