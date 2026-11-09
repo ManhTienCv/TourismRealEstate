@@ -1,69 +1,238 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import { useConfiguratorStore } from '../../store/useConfiguratorStore';
-import { ArrowRight } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react';
+import { motion, useMotionValue, useSpring, PanInfo } from 'framer-motion';
+
+// Authentic Client Testimonials with Real High-Resolution Realized Builds
+const TESTIMONIALS = [
+  {
+    id: 'test-1',
+    quote:
+      'As a couple with no experience in this field or idea on where to begin, TIE made something like building a home feel possible, organized, and deeply intentional.',
+    author: 'Elena & Marcus Vance',
+    location: 'The Overlook Dogtrot \u2022 Woodstock, NY',
+    tag: 'Second Home',
+    image:
+      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=85',
+    projectSlug: 'catskills-dogtrot-retreat',
+  },
+  {
+    id: 'test-2',
+    quote:
+      'From raw topography to fabrication drawings in weeks. The precision of the modular components and thermal envelope exceeded every expectation we had.',
+    author: 'Sarah & Julian Mercer',
+    location: 'Blueberry Hill ADU \u2022 Rhinebeck, NY',
+    tag: 'Hybrid Home',
+    image:
+      'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1200&q=85',
+    projectSlug: 'break-house',
+  },
+  {
+    id: 'test-3',
+    quote:
+      'The transparency on budget and schedule was unlike any construction project we’ve managed. A truly effortless experience from start to finish.',
+    author: 'David & Clara Thorne',
+    location: 'Sonoma Valley Big L \u2022 Sonoma, CA',
+    tag: 'Forever Home',
+    image:
+      'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=85',
+    projectSlug: 'arrowhead-ridge',
+  },
+];
 
 export const TrustMetricsSection: React.FC = () => {
   const { openProjectDetail } = useConfiguratorStore();
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  // Magnetic Cursor state & coordinates
+  const [cursorMode, setCursorMode] = useState<'prev' | 'next' | 'inspect'>('next');
+  const [isHoveringCarousel, setIsHoveringCarousel] = useState(false);
+  const carouselContainerRef = useRef<HTMLDivElement>(null);
+
+  const rawMouseX = useMotionValue(-100);
+  const rawMouseY = useMotionValue(-100);
+  const springX = useSpring(rawMouseX, { stiffness: 320, damping: 28 });
+  const springY = useSpring(rawMouseY, { stiffness: 320, damping: 28 });
+
+  const nextSlide = () => {
+    setActiveIndex((prev) => (prev < TESTIMONIALS.length - 1 ? prev + 1 : 0));
+  };
+
+  const prevSlide = () => {
+    setActiveIndex((prev) => (prev > 0 ? prev - 1 : TESTIMONIALS.length - 1));
+  };
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    rawMouseX.set(e.clientX);
+    rawMouseY.set(e.clientY);
+
+    // If hovering on an inspect target (photo card)
+    const target = e.target as HTMLElement;
+    if (target.closest('[data-cursor="inspect"]')) {
+      setCursorMode('inspect');
+      return;
+    }
+
+    // Split container in half: left side moves backward, right side moves forward
+    const rect = carouselContainerRef.current?.getBoundingClientRect();
+    if (rect) {
+      const midX = rect.left + rect.width / 2;
+      setCursorMode(e.clientX < midX ? 'prev' : 'next');
+    }
+  };
+
+  const handleContainerClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    const target = e.target as HTMLElement;
+    const photoEl = target.closest('[data-cursor="inspect"]');
+    if (photoEl) {
+      const slug = photoEl.getAttribute('data-project-slug');
+      if (slug) {
+        openProjectDetail(slug);
+        return;
+      }
+    }
+
+    if (cursorMode === 'prev') {
+      prevSlide();
+    } else if (cursorMode === 'next') {
+      nextSlide();
+    }
+  };
+
+  const handleDragEnd = (_: any, info: PanInfo) => {
+    if (info.offset.x < -40) {
+      nextSlide();
+    } else if (info.offset.x > 40) {
+      prevSlide();
+    }
+  };
 
   return (
-    <section className="py-20 sm:py-28 bg-tie-bg border-b border-tie-border/60 overflow-hidden">
-      <div className="max-w-[1584px] mx-auto px-4 sm:px-8 lg:px-12 space-y-24">
+    <section className="pt-6 pb-20 sm:pb-28 bg-[#FAF8F1] overflow-hidden select-none">
+      
+      {/* Magnetic Cursor Follower (only visible when hovering carousel) */}
+      {isHoveringCarousel && (
+        <motion.div
+          className="fixed top-0 left-0 pointer-events-none z-50 w-16 h-16 rounded-full bg-[#FAF8F1]/85 backdrop-blur-md border border-[#182215]/35 flex items-center justify-center text-[#182215] shadow-lg -translate-x-1/2 -translate-y-1/2"
+          style={{ x: springX, y: springY }}
+          initial={{ scale: 0, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          exit={{ scale: 0, opacity: 0 }}
+          transition={{ duration: 0.15 }}
+        >
+          {cursorMode === 'inspect' ? (
+            <ArrowUpRight className="w-5 h-5 text-[#182215]" />
+          ) : cursorMode === 'prev' ? (
+            <ArrowLeft className="w-5 h-5 text-[#182215]" />
+          ) : (
+            <ArrowRight className="w-5 h-5 text-[#182215]" />
+          )}
+        </motion.div>
+      )}
+
+      <div className="max-w-[1584px] mx-auto px-4 sm:px-8 lg:px-12 space-y-20 sm:space-y-24">
         
-        {/* 1. CLIENT TESTIMONIAL BLOCK (Banghi.mp4 p6_63s) */}
-        <div className="space-y-10">
-          <h2 className="font-serif text-4xl sm:text-5xl lg:text-[52px] font-normal tracking-tight text-[#1A2E20] leading-tight">
+        {/* 1. EDITORIAL TESTIMONIAL CAROUSEL (HUTS Overlapping Card + Photo Layout) */}
+        <div className="space-y-8 sm:space-y-10">
+          <h2 className="font-serif text-4xl sm:text-5xl lg:text-[54px] font-normal tracking-tight text-[#182215] leading-tight">
             But, don’t take it from us...
           </h2>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-[#FAF8F1] rounded-3xl p-6 sm:p-10 lg:p-12 border border-[#E8E4DC] shadow-sm">
-            {/* Left: Giant Olive Green Quotation & Review */}
-            <div className="lg:col-span-7 space-y-6">
-              <span className="font-serif text-7xl sm:text-8xl text-[#567D42] leading-none block -mb-6 select-none font-bold">
-                “
-              </span>
-              <p className="font-serif text-2xl sm:text-3xl text-tie-ink italic leading-relaxed font-normal">
-                As a couple with no experience in this field or idea on where to begin, TIE made something like building a home feel possible, organized, and deeply intentional.
-              </p>
-              <div className="pt-4 border-t border-[#E8E4DC]">
-                <div className="font-sans font-bold text-base text-[#1C1B18]">
-                  Marcus &amp; Elena Vance
-                </div>
-                <div className="text-xs font-mono text-[#6E695F] mt-0.5">
-                  Creative Directors &bull; The Overlook Dogtrot, Woodstock, NY
-                </div>
-              </div>
-            </div>
+          {/* Interactive Carousel Viewport */}
+          <div
+            ref={carouselContainerRef}
+            onMouseEnter={() => setIsHoveringCarousel(true)}
+            onMouseLeave={() => setIsHoveringCarousel(false)}
+            onMouseMove={handleMouseMove}
+            onClick={handleContainerClick}
+            className="relative w-full cursor-none overflow-visible py-4"
+          >
+            <motion.div
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={0.2}
+              onDragEnd={handleDragEnd}
+              animate={{
+                x: `calc(-${activeIndex} * (min(85vw, 1050px) + 2.5rem))`,
+              }}
+              transition={{
+                type: 'spring',
+                stiffness: 260,
+                damping: 28,
+              }}
+              className="flex items-center"
+            >
+              {TESTIMONIALS.map((item, idx) => (
+                <div
+                  key={item.id}
+                  className="flex items-center shrink-0 w-[85vw] max-w-[1050px] mr-10 select-none"
+                >
+                  {/* LEFT: Text Card (Warm Cream surface, angular green quote) */}
+                  <div className="w-[64%] bg-[#FAF8F1] border border-[#DFDCD0] rounded-[20px] p-8 sm:p-12 md:p-14 pr-16 sm:pr-22 md:pr-28 shadow-sm flex flex-col justify-between shrink-0">
+                    <div>
+                      {/* Angular Olive Green Double Quotation SVG matching HUTS */}
+                      <svg
+                        className="w-7 h-7 sm:w-8 sm:h-8 text-[#4A772F] mb-6 fill-current"
+                        viewBox="0 0 24 24"
+                      >
+                        <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+                      </svg>
 
-            {/* Right: Actual Photo of Completed Build with Category Badge */}
-            <div className="lg:col-span-5">
-              <div
-                onClick={() => openProjectDetail('catskills-dogtrot-retreat')}
-                className="relative aspect-[4/3] rounded-2xl overflow-hidden border border-[#E8E4DC] shadow-md cursor-pointer group select-none"
-              >
-                <img
-                  src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1000&q=85"
-                  alt="Completed Overlook Dogtrot with outdoor patio"
-                  className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                  loading="lazy"
-                />
-                
-                {/* Second Home Category Badge (Top Right as in p6_63s) */}
-                <div className="absolute top-4 right-4 bg-black/40 backdrop-blur-md text-white text-xs font-mono px-3 py-1 rounded-full border border-white/20">
-                  Second Home
-                </div>
+                      {/* Clean Non-Italic Editorial Serif Quote */}
+                      <p className="font-serif not-italic text-[19px] sm:text-[21px] md:text-[23px] leading-[1.48] text-[#182215] mb-8 font-normal">
+                        {item.quote}
+                      </p>
+                    </div>
 
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                
-                <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-white text-xs font-mono">
-                  <span>DOGTROT 1850</span>
-                  <span className="text-[#D2E2B0] font-semibold flex items-center space-x-1 group-hover:underline">
-                    <span>Inspect</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </span>
+                    {/* Author & Location */}
+                    <div className="pt-2">
+                      <div className="text-sm font-semibold text-[#182215] font-sans">
+                        {item.author}
+                      </div>
+                      <div className="text-xs text-stone-500 mt-0.5 font-sans">
+                        {item.location}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* RIGHT: Overlapping Project Photography (Card overlaps text card) */}
+                  <div
+                    data-cursor="inspect"
+                    data-project-slug={item.projectSlug}
+                    className="w-[42%] aspect-[4/3.5] -ml-12 sm:-ml-16 md:-ml-20 relative z-10 rounded-[20px] overflow-hidden shadow-xl border border-[#DFDCD0]/60 shrink-0 cursor-pointer group"
+                  >
+                    <img
+                      src={item.image}
+                      alt={item.author}
+                      className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 select-none pointer-events-none"
+                      loading="lazy"
+                    />
+
+                    {/* Top Right Floating Pill Tag */}
+                    <div className="absolute top-4 right-4 bg-black/45 backdrop-blur-md text-white text-xs px-3.5 py-1.5 rounded-full font-sans font-medium pointer-events-none border border-white/15">
+                      {item.tag}
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
+              ))}
+            </motion.div>
+          </div>
+
+          {/* Minimalist Carousel Pagination Dots */}
+          <div className="flex items-center space-x-2 pt-2">
+            {TESTIMONIALS.map((_, idx) => (
+              <button
+                key={idx}
+                type="button"
+                onClick={() => setActiveIndex(idx)}
+                aria-label={`Go to testimonial ${idx + 1}`}
+                className={`h-2 rounded-full transition-all duration-300 ${
+                  activeIndex === idx
+                    ? 'w-8 bg-[#4A772F]'
+                    : 'w-2 bg-[#DFDCD0] hover:bg-[#182215]/40'
+                }`}
+              />
+            ))}
           </div>
         </div>
 
@@ -174,4 +343,5 @@ export const TrustMetricsSection: React.FC = () => {
     </section>
   );
 };
+
 export default TrustMetricsSection;

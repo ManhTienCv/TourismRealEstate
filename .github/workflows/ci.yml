@@ -23,9 +23,13 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
+        env:
+          DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/tie_db?schema=public"
         run: npm ci
 
       - name: Generate Prisma client
+        env:
+          DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/tie_db?schema=public"
         run: npm run db:generate
 
       - name: Build shared packages

@@ -55,7 +55,7 @@ export const Archetype3DCard: React.FC<ArchetypeCardProps> = ({ sol, onLearnMore
       onMouseEnter={handleMouseEnterOrMove}
       onMouseMove={handleMouseEnterOrMove}
       onMouseLeave={handleMouseLeave}
-      className={`shrink-0 w-[390px] sm:w-[410px] md:w-[430px] h-[420px] md:h-[450px] [perspective:1200px] select-none rounded-[20px] ${
+      className={`shrink-0 snap-start w-[390px] sm:w-[410px] md:w-[430px] h-[420px] md:h-[450px] [perspective:1200px] select-none rounded-[20px] ${
         isScrolling ? 'pointer-events-none' : ''
       }`}
       style={{ perspective: '1200px' }}

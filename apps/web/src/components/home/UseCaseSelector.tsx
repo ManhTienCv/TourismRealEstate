@@ -97,10 +97,10 @@ export const UseCaseSelector: React.FC = () => {
   return (
     <section
       id="solutions-section"
-      className="relative py-16 sm:py-20 md:py-24 bg-[#FAF8F1] overflow-hidden select-none"
+      className="relative pt-12 sm:pt-16 pb-6 sm:pb-8 bg-[#FAF8F1] overflow-hidden select-none"
     >
       {/* Section Header: Centered Editorial Headline */}
-      <div className="text-center max-w-4xl mx-auto mb-10 sm:mb-14 px-4">
+      <div className="text-center max-w-4xl mx-auto mb-8 sm:mb-10 px-4">
         <h2 className="font-serif text-[42px] sm:text-[52px] lg:text-[62px] font-normal tracking-tight text-[#182215] leading-[1.1]">
           Whatever type of place you have
           <br />
@@ -144,7 +144,7 @@ export const UseCaseSelector: React.FC = () => {
           onPointerMove={handlePointerMove}
           onPointerUp={handlePointerUp}
           onPointerLeave={handlePointerLeave}
-          className={`w-full overflow-x-auto no-scrollbar scroll-smooth flex gap-5 md:gap-6 px-6 sm:px-12 lg:px-20 cursor-grab ${
+          className={`w-full overflow-x-auto no-scrollbar scroll-smooth flex snap-x snap-mandatory gap-5 md:gap-6 px-6 sm:px-12 lg:px-20 cursor-grab ${
             isDragging ? 'cursor-grabbing' : ''
           }`}
           style={{

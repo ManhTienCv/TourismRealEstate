@@ -112,12 +112,12 @@ export const RealizedPortfolioSection: React.FC = () => {
           // Positioning logic:
           // - While entering Project 0: attached to Project 0 (absolute)
           // - During transition between projects: pinned to viewport center (fixed) for seamless curtain wipe
-          // - When scrolling out of Project 2 towards "See More Projects": attached to Project 2 (absolute) so card & text float up intact
+          // - When scrolling out of Project 2 towards "See More Projects": anchored to top 100vh of Project 2 (absolute) so card & text float up intact
           let positionClass = 'fixed inset-0';
           if (isFirst && isFirstEntering) {
-            positionClass = 'absolute inset-0';
+            positionClass = 'absolute top-0 left-0 right-0 h-screen';
           } else if (isLast && isLastExiting) {
-            positionClass = 'absolute inset-0';
+            positionClass = 'absolute top-0 left-0 right-0 h-screen';
           }
 
           return (
@@ -125,11 +125,13 @@ export const RealizedPortfolioSection: React.FC = () => {
               key={project.id}
               ref={isFirst ? firstProjectRef : isLast ? lastProjectRef : undefined}
               onClick={() => openProjectDetail(project.slug)}
-              className="relative w-full h-screen overflow-hidden rounded-none select-none cursor-pointer [clip-path:inset(0)]"
+              className={`relative w-full ${isLast ? 'h-[130vh]' : 'h-screen'} select-none cursor-pointer ${
+                isLast && isLastExiting ? 'overflow-visible' : 'overflow-hidden [clip-path:inset(0)]'
+              }`}
               style={{
                 zIndex: index + 1,
-                clipPath: 'inset(0)',
-                WebkitClipPath: 'inset(0)',
+                clipPath: isLast && isLastExiting ? 'none' : 'inset(0)',
+                WebkitClipPath: isLast && isLastExiting ? 'none' : 'inset(0)',
               }}
             >
               {/* Background Layer: Full-bleed background image with subtle dark overlay (NO hover scale) */}
@@ -181,7 +183,7 @@ export const RealizedPortfolioSection: React.FC = () => {
       </div>
 
       {/* 3. Outro CTA: Reusable Unified Pill Arrow Button */}
-      <div className="py-20 bg-[#FAF8F1] flex items-center justify-center">
+      <div className="pt-10 pb-4 bg-[#FAF8F1] flex items-center justify-center">
         <PillArrowButton
           label="See More Projects"
           onClick={() => smoothScrollTo('portfolio-section', { offset: -40, duration: 1.2 })}

@@ -88,7 +88,7 @@ export const MegaMenuNavbar: React.FC = () => {
     } else {
       closeSolutionDetail();
       setActiveTab('home');
-      smoothScrollTo('standards-section', { offset: -70, duration: 1.0 });
+      smoothScrollTo('standards-section', { offset: -24, duration: 1.0 });
     }
   };
 

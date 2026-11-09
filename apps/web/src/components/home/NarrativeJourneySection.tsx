@@ -99,31 +99,31 @@ export const NarrativeJourneySection: React.FC = () => {
   };
 
   return (
-    <section id="narrative-section" className="relative pt-6 pb-12 sm:pt-10 sm:pb-16 bg-[#FAF8F1] overflow-visible select-none">
+    <section id="narrative-section" className="relative pt-2 sm:pt-4 pb-10 sm:pb-14 bg-[#FAF8F1] overflow-visible select-none">
       
       {/* ========================================================= */}
-      {/* 1. TOP GREEN LOOP-DE-LOOP ARROW (Exact Match to Image 6) */}
+      {/* 1. TOP GREEN LOOP-DE-LOOP ARROW (Exact Match to HUTS Sample Image 5) */}
       {/* ========================================================= */}
-      <div ref={topArrowRef} className="flex justify-center -mt-2 sm:-mt-4 mb-4 sm:mb-6 pointer-events-none">
+      <div ref={topArrowRef} className="flex justify-center -mb-8 sm:-mb-12 pointer-events-none relative z-10">
         <svg
-          className="w-24 sm:w-32 md:w-36 h-auto text-[#4A772F] overflow-visible select-none pointer-events-none"
-          viewBox="0 0 160 180"
+          className="w-28 sm:w-36 md:w-40 h-auto text-[#4A772F] overflow-visible select-none pointer-events-none"
+          viewBox="0 0 180 200"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
-          {/* Scroll-animated loopy doodle path */}
+          {/* Scroll-animated loopy doodle path with clear upper loop matching HUTS */}
           <motion.path
-            d="M 25 15 C 65 38, 110 52, 118 85 C 126 112, 100 126, 88 112 C 75 96, 92 68, 116 75 C 135 82, 140 125, 142 165"
+            d="M 30 20 C 65 38, 102 46, 112 32 C 122 18, 108 6, 92 14 C 78 22, 86 46, 104 54 C 122 62, 128 112, 130 175"
             stroke="#4A772F"
-            strokeWidth="2.2"
+            strokeWidth="2.4"
             strokeLinecap="round"
             style={{ pathLength: topPathLength }}
           />
-          {/* Downward pointing arrowhead */}
+          {/* Clean downward pointing arrowhead */}
           <motion.path
-            d="M 132 150 L 142 165 L 152 150"
+            d="M 120 158 L 130 175 L 140 158"
             stroke="#4A772F"
-            strokeWidth="2.2"
+            strokeWidth="2.4"
             strokeLinecap="round"
             strokeLinejoin="round"
             style={{ opacity: topHeadOpacity }}
@@ -220,26 +220,26 @@ export const NarrativeJourneySection: React.FC = () => {
       {/* ========================================================================= */}
       <div
         ref={connectorArrowRef}
-        className="relative w-full max-w-[1060px] mx-auto px-6 md:px-12 h-[120px] sm:h-[140px] pointer-events-none z-20 overflow-visible my-2"
+        className="relative w-full max-w-[1060px] mx-auto px-6 md:px-12 h-[100px] sm:h-[120px] pointer-events-none z-20 overflow-visible my-1"
       >
         <svg
-          viewBox="0 0 1060 140"
+          viewBox="0 0 1060 120"
           fill="none"
           className="w-full h-full overflow-visible"
         >
           {/* Grand elegant calligraphy arch sweeping from under 'See Our Projects' -> gracefully plunging downward above 'built' */}
           <motion.path
-            d="M 640 10 C 560 -10, 440 15, 395 115"
+            d="M 640 10 C 530 -15, 410 30, 395 100"
             stroke="#4A772F"
-            strokeWidth="2.2"
+            strokeWidth="2.4"
             strokeLinecap="round"
             style={{ pathLength: connectorPathLength }}
           />
-          {/* Downward pointing crisp arrowhead (\/) pointing directly down at 'built' */}
+          {/* Downward pointing crisp symmetric arrowhead (\/) pointing directly down at 'built' */}
           <motion.path
-            d="M 384 94 L 395 115 L 406 94"
+            d="M 384 82 L 395 100 L 406 82"
             stroke="#4A772F"
-            strokeWidth="2.2"
+            strokeWidth="2.4"
             strokeLinecap="round"
             strokeLinejoin="round"
             style={{ opacity: connectorHeadOpacity }}
@@ -252,7 +252,7 @@ export const NarrativeJourneySection: React.FC = () => {
       {/* ========================================================= */}
       <div
         id="process-section"
-        className="max-w-[1060px] mx-auto px-6 md:px-12 pt-2 md:pt-4 pb-16 md:pb-24"
+        className="max-w-[1060px] mx-auto px-6 md:px-12 pt-2 md:pt-4 pb-8 md:pb-12"
       >
         <div className="grid grid-cols-1 md:grid-cols-12 items-center gap-10 lg:gap-14">
           
