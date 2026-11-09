@@ -16,7 +16,7 @@ const FEATURED_REALIZED_PROJECTS = [
   {
     id: 'mountain-view-meadow',
     slug: 'arrowhead-ridge',
-    title: 'Mountain View\nMeadow',
+    title: 'Mountain\nView Meadow',
     exteriorImage: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=2400&q=85',
     interiorImage: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1400&q=85',
     pills: ['Medium L', '2 Bed', '2 Bath', '1,200–1,600 Sqft', 'Second Home'],
@@ -144,12 +144,12 @@ export const RealizedPortfolioSection: React.FC = () => {
               <div className="absolute inset-0 bg-black/20" />
               <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/20 to-transparent" />
 
-              {/* Inner Content: Narrows to max-w-[1100px] with side margins, stays rock-solid on hover */}
-              <div className={`${positionClass} w-full pointer-events-none flex items-center justify-between max-w-[1100px] mx-auto px-8 md:px-12 gap-8`}>
+              {/* Inner Content: Expanded to w-[82vw] max-w-[1260px] with wide inset image */}
+              <div className={`${positionClass} w-[82vw] max-w-[1260px] mx-auto pointer-events-none flex items-center justify-between gap-8`}>
                 
-                {/* Left Column: Title & 1-line Glassmorphism Pill Tags (w-[52%]) */}
-                <div className="w-[52%] pointer-events-auto text-white">
-                  <h3 className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-[64px] leading-[1.08] tracking-tight whitespace-pre-line mb-6 drop-shadow-md font-normal">
+                {/* Left Column: Title & 1-line Glassmorphism Pill Tags */}
+                <div className="w-[50%] lg:w-[560px] pointer-events-auto text-white">
+                  <h3 className="font-serif text-[42px] sm:text-[48px] md:text-[52px] lg:text-[60px] leading-[1.05] tracking-tight whitespace-pre-line mb-6 drop-shadow-md font-normal">
                     {project.title}
                   </h3>
                   <div className="flex items-center flex-nowrap gap-2 whitespace-nowrap overflow-hidden">
@@ -164,8 +164,8 @@ export const RealizedPortfolioSection: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Right Column: Inset Image with w-[42%] max-w-[460px], aspect-[16/10], rounded-[14px] */}
-                <div className="w-[42%] max-w-[460px] pointer-events-auto">
+                {/* Right Column: Inset Image with w-[46%] lg:w-[550px] xl:w-[580px] shrink-0, aspect-[16/10], rounded-[14px] */}
+                <div className="w-[46%] lg:w-[550px] xl:w-[580px] shrink-0 pointer-events-auto">
                   <div className="w-full aspect-[16/10] rounded-[14px] overflow-hidden shadow-2xl bg-neutral-900 border border-white/10">
                     <img
                       src={project.interiorImage}
