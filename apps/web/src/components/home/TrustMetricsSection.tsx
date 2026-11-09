@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useConfiguratorStore } from '../../store/useConfiguratorStore';
 import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react';
 import { motion, useMotionValue, useSpring, PanInfo } from 'framer-motion';
@@ -44,15 +44,30 @@ export const TrustMetricsSection: React.FC = () => {
   const { openProjectDetail } = useConfiguratorStore();
   const [activeIndex, setActiveIndex] = useState(0);
 
-  // Magnetic Cursor state & coordinates
+  // Magnetic Cursor state & coordinates (relative to carousel container)
   const [cursorMode, setCursorMode] = useState<'prev' | 'next' | 'inspect'>('next');
   const [isHoveringCarousel, setIsHoveringCarousel] = useState(false);
   const carouselContainerRef = useRef<HTMLDivElement>(null);
+  const firstSlideRef = useRef<HTMLDivElement>(null);
+  const [slideStep, setSlideStep] = useState(0);
 
-  const rawMouseX = useMotionValue(-100);
-  const rawMouseY = useMotionValue(-100);
-  const springX = useSpring(rawMouseX, { stiffness: 320, damping: 28 });
-  const springY = useSpring(rawMouseY, { stiffness: 320, damping: 28 });
+  const cursorX = useMotionValue(-100);
+  const cursorY = useMotionValue(-100);
+  const springX = useSpring(cursorX, { stiffness: 500, damping: 32, mass: 0.2 });
+  const springY = useSpring(cursorY, { stiffness: 500, damping: 32, mass: 0.2 });
+
+  // Accurately measure slide width + gap (64px) for exact sliding
+  const updateSlideStep = useCallback(() => {
+    if (firstSlideRef.current) {
+      setSlideStep(firstSlideRef.current.offsetWidth + 64);
+    }
+  }, []);
+
+  useEffect(() => {
+    updateSlideStep();
+    window.addEventListener('resize', updateSlideStep);
+    return () => window.removeEventListener('resize', updateSlideStep);
+  }, [updateSlideStep]);
 
   const nextSlide = () => {
     setActiveIndex((prev) => (prev < TESTIMONIALS.length - 1 ? prev + 1 : 0));
@@ -63,22 +78,33 @@ export const TrustMetricsSection: React.FC = () => {
   };
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    rawMouseX.set(e.clientX);
-    rawMouseY.set(e.clientY);
+    if (!carouselContainerRef.current) return;
+    const rect = carouselContainerRef.current.getBoundingClientRect();
+
+    // Set relative coordinates within container (center 64px cursor by offset 32px)
+    cursorX.set(e.clientX - rect.left - 32);
+    cursorY.set(e.clientY - rect.top - 32);
 
     // If hovering on an inspect target (photo card)
-    const target = e.target as HTMLElement;
-    if (target.closest('[data-cursor="inspect"]')) {
-      setCursorMode('inspect');
-      return;
-    }
+    const isInspect = Boolean((e.target as HTMLElement).closest('[data-cursor="inspect"]'));
+    const midX = rect.left + rect.width / 2;
+    const newMode: 'inspect' | 'prev' | 'next' = isInspect
+      ? 'inspect'
+      : e.clientX < midX
+      ? 'prev'
+      : 'next';
 
-    // Split container in half: left side moves backward, right side moves forward
-    const rect = carouselContainerRef.current?.getBoundingClientRect();
-    if (rect) {
-      const midX = rect.left + rect.width / 2;
-      setCursorMode(e.clientX < midX ? 'prev' : 'next');
-    }
+    setCursorMode((prev) => (prev !== newMode ? newMode : prev));
+  };
+
+  const handleMouseEnter = () => {
+    setIsHoveringCarousel(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHoveringCarousel(false);
+    cursorX.set(-100);
+    cursorY.set(-100);
   };
 
   const handleContainerClick = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -100,36 +126,15 @@ export const TrustMetricsSection: React.FC = () => {
   };
 
   const handleDragEnd = (_: any, info: PanInfo) => {
-    if (info.offset.x < -40) {
+    if (info.offset.x < -50 || info.velocity.x < -300) {
       nextSlide();
-    } else if (info.offset.x > 40) {
+    } else if (info.offset.x > 50 || info.velocity.x > 300) {
       prevSlide();
     }
   };
 
   return (
     <section className="pt-6 pb-20 sm:pb-28 bg-[#FAF8F1] overflow-hidden select-none">
-      
-      {/* Magnetic Cursor Follower (only visible when hovering carousel) */}
-      {isHoveringCarousel && (
-        <motion.div
-          className="fixed top-0 left-0 pointer-events-none z-50 w-16 h-16 rounded-full bg-[#FAF8F1]/85 backdrop-blur-md border border-[#182215]/35 flex items-center justify-center text-[#182215] shadow-lg -translate-x-1/2 -translate-y-1/2"
-          style={{ x: springX, y: springY }}
-          initial={{ scale: 0, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          exit={{ scale: 0, opacity: 0 }}
-          transition={{ duration: 0.15 }}
-        >
-          {cursorMode === 'inspect' ? (
-            <ArrowUpRight className="w-5 h-5 text-[#182215]" />
-          ) : cursorMode === 'prev' ? (
-            <ArrowLeft className="w-5 h-5 text-[#182215]" />
-          ) : (
-            <ArrowRight className="w-5 h-5 text-[#182215]" />
-          )}
-        </motion.div>
-      )}
-
       <div className="max-w-[1584px] mx-auto px-4 sm:px-8 lg:px-12 space-y-20 sm:space-y-24">
         
         {/* 1. EDITORIAL TESTIMONIAL CAROUSEL (HUTS Overlapping Card + Photo Layout) */}
@@ -141,45 +146,64 @@ export const TrustMetricsSection: React.FC = () => {
           {/* Interactive Carousel Viewport */}
           <div
             ref={carouselContainerRef}
-            onMouseEnter={() => setIsHoveringCarousel(true)}
-            onMouseLeave={() => setIsHoveringCarousel(false)}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
             onMouseMove={handleMouseMove}
             onClick={handleContainerClick}
-            className="relative w-full cursor-none overflow-visible py-4"
+            className={`relative w-full overflow-hidden py-4 select-none ${
+              isHoveringCarousel ? 'cursor-none' : ''
+            }`}
           >
+            {/* Absolute Magnetic Cursor Follower inside Container */}
+            <motion.div
+              className={`absolute top-0 left-0 pointer-events-none z-50 w-16 h-16 rounded-full bg-[#FAF8F1]/80 backdrop-blur-md border border-[#182215]/30 flex items-center justify-center text-[#182215] shadow-lg transition-all duration-150 ${
+                isHoveringCarousel ? 'opacity-100 scale-100' : 'opacity-0 scale-75'
+              }`}
+              style={{ x: springX, y: springY }}
+            >
+              {cursorMode === 'inspect' ? (
+                <ArrowUpRight className="w-5 h-5 text-[#182215]" />
+              ) : cursorMode === 'prev' ? (
+                <ArrowLeft className="w-5 h-5 text-[#182215]" />
+              ) : (
+                <ArrowRight className="w-5 h-5 text-[#182215]" />
+              )}
+            </motion.div>
+
             <motion.div
               drag="x"
               dragConstraints={{ left: 0, right: 0 }}
               dragElastic={0.2}
               onDragEnd={handleDragEnd}
               animate={{
-                x: `calc(-${activeIndex} * (min(85vw, 1050px) + 2.5rem))`,
+                x: slideStep > 0 ? -activeIndex * slideStep : 0,
               }}
               transition={{
                 type: 'spring',
-                stiffness: 260,
+                stiffness: 220,
                 damping: 28,
               }}
-              className="flex items-center"
+              className="flex items-end gap-16"
             >
               {TESTIMONIALS.map((item, idx) => (
                 <div
                   key={item.id}
-                  className="flex items-center shrink-0 w-[85vw] max-w-[1050px] mr-10 select-none"
+                  ref={idx === 0 ? firstSlideRef : undefined}
+                  className="w-[88vw] max-w-[1220px] shrink-0 flex items-end select-none"
                 >
-                  {/* LEFT: Text Card (Warm Cream surface, angular green quote) */}
-                  <div className="w-[64%] bg-[#FAF8F1] border border-[#DFDCD0] rounded-[20px] p-8 sm:p-12 md:p-14 pr-16 sm:pr-22 md:pr-28 shadow-sm flex flex-col justify-between shrink-0">
+                  {/* LEFT: Text Card (Warm Cream surface, angular green quote, min-h-[430px] md:min-h-[460px]) */}
+                  <div className="w-[66%] min-h-[430px] md:min-h-[460px] bg-[#FAF8F1] border border-[#DFDCD0] rounded-[20px] p-10 md:p-14 pr-28 md:pr-36 flex flex-col justify-between shrink-0 shadow-sm">
                     <div>
                       {/* Angular Olive Green Double Quotation SVG matching HUTS */}
                       <svg
-                        className="w-7 h-7 sm:w-8 sm:h-8 text-[#4A772F] mb-6 fill-current"
+                        className="w-12 h-10 text-[#4A772F] mb-6 fill-current"
                         viewBox="0 0 24 24"
                       >
                         <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
                       </svg>
 
                       {/* Clean Non-Italic Editorial Serif Quote */}
-                      <p className="font-serif not-italic text-[19px] sm:text-[21px] md:text-[23px] leading-[1.48] text-[#182215] mb-8 font-normal">
+                      <p className="font-serif not-italic text-[22px] md:text-[26px] leading-[1.42] text-[#182215] tracking-tight mb-10 font-normal">
                         {item.quote}
                       </p>
                     </div>
@@ -195,11 +219,11 @@ export const TrustMetricsSection: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* RIGHT: Overlapping Project Photography (Card overlaps text card) */}
+                  {/* RIGHT: Overlapping Project Photography (Stepped lower than text card) */}
                   <div
                     data-cursor="inspect"
                     data-project-slug={item.projectSlug}
-                    className="w-[42%] aspect-[4/3.5] -ml-12 sm:-ml-16 md:-ml-20 relative z-10 rounded-[20px] overflow-hidden shadow-xl border border-[#DFDCD0]/60 shrink-0 cursor-pointer group"
+                    className="w-[42%] max-w-[450px] aspect-[1.05/1] -ml-20 md:-ml-24 mb-5 relative z-10 rounded-[20px] overflow-hidden shadow-md shrink-0 cursor-pointer group border border-[#DFDCD0]/60"
                   >
                     <img
                       src={item.image}
