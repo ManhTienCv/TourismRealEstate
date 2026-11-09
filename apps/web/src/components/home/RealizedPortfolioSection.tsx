@@ -113,17 +113,30 @@ export const RealizedPortfolioSection: React.FC = () => {
       
       {/* 1. Intro Editorial Header on Cream Background */}
       <div className="py-20 max-w-[1584px] mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        {/* Hand-drawn Green Wavy SVG Connector Line */}
-        <div className="flex justify-center -mt-6 mb-6">
+        {/* Hand-drawn Green Wavy Dashed Calligraphy Arrow */}
+        <div className="flex justify-center -mt-8 mb-6 pointer-events-none">
           <svg
-            className="w-16 h-20 text-[#567D42]/60"
-            viewBox="0 0 80 100"
+            className="w-14 sm:w-16 h-24 sm:h-28 text-[#4A772F] overflow-visible select-none"
+            viewBox="0 0 60 120"
             fill="none"
-            stroke="currentColor"
-            strokeWidth="2.5"
-            strokeDasharray="4 4"
+            xmlns="http://www.w3.org/2000/svg"
           >
-            <path d="M 40 0 C 60 40, 20 60, 40 100" />
+            {/* Gracefully undulating S-curve dashed path */}
+            <path
+              d="M 28 4 C 46 24, 48 44, 34 60 C 18 76, 20 92, 32 106"
+              stroke="#4A772F"
+              strokeWidth="2.4"
+              strokeLinecap="round"
+              strokeDasharray="5 4.5"
+            />
+            {/* Crisp downward pointing arrowhead */}
+            <path
+              d="M 24 94 L 32 108 L 40 94"
+              stroke="#4A772F"
+              strokeWidth="2.4"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
           </svg>
         </div>
 

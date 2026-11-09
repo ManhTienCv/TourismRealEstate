@@ -86,38 +86,7 @@ export const NarrativeJourneySection: React.FC = () => {
       {/* ========================================================= */}
       <div className="max-w-[1140px] mx-auto px-6 md:px-12 relative">
 
-        {/* TOP WHIMSICAL LOOPY ARROW (Exact Match to HUTS Sample Image 5) */}
-        {/* Positioned gracefully above the right column headline, pointing down into the section */}
-        <div className="hidden md:flex justify-end pr-28 lg:pr-36 -mb-6 pointer-events-none relative z-10">
-          <svg
-            className="w-24 sm:w-28 md:w-32 h-auto text-[#4A772F] overflow-visible select-none pointer-events-none"
-            viewBox="0 0 160 170"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            {/* Whimsical double-loop doodle matching HUTS Image 5 */}
-            <motion.path
-              d="M 25 18 C 50 32, 85 45, 96 30 C 108 14, 95 2, 78 12 C 60 22, 68 50, 88 56 C 105 62, 114 96, 115 142"
-              stroke="#4A772F"
-              strokeWidth="2.2"
-              strokeLinecap="round"
-              initial={{ pathLength: 0.9, opacity: 0.85 }}
-              whileInView={{ pathLength: 1, opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, ease: 'easeOut' }}
-            />
-            {/* Crisp downward pointing arrowhead */}
-            <path
-              d="M 106 128 L 115 142 L 125 128"
-              stroke="#4A772F"
-              strokeWidth="2.2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-12 items-center gap-12 max-w-[1140px] mx-auto py-16 lg:py-20">
+        <div className="grid grid-cols-1 lg:grid-cols-12 items-center gap-12 max-w-[1140px] mx-auto py-12 lg:py-16">
           
           {/* LEFT: DRAGGABLE PHYSICS PHOTO STACK */}
           <div className="lg:col-span-6 flex justify-center">
@@ -174,7 +143,38 @@ export const NarrativeJourneySection: React.FC = () => {
           </div>
 
           {/* RIGHT: EDITORIAL COPY & SYNCHRONIZED PILL ARROW BUTTON */}
-          <div className="lg:col-span-6 space-y-5">
+          <div className="lg:col-span-6 space-y-5 relative">
+            
+            {/* TOP WHIMSICAL LOOPY ARROW: Anchored directly above "We do it across the country" */}
+            <div className="hidden lg:block absolute -top-24 sm:-top-28 left-6 sm:left-12 pointer-events-none z-10">
+              <svg
+                className="w-24 sm:w-28 md:w-32 h-auto text-[#4A772F] overflow-visible select-none pointer-events-none"
+                viewBox="0 0 160 170"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                {/* Whimsical double-loop doodle matching HUTS Image 5 */}
+                <motion.path
+                  d="M 25 18 C 50 32, 85 45, 96 30 C 108 14, 95 2, 78 12 C 60 22, 68 50, 88 56 C 105 62, 114 96, 115 142"
+                  stroke="#4A772F"
+                  strokeWidth="2.2"
+                  strokeLinecap="round"
+                  initial={{ pathLength: 0.9, opacity: 0.85 }}
+                  whileInView={{ pathLength: 1, opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8, ease: 'easeOut' }}
+                />
+                {/* Crisp downward pointing arrowhead */}
+                <path
+                  d="M 106 128 L 115 142 L 125 128"
+                  stroke="#4A772F"
+                  strokeWidth="2.2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </div>
+
             <h2 className="font-serif text-[38px] md:text-[44px] lg:text-[46px] text-[#182215] tracking-tight leading-[1.12] mb-5 font-normal lg:whitespace-nowrap">
               We do it across the country
             </h2>
@@ -201,18 +201,18 @@ export const NarrativeJourneySection: React.FC = () => {
       {/* Sweeps gracefully from under 'See Our Projects' -> plunges above 'Using a process built...' */}
       {/* ========================================================================= */}
       <div
-        className="relative w-full max-w-[1060px] mx-auto px-6 md:px-12 h-[90px] sm:h-[110px] pointer-events-none z-20 overflow-visible my-1"
+        className="relative w-full max-w-[1140px] mx-auto px-6 md:px-12 h-[130px] sm:h-[150px] pointer-events-none z-20 overflow-visible my-1"
       >
         <svg
-          viewBox="0 0 1060 110"
+          viewBox="0 0 1140 150"
           fill="none"
           className="w-full h-full overflow-visible"
         >
-          {/* Grand elegant calligraphy arch sweeping from under 'See Our Projects' -> plunging downward above the left column */}
+          {/* Deep elegant swoop arching from under 'See Our Projects' -> gracefully plunging downward above the left column */}
           <motion.path
-            d="M 620 8 C 540 18, 450 48, 415 92"
+            d="M 680 15 C 590 -10, 460 25, 415 125"
             stroke="#4A772F"
-            strokeWidth="2.2"
+            strokeWidth="2.4"
             strokeLinecap="round"
             initial={{ pathLength: 0.95, opacity: 0.9 }}
             whileInView={{ pathLength: 1, opacity: 1 }}
@@ -221,9 +221,9 @@ export const NarrativeJourneySection: React.FC = () => {
           />
           {/* Downward pointing crisp symmetric arrowhead (\/) pointing down-left at the title below */}
           <path
-            d="M 405 76 L 415 92 L 426 78"
+            d="M 402 108 L 415 125 L 428 110"
             stroke="#4A772F"
-            strokeWidth="2.2"
+            strokeWidth="2.4"
             strokeLinecap="round"
             strokeLinejoin="round"
           />
@@ -235,7 +235,7 @@ export const NarrativeJourneySection: React.FC = () => {
       {/* ========================================================= */}
       <div
         id="process-section"
-        className="max-w-[1060px] mx-auto px-6 md:px-12 pt-0 pb-4 md:pb-6"
+        className="max-w-[1140px] mx-auto px-6 md:px-12 pt-0 pb-4 md:pb-6"
       >
         <div className="grid grid-cols-1 md:grid-cols-12 items-center gap-10 lg:gap-14">
           
@@ -261,12 +261,12 @@ export const NarrativeJourneySection: React.FC = () => {
             </div>
           </div>
 
-          {/* Right Column: Hand-drawn Sherpa Drinking Tea by Stone Fireplace */}
+          {/* Right Column: Newly rendered cozy Sherpa enjoying hot tea by stone fireplace */}
           <div className="md:col-span-6 flex justify-center md:justify-end">
             <img
-              src="/sherpa_fireplace_transparent.png"
-              alt="Architectural sherpa enjoying tea by a stone fireplace"
-              className="w-full max-w-[420px] md:max-w-[460px] h-auto object-contain select-none pointer-events-none drop-shadow-xs"
+              src="/sherpa_fireplace_cozy.png"
+              alt="Architectural sherpa enjoying tea by a cozy stone fireplace"
+              className="w-full max-w-[440px] md:max-w-[480px] h-auto object-contain select-none pointer-events-none drop-shadow-sm rounded-[16px]"
             />
           </div>
 

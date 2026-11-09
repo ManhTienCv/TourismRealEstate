@@ -128,13 +128,13 @@ export const MegaMenuNavbar: React.FC = () => {
         {/* Top Navbar Row */}
         <div className="max-w-[1584px] mx-auto px-6 sm:px-10 lg:px-12 h-20 flex items-center justify-between">
           
-          {/* Brand Wordmark (Clean HUTS-inspired Sans: "TIE") */}
+          {/* Brand Wordmark (Bold HUTS-inspired Sans: "TIE") */}
           <div
             onClick={() => scrollToSection('', 'home')}
             className="cursor-pointer flex items-center space-x-2 group shrink-0"
           >
             <span
-              className={`font-sans text-3xl md:text-[34px] font-black tracking-tight leading-none transition-colors ${
+              className={`font-sans text-[36px] md:text-[42px] font-black tracking-[-0.04em] leading-none transition-colors select-none ${
                 isTransparent ? 'text-white' : 'text-tie-ink'
               }`}
             >
