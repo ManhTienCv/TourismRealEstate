@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { useConfiguratorStore } from '../../store/useConfiguratorStore';
-import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { motion, useMotionValue, useSpring, PanInfo } from 'framer-motion';
 
 // Authentic Client Testimonials with Real High-Resolution Realized Builds
@@ -41,11 +40,10 @@ const TESTIMONIALS = [
 ];
 
 export const TrustMetricsSection: React.FC = () => {
-  const { openProjectDetail } = useConfiguratorStore();
   const [activeIndex, setActiveIndex] = useState(0);
 
   // Magnetic Cursor state & coordinates (relative to carousel container)
-  const [cursorMode, setCursorMode] = useState<'prev' | 'next' | 'inspect'>('next');
+  const [cursorDirection, setCursorDirection] = useState<'left' | 'right'>('right');
   const [isHoveringCarousel, setIsHoveringCarousel] = useState(false);
   const carouselContainerRef = useRef<HTMLDivElement>(null);
   const firstSlideRef = useRef<HTMLDivElement>(null);
@@ -53,8 +51,8 @@ export const TrustMetricsSection: React.FC = () => {
 
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
-  const springX = useSpring(cursorX, { stiffness: 500, damping: 32, mass: 0.2 });
-  const springY = useSpring(cursorY, { stiffness: 500, damping: 32, mass: 0.2 });
+  const springX = useSpring(cursorX, { stiffness: 1500, damping: 50, mass: 0.05 });
+  const springY = useSpring(cursorY, { stiffness: 1500, damping: 50, mass: 0.05 });
 
   // Accurately measure slide width + gap (64px) for exact sliding
   const updateSlideStep = useCallback(() => {
@@ -69,32 +67,17 @@ export const TrustMetricsSection: React.FC = () => {
     return () => window.removeEventListener('resize', updateSlideStep);
   }, [updateSlideStep]);
 
-  const nextSlide = () => {
-    setActiveIndex((prev) => (prev < TESTIMONIALS.length - 1 ? prev + 1 : 0));
-  };
-
-  const prevSlide = () => {
-    setActiveIndex((prev) => (prev > 0 ? prev - 1 : TESTIMONIALS.length - 1));
-  };
-
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!carouselContainerRef.current) return;
     const rect = carouselContainerRef.current.getBoundingClientRect();
 
-    // Set relative coordinates within container (center 64px cursor by offset 32px)
-    cursorX.set(e.clientX - rect.left - 32);
-    cursorY.set(e.clientY - rect.top - 32);
+    // Center 68px cursor by offset 34px
+    cursorX.set(e.clientX - rect.left - 34);
+    cursorY.set(e.clientY - rect.top - 34);
 
-    // If hovering on an inspect target (photo card)
-    const isInspect = Boolean((e.target as HTMLElement).closest('[data-cursor="inspect"]'));
-    const midX = rect.left + rect.width / 2;
-    const newMode: 'inspect' | 'prev' | 'next' = isInspect
-      ? 'inspect'
-      : e.clientX < midX
-      ? 'prev'
-      : 'next';
-
-    setCursorMode((prev) => (prev !== newMode ? newMode : prev));
+    // Split screen in half by window.innerWidth / 2
+    const newDirection = e.clientX < window.innerWidth / 2 ? 'left' : 'right';
+    setCursorDirection((prev) => (prev !== newDirection ? newDirection : prev));
   };
 
   const handleMouseEnter = () => {
@@ -107,29 +90,19 @@ export const TrustMetricsSection: React.FC = () => {
     cursorY.set(-100);
   };
 
-  const handleContainerClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    const target = e.target as HTMLElement;
-    const photoEl = target.closest('[data-cursor="inspect"]');
-    if (photoEl) {
-      const slug = photoEl.getAttribute('data-project-slug');
-      if (slug) {
-        openProjectDetail(slug);
-        return;
-      }
-    }
-
-    if (cursorMode === 'prev') {
-      prevSlide();
-    } else if (cursorMode === 'next') {
-      nextSlide();
+  const handleContainerClick = () => {
+    if (cursorDirection === 'left') {
+      setActiveIndex((prev) => (prev - 1 + TESTIMONIALS.length) % TESTIMONIALS.length);
+    } else {
+      setActiveIndex((prev) => (prev + 1) % TESTIMONIALS.length);
     }
   };
 
   const handleDragEnd = (_: any, info: PanInfo) => {
     if (info.offset.x < -50 || info.velocity.x < -300) {
-      nextSlide();
+      setActiveIndex((prev) => (prev + 1) % TESTIMONIALS.length);
     } else if (info.offset.x > 50 || info.velocity.x > 300) {
-      prevSlide();
+      setActiveIndex((prev) => (prev - 1 + TESTIMONIALS.length) % TESTIMONIALS.length);
     }
   };
 
@@ -150,24 +123,23 @@ export const TrustMetricsSection: React.FC = () => {
             onMouseLeave={handleMouseLeave}
             onMouseMove={handleMouseMove}
             onClick={handleContainerClick}
-            className={`relative w-full overflow-hidden py-4 select-none ${
-              isHoveringCarousel ? 'cursor-none' : ''
-            }`}
+            className="relative w-full overflow-hidden py-4 select-none cursor-pointer"
           >
             {/* Absolute Magnetic Cursor Follower inside Container */}
             <motion.div
-              className={`absolute top-0 left-0 pointer-events-none z-50 w-16 h-16 rounded-full bg-[#FAF8F1]/80 backdrop-blur-md border border-[#182215]/30 flex items-center justify-center text-[#182215] shadow-lg transition-all duration-150 ${
-                isHoveringCarousel ? 'opacity-100 scale-100' : 'opacity-0 scale-75'
-              }`}
+              className="absolute top-0 left-0 pointer-events-none z-50 w-[68px] h-[68px] rounded-full border border-[#182215]/60 bg-[#FAF8F1]/15 backdrop-blur-[2px] flex items-center justify-center text-[#182215]"
               style={{ x: springX, y: springY }}
+              animate={{
+                opacity: isHoveringCarousel ? 1 : 0,
+                scale: isHoveringCarousel ? 1 : 0.75,
+              }}
+              transition={{ duration: 0.15 }}
             >
-              {cursorMode === 'inspect' ? (
-                <ArrowUpRight className="w-5 h-5 text-[#182215]" />
-              ) : cursorMode === 'prev' ? (
-                <ArrowLeft className="w-5 h-5 text-[#182215]" />
-              ) : (
-                <ArrowRight className="w-5 h-5 text-[#182215]" />
-              )}
+              <ArrowRight
+                className={`w-6 h-6 stroke-[1.5] text-[#182215] transition-transform duration-200 ${
+                  cursorDirection === 'left' ? 'rotate-180' : 'rotate-0'
+                }`}
+              />
             </motion.div>
 
             <motion.div
@@ -220,15 +192,11 @@ export const TrustMetricsSection: React.FC = () => {
                   </div>
 
                   {/* RIGHT: Overlapping Project Photography (Stepped lower than text card) */}
-                  <div
-                    data-cursor="inspect"
-                    data-project-slug={item.projectSlug}
-                    className="w-[42%] max-w-[450px] aspect-[1.05/1] -ml-20 md:-ml-24 mb-5 relative z-10 rounded-[20px] overflow-hidden shadow-md shrink-0 cursor-pointer group border border-[#DFDCD0]/60"
-                  >
+                  <div className="w-[42%] max-w-[450px] aspect-[1.05/1] -ml-20 md:-ml-24 mb-5 relative z-10 rounded-[20px] overflow-hidden shadow-md shrink-0 group border border-[#DFDCD0]/60">
                     <img
                       src={item.image}
                       alt={item.author}
-                      className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 select-none pointer-events-none"
+                      className="w-full h-full object-cover select-none pointer-events-none"
                       loading="lazy"
                     />
 
@@ -240,23 +208,6 @@ export const TrustMetricsSection: React.FC = () => {
                 </div>
               ))}
             </motion.div>
-          </div>
-
-          {/* Minimalist Carousel Pagination Dots */}
-          <div className="flex items-center space-x-2 pt-2">
-            {TESTIMONIALS.map((_, idx) => (
-              <button
-                key={idx}
-                type="button"
-                onClick={() => setActiveIndex(idx)}
-                aria-label={`Go to testimonial ${idx + 1}`}
-                className={`h-2 rounded-full transition-all duration-300 ${
-                  activeIndex === idx
-                    ? 'w-8 bg-[#4A772F]'
-                    : 'w-2 bg-[#DFDCD0] hover:bg-[#182215]/40'
-                }`}
-              />
-            ))}
           </div>
         </div>
 
