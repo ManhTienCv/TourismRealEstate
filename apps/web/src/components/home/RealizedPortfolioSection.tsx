@@ -53,27 +53,25 @@ export const RealizedPortfolioSection: React.FC = () => {
           </svg>
         </div>
 
-        <h2 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-tie-ink">
-          And we can build it for you on your land.
+        <h2 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-normal tracking-tight text-[#182215]">
+          ...and we work with you to make it yours.
         </h2>
-        <p className="mt-4 text-base sm:text-lg text-tie-muted font-sans max-w-2xl mx-auto">
-          From Catskills ledge outcrops to Hudson Valley heirloom orchards and Sonoma hillsides.
-        </p>
       </div>
 
-      {/* 2. Pure Sticky Deck Curtain Transitions (Exact HUTS behavior) */}
-      {/* Each project card is sticky top-0 h-screen. The subsequent cards wipe over it from bottom to top. */}
-      {/* When the last card finishes wiping in and the container ends, the entire card (background + title + pills + inset image) */}
-      {/* scrolls up intact into the Outro CTA ("See More Projects") without any bottom cutoff or coordinate jump! */}
+      {/* 2. Clip-path Wipe Transition with Fixed Content Overlay (Exact HUTS behavior) */}
+      {/* Each project is relative w-full h-screen overflow-hidden [clip-path:inset(0)] */}
+      {/* Inside, the content is fixed inset-0 so title + tags + inset image stand absolutely still and wipe at the boundary */}
       <div className="relative w-full">
         {FEATURED_REALIZED_PROJECTS.map((project, index) => {
           return (
             <div
               key={project.id}
               onClick={() => openProjectDetail(project.slug)}
-              className="sticky top-0 w-full h-screen h-[100dvh] select-none cursor-pointer overflow-hidden shadow-2xl"
+              className="relative w-full h-screen overflow-hidden [clip-path:inset(0)] select-none cursor-pointer"
               style={{
                 zIndex: index + 10,
+                clipPath: 'inset(0)',
+                WebkitClipPath: 'inset(0)',
               }}
             >
               {/* Background Layer: Full-bleed exterior photography */}
@@ -86,8 +84,8 @@ export const RealizedPortfolioSection: React.FC = () => {
               <div className="absolute inset-0 bg-black/20" />
               <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/20 to-transparent" />
 
-              {/* Inner Content Layer: Always anchored to card, perfectly centered at all screen sizes */}
-              <div className="relative w-[82vw] max-w-[1260px] h-full mx-auto pointer-events-none flex items-center justify-between gap-8 z-10">
+              {/* Fixed Content Layer: Locked in screen center across all projects */}
+              <div className="fixed inset-0 pointer-events-none flex items-center justify-between w-[82vw] max-w-[1260px] mx-auto z-10">
                 
                 {/* Left Column: Title & 1-line Glassmorphism Pill Tags */}
                 <div className="w-[50%] lg:w-[560px] pointer-events-auto text-white">
@@ -124,8 +122,8 @@ export const RealizedPortfolioSection: React.FC = () => {
         })}
       </div>
 
-      {/* 3. Outro CTA: Reusable Unified Pill Arrow Button (Relative z-20 so it flows directly below Project 3) */}
-      <div className="relative z-20 pt-14 pb-10 bg-[#FAF8F1] flex items-center justify-center">
+      {/* 3. Outro CTA: Reusable Unified Pill Arrow Button (Relative z-20) */}
+      <div className="relative z-20 pt-16 pb-12 bg-[#FAF8F1] flex items-center justify-center">
         <PillArrowButton
           label="See More Projects"
           onClick={() => smoothScrollTo('portfolio-section', { offset: -40, duration: 1.2 })}

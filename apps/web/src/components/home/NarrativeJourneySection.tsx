@@ -84,7 +84,7 @@ export const NarrativeJourneySection: React.FC = () => {
       {/* ========================================================= */}
       {/* 1. SECTION: "WE DO IT ACROSS THE COUNTRY" (Matching HUTS Image 5) */}
       {/* ========================================================= */}
-      <div className="max-w-[1060px] mx-auto px-6 md:px-12 relative">
+      <div className="max-w-[1140px] mx-auto px-6 md:px-12 relative">
 
         {/* TOP WHIMSICAL LOOPY ARROW (Exact Match to HUTS Sample Image 5) */}
         {/* Positioned gracefully above the right column headline, pointing down into the section */}
@@ -117,7 +117,7 @@ export const NarrativeJourneySection: React.FC = () => {
           </svg>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 items-center gap-10 lg:gap-14 mb-2 sm:mb-4">
+        <div className="grid grid-cols-1 lg:grid-cols-12 items-center gap-12 max-w-[1140px] mx-auto py-16 lg:py-20">
           
           {/* LEFT: DRAGGABLE PHYSICS PHOTO STACK */}
           <div className="lg:col-span-6 flex justify-center">
