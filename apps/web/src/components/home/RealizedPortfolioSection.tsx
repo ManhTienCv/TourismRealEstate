@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useConfiguratorStore } from '../../store/useConfiguratorStore';
 import { smoothScrollTo } from '../../utils/smoothScroll';
 import { PillArrowButton } from '../common/PillArrowButton';
@@ -34,6 +34,48 @@ const FEATURED_REALIZED_PROJECTS = [
 export const RealizedPortfolioSection: React.FC = () => {
   const { openProjectDetail } = useConfiguratorStore();
 
+  const firstProjectRef = useRef<HTMLDivElement>(null);
+  const lastProjectRef = useRef<HTMLDivElement>(null);
+
+  // Track boundaries to seamlessly switch between fixed viewport alignment and attached flow
+  const [isFirstEntering, setIsFirstEntering] = useState(false);
+  const [isLastExiting, setIsLastExiting] = useState(false);
+
+  useEffect(() => {
+    let ticking = false;
+
+    const checkBounds = () => {
+      if (firstProjectRef.current) {
+        const rect0 = firstProjectRef.current.getBoundingClientRect();
+        const firstEntering = rect0.top > 0;
+        setIsFirstEntering((prev) => (prev !== firstEntering ? firstEntering : prev));
+      }
+
+      if (lastProjectRef.current) {
+        const rectLast = lastProjectRef.current.getBoundingClientRect();
+        // When the last project reaches top <= 0, it has finished wiping in and begins scrolling up into "See More Projects"
+        const lastExiting = rectLast.top <= 0;
+        setIsLastExiting((prev) => (prev !== lastExiting ? lastExiting : prev));
+      }
+      ticking = false;
+    };
+
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(checkBounds);
+        ticking = true;
+      }
+    };
+
+    checkBounds();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+    };
+  }, []);
+
   return (
     <section id="portfolio-section" className="relative w-full bg-[#FAF8F1]">
       
@@ -63,62 +105,79 @@ export const RealizedPortfolioSection: React.FC = () => {
 
       {/* 2. Clip-path Wipe Transition with Fixed Content Overlay (Sticky Curtain Reveal) */}
       <div className="relative w-full">
-        {FEATURED_REALIZED_PROJECTS.map((project, index) => (
-          <div
-            key={project.id}
-            onClick={() => openProjectDetail(project.slug)}
-            className="relative w-full h-screen overflow-hidden rounded-none select-none cursor-pointer group [clip-path:inset(0)]"
-            style={{
-              zIndex: index + 1,
-              clipPath: 'inset(0)',
-              WebkitClipPath: 'inset(0)',
-            }}
-          >
-            {/* Background Layer: Full-bleed background image with subtle dark overlay */}
-            <img
-              src={project.exteriorImage}
-              alt={project.title.replace('\n', ' ')}
-              className="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-700 ease-out"
-              loading="lazy"
-            />
-            <div className="absolute inset-0 bg-black/20" />
-            <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/20 to-transparent" />
+        {FEATURED_REALIZED_PROJECTS.map((project, index) => {
+          const isFirst = index === 0;
+          const isLast = index === FEATURED_REALIZED_PROJECTS.length - 1;
 
-            {/* Fixed Inner Content: Stays locked in exact same viewport position, sliced cleanly by clip-path */}
-            <div className="fixed inset-0 pointer-events-none flex items-center justify-between max-w-7xl mx-auto px-8 md:px-16">
-              
-              {/* Left Column: Title & Glassmorphism Pill Tags */}
-              <div className="w-5/12 pointer-events-auto text-white">
-                <h3 className="font-serif text-5xl md:text-6xl lg:text-7xl leading-[1.1] tracking-tight whitespace-pre-line mb-6 drop-shadow-md">
-                  {project.title}
-                </h3>
-                <div className="flex flex-wrap items-center gap-2">
-                  {project.pills.map((pill, pIdx) => (
-                    <span
-                      key={pIdx}
-                      className="px-3.5 py-1.5 text-xs font-medium rounded-full bg-white/15 backdrop-blur-md border border-white/20 text-white shadow-sm"
-                    >
-                      {pill}
-                    </span>
-                  ))}
+          // Positioning logic:
+          // - While entering Project 0: attached to Project 0 (absolute)
+          // - During transition between projects: pinned to viewport center (fixed) for seamless curtain wipe
+          // - When scrolling out of Project 2 towards "See More Projects": attached to Project 2 (absolute) so card & text float up intact
+          let positionClass = 'fixed inset-0';
+          if (isFirst && isFirstEntering) {
+            positionClass = 'absolute inset-0';
+          } else if (isLast && isLastExiting) {
+            positionClass = 'absolute inset-0';
+          }
+
+          return (
+            <div
+              key={project.id}
+              ref={isFirst ? firstProjectRef : isLast ? lastProjectRef : undefined}
+              onClick={() => openProjectDetail(project.slug)}
+              className="relative w-full h-screen overflow-hidden rounded-none select-none cursor-pointer [clip-path:inset(0)]"
+              style={{
+                zIndex: index + 1,
+                clipPath: 'inset(0)',
+                WebkitClipPath: 'inset(0)',
+              }}
+            >
+              {/* Background Layer: Full-bleed background image with subtle dark overlay (NO hover scale) */}
+              <img
+                src={project.exteriorImage}
+                alt={project.title.replace('\n', ' ')}
+                className="absolute inset-0 w-full h-full object-cover"
+                loading="lazy"
+              />
+              <div className="absolute inset-0 bg-black/20" />
+              <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/20 to-transparent" />
+
+              {/* Inner Content: Perfectly aligned across projects, stays rock-solid on hover */}
+              <div className={`${positionClass} w-full pointer-events-none flex items-center justify-between max-w-7xl mx-auto px-8 md:px-16`}>
+                
+                {/* Left Column: Title & Glassmorphism Pill Tags (Static, no hover displacement) */}
+                <div className="w-5/12 pointer-events-auto text-white">
+                  <h3 className="font-serif text-5xl md:text-6xl lg:text-7xl leading-[1.1] tracking-tight whitespace-pre-line mb-6 drop-shadow-md">
+                    {project.title}
+                  </h3>
+                  <div className="flex flex-wrap items-center gap-2">
+                    {project.pills.map((pill, pIdx) => (
+                      <span
+                        key={pIdx}
+                        className="px-3.5 py-1.5 text-xs font-medium rounded-full bg-white/15 backdrop-blur-md border border-white/20 text-white shadow-sm"
+                      >
+                        {pill}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-              </div>
 
-              {/* Right Column: Compact Inset Image with Generous Breathing Room */}
-              <div className="w-6/12 max-w-[572px] pointer-events-auto">
-                <div className="w-full aspect-[16/10] rounded-2xl overflow-hidden shadow-2xl bg-neutral-900 group-hover:scale-[1.01] transition-transform duration-500 ease-out">
-                  <img
-                    src={project.interiorImage}
-                    alt={`${project.title.replace('\n', ' ')} interior`}
-                    className="w-full h-full object-cover"
-                    loading="lazy"
-                  />
+                {/* Right Column: Inset Image (Completely static coordinates on hover, zero jitter) */}
+                <div className="w-6/12 max-w-[572px] pointer-events-auto">
+                  <div className="w-full aspect-[16/10] rounded-2xl overflow-hidden shadow-2xl bg-neutral-900">
+                    <img
+                      src={project.interiorImage}
+                      alt={`${project.title.replace('\n', ' ')} interior`}
+                      className="w-full h-full object-cover"
+                      loading="lazy"
+                    />
+                  </div>
                 </div>
-              </div>
 
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* 3. Outro CTA: Reusable Unified Pill Arrow Button */}
