@@ -88,7 +88,7 @@ export const NarrativeJourneySection: React.FC = () => {
       <div className="max-w-[1140px] mx-auto px-6 md:px-12 relative">
 
         {/* Hand-drawn Double-Loop Arrow (Transition from Archetype cards above) */}
-        <div className="flex justify-center lg:justify-start lg:pl-[24%] xl:pl-[26%] -mb-8 sm:-mb-12 pointer-events-none z-20">
+        <div className="flex justify-center items-center w-full -mb-6 sm:-mb-10 pointer-events-none z-20">
           <DoubleLoopArrow />
         </div>
 

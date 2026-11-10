@@ -4,17 +4,21 @@ import { motion } from 'framer-motion';
 export interface DoubleLoopArrowProps {
   className?: string;
   strokeColor?: string;
+  width?: number | string;
+  height?: number | string;
 }
 
 export const DoubleLoopArrow: React.FC<DoubleLoopArrowProps> = ({
   className = '',
   strokeColor = '#4B6B3B',
+  width = 220,
+  height = 198,
 }) => {
   return (
     <svg
-      width="200"
-      height="180"
-      viewBox="0 0 200 180"
+      width={width}
+      height={height}
+      viewBox="-12 0 200 180"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={`overflow-visible select-none pointer-events-none ${className}`}
