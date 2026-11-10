@@ -80,7 +80,7 @@ export const NarrativeJourneySection: React.FC = () => {
   };
 
   return (
-    <section id="narrative-section" className="relative pt-6 sm:pt-8 pb-4 sm:pb-6 bg-[#FAF8F1] overflow-visible select-none">
+    <section id="narrative-section" className="relative pt-0 pb-4 sm:pb-6 bg-[#FAF8F1] overflow-visible select-none">
       
       {/* ========================================================= */}
       {/* 1. SECTION: "WE DO IT ACROSS THE COUNTRY" (Matching HUTS Image 5) */}
@@ -88,7 +88,7 @@ export const NarrativeJourneySection: React.FC = () => {
       <div className="max-w-[1140px] mx-auto px-6 md:px-12 relative">
 
         {/* Hand-drawn Double-Loop Arrow (Transition from Archetype cards above) */}
-        <div className="flex justify-center items-center w-full -mb-6 sm:-mb-10 pointer-events-none z-20">
+        <div className="flex justify-center items-center w-full -mt-24 sm:-mt-32 md:-mt-40 lg:-mt-44 -mb-6 sm:-mb-8 pointer-events-none z-20">
           <DoubleLoopArrow />
         </div>
 
