@@ -11,23 +11,23 @@ export interface DoubleLoopArrowProps {
 export const DoubleLoopArrow: React.FC<DoubleLoopArrowProps> = ({
   className = '',
   strokeColor = '#4B6B3B',
-  width = 280,
-  height = 250,
+  width = 180,
+  height = 200,
 }) => {
   return (
     <svg
       width={width}
       height={height}
-      viewBox="0 0 240 210"
+      viewBox="0 0 180 200"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={`overflow-visible select-none pointer-events-none ${className}`}
     >
-      {/* Thân mũi tên uốn lượn 2 vòng xoắn (Scroll path drawing animation) */}
+      {/* Thân mũi tên: đuôi móc nhẹ + 2 vòng xoắn lệch chuẩn 1:1 HUTS */}
       <motion.path
-        d="M 42 8 C 68 26, 96 40, 114 54 C 124 66, 104 72, 108 58 C 112 43, 140 50, 142 90 C 144 116, 120 120, 123 136 C 125 148, 144 148, 148 136 C 152 122, 172 140, 175 188"
+        d="M 21 13 C 22 28, 62 38, 88 58 C 98 66, 92 80, 82 76 C 73 72, 75 55, 92 56 C 112 57, 123 78, 122 108 C 121 130, 110 144, 102 139 C 94 134, 96 116, 118 116 C 142 116, 155 140, 152 181"
         stroke={strokeColor}
-        strokeWidth="2.2"
+        strokeWidth="1.8"
         strokeLinecap="round"
         strokeLinejoin="round"
         initial={{ pathLength: 0, opacity: 0 }}
@@ -35,11 +35,11 @@ export const DoubleLoopArrow: React.FC<DoubleLoopArrowProps> = ({
         viewport={{ once: true, amount: 0.15 }}
         transition={{ duration: 1.15, ease: 'easeInOut' }}
       />
-      {/* Đầu mũi tên hướng xuống (Hiển thị mượt mà khi thân vẽ xong) */}
+      {/* Đầu mũi tên chữ V mở bất đối xứng tự nhiên */}
       <motion.path
-        d="M 166 175 C 171 182, 174 186, 175 190 C 177 185, 181 181, 186 177"
+        d="M 144 164 C 148 170, 151 176, 152 182 C 156 175, 161 169, 168 166"
         stroke={strokeColor}
-        strokeWidth="2.2"
+        strokeWidth="1.8"
         strokeLinecap="round"
         strokeLinejoin="round"
         initial={{ pathLength: 0, opacity: 0 }}

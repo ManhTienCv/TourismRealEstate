@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 import { useConfiguratorStore } from '../../store/useConfiguratorStore';
 import { smoothScrollTo, getLenis } from '../../utils/smoothScroll';
 import { PillArrowButton } from '../common/PillArrowButton';
@@ -113,29 +114,39 @@ export const RealizedPortfolioSection: React.FC = () => {
       
       {/* 1. Intro Editorial Header on Cream Background */}
       <div className="py-20 max-w-[1584px] mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        {/* Hand-drawn Green Wavy Dashed Calligraphy Arrow */}
-        <div className="flex justify-center -mt-8 mb-6 pointer-events-none">
+        {/* Hand-drawn Green 2-Loop Arrow matching HUTS */}
+        <div className="flex justify-center -mt-8 sm:-mt-10 mb-6 pointer-events-none">
           <svg
-            className="w-14 sm:w-16 h-24 sm:h-28 text-[#4A772F] overflow-visible select-none"
-            viewBox="0 0 60 120"
+            width="180"
+            height="200"
+            viewBox="0 0 180 200"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
+            className="w-[140px] sm:w-[160px] md:w-[180px] h-auto overflow-visible select-none pointer-events-none"
           >
-            {/* Gracefully undulating S-curve dashed path */}
-            <path
-              d="M 28 4 C 46 24, 48 44, 34 60 C 18 76, 20 92, 32 106"
-              stroke="#4A772F"
-              strokeWidth="2.4"
-              strokeLinecap="round"
-              strokeDasharray="5 4.5"
-            />
-            {/* Crisp downward pointing arrowhead */}
-            <path
-              d="M 24 94 L 32 108 L 40 94"
-              stroke="#4A772F"
-              strokeWidth="2.4"
+            {/* Thân mũi tên: đuôi móc nhẹ + 2 vòng xoắn lệch */}
+            <motion.path
+              d="M 21 13 C 22 28, 62 38, 88 58 C 98 66, 92 80, 82 76 C 73 72, 75 55, 92 56 C 112 57, 123 78, 122 108 C 121 130, 110 144, 102 139 C 94 134, 96 116, 118 116 C 142 116, 155 140, 152 181"
+              stroke="#4B6B3B"
+              strokeWidth="1.8"
               strokeLinecap="round"
               strokeLinejoin="round"
+              initial={{ pathLength: 0, opacity: 0 }}
+              whileInView={{ pathLength: 1, opacity: 1 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 1.1, ease: 'easeInOut' }}
+            />
+            {/* Đầu mũi tên chữ V mở bất đối xứng tự nhiên */}
+            <motion.path
+              d="M 144 164 C 148 170, 151 176, 152 182 C 156 175, 161 169, 168 166"
+              stroke="#4B6B3B"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              initial={{ pathLength: 0, opacity: 0 }}
+              whileInView={{ pathLength: 1, opacity: 1 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.35, delay: 0.85, ease: 'easeOut' }}
             />
           </svg>
         </div>
