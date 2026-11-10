@@ -46,7 +46,7 @@ export const Footer: React.FC = () => {
   };
 
   return (
-    <footer className="relative z-10 -mt-8 w-full bg-[#0E2D0B] text-[#FAF8F1] rounded-t-[28px] pt-14 pb-10 px-8 md:px-16 overflow-hidden select-none">
+    <footer className="relative z-20 -mt-14 w-full bg-[#0E2D0B] text-[#FAF8F1] rounded-t-[28px] pt-14 pb-10 px-8 md:px-16 overflow-hidden select-none">
       <div className="max-w-[1240px] mx-auto">
         
         {/* Main Footer Grid: Logo Left (Col-4) + 4 Menu Columns Right (Col-8) */}

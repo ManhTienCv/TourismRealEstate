@@ -1,12 +1,27 @@
-import React from 'react';
+import React, { useRef } from 'react';
+import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { useConfiguratorStore } from '../../store/useConfiguratorStore';
 
 export const PreFooterBanner: React.FC = () => {
+  const containerRef = useRef<HTMLElement>(null);
   const { openConfigurator } = useConfiguratorStore();
 
+  // Scroll-linked spring parallax: banner bounces gently behind footer top edge
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ['start end', 'end 70%'],
+  });
+
+  const rawY = useTransform(scrollYProgress, [0, 1], [50, -10]);
+  const y = useSpring(rawY, { stiffness: 130, damping: 20, mass: 0.6 });
+
   return (
-    <section className="w-full bg-[#CFE87B] text-[#182215] rounded-t-[28px] pt-10 pb-16 md:pt-12 md:pb-20 px-8 md:px-16 overflow-hidden select-none">
-      <div className="max-w-[1240px] mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
+    <section ref={containerRef} className="relative w-full z-10">
+      <motion.div
+        style={{ y }}
+        className="w-full bg-[#CBE282] text-[#182215] rounded-t-[28px] pt-10 pb-24 md:pt-12 md:pb-28 px-8 md:px-16 overflow-hidden select-none"
+      >
+        <div className="max-w-[1240px] mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
         
         {/* Left: Whimsical Daydreaming Character + Editorial Headline */}
         <div className="flex items-center gap-8 md:gap-10 text-center md:text-left">
@@ -73,7 +88,7 @@ export const PreFooterBanner: React.FC = () => {
           </div>
 
           {/* Editorial Headline */}
-          <h3 className="font-serif text-[32px] md:text-[40px] leading-[1.1] tracking-tight text-[#182215] font-normal">
+          <h3 className="font-serif font-normal text-[34px] md:text-[42px] leading-[1.08] tracking-[-0.02em] text-[#182215]">
             Let’s find that place
             <br />
             you’ve been dreaming
@@ -85,17 +100,21 @@ export const PreFooterBanner: React.FC = () => {
         {/* Right: Signature HUTS Dual Button ("Get Started" Pill + Arrow Circle) */}
         <div
           onClick={() => openConfigurator()}
-          className="group inline-flex items-center gap-1.5 cursor-pointer select-none shrink-0"
+          className="group inline-flex items-center gap-1 cursor-pointer select-none shrink-0"
         >
           {/* Pill text */}
-          <div className="px-7 py-3.5 rounded-full bg-[#FAF8F1] text-[#182215] text-xs md:text-sm font-medium transition-colors duration-300 group-hover:bg-[#3B6624] group-hover:text-[#FAF8F1]">
-            Get Started
+          <div className="relative overflow-hidden h-[42px] px-6 rounded-full bg-[#FAF8F1] text-[#182215] text-[13px] font-medium flex items-center justify-center transition-colors duration-300">
+            <span className="absolute inset-0 bg-[#3F6628] translate-y-full -translate-x-1/4 rotate-12 group-hover:translate-y-0 group-hover:translate-x-0 group-hover:rotate-0 scale-150 transition-transform duration-300 ease-out rounded-full pointer-events-none" />
+            <span className="relative z-10 transition-colors duration-300 group-hover:text-[#FAF8F1]">
+              Get Started
+            </span>
           </div>
 
           {/* Circle arrow */}
-          <div className="w-11 h-11 rounded-full bg-[#FAF8F1] text-[#182215] flex items-center justify-center transition-all duration-300">
+          <div className="relative overflow-hidden w-[42px] h-[42px] rounded-full bg-[#FAF8F1] text-[#182215] flex items-center justify-center transition-colors duration-300">
+            <span className="absolute inset-0 bg-[#3F6628] translate-y-full -translate-x-1/4 rotate-12 group-hover:translate-y-0 group-hover:translate-x-0 group-hover:rotate-0 scale-150 transition-transform duration-300 ease-out rounded-full pointer-events-none" />
             <svg
-              className="w-4 h-4 transition-transform duration-300 group-hover:-rotate-45"
+              className="relative z-10 w-4 h-4 transition-all duration-300 group-hover:text-[#FAF8F1] group-hover:-rotate-45"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -109,7 +128,8 @@ export const PreFooterBanner: React.FC = () => {
           </div>
         </div>
 
-      </div>
+        </div>
+      </motion.div>
     </section>
   );
 };
