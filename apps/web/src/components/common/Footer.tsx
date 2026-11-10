@@ -46,36 +46,36 @@ export const Footer: React.FC = () => {
   };
 
   return (
-    <footer className="bg-[#0E370B] text-[#F8F6EA] rounded-t-[36px] sm:rounded-t-[48px] pt-16 sm:pt-20 pb-12 sm:pb-16 overflow-hidden">
-      <div className="max-w-[1584px] mx-auto px-6 sm:px-10 lg:px-16">
+    <footer className="relative z-10 -mt-8 w-full bg-[#0E2D0B] text-[#FAF8F1] rounded-t-[28px] pt-14 pb-10 px-8 md:px-16 overflow-hidden select-none">
+      <div className="max-w-[1240px] mx-auto">
         
-        {/* Main Footer Row: Big TIE Wordmark (Left) + 4 Categorized Columns (Right) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+        {/* Main Footer Grid: Logo Left (Col-4) + 4 Menu Columns Right (Col-8) */}
+        <div className="grid grid-cols-1 md:grid-cols-12 items-start gap-10 mb-14">
           
-          {/* Left Column: Massive Bold TIE Wordmark */}
-          <div className="lg:col-span-3">
+          {/* Left Column: TIE Logo aligned with the top of menu columns */}
+          <div className="md:col-span-4 flex items-start">
             <span
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className="font-sans font-black text-7xl sm:text-8xl lg:text-[104px] tracking-tight text-[#F8F6EA] leading-none select-none cursor-pointer block hover:opacity-90 transition-opacity"
+              className="font-sans font-black text-5xl md:text-[64px] tracking-tight leading-none text-[#FAF8F1] -mt-1 select-none cursor-pointer block hover:opacity-90 transition-opacity"
             >
               TIE
             </span>
           </div>
 
-          {/* Right Area: 4 High-Fidelity Categorized Columns */}
-          <div className="lg:col-span-9 grid grid-cols-2 md:grid-cols-4 gap-8 sm:gap-10 lg:gap-12 text-left">
+          {/* Right: 4 High-Fidelity Categorized Menu Columns */}
+          <div className="md:col-span-8 grid grid-cols-2 sm:grid-cols-4 gap-8 items-start text-left">
             
             {/* COLUMN 1: Housing Solutions */}
-            <div className="space-y-4">
-              <h4 className="font-sans text-xs sm:text-sm font-semibold tracking-wide text-[#F8F6EA]/75">
+            <div className="space-y-1">
+              <h4 className="font-sans text-[11px] font-medium text-[#CFE87B]/80 tracking-wide mb-3">
                 Housing Solutions
               </h4>
-              <ul className="space-y-3 font-serif text-[17px] sm:text-[18px] text-[#F8F6EA] leading-snug">
+              <ul className="space-y-0.5">
                 {FOOTER_SOLUTIONS.map((item) => (
                   <li key={item.slug}>
                     <button
                       onClick={() => handleSolutionClick(item.slug)}
-                      className="hover:text-[#D2E2B0] transition-colors text-left"
+                      className="font-sans text-[13px] md:text-[14px] font-normal text-[#FAF8F1]/90 hover:text-[#CFE87B] transition-colors block py-1 text-left"
                     >
                       {item.label}
                     </button>
@@ -85,16 +85,16 @@ export const Footer: React.FC = () => {
             </div>
 
             {/* COLUMN 2: Standards */}
-            <div className="space-y-4">
-              <h4 className="font-sans text-xs sm:text-sm font-semibold tracking-wide text-[#F8F6EA]/75">
+            <div className="space-y-1">
+              <h4 className="font-sans text-[11px] font-medium text-[#CFE87B]/80 tracking-wide mb-3">
                 Standards
               </h4>
-              <ul className="space-y-3 font-serif text-[17px] sm:text-[18px] text-[#F8F6EA] leading-snug">
+              <ul className="space-y-0.5">
                 {FOOTER_STANDARDS.map((item) => (
                   <li key={item.label}>
                     <button
                       onClick={() => handleStandardClick(item.slug)}
-                      className="hover:text-[#D2E2B0] transition-colors text-left"
+                      className="font-sans text-[13px] md:text-[14px] font-normal text-[#FAF8F1]/90 hover:text-[#CFE87B] transition-colors block py-1 text-left"
                     >
                       {item.label}
                     </button>
@@ -104,15 +104,15 @@ export const Footer: React.FC = () => {
             </div>
 
             {/* COLUMN 3: Company */}
-            <div className="space-y-4">
-              <h4 className="font-sans text-xs sm:text-sm font-semibold tracking-wide text-[#F8F6EA]/75">
+            <div className="space-y-1">
+              <h4 className="font-sans text-[11px] font-medium text-[#CFE87B]/80 tracking-wide mb-3">
                 Company
               </h4>
-              <ul className="space-y-3 font-serif text-[17px] sm:text-[18px] text-[#F8F6EA] leading-snug">
+              <ul className="space-y-0.5">
                 <li>
                   <button
                     onClick={() => handleScrollTo('process-section')}
-                    className="hover:text-[#D2E2B0] transition-colors text-left"
+                    className="font-sans text-[13px] md:text-[14px] font-normal text-[#FAF8F1]/90 hover:text-[#CFE87B] transition-colors block py-1 text-left"
                   >
                     The TIE Approach
                   </button>
@@ -120,7 +120,7 @@ export const Footer: React.FC = () => {
                 <li>
                   <button
                     onClick={() => handleScrollTo('portfolio-section')}
-                    className="hover:text-[#D2E2B0] transition-colors text-left"
+                    className="font-sans text-[13px] md:text-[14px] font-normal text-[#FAF8F1]/90 hover:text-[#CFE87B] transition-colors block py-1 text-left"
                   >
                     Portfolio
                   </button>
@@ -128,16 +128,16 @@ export const Footer: React.FC = () => {
                 <li>
                   <button
                     onClick={handleFieldReportClick}
-                    className="hover:text-[#D2E2B0] transition-colors text-left inline-flex items-center space-x-2"
+                    className="font-sans text-[13px] md:text-[14px] font-normal text-[#FAF8F1]/90 hover:text-[#CFE87B] transition-colors py-1 text-left inline-flex items-center space-x-1.5"
                   >
                     <span>Field Report</span>
-                    <span className="w-2 h-2 rounded-full bg-[#A8C86D] animate-pulse" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#CFE87B] animate-pulse" />
                   </button>
                 </li>
                 <li>
                   <button
                     onClick={() => openConfigurator()}
-                    className="hover:text-[#D2E2B0] transition-colors text-left"
+                    className="font-sans text-[13px] md:text-[14px] font-normal text-[#FAF8F1]/90 hover:text-[#CFE87B] transition-colors block py-1 text-left"
                   >
                     Get Started
                   </button>
@@ -145,17 +145,17 @@ export const Footer: React.FC = () => {
               </ul>
             </div>
 
-            {/* COLUMN 4: Contact & Resources */}
-            <div className="space-y-6">
-              <div className="space-y-3">
-                <h4 className="font-sans text-xs sm:text-sm font-semibold tracking-wide text-[#F8F6EA]/75">
+            {/* COLUMN 4: Resources & Contact */}
+            <div className="space-y-5">
+              <div className="space-y-1">
+                <h4 className="font-sans text-[11px] font-medium text-[#CFE87B]/80 tracking-wide mb-3">
                   Resources
                 </h4>
-                <ul className="space-y-3 font-serif text-[17px] sm:text-[18px] text-[#F8F6EA] leading-snug">
+                <ul className="space-y-0.5">
                   <li>
                     <button
                       onClick={() => handleStandardClick('what-is-a-standard')}
-                      className="hover:text-[#D2E2B0] transition-colors text-left"
+                      className="font-sans text-[13px] md:text-[14px] font-normal text-[#FAF8F1]/90 hover:text-[#CFE87B] transition-colors block py-1 text-left"
                     >
                       Standards Guide
                     </button>
@@ -163,7 +163,7 @@ export const Footer: React.FC = () => {
                   <li>
                     <button
                       onClick={() => openConfigurator()}
-                      className="hover:text-[#D2E2B0] transition-colors text-left"
+                      className="font-sans text-[13px] md:text-[14px] font-normal text-[#FAF8F1]/90 hover:text-[#CFE87B] transition-colors block py-1 text-left"
                     >
                       Cost Pro-Forma
                     </button>
@@ -171,15 +171,15 @@ export const Footer: React.FC = () => {
                 </ul>
               </div>
 
-              <div className="space-y-3">
-                <h4 className="font-sans text-xs sm:text-sm font-semibold tracking-wide text-[#F8F6EA]/75">
+              <div className="space-y-1">
+                <h4 className="font-sans text-[11px] font-medium text-[#CFE87B]/80 tracking-wide mb-3">
                   Contact
                 </h4>
-                <ul className="space-y-3 font-serif text-[17px] sm:text-[18px] text-[#F8F6EA] leading-snug">
+                <ul className="space-y-0.5">
                   <li>
                     <a
                       href="mailto:hello@tie.com"
-                      className="hover:text-[#D2E2B0] transition-colors text-left block"
+                      className="font-sans text-[13px] md:text-[14px] font-normal text-[#FAF8F1]/90 hover:text-[#CFE87B] transition-colors block py-1 text-left"
                     >
                       hello@tie.com
                     </a>
@@ -187,7 +187,7 @@ export const Footer: React.FC = () => {
                   <li>
                     <button
                       onClick={() => openConfigurator()}
-                      className="hover:text-[#D2E2B0] transition-colors text-left"
+                      className="font-sans text-[13px] md:text-[14px] font-normal text-[#FAF8F1]/90 hover:text-[#CFE87B] transition-colors block py-1 text-left"
                     >
                       For Partners
                     </button>
@@ -195,7 +195,7 @@ export const Footer: React.FC = () => {
                   <li>
                     <button
                       onClick={() => openConfigurator()}
-                      className="hover:text-[#D2E2B0] transition-colors text-left"
+                      className="font-sans text-[13px] md:text-[14px] font-normal text-[#FAF8F1]/90 hover:text-[#CFE87B] transition-colors block py-1 text-left"
                     >
                       Newsletter
                     </button>
@@ -207,28 +207,31 @@ export const Footer: React.FC = () => {
           </div>
         </div>
 
-        {/* Bottom Baseline Bar: Legal Links + 6 Social Icons */}
-        <div className="mt-16 sm:mt-24 pt-8 border-t border-[#F8F6EA]/15 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 text-sm">
+        {/* Bottom Bar: Copyright & Terms Left + Social Pills Right */}
+        <div className="pt-6 border-t border-[#FAF8F1]/10 grid grid-cols-1 md:grid-cols-12 items-center gap-6 text-[11px] text-[#FAF8F1]/70">
           
-          <div className="flex items-start space-x-8 sm:space-x-12 text-[#F8F6EA]/75 text-xs sm:text-sm">
-            <span className="font-sans pt-0.5">©2026 TIE</span>
-            <div className="flex flex-col space-y-1 font-sans">
+          <div className="md:col-span-4 flex items-center gap-6">
+            <span className="font-sans">©2026 TIE</span>
+            <div className="flex items-center gap-2 font-sans">
               <button
                 onClick={() => handleScrollTo('solutions-section')}
-                className="hover:text-[#D2E2B0] transition-colors text-left"
+                className="hover:text-[#CFE87B] transition-colors text-left"
               >
                 Privacy Policy
               </button>
+              <span className="text-[#FAF8F1]/30">/</span>
               <button
                 onClick={() => handleScrollTo('solutions-section')}
-                className="hover:text-[#D2E2B0] transition-colors text-left"
+                className="hover:text-[#CFE87B] transition-colors text-left"
               >
                 Terms of Use
               </button>
             </div>
           </div>
 
-          <FooterSocialLinks />
+          <div className="md:col-span-8 flex items-center gap-3">
+            <FooterSocialLinks />
+          </div>
 
         </div>
 
