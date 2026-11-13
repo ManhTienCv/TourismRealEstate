@@ -55,16 +55,15 @@ export const Archetype3DCard: React.FC<ArchetypeCardProps> = ({ sol, onLearnMore
       onMouseEnter={handleMouseEnterOrMove}
       onMouseMove={handleMouseEnterOrMove}
       onMouseLeave={handleMouseLeave}
-      className={`shrink-0 snap-start w-[320px] md:w-[395px] h-[440px] md:h-[535px] [perspective:1200px] select-none rounded-[17.5px] ${
+      className={`shrink-0 w-[320px] md:w-[395px] h-[440px] md:h-[535px] [perspective:1200px] select-none rounded-[17.5px] ${
         isScrolling ? 'pointer-events-none' : ''
       }`}
-      style={{ perspective: '1200px' }}
     >
       {/* 3D Flippable Inner Card Container */}
       <div
-        className="relative w-full h-full [transform-style:preserve-3d] transition-transform duration-700 ease-out rounded-[17.5px]"
+        className="relative w-full h-full transition-transform duration-700 ease-out rounded-[17.5px]"
         style={{
-          transformStyle: 'preserve-3d',
+          transformStyle: isFlipped ? 'preserve-3d' : 'flat',
           transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
         }}
       >
@@ -84,7 +83,7 @@ export const Archetype3DCard: React.FC<ArchetypeCardProps> = ({ sol, onLearnMore
                     e.currentTarget.src = '/illustrations/multi-gen-compound.svg';
                   }
                 }}
-                className="w-[220px] h-[220px] md:w-[275px] md:h-[275px] object-contain select-none pointer-events-none drop-shadow-xs"
+                className="w-[220px] h-[220px] md:w-[275px] md:h-[275px] object-contain select-none pointer-events-none"
                 draggable={false}
               />
             ) : (
@@ -122,7 +121,7 @@ export const Archetype3DCard: React.FC<ArchetypeCardProps> = ({ sol, onLearnMore
               <img
                 src={AVAILABLE_ILLUSTRATIONS[sol.slug]}
                 alt={sol.title}
-                className="h-16 w-16 md:h-20 md:w-20 object-contain select-none pointer-events-none opacity-90 drop-shadow-xs"
+                className="h-16 w-16 md:h-20 md:w-20 object-contain select-none pointer-events-none opacity-90"
                 draggable={false}
               />
             ) : (

@@ -136,9 +136,9 @@ const StandardCardItem: React.FC<StandardCardItemProps> = ({ item, onPlanClick, 
         style={{ perspective: '1200px' }}
       >
         <div
-          className="relative w-full h-full [transform-style:preserve-3d] rounded-[17.5px] shadow-sm group-hover:shadow-md card-inner"
+          className="relative w-full h-full rounded-[17.5px] shadow-sm group-hover:shadow-md card-inner"
           style={{
-            transformStyle: 'preserve-3d',
+            transformStyle: isFlipped ? 'preserve-3d' : 'flat',
             transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
             transition: 'transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.125)',
           }}
@@ -212,12 +212,17 @@ export const StandardsCatalogGrid: React.FC = () => {
   const [isScrolling, setIsScrolling] = useState(false);
   const scrollTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Theo dõi sự kiện cuộn trang để hủy lật thẻ khi đang cuộn
+  // Theo dõi sự kiện cuộn trang để hủy lật thẻ khi đang cuộn (tránh re-render liên tục)
   useEffect(() => {
+    let scrolling = false;
     const handleScroll = () => {
-      setIsScrolling(true);
+      if (!scrolling) {
+        scrolling = true;
+        setIsScrolling(true);
+      }
       if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
       scrollTimeoutRef.current = setTimeout(() => {
+        scrolling = false;
         setIsScrolling(false);
       }, 150);
     };
@@ -265,8 +270,10 @@ export const StandardsCatalogGrid: React.FC = () => {
         {/* Sticky Horizontal Track */}
         <div className="w-full overflow-hidden">
           <motion.div
-            style={{ x, willChange: 'transform', transition: 'none' }}
-            className="flex gap-[17.5px] px-[31.4px] items-center shrink-0 w-max h-scroll-content"
+            style={{ x, transition: 'none' }}
+            className={`flex gap-[17.5px] px-[31.4px] items-center shrink-0 w-max h-scroll-content ${
+              isScrolling ? 'pointer-events-none' : ''
+            }`}
           >
             {STANDARDS_GALLERY.map((item) => (
               <StandardCardItem

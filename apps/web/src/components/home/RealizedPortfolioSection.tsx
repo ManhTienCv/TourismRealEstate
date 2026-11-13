@@ -48,6 +48,16 @@ export const RealizedPortfolioSection: React.FC = () => {
     let ticking = false;
 
     const checkBounds = () => {
+      // Tối ưu hóa: Bỏ qua tính toán reflow nếu section chưa ở gần viewport
+      const sectionEl = document.getElementById('portfolio-section');
+      if (sectionEl) {
+        const secRect = sectionEl.getBoundingClientRect();
+        if (secRect.bottom < -400 || secRect.top > window.innerHeight + 400) {
+          ticking = false;
+          return;
+        }
+      }
+
       // 1. First Project Entry Check
       if (firstProjectRef.current) {
         const rect0 = firstProjectRef.current.getBoundingClientRect();
@@ -95,18 +105,9 @@ export const RealizedPortfolioSection: React.FC = () => {
     window.addEventListener('scroll', handleScroll, { passive: true });
     window.addEventListener('resize', handleScroll);
 
-    // Also attach to Lenis scroll if active
-    const lenis = getLenis();
-    if (lenis) {
-      lenis.on('scroll', handleScroll);
-    }
-
     return () => {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('resize', handleScroll);
-      if (lenis) {
-        lenis.off('scroll', handleScroll);
-      }
     };
   }, []);
 

@@ -25,7 +25,8 @@ export const App: React.FC = () => {
   // Initialize Lenis Momentum / Inertia Scrolling (Matches Huts.com smooth luxury scroll physics)
   useEffect(() => {
     const lenis = new Lenis({
-      lerp: 0.08, // 0.08 = Silky smooth luxury momentum scroll
+      autoRaf: true, // Native high-precision RAF loop handled internally by Lenis
+      lerp: 0.12, // 0.12 = Snappy, instantaneous response on wheel/touchpad without floaty input lag
       wheelMultiplier: 1.0,
       smoothWheel: true,
       touchMultiplier: 1.5,
@@ -33,16 +34,7 @@ export const App: React.FC = () => {
 
     setLenis(lenis);
 
-    let rafId: number;
-    function raf(time: number) {
-      lenis.raf(time);
-      rafId = requestAnimationFrame(raf);
-    }
-
-    rafId = requestAnimationFrame(raf);
-
     return () => {
-      cancelAnimationFrame(rafId);
       lenis.destroy();
       setLenis(null);
     };
