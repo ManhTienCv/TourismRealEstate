@@ -55,7 +55,7 @@ export const Archetype3DCard: React.FC<ArchetypeCardProps> = ({ sol, onLearnMore
       onMouseEnter={handleMouseEnterOrMove}
       onMouseMove={handleMouseEnterOrMove}
       onMouseLeave={handleMouseLeave}
-      className={`shrink-0 snap-start w-[360px] md:w-[390px] h-[360px] md:h-[380px] [perspective:1200px] select-none rounded-[17.5px] ${
+      className={`shrink-0 snap-start w-[320px] md:w-[395px] h-[440px] md:h-[535px] [perspective:1200px] select-none rounded-[17.5px] ${
         isScrolling ? 'pointer-events-none' : ''
       }`}
       style={{ perspective: '1200px' }}
@@ -68,23 +68,23 @@ export const Archetype3DCard: React.FC<ArchetypeCardProps> = ({ sol, onLearnMore
           transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
         }}
       >
-        {/* FRONT SIDE: Crisp White Surface + Delicate Hairline Border (Matches HUTS Image 2) */}
+        {/* FRONT SIDE: Warm Cream Surface + Delicate Hairline Border (Matches HUTS 1:1) */}
         <div
-          className="absolute inset-0 [backface-visibility:hidden] rounded-[17.5px] bg-white border border-[#E7E2D6] p-6 md:p-7 flex flex-col justify-between items-center text-center shadow-[0_2px_12px_rgba(24,34,21,0.03)] transition-all duration-300"
+          className="absolute inset-0 [backface-visibility:hidden] rounded-[17.5px] bg-[#FAF7ED] border border-[#664A42]/15 hover:border-[#664A42]/40 pt-10 pb-9 px-6 flex flex-col items-center justify-between text-center transition-colors duration-200 cursor-pointer"
           style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }}
         >
-          {/* Character Line Art in Center (scaled neatly to preserve breathing room) */}
-          <div className="w-full h-[190px] md:h-[210px] flex items-center justify-center my-auto transition-transform duration-500">
+          {/* Character Line Art in Center (scaled to ~72% card width: 220px / md: 275px) */}
+          <div className="w-full flex-1 flex items-center justify-center">
             {AVAILABLE_ILLUSTRATIONS[sol.slug] ? (
               <img
                 src={AVAILABLE_ILLUSTRATIONS[sol.slug]}
                 alt={sol.title}
-                className="w-40 h-40 md:w-48 md:h-48 object-contain select-none pointer-events-none drop-shadow-xs"
+                className="w-[220px] h-[220px] md:w-[275px] md:h-[275px] object-contain select-none pointer-events-none drop-shadow-xs"
                 draggable={false}
               />
             ) : (
               CharacterIllustrations[sol.slug] || (
-                <div className="w-40 h-40 md:w-48 md:h-48 flex items-center justify-center text-[#2D4C23]">
+                <div className="w-[220px] h-[220px] md:w-[275px] md:h-[275px] flex items-center justify-center text-[#2D4C23]">
                   <svg className="w-32 h-32 stroke-current fill-none" viewBox="0 0 64 64">
                     <polygon points="12 44, 32 20, 52 44" strokeWidth="1.5" />
                     <rect x="24" y="32" width="16" height="12" strokeWidth="1.5" />
@@ -94,9 +94,9 @@ export const Archetype3DCard: React.FC<ArchetypeCardProps> = ({ sol, onLearnMore
             )}
           </div>
 
-          {/* Bottom Label (HUTS Card Title: 33px / 1.1 / -0.02em / #0C310A) */}
-          <div className="w-full pt-1 pb-1">
-            <h3 className="font-serif text-[26px] sm:text-[28px] md:text-[33px] font-normal text-[#0C310A] tracking-[-0.02em] text-center leading-[1.1]">
+          {/* Bottom Label (HUTS Card Title: 21px / md: 23px / 1.25 / #0C310A / font-serif) */}
+          <div className="w-full pt-2">
+            <h3 className="font-serif text-[21px] md:text-[23px] leading-[1.25] text-[#0C310A] text-center font-normal tracking-[-0.01em]">
               {sol.title}
             </h3>
           </div>
@@ -104,7 +104,7 @@ export const Archetype3DCard: React.FC<ArchetypeCardProps> = ({ sol, onLearnMore
 
         {/* BACK SIDE: Minimalist Details & Underline Link (Rotated 180deg) */}
         <div
-          className="absolute inset-0 [backface-visibility:hidden] rounded-[17.5px] bg-white border border-[#E7E2D6] p-6 sm:p-7 md:p-8 flex flex-col justify-between text-center shadow-[0_2px_12px_rgba(24,34,21,0.03)] transition-all duration-300"
+          className="absolute inset-0 [backface-visibility:hidden] rounded-[17.5px] bg-[#FAF7ED] border border-[#664A42]/15 hover:border-[#664A42]/40 pt-10 pb-9 px-6 flex flex-col justify-between items-center text-center transition-colors duration-200"
           style={{
             backfaceVisibility: 'hidden',
             WebkitBackfaceVisibility: 'hidden',
@@ -112,12 +112,12 @@ export const Archetype3DCard: React.FC<ArchetypeCardProps> = ({ sol, onLearnMore
           }}
         >
           {/* Top: Scaled Down Illustration */}
-          <div className="w-full flex items-center justify-center h-16 md:h-20 overflow-hidden shrink-0">
+          <div className="w-full flex items-center justify-center h-20 md:h-24 overflow-hidden shrink-0">
             {AVAILABLE_ILLUSTRATIONS[sol.slug] ? (
               <img
                 src={AVAILABLE_ILLUSTRATIONS[sol.slug]}
                 alt={sol.title}
-                className="h-14 w-14 md:h-18 md:w-18 object-contain select-none pointer-events-none opacity-90 drop-shadow-xs"
+                className="h-16 w-16 md:h-20 md:w-20 object-contain select-none pointer-events-none opacity-90 drop-shadow-xs"
                 draggable={false}
               />
             ) : (
@@ -128,11 +128,11 @@ export const Archetype3DCard: React.FC<ArchetypeCardProps> = ({ sol, onLearnMore
           </div>
 
           {/* Center: Title & Short Description */}
-          <div className="space-y-1.5 px-2 my-auto">
-            <h3 className="font-serif text-xl md:text-[24px] font-normal text-[#0C310A] tracking-[-0.02em] leading-[1.1]">
+          <div className="space-y-2 px-2 my-auto">
+            <h3 className="font-serif text-[21px] md:text-[23px] font-normal text-[#0C310A] tracking-[-0.01em] leading-[1.25]">
               {sol.title}
             </h3>
-            <p className="text-xs sm:text-[13px] text-[#664A42] font-sans leading-relaxed line-clamp-3 max-w-xs mx-auto">
+            <p className="text-xs sm:text-[13px] text-[#664A42] font-sans leading-relaxed line-clamp-4 max-w-xs mx-auto">
               {sol.description}
             </p>
           </div>
