@@ -94,10 +94,9 @@ const StandardCardItem: React.FC<StandardCardItemProps> = ({ item, onPlanClick, 
   }, [isScrolling]);
 
   const handleMouseEnterOrMove = () => {
-    // Nếu đang cuộn trang hoặc đã lật hoặc đang có timer chờ thì không làm gì
     if (isScrolling || isFlipped || hoverTimerRef.current) return;
 
-    // Hover Intent: Giữ chuột trên thẻ 200ms mới lật 3D
+    // Hover Intent: Giữ chuột trên thẻ 200ms mới lật 3D giống HUTS
     hoverTimerRef.current = setTimeout(() => {
       setIsFlipped(true);
       hoverTimerRef.current = null;
@@ -125,15 +124,14 @@ const StandardCardItem: React.FC<StandardCardItemProps> = ({ item, onPlanClick, 
   return (
     <div
       onClick={() => onPlanClick(item.slug)}
-      className="shrink-0 w-[360px] md:w-[390px] cursor-pointer select-none group"
+      className="shrink-0 w-[320px] md:w-[360px] lg:w-[390px] cursor-pointer select-none group"
     >
-      {/* Khung ảnh lật 3D: CHỈ lật phần khung ảnh (perspective: 1200px) */}
+      {/* Khung ảnh lật 3D: Thu gọn chiều cao chuẩn h-[300px] md:h-[340px] lg:h-[380px] */}
       <div
         onMouseEnter={handleMouseEnterOrMove}
         onMouseMove={handleMouseEnterOrMove}
         onMouseLeave={handleMouseLeave}
-        className="w-full h-[320px] md:h-[345px] [perspective:1200px] mb-4 select-none"
-        style={{ perspective: '1200px' }}
+        className="w-full h-[300px] md:h-[340px] lg:h-[380px] [perspective:1200px] select-none"
       >
         <div
           className="relative w-full h-full rounded-[17.5px] shadow-sm group-hover:shadow-md card-inner"
@@ -159,24 +157,23 @@ const StandardCardItem: React.FC<StandardCardItemProps> = ({ item, onPlanClick, 
 
           {/* MẶT SAU: Mô hình kiến trúc 3D Axonometric từ Sanity CDN + 2 Pill thông số Bed/Bath */}
           <div
-            className="absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)] w-full h-full bg-[#FAF8F1] border border-[#DFDCD0] rounded-[17.5px] p-5 relative flex items-center justify-center overflow-hidden"
+            className="absolute inset-0 [backface-visibility:hidden] rounded-[17.5px] overflow-hidden bg-[#F2EDE4] border border-[#DFDCD0] flex flex-col justify-between p-6"
             style={{
               backfaceVisibility: 'hidden',
               WebkitBackfaceVisibility: 'hidden',
               transform: 'rotateY(180deg)',
             }}
           >
-            {/* Hình vẽ mô hình kiến trúc 3D Axonometric từ Sanity CDN */}
-            <div className="w-[88%] h-[88%] flex items-center justify-center pointer-events-none select-none">
-              {item.axonImageUrl ? (
-                <img
-                  src={item.axonImageUrl}
-                  alt={`${item.cleanName} 3D Axonometric`}
-                  className="w-full h-full object-contain pointer-events-none select-none"
-                  loading="lazy"
-                  draggable={false}
-                />
-              ) : IsoComponent ? (
+            {/* Ảnh bản vẽ 3D Axonometric Sanity CDN */}
+            <div className="relative w-full flex-1 flex items-center justify-center p-2 overflow-hidden">
+              <img
+                src={item.axonImageUrl}
+                alt={`${item.cleanName} 3D Axonometric`}
+                className="w-full h-full object-contain pointer-events-none select-none drop-shadow-xs"
+                loading="lazy"
+                draggable={false}
+              />
+              {IsoComponent ? (
                 <IsoComponent className="w-full h-full object-contain pointer-events-none select-none" />
               ) : null}
             </div>
@@ -194,14 +191,16 @@ const StandardCardItem: React.FC<StandardCardItemProps> = ({ item, onPlanClick, 
         </div>
       </div>
 
-      {/* Dòng chữ tên mẫu nhà BÊN NGOÀI bên dưới khung lật: đổi màu xanh lá khi isFlipped === true */}
-      <h3
-        className={`font-serif text-[26px] sm:text-[28px] md:text-[33px] font-normal tracking-[-0.02em] leading-[1.1] transition-colors duration-300 ${
-          isFlipped ? 'text-[#5E8C31]' : 'text-[#0C310A]'
-        }`}
-      >
-        {item.cleanName}
-      </h3>
+      {/* Dòng chữ tên mẫu nhà BÊN NGOÀI bên dưới khung lật: Đảm bảo luôn hiển thị trọn vẹn trong 100vh */}
+      <div className="pt-3 pb-1">
+        <h3
+          className={`font-serif text-[24px] sm:text-[26px] md:text-[28px] font-normal tracking-[-0.02em] leading-[1.15] transition-colors duration-300 ${
+            isFlipped ? 'text-[#5E8C31]' : 'text-[#0C310A]'
+          }`}
+        >
+          {item.cleanName}
+        </h3>
+      </div>
     </div>
   );
 };
@@ -209,6 +208,8 @@ const StandardCardItem: React.FC<StandardCardItemProps> = ({ item, onPlanClick, 
 export const StandardsCatalogGrid: React.FC = () => {
   const { openPlanDetail } = useConfiguratorStore();
   const containerRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [maxTranslateX, setMaxTranslateX] = useState(0);
   const [isScrolling, setIsScrolling] = useState(false);
   const scrollTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -234,13 +235,36 @@ export const StandardsCatalogGrid: React.FC = () => {
     };
   }, []);
 
-  // Sticky Horizontal Scroll driven by vertical viewport scroll across 250vh
+  // Tính động quãng đường trượt ngang maxTranslateX bằng ResizeObserver trên trackRef
+  useEffect(() => {
+    const trackEl = trackRef.current;
+    if (!trackEl) return;
+
+    const updateDistance = () => {
+      const dist = Math.max(0, trackEl.scrollWidth - window.innerWidth + 64);
+      setMaxTranslateX(dist);
+    };
+
+    updateDistance();
+
+    const ro = new ResizeObserver(updateDistance);
+    ro.observe(trackEl);
+    window.addEventListener('resize', updateDistance);
+
+    return () => {
+      ro.disconnect();
+      window.removeEventListener('resize', updateDistance);
+    };
+  }, []);
+
+  // Sticky Horizontal Scroll driven by vertical viewport scroll across 320vh
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ['start start', 'end end'],
   });
 
-  const x = useTransform(scrollYProgress, [0, 1], ['0%', '-54%']);
+  // Ánh xạ scrollYProgress với khoảng nghỉ đầu (0.08) và cuối (0.92) để trượt mượt một chiều từ trái sang phải
+  const x = useTransform(scrollYProgress, [0.08, 0.92], [0, -maxTranslateX]);
 
   const handlePlanClick = (slug: string) => {
     const plan = SEED_STANDARD_PLANS.find((p) => p.slug === slug);
@@ -253,16 +277,16 @@ export const StandardsCatalogGrid: React.FC = () => {
     <section
       ref={containerRef}
       id="standards-section"
-      className="relative w-full h-[250vh] bg-[#FAF8F1]"
+      className="relative w-full h-[320vh] bg-[#FAF8F1]"
     >
-      <div className="sticky top-0 left-0 w-full h-screen overflow-hidden flex flex-col justify-center select-none pt-8 sm:pt-12 pb-4">
+      <div className="sticky top-0 left-0 w-full h-screen overflow-hidden flex flex-col justify-center select-none pt-16 pb-6 z-10">
         
-        {/* Section Header */}
-        <div className="text-center max-w-4xl mx-auto px-4 shrink-0">
-          <h2 className="font-serif text-[38px] sm:text-[44px] font-normal tracking-[-0.01em] text-[#0C310A] leading-[1.0] mb-3">
+        {/* Section Header: Thu gọn khoảng cách trên dưới để nằm gọn trong 100vh */}
+        <div className="text-center max-w-4xl mx-auto px-4 mb-4 md:mb-6 shrink-0">
+          <h2 className="font-serif text-[34px] sm:text-[40px] md:text-[44px] font-normal tracking-[-0.01em] text-[#0C310A] leading-[1.0] mb-2.5">
             It all starts with our Standards...
           </h2>
-          <p className="text-[13px] md:text-[14px] leading-[1.55] text-[#664A42] max-w-[540px] mx-auto text-center mb-10">
+          <p className="text-[13px] md:text-[14px] leading-[1.5] text-[#664A42] max-w-[540px] mx-auto text-center">
             They’re more than home plans, they’re home products—designed for real land, real budgets, and real life. TIE Standards combine timeless design with construction-ready details, making it faster and easier to build a home that feels anything but standard.
           </p>
         </div>
@@ -270,8 +294,9 @@ export const StandardsCatalogGrid: React.FC = () => {
         {/* Sticky Horizontal Track */}
         <div className="w-full overflow-hidden">
           <motion.div
-            style={{ x, transition: 'none' }}
-            className={`flex gap-[17.5px] px-[31.4px] items-center shrink-0 w-max h-scroll-content ${
+            ref={trackRef}
+            style={{ x }}
+            className={`flex gap-[17.5px] px-[31.4px] items-center shrink-0 w-max h-scroll-content transition-none will-change-transform ${
               isScrolling ? 'pointer-events-none' : ''
             }`}
           >

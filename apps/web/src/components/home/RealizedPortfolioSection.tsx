@@ -117,7 +117,7 @@ export const RealizedPortfolioSection: React.FC = () => {
       {/* 1. Intro Editorial Header on Cream Background */}
       <div className="pt-0 pb-16 md:pb-20 max-w-[1584px] mx-auto px-4 sm:px-6 lg:px-8 text-center">
         {/* Hand-drawn Green 2-Loop Arrow matching HUTS */}
-        <div className="flex justify-center -mt-20 sm:-mt-28 md:-mt-36 mb-6 sm:mb-8 pointer-events-none bg-transparent">
+        <div className="flex justify-center pt-10 sm:pt-14 mb-6 sm:mb-8 pointer-events-none bg-transparent">
           <DoubleLoopArrow />
         </div>
 
