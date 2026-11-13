@@ -79,6 +79,11 @@ export const Archetype3DCard: React.FC<ArchetypeCardProps> = ({ sol, onLearnMore
               <img
                 src={AVAILABLE_ILLUSTRATIONS[sol.slug]}
                 alt={sol.title}
+                onError={(e) => {
+                  if (sol.slug.includes('multi-gen')) {
+                    e.currentTarget.src = '/illustrations/multi-gen-compound.svg';
+                  }
+                }}
                 className="w-[220px] h-[220px] md:w-[275px] md:h-[275px] object-contain select-none pointer-events-none drop-shadow-xs"
                 draggable={false}
               />

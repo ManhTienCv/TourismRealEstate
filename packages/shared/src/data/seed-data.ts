@@ -7,7 +7,7 @@ export const SEED_HOUSING_SOLUTIONS: HousingSolution[] = [
   {
     id: 'sol-1',
     slug: 'starter-home',
-    title: 'The Modern Starter',
+    title: 'Starter Home',
     subtitle: 'High-design architectural simplicity for first-time builders.',
     description:
       'Eliminate first-time builder anxiety. Pre-engineered floor plans, fixed-fee modular predictability, and timeless Scandinavian materials designed to grow alongside your family or equity.',
@@ -26,7 +26,7 @@ export const SEED_HOUSING_SOLUTIONS: HousingSolution[] = [
   {
     id: 'sol-2',
     slug: 'forever-home',
-    title: 'The Forever Sanctuary',
+    title: 'Forever Home',
     subtitle: 'Generous light-filled modular living designed for multi-decade permanence.',
     description:
       'Engineered with commercial-grade timber posts, quadruple-sealed building envelopes, and age-in-place floor plans with zero-threshold transitions, cathedral gathering halls, and private acoustic wings.',
@@ -45,7 +45,7 @@ export const SEED_HOUSING_SOLUTIONS: HousingSolution[] = [
   {
     id: 'sol-3',
     slug: 'second-home',
-    title: 'The Weekend Retreat',
+    title: 'Second Home',
     subtitle: 'Escape the city to a low-maintenance, turn-key natural refuge.',
     description:
       'Lock-and-leave simplicity with smart seasonal shutoffs, fire-resistant standing seam metal exteriors, and panoramic framed apertures that dissolve the boundary between timber interiors and wild topography.',
@@ -64,7 +64,7 @@ export const SEED_HOUSING_SOLUTIONS: HousingSolution[] = [
   {
     id: 'sol-4',
     slug: 'hybrid-home',
-    title: 'The Work/Live Hybrid',
+    title: 'Hybrid Home',
     subtitle: 'Acoustically isolated studios and creative workspaces built for remote focus.',
     description:
       'Intentionally partitioned floor layouts featuring a physical architectural breeze-way or acoustic vestibule separating client meeting and creative workspace from private family quarters.',
@@ -83,7 +83,7 @@ export const SEED_HOUSING_SOLUTIONS: HousingSolution[] = [
   {
     id: 'sol-5',
     slug: 'adu',
-    title: 'The Backyard ADU',
+    title: 'ADU',
     subtitle: 'Fast-track backyard dwellings for rental income, aging parents, or guest suites.',
     description:
       'Compliant with state-wide ADU pre-approved building bylaws. Rapid crane deployment without disturbing your primary residence lawn or requiring months of loud framing crews.',
@@ -102,7 +102,7 @@ export const SEED_HOUSING_SOLUTIONS: HousingSolution[] = [
   {
     id: 'sol-6',
     slug: 'investment-property',
-    title: 'The Yield Portfolio Asset',
+    title: 'Investment Property',
     subtitle: 'High-durability rental cash-flow assets optimized for long-term ROI.',
     description:
       'Engineered specifically for short-term and mid-term rental operations. High-impact commercial finishes, programmable digital access control, lockable owner cupboards, and robust commercial MEP systems.',
@@ -121,7 +121,7 @@ export const SEED_HOUSING_SOLUTIONS: HousingSolution[] = [
   {
     id: 'sol-7',
     slug: 'micro-hospitality',
-    title: 'Micro-Hospitality Outpost',
+    title: 'Micro-Hospitality',
     subtitle: 'Bespoke clusters of architectural cabins for boutique eco-resorts.',
     description:
       'Modular cabin constellations sharing central utility cores or operating entirely off-grid with localized solar micro-grids, compost bio-digesters, and communal cedar hot tubs.',
@@ -140,7 +140,7 @@ export const SEED_HOUSING_SOLUTIONS: HousingSolution[] = [
   {
     id: 'sol-8',
     slug: 'multi-gen-compound',
-    title: 'The Multi-Gen Family Compound',
+    title: 'Multi-Generational Family Compound',
     subtitle: 'Connected pavilions honoring autonomy and closeness under one roofline.',
     description:
       'Multiple modular wings linked by covered cedar breezeways, communal outdoor kitchens, and central courtyard gardens. Offers independent privacy for in-laws or grown children with shared heritage gathering space.',

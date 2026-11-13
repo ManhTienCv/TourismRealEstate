@@ -9,14 +9,15 @@ export const AVAILABLE_ILLUSTRATIONS: Record<string, string> = {
   'adu': 'https://cdn.sanity.io/images/xi1ruvdt/production/8aa8e51efbbfee9a6c86ad90add613cfb45b324e-340x340.svg',
   'investment-property': 'https://cdn.sanity.io/images/xi1ruvdt/production/1e9eb7c8d8d61058bc8fa5c0b0daa0200a38cf0b-340x340.svg',
   'micro-hospitality': 'https://cdn.sanity.io/images/xi1ruvdt/production/8eac1673229ab373efff6f6398fc31d7663a5a6a-340x340.svg',
-  'multi-gen-compound': 'https://cdn.sanity.io/images/xi1ruvdt/production/83d65d8d10536624a3d03751a07d91fe2782e5f4-340x340.svg',
+  'multi-gen-compound': 'https://cdn.sanity.io/images/xi1ruvdt/production/510deebfe5ef8b59dc3bc901a75d659acd21f929-120x120.svg',
   // Aliases for robustness
   'the-backyard-adu': 'https://cdn.sanity.io/images/xi1ruvdt/production/8aa8e51efbbfee9a6c86ad90add613cfb45b324e-340x340.svg',
   'the-yield-portfolio-asset': 'https://cdn.sanity.io/images/xi1ruvdt/production/1e9eb7c8d8d61058bc8fa5c0b0daa0200a38cf0b-340x340.svg',
   'the-work-live-hybrid': 'https://cdn.sanity.io/images/xi1ruvdt/production/342b4d726bff821f672467db8124359599c0bf3c-340x340.svg',
   'work-live': 'https://cdn.sanity.io/images/xi1ruvdt/production/342b4d726bff821f672467db8124359599c0bf3c-340x340.svg',
-  'multi-generation-compound': 'https://cdn.sanity.io/images/xi1ruvdt/production/83d65d8d10536624a3d03751a07d91fe2782e5f4-340x340.svg',
-  'the-multi-gen-family-compound': 'https://cdn.sanity.io/images/xi1ruvdt/production/83d65d8d10536624a3d03751a07d91fe2782e5f4-340x340.svg',
+  'multi-generation-compound': 'https://cdn.sanity.io/images/xi1ruvdt/production/510deebfe5ef8b59dc3bc901a75d659acd21f929-120x120.svg',
+  'the-multi-gen-family-compound': 'https://cdn.sanity.io/images/xi1ruvdt/production/510deebfe5ef8b59dc3bc901a75d659acd21f929-120x120.svg',
+  'multi-generational-family-compound': 'https://cdn.sanity.io/images/xi1ruvdt/production/510deebfe5ef8b59dc3bc901a75d659acd21f929-120x120.svg',
 };
 
 // Character Line Art SVGs matching exact frames from Banghi.mp4 (p3_36s, p3_40s, p3_42s)
