@@ -1,61 +1,37 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useConfiguratorStore } from '../../store/useConfiguratorStore';
 import { ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-// Authentic country modular home photography matching Banghi.mp4 and Banghi1.mp4
-const HERO_SHOTS = [
-  {
-    id: 'ground',
-    url: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2600&q=85',
-    alt: 'Modern black timber gabled country home with lawn and autumn forest',
-  },
-  {
-    id: 'aerial',
-    url: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=2600&q=85',
-    alt: 'Aerial flycam bird-eye view of country modular house in forest canopy',
-  },
-  {
-    id: 'under-construction',
-    url: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=2600&q=85',
-    alt: 'Precision timber framed home in peaceful rural landscape',
-  },
-];
+// Authentic high-res ambient background video from HUTS Sanity CDN with static image fallback
+const HERO_VIDEO_URL =
+  'https://cdn.sanity.io/files/xi1ruvdt/production/7452165f3b253894b0bbdd820d06a25a7dd71839.mp4';
+const HERO_FALLBACK_IMAGE =
+  'https://cdn.sanity.io/images/xi1ruvdt/production/adec57220fd43008ea6d5e08e95bf76e0b84c0d2-3200x2133.jpg?w=1920&q=85&auto=format';
 
 export const HeroSection: React.FC = () => {
   const { openConfigurator } = useConfiguratorStore();
-  const [currentShotIndex, setCurrentShotIndex] = useState(0);
-
-  // Gentle 7-second ambient cycle between drone angles matching Banghi1.mp4
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentShotIndex((prev) => (prev + 1) % HERO_SHOTS.length);
-    }, 7000);
-    return () => clearInterval(timer);
-  }, []);
 
   return (
     <section className="relative w-full min-h-[92vh] sm:min-h-screen flex items-center justify-center overflow-hidden">
       
-      {/* FULL-BLEED HERO BACKGROUND (With slow cinematic Ken-Burns drift) */}
-      <div className="absolute inset-0 w-full h-full">
-        {HERO_SHOTS.map((shot, idx) => (
-          <motion.img
-            key={shot.id}
-            src={shot.url}
-            alt={shot.alt}
-            initial={{ scale: 1, x: 0 }}
-            animate={
-              idx === currentShotIndex
-                ? { scale: [1, 1.05], x: [0, -8] }
-                : { scale: 1, x: 0 }
-            }
-            transition={{ duration: 7, ease: 'easeOut' }}
-            className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-1000 ease-in-out ${
-              idx === currentShotIndex ? 'opacity-100' : 'opacity-0'
-            }`}
+      {/* FULL-BLEED HERO BACKGROUND VIDEO WITH STATIC POSTER FALLBACK */}
+      <div className="absolute inset-0 w-full h-full overflow-hidden">
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          poster={HERO_FALLBACK_IMAGE}
+          className="absolute inset-0 w-full h-full object-cover object-center"
+        >
+          <source src={HERO_VIDEO_URL} type="video/mp4" />
+          <img
+            src={HERO_FALLBACK_IMAGE}
+            alt="Modern timber country home in scenic rural landscape"
+            className="w-full h-full object-cover object-center"
           />
-        ))}
+        </video>
       </div>
 
       {/* Cinematic Vignette Overlay (Darker at top for navbar readability, subtle in center) */}

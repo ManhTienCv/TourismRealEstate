@@ -36,7 +36,7 @@ export const UseCaseSelector: React.FC = () => {
         {/* Sticky Horizontal Track */}
         <div className="w-full overflow-hidden">
           <motion.div
-            style={{ x }}
+            style={{ x, willChange: 'transform', transition: 'none' }}
             className="flex gap-[17.5px] px-[31.4px] items-center shrink-0 w-max h-scroll-content"
           >
             {SEED_HOUSING_SOLUTIONS.map((sol: HousingSolution) => (

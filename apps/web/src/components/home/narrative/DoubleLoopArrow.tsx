@@ -30,10 +30,10 @@ export const DoubleLoopArrow: React.FC<DoubleLoopArrowProps> = ({
         strokeWidth="1.8"
         strokeLinecap="round"
         strokeLinejoin="round"
-        initial={{ pathLength: 0, opacity: 0 }}
+        initial={{ pathLength: 0.2, opacity: 0 }}
         whileInView={{ pathLength: 1, opacity: 1 }}
-        viewport={{ once: true, amount: 0.15 }}
-        transition={{ duration: 1.15, ease: 'easeInOut' }}
+        viewport={{ once: true, amount: 0.05 }}
+        transition={{ duration: 0.9, ease: 'easeOut' }}
       />
       {/* Đầu mũi tên chữ V mở bất đối xứng tự nhiên */}
       <motion.path
@@ -44,8 +44,8 @@ export const DoubleLoopArrow: React.FC<DoubleLoopArrowProps> = ({
         strokeLinejoin="round"
         initial={{ pathLength: 0, opacity: 0 }}
         whileInView={{ pathLength: 1, opacity: 1 }}
-        viewport={{ once: true, amount: 0.15 }}
-        transition={{ duration: 0.35, delay: 0.9, ease: 'easeOut' }}
+        viewport={{ once: true, amount: 0.05 }}
+        transition={{ duration: 0.35, delay: 0.65, ease: 'easeOut' }}
       />
     </svg>
   );

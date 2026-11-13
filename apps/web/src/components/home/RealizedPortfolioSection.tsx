@@ -120,8 +120,8 @@ export const RealizedPortfolioSection: React.FC = () => {
           <DoubleLoopArrow />
         </div>
 
-        <h2 className="font-serif text-[36px] sm:text-[44px] md:text-[50px] lg:text-[54px] font-normal tracking-[-0.01em] text-[#0C310A] leading-[1.08] max-w-4xl mx-auto">
-          ...and we work with you to make it yours.
+        <h2 className="font-serif text-[38px] sm:text-[46px] md:text-[50px] lg:text-[54px] font-normal tracking-[-0.01em] text-[#0C310A] leading-[1.1] max-w-[726px] mx-auto text-center">
+          ...and we work with you to make <br className="hidden sm:inline" />it yours.
         </h2>
       </div>
 

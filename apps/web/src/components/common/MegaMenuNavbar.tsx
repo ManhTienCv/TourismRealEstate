@@ -117,11 +117,15 @@ export const MegaMenuNavbar: React.FC = () => {
     <>
       <header
         onMouseLeave={handleMouseLeave}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out ${
+        style={{
+          transition:
+            'transform 0.6s cubic-bezier(0.33, 1, 0.68, 1), border-radius 0.4s cubic-bezier(0.33, 1, 0.68, 1), background-color 0.2s cubic-bezier(0.33, 1, 0.68, 1), color 0.2s cubic-bezier(0.33, 1, 0.68, 1)',
+        }}
+        className={`fixed top-0 left-0 right-0 z-50 ${
           isVisible ? 'translate-y-0' : '-translate-y-full pointer-events-none shadow-none'
         } ${
           isSolid
-            ? 'bg-[#FAF8F1] text-[#182215] shadow-none border-none'
+            ? 'bg-[#FAF8F1] text-[#0C310A] shadow-none border-none'
             : 'bg-transparent text-white'
         } ${isMenuOpen ? 'rounded-b-[36px] sm:rounded-b-[44px]' : ''}`}
       >

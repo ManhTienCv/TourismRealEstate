@@ -4,61 +4,69 @@ import { SEED_STANDARD_PLANS } from '@tie/shared';
 import { useConfiguratorStore } from '../../store/useConfiguratorStore';
 import { StandardIsometricIllustrations } from './standards/StandardIsometricIllustrations';
 
-// Authentic wide architectural photography & bed/bath specs matching HUTS
+// Authentic wide architectural photography & 3D Axonometrics from HUTS Sanity CDN
 const STANDARDS_GALLERY = [
   {
     slug: 'small-bar',
     cleanName: 'Small Bar',
-    imageUrl: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1400&q=85',
+    imageUrl: 'https://cdn.sanity.io/images/xi1ruvdt/production/49b12a1c850a40727ce6b5d105d21a8459c35389-858x858.jpg?w=1920&q=85&auto=format',
+    axonImageUrl: 'https://cdn.sanity.io/images/xi1ruvdt/production/1d09b3431c239b3ac09deae6e4eb0d2ee9a4028a-2275x1880.jpg?w=1920&q=85&auto=format',
     beds: '1',
     baths: '1',
   },
   {
     slug: 'medium-bar',
     cleanName: 'Medium Bar',
-    imageUrl: 'https://images.unsplash.com/photo-1588880331179-bc9b93a8cb5e?auto=format&fit=crop&w=1400&q=85',
+    imageUrl: 'https://cdn.sanity.io/images/xi1ruvdt/production/22e392c4e767684a13df77fed0553694c7b59ae6-2099x2099.jpg?w=1920&q=85&auto=format',
+    axonImageUrl: 'https://cdn.sanity.io/images/xi1ruvdt/production/68694549ea2c06f3fd73841fcc746d31cb0cd397-4800x4416.jpg?w=1920&q=85&auto=format',
     beds: '2',
     baths: '2',
   },
   {
     slug: 'big-bar',
     cleanName: 'Big Bar',
-    imageUrl: 'https://images.unsplash.com/photo-1590381105924-c72589b9ef3f?auto=format&fit=crop&w=1400&q=85',
+    imageUrl: 'https://cdn.sanity.io/images/xi1ruvdt/production/7d481791d6139e5f98a1455da75f6e3d63abf1d9-2233x2105.jpg?w=1920&q=85&auto=format',
+    axonImageUrl: 'https://cdn.sanity.io/images/xi1ruvdt/production/c85860ab65562ce2a2cbdab7d3d345278b9447aa-4800x3955.jpg?w=1920&q=85&auto=format',
     beds: '3',
     baths: '2.5',
   },
   {
     slug: 'dogtrot',
     cleanName: 'Dogtrot',
-    imageUrl: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1400&q=85',
+    imageUrl: 'https://cdn.sanity.io/images/xi1ruvdt/production/b74ce20f2f5f1cae50eef9cdbc6a726ab8d382db-564x383.png?w=1920&q=85&auto=format',
+    axonImageUrl: 'https://cdn.sanity.io/images/xi1ruvdt/production/aab572bff3627e669f2b551ad1694bb679e8998e-4800x4338.jpg?w=1920&q=85&auto=format',
     beds: '3',
     baths: '2',
   },
   {
     slug: 'small-l',
     cleanName: 'Small L',
-    imageUrl: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1400&q=85',
+    imageUrl: 'https://cdn.sanity.io/images/xi1ruvdt/production/a7b6ffca0d4814f1354cd42e4563a1f43d03e4fd-2061x1932.jpg?w=1920&q=85&auto=format',
+    axonImageUrl: 'https://cdn.sanity.io/images/xi1ruvdt/production/d48224c53a662c3822c5a4991cf1eecbddbd3c77-4800x3965.jpg?w=1920&q=85&auto=format',
     beds: '2',
     baths: '2',
   },
   {
     slug: 'big-l',
     cleanName: 'Big L',
-    imageUrl: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1400&q=85',
+    imageUrl: 'https://cdn.sanity.io/images/xi1ruvdt/production/94475e5020164a6f8ab9320e043f250b2000eb0d-772x703.jpg?w=1920&q=85&auto=format',
+    axonImageUrl: 'https://cdn.sanity.io/images/xi1ruvdt/production/566719422aa173d3ef049f99c5d3908c5d0bd003-4281x2808.jpg?w=1920&q=85&auto=format',
     beds: '4',
     baths: '3.5',
   },
   {
     slug: 'village',
     cleanName: 'Village',
-    imageUrl: 'https://images.unsplash.com/photo-1523217582562-09d0def993a6?auto=format&fit=crop&w=1400&q=85',
+    imageUrl: 'https://cdn.sanity.io/images/xi1ruvdt/production/9ee66c5354de48ceb7b2c5e456303301ef947fbe-2367x2160.jpg?w=1920&q=85&auto=format',
+    axonImageUrl: 'https://cdn.sanity.io/images/xi1ruvdt/production/03e0167e89b28dc8472022956e8f7d95f1f61698-4800x3827.jpg?w=1920&q=85&auto=format',
     beds: '4',
     baths: '4',
   },
   {
     slug: 'adu',
     cleanName: 'ADU',
-    imageUrl: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=1400&q=85',
+    imageUrl: 'https://cdn.sanity.io/images/xi1ruvdt/production/12b724bfd8e075d0f39a1351f31264a32328f433-1467x1410.jpg?w=1920&q=85&auto=format',
+    axonImageUrl: 'https://cdn.sanity.io/images/xi1ruvdt/production/7cf70fd6532c49b49c69b70800720dc4cbdd680d-1618x1602.png?w=1920&q=85&auto=format',
     beds: '1',
     baths: '1',
   },
@@ -128,13 +136,14 @@ const StandardCardItem: React.FC<StandardCardItemProps> = ({ item, onPlanClick, 
         style={{ perspective: '1200px' }}
       >
         <div
-          className="relative w-full h-full [transform-style:preserve-3d] transition-transform duration-700 ease-out rounded-[17.5px] shadow-sm group-hover:shadow-md"
+          className="relative w-full h-full [transform-style:preserve-3d] rounded-[17.5px] shadow-sm group-hover:shadow-md card-inner"
           style={{
             transformStyle: 'preserve-3d',
             transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
+            transition: 'transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.125)',
           }}
         >
-          {/* MẶT TRƯỚC: Ảnh thực tế của ngôi nhà */}
+          {/* MẶT TRƯỚC: Ảnh thực tế của ngôi nhà (Sanity CDN High-Res) */}
           <div
             className="absolute inset-0 [backface-visibility:hidden] rounded-[17.5px] overflow-hidden bg-[#FAF8F1] border border-[#DFDCD0]"
             style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }}
@@ -148,28 +157,36 @@ const StandardCardItem: React.FC<StandardCardItemProps> = ({ item, onPlanClick, 
             />
           </div>
 
-          {/* MẶT SAU: Mô hình kiến trúc 3D Isometric + 2 Pill thông số Bed/Bath */}
+          {/* MẶT SAU: Mô hình kiến trúc 3D Axonometric từ Sanity CDN + 2 Pill thông số Bed/Bath */}
           <div
-            className="absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)] w-full h-full bg-[#FAF8F1] border border-[#DFDCD0] rounded-[17.5px] p-6 relative flex items-center justify-center"
+            className="absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)] w-full h-full bg-[#FAF8F1] border border-[#DFDCD0] rounded-[17.5px] p-5 relative flex items-center justify-center overflow-hidden"
             style={{
               backfaceVisibility: 'hidden',
               WebkitBackfaceVisibility: 'hidden',
               transform: 'rotateY(180deg)',
             }}
           >
-            {/* Hình vẽ mô hình kiến trúc 3D Isometric nét mảnh chính giữa */}
-            <div className="w-[78%] h-[78%] flex items-center justify-center pointer-events-none select-none">
-              {IsoComponent ? (
+            {/* Hình vẽ mô hình kiến trúc 3D Axonometric từ Sanity CDN */}
+            <div className="w-[88%] h-[88%] flex items-center justify-center pointer-events-none select-none">
+              {item.axonImageUrl ? (
+                <img
+                  src={item.axonImageUrl}
+                  alt={`${item.cleanName} 3D Axonometric`}
+                  className="w-full h-full object-contain pointer-events-none select-none"
+                  loading="lazy"
+                  draggable={false}
+                />
+              ) : IsoComponent ? (
                 <IsoComponent className="w-full h-full object-contain pointer-events-none select-none" />
               ) : null}
             </div>
 
             {/* Góc dưới bên trái: 2 pill thông số Bed & Bath */}
             <div className="absolute bottom-5 left-5 flex items-center gap-2">
-              <span className="px-3 py-1 text-[11px] font-medium text-[#0C310A] bg-white/70 border border-[#DFDCD0] rounded-full">
+              <span className="px-3 py-1 text-[11px] font-medium text-[#0C310A] bg-white/80 backdrop-blur-xs border border-[#DFDCD0] rounded-full shadow-xs">
                 {item.beds} Bed
               </span>
-              <span className="px-3 py-1 text-[11px] font-medium text-[#0C310A] bg-white/70 border border-[#DFDCD0] rounded-full">
+              <span className="px-3 py-1 text-[11px] font-medium text-[#0C310A] bg-white/80 backdrop-blur-xs border border-[#DFDCD0] rounded-full shadow-xs">
                 {item.baths} Bath
               </span>
             </div>
@@ -248,7 +265,7 @@ export const StandardsCatalogGrid: React.FC = () => {
         {/* Sticky Horizontal Track */}
         <div className="w-full overflow-hidden">
           <motion.div
-            style={{ x }}
+            style={{ x, willChange: 'transform', transition: 'none' }}
             className="flex gap-[17.5px] px-[31.4px] items-center shrink-0 w-max h-scroll-content"
           >
             {STANDARDS_GALLERY.map((item) => (
