@@ -26,7 +26,7 @@ export const UseCaseSelector: React.FC = () => {
       <div className="sticky top-0 left-0 w-full h-screen overflow-hidden flex flex-col justify-center items-center pt-14 pb-8 z-10 select-none">
         {/* Section Header: Centered Editorial Headline */}
         <div className="text-center max-w-4xl mx-auto mb-7 md:mb-8 px-4 shrink-0">
-          <h2 className="font-serif text-[42px] sm:text-[52px] lg:text-[62px] font-normal tracking-tight text-[#182215] leading-[1.1]">
+          <h2 className="font-serif text-[38px] sm:text-[44px] font-normal tracking-[-0.01em] text-[#0C310A] leading-[1.0]">
             Whatever type of place you have
             <br />
             in mind
@@ -37,7 +37,7 @@ export const UseCaseSelector: React.FC = () => {
         <div className="w-full overflow-hidden">
           <motion.div
             style={{ x }}
-            className="flex gap-5 md:gap-6 pl-8 sm:pl-16 lg:pl-24 pr-8 sm:pr-16 lg:pr-24 items-center shrink-0 w-max"
+            className="flex gap-[17.5px] px-[31.4px] items-center shrink-0 w-max h-scroll-content"
           >
             {SEED_HOUSING_SOLUTIONS.map((sol: HousingSolution) => (
               <Archetype3DCard

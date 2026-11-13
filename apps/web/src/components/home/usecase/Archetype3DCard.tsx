@@ -55,14 +55,14 @@ export const Archetype3DCard: React.FC<ArchetypeCardProps> = ({ sol, onLearnMore
       onMouseEnter={handleMouseEnterOrMove}
       onMouseMove={handleMouseEnterOrMove}
       onMouseLeave={handleMouseLeave}
-      className={`shrink-0 snap-start w-[360px] md:w-[390px] h-[360px] md:h-[380px] [perspective:1200px] select-none rounded-[24px] ${
+      className={`shrink-0 snap-start w-[360px] md:w-[390px] h-[360px] md:h-[380px] [perspective:1200px] select-none rounded-[17.5px] ${
         isScrolling ? 'pointer-events-none' : ''
       }`}
       style={{ perspective: '1200px' }}
     >
       {/* 3D Flippable Inner Card Container */}
       <div
-        className="relative w-full h-full [transform-style:preserve-3d] transition-transform duration-700 ease-out rounded-[24px]"
+        className="relative w-full h-full [transform-style:preserve-3d] transition-transform duration-700 ease-out rounded-[17.5px]"
         style={{
           transformStyle: 'preserve-3d',
           transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
@@ -70,7 +70,7 @@ export const Archetype3DCard: React.FC<ArchetypeCardProps> = ({ sol, onLearnMore
       >
         {/* FRONT SIDE: Crisp White Surface + Delicate Hairline Border (Matches HUTS Image 2) */}
         <div
-          className="absolute inset-0 [backface-visibility:hidden] rounded-[24px] bg-white border border-[#E7E2D6] p-6 md:p-7 flex flex-col justify-between items-center text-center shadow-[0_2px_12px_rgba(24,34,21,0.03)] transition-all duration-300"
+          className="absolute inset-0 [backface-visibility:hidden] rounded-[17.5px] bg-white border border-[#E7E2D6] p-6 md:p-7 flex flex-col justify-between items-center text-center shadow-[0_2px_12px_rgba(24,34,21,0.03)] transition-all duration-300"
           style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }}
         >
           {/* Character Line Art in Center (scaled neatly to preserve breathing room) */}
@@ -94,9 +94,9 @@ export const Archetype3DCard: React.FC<ArchetypeCardProps> = ({ sol, onLearnMore
             )}
           </div>
 
-          {/* Bottom Label (Large Serif font text-[22px] md:text-[25px]) */}
+          {/* Bottom Label (HUTS Card Title: 33px / 1.1 / -0.02em / #0C310A) */}
           <div className="w-full pt-1 pb-1">
-            <h3 className="font-serif text-[22px] sm:text-[24px] md:text-[25px] font-normal text-[#182215] tracking-tight text-center leading-tight">
+            <h3 className="font-serif text-[26px] sm:text-[28px] md:text-[33px] font-normal text-[#0C310A] tracking-[-0.02em] text-center leading-[1.1]">
               {sol.title}
             </h3>
           </div>
@@ -104,7 +104,7 @@ export const Archetype3DCard: React.FC<ArchetypeCardProps> = ({ sol, onLearnMore
 
         {/* BACK SIDE: Minimalist Details & Underline Link (Rotated 180deg) */}
         <div
-          className="absolute inset-0 [backface-visibility:hidden] rounded-[24px] bg-white border border-[#E7E2D6] p-6 sm:p-7 md:p-8 flex flex-col justify-between text-center shadow-[0_2px_12px_rgba(24,34,21,0.03)] transition-all duration-300"
+          className="absolute inset-0 [backface-visibility:hidden] rounded-[17.5px] bg-white border border-[#E7E2D6] p-6 sm:p-7 md:p-8 flex flex-col justify-between text-center shadow-[0_2px_12px_rgba(24,34,21,0.03)] transition-all duration-300"
           style={{
             backfaceVisibility: 'hidden',
             WebkitBackfaceVisibility: 'hidden',
@@ -129,10 +129,10 @@ export const Archetype3DCard: React.FC<ArchetypeCardProps> = ({ sol, onLearnMore
 
           {/* Center: Title & Short Description */}
           <div className="space-y-1.5 px-2 my-auto">
-            <h3 className="font-serif text-xl md:text-[22px] font-normal text-[#182215] tracking-tight leading-snug">
+            <h3 className="font-serif text-xl md:text-[24px] font-normal text-[#0C310A] tracking-[-0.02em] leading-[1.1]">
               {sol.title}
             </h3>
-            <p className="text-xs sm:text-[13px] text-[#555148] font-sans leading-relaxed line-clamp-3 max-w-xs mx-auto">
+            <p className="text-xs sm:text-[13px] text-[#664A42] font-sans leading-relaxed line-clamp-3 max-w-xs mx-auto">
               {sol.description}
             </p>
           </div>
@@ -145,7 +145,7 @@ export const Archetype3DCard: React.FC<ArchetypeCardProps> = ({ sol, onLearnMore
                 e.stopPropagation();
                 onLearnMore(sol.slug);
               }}
-              className="inline-flex items-center gap-1.5 text-xs sm:text-[13px] font-sans font-medium text-[#182215] hover:text-[#2D4C23] border-b border-[#182215]/30 hover:border-[#2D4C23] pb-0.5 transition-all duration-300 cursor-pointer group/link"
+              className="inline-flex items-center gap-1.5 text-xs sm:text-[13px] font-sans font-medium text-[#0C310A] hover:text-[#2D4C23] border-b border-[#0C310A]/30 hover:border-[#2D4C23] pb-0.5 transition-all duration-300 cursor-pointer group/link"
               title={`Learn about the ${sol.title}`}
             >
               <span>Learn about the {sol.title}</span>

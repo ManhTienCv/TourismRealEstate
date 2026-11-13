@@ -69,7 +69,7 @@ export const HeroSection: React.FC = () => {
           initial={{ opacity: 0, y: 25 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="font-serif text-4xl sm:text-6xl md:text-7xl lg:text-[76px] font-normal tracking-tight text-white leading-[1.12] drop-shadow-md max-w-4xl"
+          className="font-serif text-4xl sm:text-6xl md:text-7xl lg:text-[76px] font-normal tracking-tight text-[#FAF7ED] leading-[1.12] drop-shadow-md max-w-4xl"
         >
           The best{' '}
           <span className="relative inline-block">
@@ -110,11 +110,11 @@ export const HeroSection: React.FC = () => {
         >
           <button
             onClick={() => openConfigurator()}
-            className="group inline-flex items-center space-x-3 px-8 py-3.5 rounded-full text-base font-semibold text-white bg-[#567D42] hover:bg-[#466635] shadow-tie-card transition-all duration-300 active:scale-95 border border-[#6B9A53]/50"
+            className="group inline-flex items-center space-x-3 px-8 py-3.5 rounded-[104px] text-[14px] leading-[1.4] font-normal text-[#FAF7ED] bg-[#567D42] hover:bg-[#466635] shadow-tie-card transition-all duration-300 active:scale-95 border border-[#6B9A53]/50"
           >
             <span>Get Started</span>
             <span className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center group-hover:translate-x-1 group-hover:bg-white/30 transition-all">
-              <ArrowRight className="w-3.5 h-3.5 text-white" />
+              <ArrowRight className="w-3.5 h-3.5 text-[#FAF7ED]" />
             </span>
           </button>
         </motion.div>

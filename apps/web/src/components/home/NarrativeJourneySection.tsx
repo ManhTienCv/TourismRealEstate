@@ -88,7 +88,7 @@ export const NarrativeJourneySection: React.FC = () => {
       <div className="max-w-[1140px] mx-auto px-6 md:px-12 relative">
 
         {/* Hand-drawn Double-Loop Arrow (Transition from Archetype cards above) */}
-        <div className="flex justify-center items-center w-full py-6 sm:py-8 bg-transparent pointer-events-none">
+        <div className="flex justify-center items-center w-full -mt-20 sm:-mt-28 md:-mt-36 mb-4 sm:mb-6 bg-transparent pointer-events-none">
           <DoubleLoopArrow />
         </div>
 
@@ -150,11 +150,11 @@ export const NarrativeJourneySection: React.FC = () => {
 
           {/* RIGHT: EDITORIAL COPY & SYNCHRONIZED PILL ARROW BUTTON */}
           <div className="lg:col-span-6 space-y-5 relative">
-            <h2 className="font-serif text-[38px] md:text-[44px] lg:text-[46px] text-[#182215] tracking-tight leading-[1.12] mb-5 font-normal lg:whitespace-nowrap">
+            <h2 className="font-serif text-[38px] md:text-[44px] text-[#0C310A] tracking-[-0.01em] leading-[1.0] mb-5 font-normal lg:whitespace-nowrap">
               We do it across the country
             </h2>
 
-            <p className="max-w-[430px] text-[16px] md:text-[17px] leading-[1.65] text-[#2c3527] font-normal mb-8">
+            <p className="max-w-[430px] text-[15px] md:text-[16px] leading-[1.6] text-[#664A42] font-normal mb-8">
               We focused exclusively on delivering in rural locations. Coast-to-coast, TIE crafts beautiful properties through guidance, intent, and care. Have a specific area or state in mind? We've either built there, or will soon.
             </p>
 
@@ -216,13 +216,13 @@ export const NarrativeJourneySection: React.FC = () => {
           
           {/* Left Column: Headline, Narrative & Reusable Pill Arrow Button */}
           <div className="md:col-span-6 space-y-6">
-            <h3 className="font-serif text-[40px] md:text-[46px] lg:text-[48px] text-[#182215] leading-[1.12] tracking-tight mb-6 max-w-[420px] font-normal">
+            <h3 className="font-serif text-[38px] md:text-[44px] text-[#0C310A] leading-[1.0] tracking-[-0.01em] mb-6 max-w-[420px] font-normal">
               Using a process built
               <br />
               around you
             </h3>
             
-            <p className="text-[16px] md:text-[17px] leading-[1.65] text-[#2c3527] font-normal mb-8 max-w-[420px]">
+            <p className="text-[15px] md:text-[16px] leading-[1.6] text-[#664A42] font-normal mb-8 max-w-[420px]">
               We deliver properties differently think of us as your sherpa on the path to your perfect property. Our people-first process goes far beyond floor plans—we coordinate every player needed to take you from a spark of an idea to raw land to a finished home. It's a start-to-finish approach that's proven, vetted, and simply the best way to build.
             </p>
 

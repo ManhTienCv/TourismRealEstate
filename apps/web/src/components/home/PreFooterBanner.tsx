@@ -25,70 +25,18 @@ export const PreFooterBanner: React.FC = () => {
         
         {/* Left: Whimsical Daydreaming Character + Editorial Headline */}
         <div className="flex items-center gap-8 md:gap-10 text-center md:text-left">
-          {/* Hand-drawn Character Illustration */}
+          {/* Hand-drawn Character Illustration from Sanity CDN */}
           <div className="w-24 h-24 md:w-28 md:h-28 shrink-0 flex items-center justify-center">
-            <svg
-              className="w-full h-full text-[#182215] stroke-current fill-none stroke-[1.4]"
-              viewBox="0 0 120 120"
-            >
-              {/* Dark Green Ground Base Oval */}
-              <ellipse cx="80" cy="112" rx="24" ry="4.5" fill="#183D24" stroke="none" />
-
-              {/* Rising Thought Puffs */}
-              <circle cx="56" cy="80" r="2.5" fill="#183D24" stroke="none" />
-              <circle cx="50" cy="68" r="4" fill="#183D24" stroke="none" />
-              <circle cx="42" cy="56" r="6" fill="#183D24" stroke="none" />
-
-              {/* Main Thought Cloud Bubble */}
-              <path
-                d="M 16 42 Q 8 28, 22 22 Q 28 12, 44 18 Q 56 12, 60 26 Q 68 34, 58 46 Q 48 54, 36 50 Q 24 56, 16 42 Z"
-                fill="#8BA85F"
-                stroke="#182215"
-                strokeWidth="1.5"
-              />
-
-              {/* Little Cabin inside Thought Cloud */}
-              <polygon points="26 38, 36 26, 46 38" fill="#FFFFFF" stroke="#182215" strokeWidth="1.2" />
-              <rect x="29" y="38" width="14" height="10" fill="#FFFFFF" stroke="#182215" strokeWidth="1.2" />
-              <rect x="34" y="41" width="4" height="7" fill="#182215" />
-              
-              {/* Radiating Rays from Cabin in Cloud */}
-              <line x1="20" y1="24" x2="14" y2="18" stroke="#FFFFFF" strokeWidth="1.4" />
-              <line x1="36" y1="18" x2="36" y2="10" stroke="#FFFFFF" strokeWidth="1.4" />
-              <line x1="52" y1="24" x2="58" y2="18" stroke="#FFFFFF" strokeWidth="1.4" />
-
-              {/* Daydreaming Character (Woman looking upward with delight) */}
-              <line x1="68" y1="52" x2="64" y2="46" strokeWidth="1.4" />
-              <line x1="82" y1="46" x2="82" y2="38" strokeWidth="1.4" />
-              <line x1="94" y1="50" x2="100" y2="44" strokeWidth="1.4" />
-
-              {/* Head & Ponytail */}
-              <circle cx="82" cy="64" r="11" />
-              <path d="M 91 58 Q 102 54, 98 68 Q 96 76, 90 70" fill="#182215" />
-              
-              {/* Face features */}
-              <path d="M 76 61 Q 78 58, 80 61" strokeWidth="1.5" />
-              <path d="M 83 61 Q 85 58, 87 61" strokeWidth="1.5" />
-              <path d="M 78 68 Q 82 72, 85 68" strokeWidth="1.4" />
-              
-              {/* Hands cupped together at chest in joy */}
-              <path d="M 72 75 Q 76 80, 80 80 Q 84 80, 88 75" strokeWidth="1.8" />
-              <ellipse cx="80" cy="78" rx="5" ry="3" fill="#E8F0DC" />
-
-              {/* Body & Dotted Shirt */}
-              <path d="M 68 83 Q 80 81, 92 83 L 95 110 L 65 110 Z" fill="#FFFFFF" strokeWidth="1.5" />
-              <circle cx="73" cy="90" r="1.5" fill="#183D24" stroke="none" />
-              <circle cx="82" cy="88" r="1.5" fill="#183D24" stroke="none" />
-              <circle cx="89" cy="92" r="1.5" fill="#183D24" stroke="none" />
-              <circle cx="76" cy="98" r="1.5" fill="#183D24" stroke="none" />
-              <circle cx="85" cy="100" r="1.5" fill="#183D24" stroke="none" />
-              <circle cx="74" cy="106" r="1.5" fill="#183D24" stroke="none" />
-              <circle cx="88" cy="106" r="1.5" fill="#183D24" stroke="none" />
-            </svg>
+            <img
+              src="https://cdn.sanity.io/images/xi1ruvdt/production/5950b2b3cc53f79646218dad8be5132223257be8-164x164.svg"
+              alt="Dreaming of a country home"
+              className="w-full h-full object-contain pointer-events-none select-none"
+              draggable={false}
+            />
           </div>
 
           {/* Editorial Headline */}
-          <h3 className="font-serif font-normal text-[34px] md:text-[42px] leading-[1.08] tracking-[-0.02em] text-[#182215]">
+          <h3 className="font-serif font-normal text-[34px] md:text-[42px] leading-[1.08] tracking-[-0.02em] text-[#0C310A]">
             Let’s find that place
             <br />
             you’ve been dreaming
@@ -100,19 +48,19 @@ export const PreFooterBanner: React.FC = () => {
         {/* Right: Signature HUTS Dual Button ("Get Started" Pill + Arrow Circle) */}
         <div
           onClick={() => openConfigurator()}
-          className="group inline-flex items-center gap-1 cursor-pointer select-none shrink-0"
+          className="group inline-flex items-center gap-1.5 cursor-pointer select-none shrink-0"
         >
           {/* Pill text */}
-          <div className="relative overflow-hidden h-[42px] px-6 rounded-full bg-[#FAF8F1] text-[#182215] text-[13px] font-medium flex items-center justify-center transition-colors duration-300">
-            <span className="absolute inset-0 bg-[#3F6628] translate-y-full -translate-x-1/4 rotate-12 group-hover:translate-y-0 group-hover:translate-x-0 group-hover:rotate-0 scale-150 transition-transform duration-300 ease-out rounded-full pointer-events-none" />
+          <div className="relative overflow-hidden h-[44px] px-7 rounded-[104px] bg-[#FAF8F1] text-[#0C310A] text-[14px] leading-[1.4] font-normal flex items-center justify-center transition-colors duration-300">
+            <span className="absolute inset-0 bg-[#3F6628] translate-y-full -translate-x-1/4 rotate-12 group-hover:translate-y-0 group-hover:translate-x-0 group-hover:rotate-0 scale-150 transition-transform duration-300 ease-out rounded-[104px] pointer-events-none" />
             <span className="relative z-10 transition-colors duration-300 group-hover:text-[#FAF8F1]">
               Get Started
             </span>
           </div>
 
           {/* Circle arrow */}
-          <div className="relative overflow-hidden w-[42px] h-[42px] rounded-full bg-[#FAF8F1] text-[#182215] flex items-center justify-center transition-colors duration-300">
-            <span className="absolute inset-0 bg-[#3F6628] translate-y-full -translate-x-1/4 rotate-12 group-hover:translate-y-0 group-hover:translate-x-0 group-hover:rotate-0 scale-150 transition-transform duration-300 ease-out rounded-full pointer-events-none" />
+          <div className="relative overflow-hidden w-[44px] h-[44px] rounded-[104px] bg-[#FAF8F1] text-[#0C310A] flex items-center justify-center transition-colors duration-300">
+            <span className="absolute inset-0 bg-[#3F6628] translate-y-full -translate-x-1/4 rotate-12 group-hover:translate-y-0 group-hover:translate-x-0 group-hover:rotate-0 scale-150 transition-transform duration-300 ease-out rounded-[104px] pointer-events-none" />
             <svg
               className="relative z-10 w-4 h-4 transition-all duration-300 group-hover:text-[#FAF8F1] group-hover:-rotate-45"
               viewBox="0 0 24 24"

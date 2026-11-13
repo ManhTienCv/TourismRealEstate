@@ -9,15 +9,15 @@ export interface DoubleLoopArrowProps {
 }
 
 export const DoubleLoopArrow: React.FC<DoubleLoopArrowProps> = ({
-  className = '',
+  className = 'w-[200px] sm:w-[240px] md:w-[270px] lg:w-[285px] h-auto',
   strokeColor = '#4B6B3B',
-  width = 180,
-  height = 200,
+  width,
+  height,
 }) => {
   return (
     <svg
-      width={width}
-      height={height}
+      {...(width ? { width } : {})}
+      {...(height ? { height } : {})}
       viewBox="0 0 180 200"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

@@ -14,8 +14,9 @@ export default {
           'surface-light': '#FAF8F1', // Elevated card surface (not #FFFFFF, subtle warm tone)
           border: '#E2DDD5',      // Subtle warm hairline borders
           'border-strong': '#CEC7BC',
-          ink: '#182215',         // Primary deep charcoal typography
-          muted: '#68645E',       // Secondary body copy & descriptions
+          ink: '#0C310A',         // Primary deep forest dark ink on cream (HUTS: #0C310A)
+          'title-light': '#FAF7ED', // Title typography on dark photography (HUTS: #FAF7ED)
+          muted: '#664A42',       // Secondary body copy & descriptions (HUTS: #664A42)
           subtle: '#9A958D',      // Caption / micro copy
           pine: {
             DEFAULT: '#2C4A3E',   // Primary CTA buttons, active states, forest green

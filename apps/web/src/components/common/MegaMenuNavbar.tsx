@@ -245,7 +245,7 @@ export const MegaMenuNavbar: React.FC = () => {
             {/* Right CTA Button: Signature Vibrant Lime Pill Button */}
             <button
               onClick={() => openConfigurator()}
-              className="px-5 py-2 md:py-2.5 rounded-full bg-[#d2ef72] hover:bg-[#c5e859] text-[#182215] text-[13px] md:text-[13.5px] font-medium transition-colors active:scale-95 shadow-xs shrink-0"
+              className="px-5 py-2 md:py-2.5 rounded-[104px] bg-[#d2ef72] hover:bg-[#c5e859] text-[#0C310A] text-[14px] leading-[1.4] font-normal transition-colors active:scale-95 shadow-xs shrink-0"
             >
               Get Started
             </button>

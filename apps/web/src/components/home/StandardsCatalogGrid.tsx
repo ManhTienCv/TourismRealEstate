@@ -128,7 +128,7 @@ const StandardCardItem: React.FC<StandardCardItemProps> = ({ item, onPlanClick, 
         style={{ perspective: '1200px' }}
       >
         <div
-          className="relative w-full h-full [transform-style:preserve-3d] transition-transform duration-700 ease-out rounded-[20px] shadow-sm group-hover:shadow-md"
+          className="relative w-full h-full [transform-style:preserve-3d] transition-transform duration-700 ease-out rounded-[17.5px] shadow-sm group-hover:shadow-md"
           style={{
             transformStyle: 'preserve-3d',
             transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
@@ -136,13 +136,13 @@ const StandardCardItem: React.FC<StandardCardItemProps> = ({ item, onPlanClick, 
         >
           {/* MẶT TRƯỚC: Ảnh thực tế của ngôi nhà */}
           <div
-            className="absolute inset-0 [backface-visibility:hidden] rounded-[20px] overflow-hidden bg-[#FAF8F1] border border-[#DFDCD0]"
+            className="absolute inset-0 [backface-visibility:hidden] rounded-[17.5px] overflow-hidden bg-[#FAF8F1] border border-[#DFDCD0]"
             style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }}
           >
             <img
               src={item.imageUrl}
               alt={item.cleanName}
-              className="w-full h-full object-cover select-none pointer-events-none rounded-[20px]"
+              className="w-full h-full object-cover select-none pointer-events-none rounded-[17.5px]"
               loading="lazy"
               draggable={false}
             />
@@ -150,7 +150,7 @@ const StandardCardItem: React.FC<StandardCardItemProps> = ({ item, onPlanClick, 
 
           {/* MẶT SAU: Mô hình kiến trúc 3D Isometric + 2 Pill thông số Bed/Bath */}
           <div
-            className="absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)] w-full h-full bg-[#FAF8F1] border border-[#DFDCD0] rounded-[20px] p-6 relative flex items-center justify-center"
+            className="absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)] w-full h-full bg-[#FAF8F1] border border-[#DFDCD0] rounded-[17.5px] p-6 relative flex items-center justify-center"
             style={{
               backfaceVisibility: 'hidden',
               WebkitBackfaceVisibility: 'hidden',
@@ -166,10 +166,10 @@ const StandardCardItem: React.FC<StandardCardItemProps> = ({ item, onPlanClick, 
 
             {/* Góc dưới bên trái: 2 pill thông số Bed & Bath */}
             <div className="absolute bottom-5 left-5 flex items-center gap-2">
-              <span className="px-3 py-1 text-[11px] font-medium text-[#182215] bg-white/70 border border-[#DFDCD0] rounded-full">
+              <span className="px-3 py-1 text-[11px] font-medium text-[#0C310A] bg-white/70 border border-[#DFDCD0] rounded-full">
                 {item.beds} Bed
               </span>
-              <span className="px-3 py-1 text-[11px] font-medium text-[#182215] bg-white/70 border border-[#DFDCD0] rounded-full">
+              <span className="px-3 py-1 text-[11px] font-medium text-[#0C310A] bg-white/70 border border-[#DFDCD0] rounded-full">
                 {item.baths} Bath
               </span>
             </div>
@@ -179,8 +179,8 @@ const StandardCardItem: React.FC<StandardCardItemProps> = ({ item, onPlanClick, 
 
       {/* Dòng chữ tên mẫu nhà BÊN NGOÀI bên dưới khung lật: đổi màu xanh lá khi isFlipped === true */}
       <h3
-        className={`font-serif text-[28px] md:text-[30px] font-normal tracking-tight transition-colors duration-300 ${
-          isFlipped ? 'text-[#5E8C31]' : 'text-[#182215]'
+        className={`font-serif text-[26px] sm:text-[28px] md:text-[33px] font-normal tracking-[-0.02em] leading-[1.1] transition-colors duration-300 ${
+          isFlipped ? 'text-[#5E8C31]' : 'text-[#0C310A]'
         }`}
       >
         {item.cleanName}
@@ -237,10 +237,10 @@ export const StandardsCatalogGrid: React.FC = () => {
         
         {/* Section Header */}
         <div className="text-center max-w-4xl mx-auto px-4 shrink-0">
-          <h2 className="font-serif text-[40px] sm:text-[48px] lg:text-[56px] font-normal tracking-tight text-[#182215] leading-[1.12] mb-3">
+          <h2 className="font-serif text-[38px] sm:text-[44px] font-normal tracking-[-0.01em] text-[#0C310A] leading-[1.0] mb-3">
             It all starts with our Standards...
           </h2>
-          <p className="text-[13px] md:text-[14px] leading-[1.55] text-[#2C3527] max-w-[540px] mx-auto text-center mb-10">
+          <p className="text-[13px] md:text-[14px] leading-[1.55] text-[#664A42] max-w-[540px] mx-auto text-center mb-10">
             They’re more than home plans, they’re home products—designed for real land, real budgets, and real life. TIE Standards combine timeless design with construction-ready details, making it faster and easier to build a home that feels anything but standard.
           </p>
         </div>
@@ -249,7 +249,7 @@ export const StandardsCatalogGrid: React.FC = () => {
         <div className="w-full overflow-hidden">
           <motion.div
             style={{ x }}
-            className="flex gap-6 pl-8 sm:pl-16 lg:pl-20 pr-8 sm:pr-16 lg:pr-20 items-center shrink-0 w-max"
+            className="flex gap-[17.5px] px-[31.4px] items-center shrink-0 w-max h-scroll-content"
           >
             {STANDARDS_GALLERY.map((item) => (
               <StandardCardItem

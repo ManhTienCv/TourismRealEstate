@@ -1,19 +1,33 @@
 export const TIE_DESIGN_TOKENS = {
   colors: {
-    bg: '#F7F5F0',        // Primary warm alabaster/architectural paper background
-    surface: '#EFECE6',   // Secondary card/section surface
-    border: '#E2DDD5',    // Subtle warm hairline borders
-    ink: '#1C1B18',       // Primary deep charcoal typography
-    muted: '#68645E',     // Secondary body copy & descriptions
-    pine: '#2C4A3E',      // Primary CTA buttons, active states, forest green
-    terracotta: '#D46A43',// Secondary accents, cost variance badges, highlights
-    sand: '#E6E1D8',      // Additional tertiary warm neutral
+    bg: '#FAF8F1',          // Primary warm cream background (Huts: #FAF8F1)
+    surface: '#FAF8F1',     // Card surface
+    border: '#E2DDD5',      // Subtle hairline borders
+    ink: '#0C310A',         // Primary title on cream (HUTS: #0C310A / rgb(12, 49, 10))
+    titleLight: '#FAF7ED',  // Title on dark photography (HUTS: #FAF7ED / rgb(250, 247, 237))
+    muted: '#664A42',       // Secondary body copy & descriptions (HUTS: #664A42 / rgb(102, 74, 66))
+    pine: '#2C4A3E',        // Primary CTA buttons, forest green
+    terracotta: '#D46A43',  // Secondary accents
+    sand: '#E6E1D8',        // Tertiary warm neutral
     pineHover: '#233B31',
     terracottaHover: '#BF5C36',
   },
+  typography: {
+    h1: 'text-[44px] leading-[1.0] tracking-[-0.01em] font-normal',
+    h2: 'text-[44px] leading-[1.0] tracking-[-0.01em] font-normal text-[#0C310A]',
+    h3: 'text-[33px] leading-[1.1] tracking-[-0.02em] font-normal text-[#0C310A]',
+    paragraph: 'text-[12.4px] leading-[1.4] text-[#664A42]',
+    navLink: 'text-[14px] leading-[1.4] font-normal text-[#664A42]',
+    button: 'text-[14px] leading-[1.4] font-normal rounded-[104px]',
+  },
+  layout: {
+    hScrollContent: 'px-[31.4px] gap-[17.5px]',
+    cardInnerRadius: 'rounded-[17.5px]',
+    buttonRadius: 'rounded-[104px]',
+  },
   fonts: {
-    serif: '"Playfair Display", "Instrument Serif", Georgia, serif',
-    sans: '"Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+    serif: '"HW Cigars", "Playfair Display", "Instrument Serif", Georgia, serif',
+    sans: '"ABC Walter Neue", "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     mono: '"JetBrains Mono", Menlo, Monaco, Consolas, monospace',
   },
 } as const;

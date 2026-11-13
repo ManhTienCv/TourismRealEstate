@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { useConfiguratorStore } from '../../store/useConfiguratorStore';
 import { smoothScrollTo, getLenis } from '../../utils/smoothScroll';
 import { PillArrowButton } from '../common/PillArrowButton';
+import { DoubleLoopArrow } from './narrative/DoubleLoopArrow';
 
 // Featured Realized Projects matching exact Huts.com portfolio specification (3 curated projects)
 const FEATURED_REALIZED_PROJECTS = [
@@ -113,45 +114,13 @@ export const RealizedPortfolioSection: React.FC = () => {
     <section id="portfolio-section" className="relative w-full bg-[#FAF8F1]">
       
       {/* 1. Intro Editorial Header on Cream Background */}
-      <div className="py-20 max-w-[1584px] mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <div className="pt-0 pb-16 md:pb-20 max-w-[1584px] mx-auto px-4 sm:px-6 lg:px-8 text-center">
         {/* Hand-drawn Green 2-Loop Arrow matching HUTS */}
-        <div className="flex justify-center -mt-8 sm:-mt-10 mb-6 pointer-events-none">
-          <svg
-            width="180"
-            height="200"
-            viewBox="0 0 180 200"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className="w-[140px] sm:w-[160px] md:w-[180px] h-auto overflow-visible select-none pointer-events-none"
-          >
-            {/* Thân mũi tên: đuôi móc nhẹ + 2 vòng xoắn lệch */}
-            <motion.path
-              d="M 21 13 C 22 28, 62 38, 88 58 C 98 66, 92 80, 82 76 C 73 72, 75 55, 92 56 C 112 57, 123 78, 122 108 C 121 130, 110 144, 102 139 C 94 134, 96 116, 118 116 C 142 116, 155 140, 152 181"
-              stroke="#4B6B3B"
-              strokeWidth="1.8"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              initial={{ pathLength: 0, opacity: 0 }}
-              whileInView={{ pathLength: 1, opacity: 1 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 1.1, ease: 'easeInOut' }}
-            />
-            {/* Đầu mũi tên chữ V mở bất đối xứng tự nhiên */}
-            <motion.path
-              d="M 144 164 C 148 170, 151 176, 152 182 C 156 175, 161 169, 168 166"
-              stroke="#4B6B3B"
-              strokeWidth="1.8"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              initial={{ pathLength: 0, opacity: 0 }}
-              whileInView={{ pathLength: 1, opacity: 1 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.35, delay: 0.85, ease: 'easeOut' }}
-            />
-          </svg>
+        <div className="flex justify-center -mt-20 sm:-mt-28 md:-mt-36 mb-6 sm:mb-8 pointer-events-none bg-transparent">
+          <DoubleLoopArrow />
         </div>
 
-        <h2 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-normal tracking-tight text-[#182215]">
+        <h2 className="font-serif text-[36px] sm:text-[44px] md:text-[50px] lg:text-[54px] font-normal tracking-[-0.01em] text-[#0C310A] leading-[1.08] max-w-4xl mx-auto">
           ...and we work with you to make it yours.
         </h2>
       </div>
@@ -198,8 +167,8 @@ export const RealizedPortfolioSection: React.FC = () => {
                 className={`${initialPosClass} pointer-events-none flex items-center justify-between w-[82vw] max-w-[1260px] mx-auto z-10`}
               >
                 {/* Left Column: Title & 1-line Glassmorphism Pill Tags (NO hover effects) */}
-                <div className="w-[50%] lg:w-[560px] pointer-events-auto text-white">
-                  <h3 className="font-serif text-[42px] sm:text-[48px] md:text-[52px] lg:text-[60px] leading-[1.05] tracking-tight whitespace-pre-line mb-6 drop-shadow-md font-normal">
+                <div className="w-[50%] lg:w-[560px] pointer-events-auto text-[#FAF7ED]">
+                  <h3 className="font-serif text-[42px] sm:text-[48px] md:text-[52px] lg:text-[60px] leading-[1.05] tracking-tight whitespace-pre-line mb-6 drop-shadow-md font-normal text-[#FAF7ED]">
                     {project.title}
                   </h3>
                   <div className="flex items-center flex-nowrap gap-2 whitespace-nowrap overflow-hidden">
