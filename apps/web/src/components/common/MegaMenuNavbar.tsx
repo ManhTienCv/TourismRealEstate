@@ -23,11 +23,10 @@ export const MegaMenuNavbar: React.FC = () => {
   const [activeMenu, setActiveMenu] = useState<MenuType>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isVisible, setIsVisible] = useState(true);
-  const lastScrollYRef = useRef(0);
-  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [isHeaderHovered, setIsHeaderHovered] = useState(false);
+  const menuCloseTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Scroll listener: transparent/solid background + smart auto-hide on scroll down, reveal on scroll up
+  // Scroll listener: transparent at very top, solid warm cream (#FAF7ED) when scrolled (Always pinned like HUTS)
   useEffect(() => {
     let ticking = false;
 
@@ -37,21 +36,6 @@ export const MegaMenuNavbar: React.FC = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
           setIsScrolled(currentScrollY > 40);
-
-          if (activeMenu !== null || mobileMenuOpen) {
-            setIsVisible(true);
-          } else if (currentScrollY <= 60) {
-            setIsVisible(true);
-          } else {
-            const diff = currentScrollY - lastScrollYRef.current;
-            if (diff > 6) {
-              setIsVisible(false);
-            } else if (diff < -6) {
-              setIsVisible(true);
-            }
-          }
-
-          lastScrollYRef.current = currentScrollY;
           ticking = false;
         });
         ticking = true;
@@ -60,21 +44,36 @@ export const MegaMenuNavbar: React.FC = () => {
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [activeMenu, mobileMenuOpen]);
+  }, []);
 
-  const handleMouseEnter = (menu: MenuType) => {
-    if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    setActiveMenu(menu);
+  const handleHeaderMouseEnter = () => {
+    if (menuCloseTimeoutRef.current) {
+      clearTimeout(menuCloseTimeoutRef.current);
+      menuCloseTimeoutRef.current = null;
+    }
+    setIsHeaderHovered(true);
   };
 
-  const handleMouseLeave = () => {
-    timeoutRef.current = setTimeout(() => {
+  const handleHeaderMouseLeave = () => {
+    if (menuCloseTimeoutRef.current) clearTimeout(menuCloseTimeoutRef.current);
+    menuCloseTimeoutRef.current = setTimeout(() => {
       setActiveMenu(null);
-    }, 220);
+      setIsHeaderHovered(false);
+    }, 180);
+  };
+
+  const handleItemMouseEnter = (menu: MenuType) => {
+    if (menuCloseTimeoutRef.current) {
+      clearTimeout(menuCloseTimeoutRef.current);
+      menuCloseTimeoutRef.current = null;
+    }
+    setIsHeaderHovered(true);
+    setActiveMenu(menu);
   };
 
   const handleStandardItemClick = (slug: string) => {
     setActiveMenu(null);
+    setIsHeaderHovered(false);
     if (slug === 'what-is-a-standard') {
       closeSolutionDetail();
       setActiveTab('standards');
@@ -94,6 +93,7 @@ export const MegaMenuNavbar: React.FC = () => {
 
   const handleSolutionSelect = (slug: string) => {
     setActiveMenu(null);
+    setIsHeaderHovered(false);
     openSolutionDetail(slug);
   };
 
@@ -102,35 +102,34 @@ export const MegaMenuNavbar: React.FC = () => {
     setActiveTab(tab);
     setMobileMenuOpen(false);
     setActiveMenu(null);
+    setIsHeaderHovered(false);
     if (id) {
-      smoothScrollTo(id, { offset: -70, duration: 1.2 });
+      smoothScrollTo(id, { offset: -70, duration: 1.0 });
     } else {
-      smoothScrollTo(0, { duration: 1.2 });
+      smoothScrollTo(0, { duration: 1.0 });
     }
   };
 
   const isMenuOpen = activeMenu !== null;
-  const isSolid = isScrolled || activeTab !== 'home' || isMenuOpen || selectedSolutionSlug !== null;
-  const isTransparent = !isSolid;
+  const isSolid = isScrolled || isHeaderHovered || isMenuOpen || activeTab !== 'home' || selectedSolutionSlug !== null;
 
   return (
     <>
       <header
-        onMouseLeave={handleMouseLeave}
+        onMouseEnter={handleHeaderMouseEnter}
+        onMouseLeave={handleHeaderMouseLeave}
         style={{
           transition:
-            'transform 0.6s cubic-bezier(0.33, 1, 0.68, 1), border-radius 0.4s cubic-bezier(0.33, 1, 0.68, 1), background-color 0.2s cubic-bezier(0.33, 1, 0.68, 1), color 0.2s cubic-bezier(0.33, 1, 0.68, 1)',
+            'transform 0.4s cubic-bezier(0.33, 1, 0.68, 1), border-radius 0.4s cubic-bezier(0.33, 1, 0.68, 1), background-color 0.2s cubic-bezier(0.33, 1, 0.68, 1), color 0.2s cubic-bezier(0.33, 1, 0.68, 1), box-shadow 0.4s cubic-bezier(0.33, 1, 0.68, 1)',
         }}
-        className={`fixed top-0 left-0 right-0 z-50 ${
-          isVisible ? 'translate-y-0' : '-translate-y-full pointer-events-none shadow-none'
-        } ${
+        className={`fixed top-0 left-0 right-0 z-50 translate-y-0 ${
           isSolid
-            ? 'bg-[#FAF8F1] text-[#0C310A] shadow-none border-none'
-            : 'bg-transparent text-white'
-        } ${isMenuOpen ? 'rounded-b-[36px] sm:rounded-b-[44px]' : ''}`}
+            ? 'bg-[#FAF7ED] text-[#1E1414]'
+            : 'bg-transparent text-[#FAF7ED]'
+        } ${isMenuOpen ? 'rounded-b-[24px] shadow-xl' : 'rounded-b-0 shadow-none'}`}
       >
-        {/* Top Navbar Row */}
-        <div className="max-w-[1584px] mx-auto px-6 sm:px-10 lg:px-12 h-20 flex items-center justify-between">
+        {/* Top Navbar Row (HUTS height: 86px) */}
+        <div className="max-w-[1584px] mx-auto px-6 sm:px-10 lg:px-12 h-[86px] flex items-center justify-between">
           
           {/* Brand Wordmark (Bold HUTS-inspired Sans: "TIE") */}
           <div
@@ -138,8 +137,8 @@ export const MegaMenuNavbar: React.FC = () => {
             className="cursor-pointer flex items-center space-x-2 group shrink-0"
           >
             <span
-              className={`font-sans text-[26px] md:text-[28px] font-black tracking-[-0.03em] leading-none transition-colors select-none ${
-                isTransparent ? 'text-white' : 'text-tie-ink'
+              className={`font-sans text-[26px] md:text-[28px] font-black tracking-[-0.03em] leading-none transition-colors duration-200 select-none ${
+                isSolid ? 'text-[#1E1414]' : 'text-[#FAF7ED]'
               }`}
             >
               TIE
@@ -147,109 +146,113 @@ export const MegaMenuNavbar: React.FC = () => {
           </div>
 
           {/* Right Group: Navigation Links & CTA Button gathered together */}
-          <div className="flex items-center gap-5 lg:gap-6.5 ml-auto">
+          <div className="flex items-center gap-6 lg:gap-7 ml-auto">
 
-            {/* Desktop Navigation Links */}
-            <nav className="hidden lg:flex items-center gap-5 lg:gap-6.5 font-sans text-[13px] md:text-[13.5px] font-normal tracking-normal">
+            {/* Desktop Navigation Links (HUTS typography: 14px leading-none font-normal) */}
+            <nav className="hidden lg:flex items-center gap-6 lg:gap-7 font-sans text-[14px] leading-none font-normal">
               
-              {/* 1. Housing Solutions */}
+              {/* 1. Housing Solutions + */}
               <div
                 className="relative"
-                onMouseEnter={() => handleMouseEnter('solutions')}
+                onMouseEnter={() => handleItemMouseEnter('solutions')}
               >
                 <button
                   onClick={() => scrollToSection('solutions-section', 'home')}
-                  className={`py-2 transition-colors flex items-center gap-1.5 ${
-                    activeMenu === 'solutions'
-                      ? isTransparent ? 'text-white font-medium' : 'text-tie-ink font-medium'
-                      : isTransparent
-                      ? 'text-white hover:text-white/80'
-                      : 'text-tie-ink/85 hover:text-tie-ink'
+                  className={`py-2 transition-colors duration-200 flex items-center gap-1 cursor-pointer ${
+                    isSolid
+                      ? 'text-[#1E1414] hover:text-[#0C310A]'
+                      : 'text-[#FAF7ED] hover:text-white'
                   }`}
                 >
                   <span>Housing Solutions</span>
-                  <PlusCrossIcon isOpen={activeMenu === 'solutions'} isTransparent={isTransparent} />
+                  <PlusCrossIcon
+                    isOpen={activeMenu === 'solutions'}
+                    colorClass={isSolid ? 'text-[#1E1414]' : 'text-[#FAF7ED]'}
+                  />
                 </button>
               </div>
 
-              {/* 2. Standards */}
+              {/* 2. Standards + */}
               <div
                 className="relative"
-                onMouseEnter={() => handleMouseEnter('standards')}
+                onMouseEnter={() => handleItemMouseEnter('standards')}
               >
                 <button
                   onClick={() => scrollToSection('standards-section', 'standards')}
-                  className={`py-2 transition-colors flex items-center gap-1.5 ${
-                    activeMenu === 'standards'
-                      ? isTransparent ? 'text-white font-medium' : 'text-tie-ink font-medium'
-                      : isTransparent
-                      ? 'text-white hover:text-white/80'
-                      : 'text-tie-ink/85 hover:text-tie-ink'
+                  className={`py-2 transition-colors duration-200 flex items-center gap-1 cursor-pointer ${
+                    isSolid
+                      ? 'text-[#1E1414] hover:text-[#0C310A]'
+                      : 'text-[#FAF7ED] hover:text-white'
                   }`}
                 >
                   <span>Standards</span>
-                  <PlusCrossIcon isOpen={activeMenu === 'standards'} isTransparent={isTransparent} />
+                  <PlusCrossIcon
+                    isOpen={activeMenu === 'standards'}
+                    colorClass={isSolid ? 'text-[#1E1414]' : 'text-[#FAF7ED]'}
+                  />
                 </button>
               </div>
 
-              {/* 3. How It Works */}
+              {/* 3. How It Works + */}
               <div
                 className="relative"
-                onMouseEnter={() => handleMouseEnter('how-it-works')}
+                onMouseEnter={() => handleItemMouseEnter('how-it-works')}
               >
                 <button
                   onClick={() => scrollToSection('process-section', 'home')}
-                  className={`py-2 transition-colors flex items-center gap-1.5 ${
-                    activeMenu === 'how-it-works'
-                      ? isTransparent ? 'text-white font-medium' : 'text-tie-ink font-medium'
-                      : isTransparent
-                      ? 'text-white hover:text-white/80'
-                      : 'text-tie-ink/85 hover:text-tie-ink'
+                  className={`py-2 transition-colors duration-200 flex items-center gap-1 cursor-pointer ${
+                    isSolid
+                      ? 'text-[#1E1414] hover:text-[#0C310A]'
+                      : 'text-[#FAF7ED] hover:text-white'
                   }`}
                 >
                   <span>How It Works</span>
-                  <PlusCrossIcon isOpen={activeMenu === 'how-it-works'} isTransparent={isTransparent} />
+                  <PlusCrossIcon
+                    isOpen={activeMenu === 'how-it-works'}
+                    colorClass={isSolid ? 'text-[#1E1414]' : 'text-[#FAF7ED]'}
+                  />
                 </button>
               </div>
 
-              {/* 4. Portfolio / Realized Projects */}
+              {/* 4. Portfolio */}
               <button
                 onClick={() => scrollToSection('portfolio-section', 'portfolio')}
-                className={`py-2 transition-colors ${
-                  isTransparent
-                    ? 'text-white hover:text-white/80'
-                    : 'text-tie-ink/85 hover:text-tie-ink'
+                className={`py-2 transition-colors duration-200 cursor-pointer ${
+                  isSolid
+                    ? 'text-[#1E1414] hover:text-[#0C310A]'
+                    : 'text-[#FAF7ED] hover:text-white'
                 }`}
               >
                 <span>Portfolio</span>
               </button>
 
-              {/* 5. Resources */}
+              {/* 5. Resources + */}
               <div
                 className="relative"
-                onMouseEnter={() => handleMouseEnter('resources')}
+                onMouseEnter={() => handleItemMouseEnter('resources')}
               >
                 <button
                   onClick={() => scrollToSection('process-section', 'home')}
-                  className={`py-2 transition-colors flex items-center gap-1.5 ${
-                    activeMenu === 'resources'
-                      ? isTransparent ? 'text-white font-medium' : 'text-tie-ink font-medium'
-                      : isTransparent
-                      ? 'text-white hover:text-white/80'
-                      : 'text-tie-ink/85 hover:text-tie-ink'
+                  className={`py-2 transition-colors duration-200 flex items-center gap-1 cursor-pointer ${
+                    isSolid
+                      ? 'text-[#1E1414] hover:text-[#0C310A]'
+                      : 'text-[#FAF7ED] hover:text-white'
                   }`}
                 >
                   <span>Resources</span>
-                  <PlusCrossIcon isOpen={activeMenu === 'resources'} isTransparent={isTransparent} />
+                  <PlusCrossIcon
+                    isOpen={activeMenu === 'resources'}
+                    colorClass={isSolid ? 'text-[#1E1414]' : 'text-[#FAF7ED]'}
+                  />
                 </button>
               </div>
 
             </nav>
 
-            {/* Right CTA Button: Signature Vibrant Lime Pill Button */}
+            {/* Right CTA Button: Signature Soft Lime Pill Button (HUTS: #CBE282 / #0C310A / rounded-[104px]) */}
             <button
               onClick={() => openConfigurator()}
-              className="px-5 py-2 md:py-2.5 rounded-[104px] bg-[#d2ef72] hover:bg-[#c5e859] text-[#0C310A] text-[14px] leading-[1.4] font-normal transition-colors active:scale-95 shadow-xs shrink-0"
+              className="px-5 py-2.5 rounded-[104px] bg-[#CBE282] hover:bg-[#b8d867] text-[#0C310A] text-[14px] leading-none font-normal transition-colors active:scale-95 shrink-0 shadow-xs cursor-pointer"
             >
               Get Started
             </button>
@@ -258,9 +261,9 @@ export const MegaMenuNavbar: React.FC = () => {
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className={`p-2 rounded-lg lg:hidden transition-colors ${
-                isTransparent
-                  ? 'text-white hover:bg-white/10'
-                  : 'text-tie-ink hover:bg-tie-surface'
+                isSolid
+                  ? 'text-[#1E1414] hover:bg-[#F2EFE4]'
+                  : 'text-[#FAF7ED] hover:bg-white/10'
               }`}
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -270,17 +273,17 @@ export const MegaMenuNavbar: React.FC = () => {
 
         </div>
 
-        {/* Full-width MegaMenu Dropdown Panels */}
+        {/* Full-width MegaMenu Dropdown Panels (0.4s cubic-bezier(0.33, 1, 0.68, 1)) */}
         <AnimatePresence>
           {isMenuOpen && (
             <motion.div
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.25, ease: 'easeOut' }}
-              className="overflow-hidden border-t border-[#E8E4DC]/60"
+              transition={{ duration: 0.4, ease: [0.33, 1, 0.68, 1] }}
+              className="overflow-hidden"
             >
-              <div className="max-w-[1584px] mx-auto px-6 sm:px-10 lg:px-12 pt-6 pb-12">
+              <div className="max-w-[1584px] mx-auto px-6 sm:px-10 lg:px-12 pt-4 pb-10">
                 <MegaMenuPanels
                   activeMenu={activeMenu}
                   onStandardClick={handleStandardItemClick}
@@ -302,8 +305,11 @@ export const MegaMenuNavbar: React.FC = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 bg-black/45 backdrop-blur-[1px] z-40"
-            onClick={() => setActiveMenu(null)}
+            className="fixed inset-0 bg-black/40 backdrop-blur-[1px] z-40"
+            onClick={() => {
+              setActiveMenu(null);
+              setIsHeaderHovered(false);
+            }}
           />
         )}
       </AnimatePresence>

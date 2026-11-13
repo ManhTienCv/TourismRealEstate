@@ -1,23 +1,23 @@
 import React from 'react';
 
-// Editorial Spot Illustrations (Original Sanity CDN SVGs 340x340 from HUTS)
+// Editorial Spot Illustrations (Original HUTS Vector SVGs stored locally in /illustrations)
 export const AVAILABLE_ILLUSTRATIONS: Record<string, string> = {
-  'starter-home': 'https://cdn.sanity.io/images/xi1ruvdt/production/8354516027515e9c96b2a1cf9b5dcfe4147002dd-340x340.svg',
-  'forever-home': 'https://cdn.sanity.io/images/xi1ruvdt/production/f57afa91d854d7037c1f22f939bcb08bed394085-340x340.svg',
-  'second-home': 'https://cdn.sanity.io/images/xi1ruvdt/production/5fe9b5cf62749563229d10cd8979e4f2818be5b8-340x340.svg',
-  'hybrid-home': 'https://cdn.sanity.io/images/xi1ruvdt/production/342b4d726bff821f672467db8124359599c0bf3c-340x340.svg',
-  'adu': 'https://cdn.sanity.io/images/xi1ruvdt/production/8aa8e51efbbfee9a6c86ad90add613cfb45b324e-340x340.svg',
-  'investment-property': 'https://cdn.sanity.io/images/xi1ruvdt/production/1e9eb7c8d8d61058bc8fa5c0b0daa0200a38cf0b-340x340.svg',
-  'micro-hospitality': 'https://cdn.sanity.io/images/xi1ruvdt/production/8eac1673229ab373efff6f6398fc31d7663a5a6a-340x340.svg',
-  'multi-gen-compound': 'https://cdn.sanity.io/images/xi1ruvdt/production/510deebfe5ef8b59dc3bc901a75d659acd21f929-120x120.svg',
+  'starter-home': '/illustrations/starter-home.svg',
+  'forever-home': '/illustrations/forever-home.svg',
+  'second-home': '/illustrations/second-home.svg',
+  'hybrid-home': '/illustrations/hybrid-home.svg',
+  'adu': '/illustrations/adu.svg',
+  'investment-property': '/illustrations/investment-property.svg',
+  'micro-hospitality': '/illustrations/micro-hospitality.svg',
+  'multi-gen-compound': '/illustrations/multi-gen-compound.svg',
   // Aliases for robustness
-  'the-backyard-adu': 'https://cdn.sanity.io/images/xi1ruvdt/production/8aa8e51efbbfee9a6c86ad90add613cfb45b324e-340x340.svg',
-  'the-yield-portfolio-asset': 'https://cdn.sanity.io/images/xi1ruvdt/production/1e9eb7c8d8d61058bc8fa5c0b0daa0200a38cf0b-340x340.svg',
-  'the-work-live-hybrid': 'https://cdn.sanity.io/images/xi1ruvdt/production/342b4d726bff821f672467db8124359599c0bf3c-340x340.svg',
-  'work-live': 'https://cdn.sanity.io/images/xi1ruvdt/production/342b4d726bff821f672467db8124359599c0bf3c-340x340.svg',
-  'multi-generation-compound': 'https://cdn.sanity.io/images/xi1ruvdt/production/510deebfe5ef8b59dc3bc901a75d659acd21f929-120x120.svg',
-  'the-multi-gen-family-compound': 'https://cdn.sanity.io/images/xi1ruvdt/production/510deebfe5ef8b59dc3bc901a75d659acd21f929-120x120.svg',
-  'multi-generational-family-compound': 'https://cdn.sanity.io/images/xi1ruvdt/production/510deebfe5ef8b59dc3bc901a75d659acd21f929-120x120.svg',
+  'the-backyard-adu': '/illustrations/adu.svg',
+  'the-yield-portfolio-asset': '/illustrations/investment-property.svg',
+  'the-work-live-hybrid': '/illustrations/hybrid-home.svg',
+  'work-live': '/illustrations/hybrid-home.svg',
+  'multi-generation-compound': '/illustrations/multi-gen-compound.svg',
+  'the-multi-gen-family-compound': '/illustrations/multi-gen-compound.svg',
+  'multi-generational-family-compound': '/illustrations/multi-gen-compound.svg',
 };
 
 // Character Line Art SVGs matching exact frames from Banghi.mp4 (p3_36s, p3_40s, p3_42s)

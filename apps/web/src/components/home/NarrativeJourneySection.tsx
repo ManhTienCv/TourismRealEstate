@@ -239,10 +239,7 @@ export const NarrativeJourneySection: React.FC = () => {
           {/* Right Column: Authentic HUTS line-art Sherpa by the fireplace (Matches Photo 2) */}
           <div className="md:col-span-6 flex justify-center md:justify-end">
             <img
-              src="https://cdn.sanity.io/images/xi1ruvdt/production/83d65d8d10536624a3d03751a07d91fe2782e5f4-340x340.svg?w=1920&q=85&auto=format"
-              onError={(e) => {
-                e.currentTarget.src = '/illustrations/process-sherpa-fireplace.svg';
-              }}
+              src="/illustrations/process-sherpa-fireplace.svg"
               alt="Architectural sherpa enjoying tea by a cozy fireplace"
               className="w-full max-w-[440px] md:max-w-[480px] h-auto object-contain select-none pointer-events-none"
             />

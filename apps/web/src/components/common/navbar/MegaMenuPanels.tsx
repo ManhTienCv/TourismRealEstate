@@ -1,6 +1,13 @@
 import React from 'react';
-import { motion } from 'framer-motion';
-import { MenuType, STANDARDS_MENU_ITEMS, SOLUTIONS_MENU_ITEMS } from './navbarData';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+  MenuType,
+  STANDARDS_COLUMNS,
+  SOLUTIONS_COLUMNS,
+  HOW_IT_WORKS_ITEMS,
+  RESOURCES_MENU_ITEMS,
+} from './navbarData';
+import { AVAILABLE_ILLUSTRATIONS } from '../../home/usecase/CharacterIllustrations';
 
 interface MegaMenuPanelsProps {
   activeMenu: MenuType;
@@ -19,186 +26,181 @@ export const MegaMenuPanels: React.FC<MegaMenuPanelsProps> = ({
 }) => {
   return (
     <div className="w-full">
-      {/* 1. STANDARDS MEGAMENU: 3x3 Grid */}
-      {activeMenu === 'standards' && (
-        <motion.div
-          initial={{ opacity: 0, y: 6 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.2 }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-6"
-        >
-          {STANDARDS_MENU_ITEMS.map((item) => (
-            <div
-              key={item.slug}
-              onClick={() => onStandardClick(item.slug)}
-              className="flex items-start space-x-4 p-2 rounded-2xl hover:bg-[#F3EFE6] border border-transparent hover:border-[#E8E4DC] cursor-pointer transition-all duration-200 group"
-            >
-              <div className="w-16 h-16 sm:w-20 sm:h-20 shrink-0 rounded-2xl overflow-hidden bg-[#FAF8F1] border border-[#E8E4DC] shadow-xs">
-                {item.isInfo ? (
-                  <div className="w-full h-full bg-[#FAF8F1] flex items-center justify-center p-2 text-tie-pine group-hover:scale-105 transition-transform duration-300">
-                    <svg className="w-9 h-9 stroke-current fill-none stroke-[1.6]" viewBox="0 0 24 24">
-                      <circle cx="12" cy="12" r="10" />
-                      <line x1="12" y1="16" x2="12" y2="12" />
-                      <line x1="12" y1="8" x2="12.01" y2="8" />
-                    </svg>
+      <AnimatePresence mode="wait">
+        {/* 1. HOUSING SOLUTIONS: 3 Columns x 8 Archetypes (Image 8) */}
+        {activeMenu === 'solutions' && (
+          <motion.div
+            key="solutions"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2, ease: [0.33, 1, 0.68, 1] }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-6"
+          >
+            {SOLUTIONS_COLUMNS.map((col, colIdx) => (
+              <div key={colIdx} className="space-y-6">
+                {col.map((sol) => (
+                  <div
+                    key={sol.slug}
+                    onClick={() => onSolutionSelect(sol.slug)}
+                    className="flex items-start space-x-4 p-2.5 rounded-[16px] hover:bg-[#F2EFE4]/50 cursor-pointer transition-colors duration-150 group"
+                  >
+                    {/* Square thumbnail with rounded-[16px] bg-[#FAF8F1] matching Image 8 */}
+                    <div className="w-[70px] h-[70px] rounded-[16px] bg-[#FAF8F1] shrink-0 flex items-center justify-center p-2.5 overflow-hidden border border-[#E2DDD5]/80 group-hover:border-[#664A42]/30 transition-colors">
+                      {AVAILABLE_ILLUSTRATIONS[sol.slug] ? (
+                        <img
+                          src={AVAILABLE_ILLUSTRATIONS[sol.slug]}
+                          alt={sol.title}
+                          className="w-full h-full object-contain select-none pointer-events-none group-hover:scale-105 transition-transform duration-200"
+                        />
+                      ) : (
+                        <div className="w-8 h-8 rounded-full bg-[#CBE282]/40" />
+                      )}
+                    </div>
+
+                    {/* Right: Title & 2-3 line description */}
+                    <div className="space-y-0.5 min-w-0 flex-1 pt-0.5">
+                      <h4 className="font-serif text-[18px] text-[#0C310A] group-hover:text-[#2D4C23] leading-snug transition-colors">
+                        {sol.title}
+                      </h4>
+                      <p className="text-[13.5px] leading-[1.4] text-[#664A42] font-sans mt-0.5">
+                        {sol.description}
+                      </p>
+                    </div>
                   </div>
-                ) : (
-                  <img
-                    src={item.imageUrl}
-                    alt={item.title}
-                    className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500 ease-out"
-                    loading="lazy"
-                  />
-                )}
+                ))}
               </div>
-              <div className="space-y-1 min-w-0">
-                <h4 className="font-serif text-base sm:text-[17px] font-bold text-[#1C1B18] group-hover:text-[#567D42] transition-colors leading-snug truncate">
+            ))}
+          </motion.div>
+        )}
+
+        {/* 2. STANDARDS: 3x3 Grid in 3 Columns (Image 9) */}
+        {activeMenu === 'standards' && (
+          <motion.div
+            key="standards"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2, ease: [0.33, 1, 0.68, 1] }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-6"
+          >
+            {STANDARDS_COLUMNS.map((col, colIdx) => (
+              <div key={colIdx} className="space-y-6">
+                {col.map((item) => (
+                  <div
+                    key={item.slug}
+                    onClick={() => onStandardClick(item.slug)}
+                    className="flex items-start space-x-4 p-2.5 rounded-[16px] hover:bg-[#F2EFE4]/50 cursor-pointer transition-colors duration-150 group"
+                  >
+                    {/* Square thumbnail with rounded-[16px] bg-[#FAF8F1] matching Image 9 */}
+                    <div className="w-[70px] h-[70px] rounded-[16px] bg-[#FAF8F1] shrink-0 overflow-hidden border border-[#E2DDD5]/80 group-hover:border-[#664A42]/30 transition-colors">
+                      <img
+                        src={item.imageUrl}
+                        alt={item.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        loading="lazy"
+                      />
+                    </div>
+
+                    {/* Right: Title & description */}
+                    <div className="space-y-0.5 min-w-0 flex-1 pt-0.5">
+                      <h4 className="font-serif text-[18px] text-[#0C310A] group-hover:text-[#2D4C23] leading-snug transition-colors">
+                        {item.title}
+                      </h4>
+                      <p className="text-[13.5px] leading-[1.4] text-[#664A42] font-sans mt-0.5">
+                        {item.description}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ))}
+          </motion.div>
+        )}
+
+        {/* 3. HOW IT WORKS: 2 Columns Grid (Image 3) */}
+        {activeMenu === 'how-it-works' && (
+          <motion.div
+            key="how-it-works"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2, ease: [0.33, 1, 0.68, 1] }}
+            className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto py-2"
+          >
+            {HOW_IT_WORKS_ITEMS.map((item) => (
+              <div
+                key={item.id}
+                onClick={() => onScrollToSection('process-section', 'home')}
+                className="flex items-start space-x-4 p-3 rounded-[16px] hover:bg-[#F2EFE4]/50 cursor-pointer transition-colors duration-150 group"
+              >
+                <div className="w-[70px] h-[70px] rounded-[16px] bg-[#FAF8F1] shrink-0 flex items-center justify-center p-2.5 border border-[#E2DDD5]/80 group-hover:border-[#664A42]/30 transition-colors">
+                  {item.type === 'approach' ? (
+                    <svg className="w-9 h-9" viewBox="0 0 36 36" fill="none">
+                      <circle cx="18" cy="16" r="7.5" stroke="#365327" strokeWidth="1.8" />
+                      <path d="M15 24h6M16 27h4" stroke="#365327" strokeWidth="1.8" strokeLinecap="round" />
+                      <path d="M18 5V2M9 8L6 5M27 8l3-3" stroke="#87B04D" strokeWidth="1.6" strokeLinecap="round" />
+                      <circle cx="18" cy="16" r="3" fill="#D2EF72" />
+                    </svg>
+                  ) : (
+                    <svg className="w-9 h-9" viewBox="0 0 36 36" fill="none">
+                      <path d="M8 28L28 8" stroke="#365327" strokeWidth="2" strokeLinecap="round" />
+                      <path d="M14 6l16 16M6 14l16 16" stroke="#87B04D" strokeWidth="1.6" strokeLinecap="round" />
+                      <circle cx="18" cy="18" r="3" fill="#D2EF72" stroke="#365327" strokeWidth="1.5" />
+                    </svg>
+                  )}
+                </div>
+
+                <div className="space-y-0.5 min-w-0 flex-1 pt-0.5">
+                  <h4 className="font-serif text-[18px] text-[#0C310A] group-hover:text-[#2D4C23] leading-snug transition-colors">
+                    {item.title}
+                  </h4>
+                  <p className="text-[13.5px] leading-[1.4] text-[#664A42] font-sans mt-0.5">
+                    {item.description}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </motion.div>
+        )}
+
+        {/* 4. RESOURCES: 3 Columns Grid */}
+        {activeMenu === 'resources' && (
+          <motion.div
+            key="resources"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2, ease: [0.33, 1, 0.68, 1] }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto py-2"
+          >
+            {RESOURCES_MENU_ITEMS.map((item) => (
+              <div
+                key={item.id}
+                onClick={() => {
+                  if (item.action === 'calculator') {
+                    onOpenConfigurator();
+                  } else if (item.targetTab === 'standards') {
+                    onScrollToSection('standards-section', 'home');
+                  } else {
+                    onScrollToSection('field-report-section', 'field-report');
+                  }
+                }}
+                className="p-4 rounded-[14px] bg-[#F2EFE4]/60 hover:bg-[#F2EFE4] border border-[#E2DDD5]/60 hover:border-[#CBE282] transition-all cursor-pointer group"
+              >
+                <h4 className="font-serif text-[18px] text-[#0C310A] group-hover:text-[#2D4C23] transition-colors leading-snug">
                   {item.title}
                 </h4>
-                <p className="text-xs text-[#666258] font-sans leading-relaxed line-clamp-2">
+                <p className="text-[13.5px] leading-[1.4] text-[#664A42] font-sans mt-1.5">
                   {item.description}
                 </p>
               </div>
-            </div>
-          ))}
-        </motion.div>
-      )}
-
-      {/* 2. HOW IT WORKS MEGAMENU: 2 Large Cards */}
-      {activeMenu === 'how-it-works' && (
-        <motion.div
-          initial={{ opacity: 0, y: 6 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.2 }}
-          className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-10 max-w-5xl mx-auto py-3"
-        >
-          {/* Card 1: The TIE Approach */}
-          <div
-            onClick={() => onScrollToSection('process-section', 'home')}
-            className="flex items-start space-x-5 p-6 rounded-2xl bg-[#FAF8F1] border border-[#E2DFD3] shadow-sm hover:border-[#567D42]/40 hover:shadow-md transition-all cursor-pointer group"
-          >
-            <div className="w-16 h-16 shrink-0 rounded-2xl bg-[#F4F1EA] group-hover:bg-[#E8F0DC] border border-[#E4DFD5] flex items-center justify-center transition-colors">
-              <svg className="w-8 h-8 text-[#567D42] stroke-current fill-none stroke-[1.6]" viewBox="0 0 24 24">
-                <path d="M9 18h6" />
-                <path d="M10 22h4" />
-                <path d="M12 2v1" />
-                <path d="M12 17a5 5 0 1 0-5-5c0 2 1.5 3 2 4h6c.5-1 2-2 2-4a5 5 0 0 0-5-5" />
-                <circle cx="12" cy="11" r="1.5" strokeDasharray="1 1" />
-                <path d="M5 5l1.5 1.5M19 5l-1.5 1.5" />
-              </svg>
-            </div>
-            <div className="space-y-1.5">
-              <h3 className="font-serif text-xl sm:text-2xl font-bold text-[#1C1B18] group-hover:text-[#567D42] transition-colors">
-                The TIE Approach
-              </h3>
-              <p className="text-xs sm:text-sm text-[#666258] font-sans leading-relaxed">
-                We combine our experience in architecture, development, and placemaking to make the home design and building process better.
-              </p>
-            </div>
-          </div>
-
-          {/* Card 2: Our Services */}
-          <div
-            onClick={() => onScrollToSection('process-section', 'home')}
-            className="flex items-start space-x-5 p-6 rounded-2xl bg-[#FAF8F1] border border-[#E2DFD3] shadow-sm hover:border-[#567D42]/40 hover:shadow-md transition-all cursor-pointer group"
-          >
-            <div className="w-16 h-16 shrink-0 rounded-2xl bg-[#F4F1EA] group-hover:bg-[#E8F0DC] border border-[#E4DFD5] flex items-center justify-center transition-colors">
-              <svg className="w-8 h-8 text-[#567D42] stroke-current fill-none stroke-[1.6]" viewBox="0 0 24 24">
-                <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
-                <path d="m3 21 3-3" />
-              </svg>
-            </div>
-            <div className="space-y-1.5">
-              <h3 className="font-serif text-xl sm:text-2xl font-bold text-[#1C1B18] group-hover:text-[#567D42] transition-colors">
-                Our Services
-              </h3>
-              <p className="text-xs sm:text-sm text-[#666258] font-sans leading-relaxed">
-                We simplify and streamline the home design and development process at every step of the way.
-              </p>
-            </div>
-          </div>
-        </motion.div>
-      )}
-
-      {/* 3. HOUSING SOLUTIONS MEGAMENU: 3 Columns x 8 Archetypes */}
-      {activeMenu === 'solutions' && (
-        <motion.div
-          initial={{ opacity: 0, y: 6 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.2 }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-6"
-        >
-          {SOLUTIONS_MENU_ITEMS.map((sol) => (
-            <div
-              key={sol.slug}
-              onClick={() => onSolutionSelect(sol.slug)}
-              className="flex items-start space-x-4 p-2 rounded-2xl hover:bg-[#F3EFE6] border border-transparent hover:border-[#E8E4DC] cursor-pointer transition-all duration-200 group"
-            >
-              <div className="w-14 h-14 sm:w-16 sm:h-16 shrink-0 rounded-2xl bg-[#FAF8F1] group-hover:bg-[#E8F0DC] border border-[#E8E4DC] group-hover:border-[#A8C86D] flex items-center justify-center p-2.5 transition-colors">
-                <svg className="w-9 h-9 text-[#567D42] stroke-current fill-none stroke-[1.4]" viewBox="0 0 32 32">
-                  <polygon points="6 26, 16 10, 26 26" />
-                  <rect x="13" y="19" width="6" height="7" fill="#E8F0DC" />
-                  <circle cx="16" cy="8" r="2" fill="#D2E2B0" />
-                </svg>
-              </div>
-              <div className="space-y-1 min-w-0">
-                <h4 className="font-serif text-base sm:text-lg font-bold text-[#1C1B18] group-hover:text-[#567D42] transition-colors leading-snug">
-                  {sol.title}
-                </h4>
-                <p className="text-xs text-[#666258] font-sans leading-relaxed line-clamp-2">
-                  {sol.description}
-                </p>
-              </div>
-            </div>
-          ))}
-        </motion.div>
-      )}
-
-      {/* 4. RESOURCES MEGAMENU */}
-      {activeMenu === 'resources' && (
-        <motion.div
-          initial={{ opacity: 0, y: 6 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.2 }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto py-3"
-        >
-          <div
-            onClick={() => onScrollToSection('standards-section', 'home')}
-            className="p-5 rounded-2xl bg-[#FAF8F1] border border-[#E2DFD3] hover:border-[#567D42]/40 transition-all cursor-pointer group"
-          >
-            <h4 className="font-serif text-lg font-bold text-[#1C1B18] group-hover:text-[#567D42] transition-colors">
-              Architectural Standards Guide
-            </h4>
-            <p className="text-xs text-[#666258] font-sans mt-1.5 leading-relaxed">
-              Explore technical specifications, module dimensions, and structural options for all 8 base plans.
-            </p>
-          </div>
-
-          <div
-            onClick={() => onScrollToSection('field-report-section', 'field-report')}
-            className="p-5 rounded-2xl bg-[#FAF8F1] border border-[#E2DFD3] hover:border-[#567D42]/40 transition-all cursor-pointer group"
-          >
-            <h4 className="font-serif text-lg font-bold text-[#1C1B18] group-hover:text-[#567D42] transition-colors">
-              Active Field Reports
-            </h4>
-            <p className="text-xs text-[#666258] font-sans mt-1.5 leading-relaxed">
-              Track live construction stages, foundation pours, and factory delivery logs from real rural build sites.
-            </p>
-          </div>
-
-          <div
-            onClick={() => onOpenConfigurator()}
-            className="p-5 rounded-2xl bg-[#FAF8F1] border border-[#E2DFD3] hover:border-[#567D42]/40 transition-all cursor-pointer group"
-          >
-            <h4 className="font-serif text-lg font-bold text-[#1C1B18] group-hover:text-[#567D42] transition-colors">
-              Interactive Pro-Forma Calculator
-            </h4>
-            <p className="text-xs text-[#666258] font-sans mt-1.5 leading-relaxed">
-              Estimate total turn-key project costs, terrain adjustments, and finish tiers in real-time.
-            </p>
-          </div>
-        </motion.div>
-      )}
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
+
+export default MegaMenuPanels;

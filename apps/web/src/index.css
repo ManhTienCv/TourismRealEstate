@@ -5,19 +5,46 @@
 @layer base {
   :root {
     color-scheme: light;
+    --tie-bg: #FAF7ED;
+    --tie-ink: #0C310A;
+    --tie-muted: #664A42;
+    --tie-nav-dark: #1E1414;
+    --tie-lime: #CBE282;
   }
 
   html {
-    /* Tăng kích cỡ chữ và tỷ lệ form chuẩn rem toàn trang thêm 10% (16px -> 17.6px) */
-    font-size: 110%;
+    font-size: 100%;
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
   }
 
   body {
-    background-color: #FAF8F1;
-    color: #182215;
+    background-color: #FAF7ED;
+    color: #0C310A;
     overflow-x: clip;
+    font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  /* Standard HUTS Desktop Typography Hierarchy */
+  h1, h2 {
+    font-family: "Playfair Display", "Instrument Serif", Georgia, serif;
+    letter-spacing: -0.01em;
+  }
+
+  h3 {
+    font-family: "Playfair Display", "Instrument Serif", Georgia, serif;
+    letter-spacing: -0.02em;
+  }
+
+  h4 {
+    font-family: "Playfair Display", "Instrument Serif", Georgia, serif;
+    letter-spacing: -0.015em;
+  }
+
+  p {
+    color: #664A42;
+    font-size: 15.5px;
+    line-height: 1.48;
   }
 
   /* Smooth architectural scrollbars */
@@ -27,7 +54,7 @@
   }
 
   ::-webkit-scrollbar-track {
-    background: #FAF8F1;
+    background: #FAF7ED;
   }
 
   ::-webkit-scrollbar-thumb {
@@ -51,14 +78,39 @@
   }
 
   .glass-card {
-    background: rgba(239, 236, 230, 0.85);
+    background: rgba(250, 247, 237, 0.85);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
+  }
+
+  /* Standard Typography utility classes */
+  .huts-h1-h2 {
+    @apply text-[42px] md:text-[64px] leading-[1.0] font-serif font-normal;
+  }
+
+  .huts-h3 {
+    @apply text-[34px] md:text-[50px] leading-[1.1] font-serif font-normal;
+  }
+
+  .huts-h4 {
+    @apply text-[26px] md:text-[36px] leading-[1.14] font-serif font-normal;
+  }
+
+  .huts-body {
+    @apply text-[15.5px] leading-[1.48] text-[#664A42] font-normal;
+  }
+
+  .huts-nav-btn {
+    @apply text-[14px] leading-none font-normal;
   }
 
   /* 3D Perspective & Flip Utilities for Huts-style 3D UX */
   .perspective-1000 {
     perspective: 1000px;
+  }
+
+  .perspective-1200 {
+    perspective: 1200px;
   }
 
   .perspective-1500 {

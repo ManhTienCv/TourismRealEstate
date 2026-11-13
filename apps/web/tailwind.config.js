@@ -9,23 +9,25 @@ export default {
     extend: {
       colors: {
         tie: {
-          bg: '#FAF8F1',          // Primary warm alabaster/architectural paper background
-          surface: '#F3EFE6',     // Secondary card/section surface
-          'surface-light': '#FAF8F1', // Elevated card surface (not #FFFFFF, subtle warm tone)
-          border: '#E2DDD5',      // Subtle warm hairline borders
+          bg: '#FAF7ED',          // Primary warm cream HUTS background (#FAF7ED)
+          surface: '#F2EFE4',     // Secondary card/section surface (#F2EFE4)
+          'surface-light': '#FAF7ED',
+          border: '#E2DDD5',      // Hairline borders
           'border-strong': '#CEC7BC',
-          ink: '#0C310A',         // Primary deep forest dark ink on cream (HUTS: #0C310A)
-          'title-light': '#FAF7ED', // Title typography on dark photography (HUTS: #FAF7ED)
-          muted: '#664A42',       // Secondary body copy & descriptions (HUTS: #664A42)
-          subtle: '#9A958D',      // Caption / micro copy
+          ink: '#0C310A',         // Primary deep forest dark ink on cream (#0C310A)
+          'nav-dark': '#1E1414',  // Dark navbar link color when solid/hovered (#1E1414)
+          'title-light': '#FAF7ED', // Title typography on dark photography (#FAF7ED)
+          muted: '#664A42',       // Secondary body copy & descriptions (#664A42)
+          subtle: '#9A958D',
+          lime: '#CBE282',        // Accent lime / Cốm (#CBE282)
           pine: {
-            DEFAULT: '#2C4A3E',   // Primary CTA buttons, active states, forest green
-            hover: '#223A31',
-            light: '#3C6454',
-            subtle: 'rgba(44, 74, 62, 0.08)',
+            DEFAULT: '#0C310A',
+            hover: '#183B16',
+            light: '#2C4A3E',
+            subtle: 'rgba(12, 49, 10, 0.08)',
           },
           terracotta: {
-            DEFAULT: '#D46A43',   // Secondary accents, cost variance badges, highlights
+            DEFAULT: '#D46A43',
             hover: '#BF5934',
             light: '#E28663',
             subtle: 'rgba(212, 106, 67, 0.1)',
