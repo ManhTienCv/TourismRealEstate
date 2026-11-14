@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useConfiguratorStore } from '../../store/useConfiguratorStore';
 import { smoothScrollTo } from '../../utils/smoothScroll';
 import { SEED_STANDARD_PLANS } from '@tie/shared';
@@ -9,16 +9,14 @@ import { MegaMenuPanels } from './navbar/MegaMenuPanels';
 import { MobileMenuDrawer } from './navbar/MobileMenuDrawer';
 
 export const MegaMenuNavbar: React.FC = () => {
-  const {
-    activeTab,
-    setActiveTab,
-    openConfigurator,
-    openPlanDetail,
-    openSolutionDetail,
-    closeSolutionDetail,
-    selectedSolutionSlug,
-    setIsMegaMenuOpen,
-  } = useConfiguratorStore();
+  // Dùng selector cụ thể để tránh re-render toàn bộ Navbar khi store thay đổi
+  const activeTab = useConfiguratorStore((s) => s.activeTab);
+  const setActiveTab = useConfiguratorStore((s) => s.setActiveTab);
+  const openConfigurator = useConfiguratorStore((s) => s.openConfigurator);
+  const openPlanDetail = useConfiguratorStore((s) => s.openPlanDetail);
+  const openSolutionDetail = useConfiguratorStore((s) => s.openSolutionDetail);
+  const closeSolutionDetail = useConfiguratorStore((s) => s.closeSolutionDetail);
+  const selectedSolutionSlug = useConfiguratorStore((s) => s.selectedSolutionSlug);
 
   const [activeMenu, setActiveMenu] = useState<MenuType>(null);
   const lastActiveMenuRef = useRef<MenuType>('solutions');
@@ -81,6 +79,7 @@ export const MegaMenuNavbar: React.FC = () => {
     menuCloseTimeoutRef.current = setTimeout(() => {
       setActiveMenu(null);
       setIsHeaderHovered(false);
+      window.dispatchEvent(new Event('tie:menu-close'));
     }, 100);
   };
 
@@ -89,55 +88,69 @@ export const MegaMenuNavbar: React.FC = () => {
       clearTimeout(menuCloseTimeoutRef.current);
       menuCloseTimeoutRef.current = null;
     }
+    window.dispatchEvent(new Event('tie:menu-open'));
     setIsHeaderHovered(true);
     setActiveMenu(menu);
   };
 
-  const handleStandardItemClick = (slug: string) => {
-    setActiveMenu(null);
-    setIsHeaderHovered(false);
-    if (slug === 'what-is-a-standard') {
+  const handleStandardItemClick = useCallback(
+    (slug: string) => {
+      setActiveMenu(null);
+      setIsHeaderHovered(false);
+      if (slug === 'what-is-a-standard') {
+        closeSolutionDetail();
+        setActiveTab('standards');
+        smoothScrollTo(0, { duration: 0.8 });
+        return;
+      }
+
+      const plan = SEED_STANDARD_PLANS.find((p) => p.slug === slug);
+      if (plan) {
+        openPlanDetail(plan);
+      } else {
+        closeSolutionDetail();
+        setActiveTab('home');
+        smoothScrollTo('standards-section', { offset: -24, duration: 1.0 });
+      }
+    },
+    [closeSolutionDetail, openPlanDetail, setActiveTab]
+  );
+
+  const handleSolutionSelect = useCallback(
+    (slug: string) => {
+      setActiveMenu(null);
+      setIsHeaderHovered(false);
+      openSolutionDetail(slug);
+    },
+    [openSolutionDetail]
+  );
+
+  const scrollToSection = useCallback(
+    (id: string, tab: 'home' | 'standards' | 'portfolio' | 'field-report') => {
       closeSolutionDetail();
-      setActiveTab('standards');
-      smoothScrollTo(0, { duration: 0.8 });
-      return;
-    }
-
-    const plan = SEED_STANDARD_PLANS.find((p) => p.slug === slug);
-    if (plan) {
-      openPlanDetail(plan);
-    } else {
-      closeSolutionDetail();
-      setActiveTab('home');
-      smoothScrollTo('standards-section', { offset: -24, duration: 1.0 });
-    }
-  };
-
-  const handleSolutionSelect = (slug: string) => {
-    setActiveMenu(null);
-    setIsHeaderHovered(false);
-    openSolutionDetail(slug);
-  };
-
-  const scrollToSection = (id: string, tab: 'home' | 'standards' | 'portfolio' | 'field-report') => {
-    closeSolutionDetail();
-    setActiveTab(tab);
-    setMobileMenuOpen(false);
-    setActiveMenu(null);
-    setIsHeaderHovered(false);
-    if (id) {
-      smoothScrollTo(id, { offset: -70, duration: 1.0 });
-    } else {
-      smoothScrollTo(0, { duration: 1.0 });
-    }
-  };
+      setActiveTab(tab);
+      setMobileMenuOpen(false);
+      setActiveMenu(null);
+      setIsHeaderHovered(false);
+      if (id) {
+        smoothScrollTo(id, { offset: -70, duration: 1.0 });
+      } else {
+        smoothScrollTo(0, { duration: 1.0 });
+      }
+    },
+    [closeSolutionDetail, setActiveTab]
+  );
 
   const isMenuOpen = activeMenu !== null;
 
-  // Đồng bộ trạng thái mở Mega Menu với toàn trang để tạm dừng video HeroSection
+  // Phát tín hiệu native tie:menu-open / tie:menu-close tức thời (0ms, không gây re-render React)
   useEffect(() => {
-    setIsMegaMenuOpen(isMenuOpen);
-  }, [isMenuOpen, setIsMegaMenuOpen]);
+    if (isMenuOpen) {
+      window.dispatchEvent(new Event('tie:menu-open'));
+    } else {
+      window.dispatchEvent(new Event('tie:menu-close'));
+    }
+  }, [isMenuOpen]);
   const isSolid = isScrolled || isHeaderHovered || isMenuOpen || activeTab !== 'home' || selectedSolutionSlug !== null;
 
   // Navbar chỉ ẩn khi đang lướt xuống VÀ người dùng KHÔNG rê chuột lên navbar / KHÔNG mở menu
@@ -155,6 +168,7 @@ export const MegaMenuNavbar: React.FC = () => {
     <>
       <header
         id="header"
+        data-lenis-prevent
         onMouseEnter={handleHeaderMouseEnter}
         onMouseLeave={handleHeaderMouseLeave}
         style={{
@@ -318,20 +332,23 @@ export const MegaMenuNavbar: React.FC = () => {
 
         {/* Full-width MegaMenu Dropdown Panels: 100% GPU Opacity & Transform transition */}
         <div
-          className={`dropdown-menu transition-[opacity,transform] duration-200 ease-[cubic-bezier(0.33,1,0.68,1)] will-change-[opacity,transform] ${
+          data-lenis-prevent
+          className={`dropdown-menu grid transition-[grid-template-rows,opacity] duration-250 ease-[cubic-bezier(0.33,1,0.68,1)] ${
             isMenuOpen
-              ? 'opacity-100 translate-y-0 pointer-events-auto visible'
-              : 'opacity-0 -translate-y-1.5 pointer-events-none invisible h-0 overflow-hidden'
+              ? 'grid-rows-[1fr] opacity-100 pointer-events-auto visible'
+              : 'grid-rows-[0fr] opacity-0 pointer-events-none invisible'
           }`}
         >
-          <div className="max-w-[1584px] mx-auto px-6 sm:px-10 lg:px-12 pt-4 pb-10 min-h-[360px]">
-            <MegaMenuPanels
-              activeMenu={currentMenu}
-              onStandardClick={handleStandardItemClick}
-              onSolutionSelect={handleSolutionSelect}
-              onScrollToSection={scrollToSection}
-              onOpenConfigurator={openConfigurator}
-            />
+          <div className="overflow-hidden">
+            <div className="max-w-[1584px] mx-auto px-6 sm:px-10 lg:px-12 pt-4 pb-10 min-h-[360px]">
+              <MegaMenuPanels
+                activeMenu={currentMenu}
+                onStandardClick={handleStandardItemClick}
+                onSolutionSelect={handleSolutionSelect}
+                onScrollToSection={scrollToSection}
+                onOpenConfigurator={openConfigurator}
+              />
+            </div>
           </div>
         </div>
       </header>

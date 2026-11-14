@@ -20,7 +20,8 @@ import { SolutionDetailView } from './components/solutions/SolutionDetailView';
 import { WhatIsAStandardView } from './components/standards/WhatIsAStandardView';
 
 export const App: React.FC = () => {
-  const { activeTab, selectedSolutionSlug } = useConfiguratorStore();
+  const activeTab = useConfiguratorStore((s) => s.activeTab);
+  const selectedSolutionSlug = useConfiguratorStore((s) => s.selectedSolutionSlug);
 
   // Initialize Lenis Momentum / Inertia Scrolling (Matches Huts.com smooth luxury scroll physics)
   useEffect(() => {

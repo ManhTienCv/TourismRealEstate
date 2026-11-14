@@ -10,10 +10,11 @@ const HERO_FALLBACK_IMAGE =
   'https://cdn.sanity.io/images/xi1ruvdt/production/adec57220fd43008ea6d5e08e95bf76e0b84c0d2-3200x2133.jpg?w=1920&q=85&auto=format';
 
 export const HeroSection: React.FC = () => {
-  const { openConfigurator, isMegaMenuOpen } = useConfiguratorStore();
+  const openConfigurator = useConfiguratorStore((s) => s.openConfigurator);
   const sectionRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isInView, setIsInView] = useState(true);
+  const isMenuOpenRef = useRef(false);
 
   // Tạm dừng video khi HeroSection cuộn ra khỏi màn hình (tiết kiệm GPU & CPU)
   useEffect(() => {
@@ -21,7 +22,16 @@ export const HeroSection: React.FC = () => {
     if (!el) return;
     const observer = new IntersectionObserver(
       ([entry]) => {
-        setIsInView(entry.isIntersecting);
+        const inView = entry.isIntersecting;
+        setIsInView(inView);
+        const video = videoRef.current;
+        if (video) {
+          if (!inView || isMenuOpenRef.current) {
+            video.pause();
+          } else {
+            video.play().catch(() => {});
+          }
+        }
       },
       { threshold: 0.05 }
     );
@@ -29,19 +39,30 @@ export const HeroSection: React.FC = () => {
     return () => observer.disconnect();
   }, []);
 
-  // Tạm dừng video ngay khi mở Mega Menu trên Navbar để triệt tiêu 100% lag/đơ khi rê chuột qua các list
+  // Lắng nghe sự kiện đồng bộ native tie:menu-open / tie:menu-close (0ms overhead, không kích hoạt React re-render)
   useEffect(() => {
     const video = videoRef.current;
-    if (!video) return;
 
-    if (isMegaMenuOpen || !isInView) {
-      video.pause();
-    } else {
-      video.play().catch(() => {
-        // Tránh lỗi UnhandledPromiseRejection nếu browser block autoplay
-      });
-    }
-  }, [isMegaMenuOpen, isInView]);
+    const handleMenuOpen = () => {
+      isMenuOpenRef.current = true;
+      if (video) video.pause();
+    };
+
+    const handleMenuClose = () => {
+      isMenuOpenRef.current = false;
+      if (video && isInView) {
+        video.play().catch(() => {});
+      }
+    };
+
+    window.addEventListener('tie:menu-open', handleMenuOpen);
+    window.addEventListener('tie:menu-close', handleMenuClose);
+
+    return () => {
+      window.removeEventListener('tie:menu-open', handleMenuOpen);
+      window.removeEventListener('tie:menu-close', handleMenuClose);
+    };
+  }, [isInView]);
 
   return (
     <section

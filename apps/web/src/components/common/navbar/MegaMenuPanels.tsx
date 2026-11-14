@@ -26,7 +26,7 @@ export const MegaMenuPanels: React.FC<MegaMenuPanelsProps> = React.memo(({
   const getPanelClass = (key: MenuType) =>
     activeMenu === key
       ? 'opacity-100 translate-y-0 pointer-events-auto relative z-10 transition-opacity duration-150 ease-[cubic-bezier(0.33,1,0.68,1)]'
-      : 'opacity-0 pointer-events-none absolute inset-0 z-0 transition-opacity duration-150 ease-[cubic-bezier(0.33,1,0.68,1)]';
+      : 'opacity-0 pointer-events-none absolute inset-0 invisible z-0 transition-opacity duration-150 ease-[cubic-bezier(0.33,1,0.68,1)]';
 
   return (
     <div className="relative w-full">
@@ -42,12 +42,12 @@ export const MegaMenuPanels: React.FC<MegaMenuPanelsProps> = React.memo(({
                   className="flex items-start space-x-4 p-2.5 rounded-[16px] hover:bg-[#F2EFE4]/60 cursor-pointer transition-colors duration-100 group"
                 >
                   {/* Square thumbnail with rounded-[16px] bg-[#FAF7ED] matching Image 8 */}
-                  <div className="w-[70px] h-[70px] rounded-[16px] bg-[#FAF7ED] shrink-0 flex items-center justify-center p-2.5 overflow-hidden border border-[#E2DDD5]/80 group-hover:border-[#664A42]/30 transition-colors [contain:paint]">
+                  <div className="w-[70px] h-[70px] rounded-[16px] bg-[#FAF7ED] shrink-0 flex items-center justify-center p-2.5 overflow-hidden border border-[#E2DDD5]/80 [contain:strict] [transform:translateZ(0)]">
                     {AVAILABLE_ILLUSTRATIONS[sol.slug] ? (
                       <img
                         src={AVAILABLE_ILLUSTRATIONS[sol.slug]}
                         alt={sol.title}
-                        className="w-full h-full object-contain select-none pointer-events-none group-hover:opacity-90 transition-opacity duration-150"
+                        className="w-full h-full object-contain select-none pointer-events-none [transform:translateZ(0)]"
                         loading="eager"
                         decoding="async"
                       />
@@ -84,11 +84,11 @@ export const MegaMenuPanels: React.FC<MegaMenuPanelsProps> = React.memo(({
                   className="flex items-start space-x-4 p-2.5 rounded-[16px] hover:bg-[#F2EFE4]/60 cursor-pointer transition-colors duration-100 group"
                 >
                   {/* Square thumbnail with rounded-[16px] bg-[#FAF7ED] matching Image 9 */}
-                  <div className="w-[70px] h-[70px] rounded-[16px] bg-[#FAF7ED] shrink-0 overflow-hidden border border-[#E2DDD5]/80 group-hover:border-[#664A42]/30 transition-colors [contain:paint]">
+                  <div className="w-[70px] h-[70px] rounded-[16px] bg-[#FAF7ED] shrink-0 overflow-hidden border border-[#E2DDD5]/80 [contain:strict] [transform:translateZ(0)]">
                     <img
                       src={item.imageUrl}
                       alt={item.title}
-                      className="w-full h-full object-cover group-hover:opacity-90 transition-opacity duration-150"
+                      className="w-full h-full object-cover select-none pointer-events-none [transform:translateZ(0)]"
                       loading="eager"
                       decoding="async"
                     />
@@ -119,7 +119,7 @@ export const MegaMenuPanels: React.FC<MegaMenuPanelsProps> = React.memo(({
               onClick={() => onScrollToSection('process-section', 'home')}
               className="flex items-start space-x-4 p-3 rounded-[16px] hover:bg-[#F2EFE4]/60 cursor-pointer transition-colors duration-100 group"
             >
-              <div className="w-[70px] h-[70px] rounded-[16px] bg-[#FAF7ED] shrink-0 flex items-center justify-center p-2.5 border border-[#E2DDD5]/80 group-hover:border-[#664A42]/30 transition-colors">
+              <div className="w-[70px] h-[70px] rounded-[16px] bg-[#FAF7ED] shrink-0 flex items-center justify-center p-2.5 border border-[#E2DDD5]/80 [contain:strict] [transform:translateZ(0)]">
                 {item.type === 'approach' ? (
                   <svg className="w-9 h-9" viewBox="0 0 36 36" fill="none">
                     <circle cx="18" cy="16" r="7.5" stroke="#365327" strokeWidth="1.8" />
