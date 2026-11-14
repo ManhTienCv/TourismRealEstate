@@ -28,6 +28,7 @@ export interface ConfiguratorState {
   selectedPlanForDetail: StandardPlan | null;
   selectedProjectSlug: string | null;
   selectedSolutionSlug: string | null; // Controls Solution Detail View (Starter Home, Forever Home, etc.)
+  isMegaMenuOpen: boolean; // Tracks whether Mega Menu is expanded to pause background video
 
   // Catalog Filters
   filterSolutionSlug: string | null;
@@ -57,6 +58,7 @@ export interface ConfiguratorState {
   closeProjectDetail: () => void;
   openSolutionDetail: (slug: string) => void;
   closeSolutionDetail: () => void;
+  setIsMegaMenuOpen: (isOpen: boolean) => void;
 
   setFilterSolutionSlug: (slug: string | null) => void;
   setFilterBeds: (beds: number | null) => void;
@@ -199,6 +201,7 @@ export const useConfiguratorStore = create<ConfiguratorState>((set, get) => ({
   selectedPlanForDetail: null,
   selectedProjectSlug: null,
   selectedSolutionSlug: null,
+  isMegaMenuOpen: false,
 
   filterSolutionSlug: null,
   filterBeds: null,
@@ -267,6 +270,7 @@ export const useConfiguratorStore = create<ConfiguratorState>((set, get) => ({
     }
   },
   closeSolutionDetail: () => set({ selectedSolutionSlug: null }),
+  setIsMegaMenuOpen: (isOpen) => set({ isMegaMenuOpen: isOpen }),
 
   setFilterSolutionSlug: (slug) => set({ filterSolutionSlug: slug }),
   setFilterBeds: (beds) => set({ filterBeds: beds }),

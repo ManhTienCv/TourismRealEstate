@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useConfiguratorStore } from '../../store/useConfiguratorStore';
 import { ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -10,20 +10,55 @@ const HERO_FALLBACK_IMAGE =
   'https://cdn.sanity.io/images/xi1ruvdt/production/adec57220fd43008ea6d5e08e95bf76e0b84c0d2-3200x2133.jpg?w=1920&q=85&auto=format';
 
 export const HeroSection: React.FC = () => {
-  const { openConfigurator } = useConfiguratorStore();
+  const { openConfigurator, isMegaMenuOpen } = useConfiguratorStore();
+  const sectionRef = useRef<HTMLElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isInView, setIsInView] = useState(true);
+
+  // Tạm dừng video khi HeroSection cuộn ra khỏi màn hình (tiết kiệm GPU & CPU)
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInView(entry.isIntersecting);
+      },
+      { threshold: 0.05 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  // Tạm dừng video ngay khi mở Mega Menu trên Navbar để triệt tiêu 100% lag/đơ khi rê chuột qua các list
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    if (isMegaMenuOpen || !isInView) {
+      video.pause();
+    } else {
+      video.play().catch(() => {
+        // Tránh lỗi UnhandledPromiseRejection nếu browser block autoplay
+      });
+    }
+  }, [isMegaMenuOpen, isInView]);
 
   return (
-    <section className="relative w-full min-h-[92vh] sm:min-h-screen flex items-center justify-center overflow-hidden">
+    <section
+      ref={sectionRef}
+      className="relative w-full min-h-[92vh] sm:min-h-screen flex items-center justify-center overflow-hidden"
+    >
       
-      {/* FULL-BLEED HERO BACKGROUND VIDEO WITH STATIC POSTER FALLBACK */}
-      <div className="absolute inset-0 w-full h-full overflow-hidden">
+      {/* FULL-BLEED HERO BACKGROUND VIDEO WITH GPU ISOLATION LAYER */}
+      <div className="absolute inset-0 w-full h-full overflow-hidden [contain:strict] [transform:translateZ(0)]">
         <video
+          ref={videoRef}
           autoPlay
           muted
           loop
           playsInline
           poster={HERO_FALLBACK_IMAGE}
-          className="absolute inset-0 w-full h-full object-cover object-center"
+          className="absolute inset-0 w-full h-full object-cover object-center will-change-transform [transform:translateZ(0)]"
         >
           <source src={HERO_VIDEO_URL} type="video/mp4" />
           <img

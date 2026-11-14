@@ -39,7 +39,7 @@ export const MegaMenuPanels: React.FC<MegaMenuPanelsProps> = React.memo(({
                 <div
                   key={sol.slug}
                   onClick={() => onSolutionSelect(sol.slug)}
-                  className="flex items-start space-x-4 p-2.5 rounded-[16px] hover:bg-[#F2EFE4]/50 cursor-pointer transition-colors duration-150 group"
+                  className="flex items-start space-x-4 p-2.5 rounded-[16px] hover:bg-[#F2EFE4]/60 cursor-pointer transition-colors duration-100 group"
                 >
                   {/* Square thumbnail with rounded-[16px] bg-[#FAF7ED] matching Image 8 */}
                   <div className="w-[70px] h-[70px] rounded-[16px] bg-[#FAF7ED] shrink-0 flex items-center justify-center p-2.5 overflow-hidden border border-[#E2DDD5]/80 group-hover:border-[#664A42]/30 transition-colors [contain:paint]">
@@ -47,7 +47,7 @@ export const MegaMenuPanels: React.FC<MegaMenuPanelsProps> = React.memo(({
                       <img
                         src={AVAILABLE_ILLUSTRATIONS[sol.slug]}
                         alt={sol.title}
-                        className="w-full h-full object-contain select-none pointer-events-none group-hover:scale-105 transition-transform duration-200"
+                        className="w-full h-full object-contain select-none pointer-events-none group-hover:opacity-90 transition-opacity duration-150"
                         loading="eager"
                         decoding="async"
                       />
@@ -81,14 +81,14 @@ export const MegaMenuPanels: React.FC<MegaMenuPanelsProps> = React.memo(({
                 <div
                   key={item.slug}
                   onClick={() => onStandardClick(item.slug)}
-                  className="flex items-start space-x-4 p-2.5 rounded-[16px] hover:bg-[#F2EFE4]/50 cursor-pointer transition-colors duration-150 group"
+                  className="flex items-start space-x-4 p-2.5 rounded-[16px] hover:bg-[#F2EFE4]/60 cursor-pointer transition-colors duration-100 group"
                 >
                   {/* Square thumbnail with rounded-[16px] bg-[#FAF7ED] matching Image 9 */}
                   <div className="w-[70px] h-[70px] rounded-[16px] bg-[#FAF7ED] shrink-0 overflow-hidden border border-[#E2DDD5]/80 group-hover:border-[#664A42]/30 transition-colors [contain:paint]">
                     <img
                       src={item.imageUrl}
                       alt={item.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      className="w-full h-full object-cover group-hover:opacity-90 transition-opacity duration-150"
                       loading="eager"
                       decoding="async"
                     />
@@ -117,7 +117,7 @@ export const MegaMenuPanels: React.FC<MegaMenuPanelsProps> = React.memo(({
             <div
               key={item.id}
               onClick={() => onScrollToSection('process-section', 'home')}
-              className="flex items-start space-x-4 p-3 rounded-[16px] hover:bg-[#F2EFE4]/50 cursor-pointer transition-colors duration-150 group"
+              className="flex items-start space-x-4 p-3 rounded-[16px] hover:bg-[#F2EFE4]/60 cursor-pointer transition-colors duration-100 group"
             >
               <div className="w-[70px] h-[70px] rounded-[16px] bg-[#FAF7ED] shrink-0 flex items-center justify-center p-2.5 border border-[#E2DDD5]/80 group-hover:border-[#664A42]/30 transition-colors">
                 {item.type === 'approach' ? (
@@ -164,7 +164,7 @@ export const MegaMenuPanels: React.FC<MegaMenuPanelsProps> = React.memo(({
                   onScrollToSection('field-report-section', 'field-report');
                 }
               }}
-              className="p-4 rounded-[14px] bg-[#F2EFE4]/60 hover:bg-[#F2EFE4] border border-[#E2DDD5]/60 hover:border-[#CBE282] transition-all cursor-pointer group"
+              className="p-4 rounded-[14px] bg-[#F2EFE4]/60 hover:bg-[#F2EFE4] border border-[#E2DDD5]/60 hover:border-[#CBE282] transition-colors duration-100 cursor-pointer group"
             >
               <h4 className="font-serif text-[18px] text-[#0C310A] group-hover:text-[#2D4C23] transition-colors leading-snug">
                 {item.title}

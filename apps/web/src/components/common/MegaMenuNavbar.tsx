@@ -17,6 +17,7 @@ export const MegaMenuNavbar: React.FC = () => {
     openSolutionDetail,
     closeSolutionDetail,
     selectedSolutionSlug,
+    setIsMegaMenuOpen,
   } = useConfiguratorStore();
 
   const [activeMenu, setActiveMenu] = useState<MenuType>(null);
@@ -132,6 +133,11 @@ export const MegaMenuNavbar: React.FC = () => {
   };
 
   const isMenuOpen = activeMenu !== null;
+
+  // Đồng bộ trạng thái mở Mega Menu với toàn trang để tạm dừng video HeroSection
+  useEffect(() => {
+    setIsMegaMenuOpen(isMenuOpen);
+  }, [isMenuOpen, setIsMegaMenuOpen]);
   const isSolid = isScrolled || isHeaderHovered || isMenuOpen || activeTab !== 'home' || selectedSolutionSlug !== null;
 
   // Navbar chỉ ẩn khi đang lướt xuống VÀ người dùng KHÔNG rê chuột lên navbar / KHÔNG mở menu
