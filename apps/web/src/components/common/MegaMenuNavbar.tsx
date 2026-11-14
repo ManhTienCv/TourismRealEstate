@@ -5,8 +5,187 @@ import { SEED_STANDARD_PLANS } from '@tie/shared';
 import { Menu, X } from 'lucide-react';
 import { MenuType } from './navbar/navbarData';
 import { PlusCrossIcon } from './navbar/PlusCrossIcon';
-import { MegaMenuPanels } from './navbar/MegaMenuPanels';
 import { MobileMenuDrawer } from './navbar/MobileMenuDrawer';
+
+interface MegaMenuItem {
+  slug: string;
+  title: string;
+  byline: string;
+  image: string;
+  isCover?: boolean;
+}
+
+const HOUSING_SOLUTIONS_ITEMS: MegaMenuItem[] = [
+  {
+    slug: 'starter-home',
+    title: 'Starter Home',
+    byline: 'An affordable, thoughtfully designed home that gets you out of your rental and into an asset',
+    image: 'https://cdn.sanity.io/images/xi1ruvdt/production/a0ccbe6d79faab2281bc8839f92faf3f7869f9f7-120x120.svg',
+  },
+  {
+    slug: 'forever-home',
+    title: 'Forever Home',
+    byline: 'A deeply personal, multi-functional home built to last—and to host every future holiday photo',
+    image: 'https://cdn.sanity.io/images/xi1ruvdt/production/04f505d271689be3485b9196d07c3778cf6ae6cc-120x120.svg',
+  },
+  {
+    slug: 'second-home',
+    title: 'Second Home',
+    byline: 'A retreat that recharges you, earns for you, and grows with you—whether it’s just for you or part of a rental strategy',
+    image: 'https://cdn.sanity.io/images/xi1ruvdt/production/562af5c7e19af3961fa43255da57792b646c0cf6-120x120.svg',
+  },
+  {
+    slug: 'hybrid-home',
+    title: 'Hybrid Home',
+    byline: "A flexible home you can enjoy personally and rent when you're not there—built to fit your lifestyle",
+    image: 'https://cdn.sanity.io/images/xi1ruvdt/production/507ae04cddbe0d5d50216593dd85be21ffe4135e-120x120.svg',
+  },
+  {
+    slug: 'adu',
+    title: 'ADU',
+    byline: 'A versatile addition to your property that works as a rental, guest suite, or workspace—and makes your land work harder for you',
+    image: 'https://cdn.sanity.io/images/xi1ruvdt/production/42dcdb8469fa2e33e6a0b614be753dde8269d807-120x120.svg',
+  },
+  {
+    slug: 'investment-property',
+    title: 'Investment Property',
+    byline: 'A purpose-built property designed to deliver long-term returns through smart design, sharp budgeting, and strategic development',
+    image: 'https://cdn.sanity.io/images/xi1ruvdt/production/ac483de1edc2945823170002b1c30ed9583e8d82-120x120.svg',
+  },
+  {
+    slug: 'micro-hospitality',
+    title: 'Micro-Hospitality',
+    byline: 'A high-design, low-footprint destination where great land meets unforgettable stays—built with both guests and ROI in mind',
+    image: 'https://cdn.sanity.io/images/xi1ruvdt/production/c5340ae58c788a53a90232eb55d0b241fdd93478-120x120.svg',
+  },
+  {
+    slug: 'multi-gen-compound',
+    title: 'Multi-Generation Compound',
+    byline: 'This isn’t about one house. It’s about designing land, relationships, and legacy.',
+    image: 'https://cdn.sanity.io/images/xi1ruvdt/production/510deebfe5ef8b59dc3bc901a75d659acd21f929-120x120.svg',
+  },
+];
+
+const STANDARDS_ITEMS: MegaMenuItem[] = [
+  {
+    slug: 'what-is-a-standard',
+    title: 'What is a Standard?',
+    byline: 'HUTS base plans that can be modified for your home site and unique lifestyle',
+    image: 'https://cdn.sanity.io/images/xi1ruvdt/production/34fd9ee2836af6151ba6c0b074af234f8866d5dc-1330x1330.jpg?w=320&q=80&auto=format',
+    isCover: true,
+  },
+  {
+    slug: 'adu',
+    title: 'ADU',
+    byline: 'Small-scale structures designed for extra space, homesteading your lot, or generating revenue',
+    image: 'https://cdn.sanity.io/images/xi1ruvdt/production/12b724bfd8e075d0f39a1351f31264a32328f433-1467x1410.jpg?w=320&q=80&auto=format',
+    isCover: true,
+  },
+  {
+    slug: 'small-l',
+    title: 'Small L',
+    byline: 'An elegant assembly of two gable-roofed forms that combines function with grandeur',
+    image: 'https://cdn.sanity.io/images/xi1ruvdt/production/a7b6ffca0d4814f1354cd42e4563a1f43d03e4fd-2061x1932.jpg?w=320&q=80&auto=format',
+    isCover: true,
+  },
+  {
+    slug: 'small-bar',
+    title: 'Small Bar',
+    byline: 'The swiss-army knife of our Standards collection. All the essentials in a beautiful, affordable package',
+    image: 'https://cdn.sanity.io/images/xi1ruvdt/production/49b12a1c850a40727ce6b5d105d21a8459c35389-858x858.jpg?w=320&q=80&auto=format',
+    isCover: true,
+  },
+  {
+    slug: 'medium-bar',
+    title: 'Medium Bar',
+    byline: 'An efficient 2.5 bedroom home that packs big functionality into a small footprint',
+    image: 'https://cdn.sanity.io/images/xi1ruvdt/production/3efc198a66bf6be8c3878cb1e9169689e8f974e9-564x383.png?w=320&q=80&auto=format',
+    isCover: true,
+  },
+  {
+    slug: 'big-l',
+    title: 'Big L',
+    byline: 'The largest Standard plan that combines the efficiency of the Small L with a grand primary suite',
+    image: 'https://cdn.sanity.io/images/xi1ruvdt/production/94475e5020164a6f8ab9320e043f250b2000eb0d-772x703.jpg?w=320&q=80&auto=format',
+    isCover: true,
+  },
+  {
+    slug: 'dogtrot',
+    title: 'Dogtrot',
+    byline: '2 bedroom design that’s marked by a clean separation of public and private functions',
+    image: 'https://cdn.sanity.io/images/xi1ruvdt/production/df0586016b50f5b5e25d3ac82486c15d3c68c501-1733x1733.jpg?w=320&q=80&auto=format',
+    isCover: true,
+  },
+  {
+    slug: 'village',
+    title: 'Village',
+    byline: 'A 3-bedroom village scheme designed for sites where there’s more than just one view or home experience',
+    image: 'https://cdn.sanity.io/images/xi1ruvdt/production/9ee66c5354de48ceb7b2c5e456303301ef947fbe-2367x2160.jpg?w=320&q=80&auto=format',
+    isCover: true,
+  },
+  {
+    slug: 'big-bar',
+    title: 'Big Bar',
+    byline: 'Organized in wings with bedrooms on either side of the public spaces with a single, long roof line',
+    image: 'https://cdn.sanity.io/images/xi1ruvdt/production/7d481791d6139e5f98a1455da75f6e3d63abf1d9-2233x2105.jpg?w=320&q=80&auto=format',
+    isCover: true,
+  },
+];
+
+const HOW_IT_WORKS_ITEMS: MegaMenuItem[] = [
+  {
+    slug: 'the-huts-approach',
+    title: 'The HUTS Approach',
+    byline: 'We combine our experience in architecture, development, and placemaking to make the home design and building process better',
+    image: 'https://cdn.sanity.io/images/xi1ruvdt/production/1ebb28dcfaa394e36f73bf58f618a500ce9e3471-73x73.svg',
+  },
+  {
+    slug: 'our-services',
+    title: 'Our Services',
+    byline: 'We simplify and streamline the home design and development process at every step of the way',
+    image: 'https://cdn.sanity.io/images/xi1ruvdt/production/1e6bf92926a1af6998e6faf13da24cb52902a262-73x73.svg',
+  },
+];
+
+const RESOURCES_ITEMS: MegaMenuItem[] = [
+  {
+    slug: 'the-field-report',
+    title: 'The Field Report',
+    byline: 'Our living report on the status of all HUTS design and development projects.',
+    image: 'https://cdn.sanity.io/images/xi1ruvdt/production/4a83dfcf853f60f5f49439bf329d873f3e1a9fc5-111x106.svg',
+  },
+  {
+    slug: 'the-land-report',
+    title: 'The Land Report',
+    byline: 'Curated listings, insights, and ideas on developable land delivered to you each week',
+    image: 'https://cdn.sanity.io/images/xi1ruvdt/production/b282609b7a1e2b383887fdd80ccc790f30e3fd2b-117x106.svg',
+  },
+  {
+    slug: 'huts-guides',
+    title: 'HUTS Guides',
+    byline: 'Learn about all things home development from land, and construction to design and financing.',
+    image: 'https://cdn.sanity.io/images/xi1ruvdt/production/51c01aa58e8bf9861b5afc4958530278b7302324-103x106.svg',
+  },
+  {
+    slug: 'development-opportunities',
+    title: 'Development Opportunities',
+    byline: 'Step-by-step breakdowns on bringing a property to life.',
+    image: 'https://cdn.sanity.io/images/xi1ruvdt/production/997745ca8c10354d1cb553c5b8c2d1b5892e0b7a-103x106.svg',
+  },
+  {
+    slug: 'tools',
+    title: 'Tools',
+    byline: 'The tools behind every HUTS project.',
+    image: 'https://cdn.sanity.io/images/xi1ruvdt/production/e7de0f76d667f37d82a0e3656302cdd18cbfce82-340x340.svg',
+  },
+  {
+    slug: 'space-planner',
+    title: 'Space Planner',
+    byline: "Start from a proven layout, then tell us what you'd change.",
+    image: 'https://cdn.sanity.io/images/xi1ruvdt/production/fcd324e9a54a7e8a1beed53e685a65c69c8dcea2-340x340.png?w=320&q=80&auto=format',
+    isCover: true,
+  },
+];
 
 export const MegaMenuNavbar: React.FC = () => {
   // Dùng selector cụ thể để tránh re-render toàn bộ Navbar khi store thay đổi
@@ -341,13 +520,167 @@ export const MegaMenuNavbar: React.FC = () => {
         >
           <div className="overflow-hidden">
             <div className="max-w-[1584px] mx-auto px-6 sm:px-10 lg:px-12 pt-4 pb-10 min-h-[360px]">
-              <MegaMenuPanels
-                activeMenu={currentMenu}
-                onStandardClick={handleStandardItemClick}
-                onSolutionSelect={handleSolutionSelect}
-                onScrollToSection={scrollToSection}
-                onOpenConfigurator={openConfigurator}
-              />
+              <div className="relative w-full">
+                {/* 1. HOUSING SOLUTIONS: 3 Columns x 8 Archetypes */}
+                <div
+                  className={
+                    currentMenu === 'solutions'
+                      ? 'opacity-100 translate-y-0 pointer-events-auto relative z-10 transition-opacity duration-150 ease-[cubic-bezier(0.33,1,0.68,1)]'
+                      : 'opacity-0 pointer-events-none absolute inset-0 invisible z-0 transition-opacity duration-150 ease-[cubic-bezier(0.33,1,0.68,1)]'
+                  }
+                >
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-6">
+                    {HOUSING_SOLUTIONS_ITEMS.map((item) => (
+                      <div
+                        key={item.slug}
+                        onClick={() => handleSolutionSelect(item.slug)}
+                        className="flex items-start space-x-4 p-2.5 rounded-[16px] hover:bg-[#F2EFE4]/60 cursor-pointer transition-colors duration-100 group"
+                      >
+                        <div className="w-[70px] h-[70px] rounded-[16px] bg-[#FAF7ED] shrink-0 flex items-center justify-center p-2.5 overflow-hidden border border-[#E2DDD5]/80 [contain:strict] [transform:translateZ(0)]">
+                          <img
+                            src={item.image}
+                            alt={item.title}
+                            className="w-full h-full object-contain select-none pointer-events-none [transform:translateZ(0)]"
+                            loading="eager"
+                            decoding="async"
+                          />
+                        </div>
+                        <div className="space-y-0.5 min-w-0 flex-1 pt-0.5">
+                          <h4 className="font-serif text-[18px] text-[#0C310A] group-hover:text-[#2D4C23] leading-snug transition-colors">
+                            {item.title}
+                          </h4>
+                          <p className="text-[13.5px] leading-[1.4] text-[#664A42] font-sans mt-0.5">
+                            {item.byline}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* 2. STANDARDS: 3x3 Grid in 3 Columns */}
+                <div
+                  className={
+                    currentMenu === 'standards'
+                      ? 'opacity-100 translate-y-0 pointer-events-auto relative z-10 transition-opacity duration-150 ease-[cubic-bezier(0.33,1,0.68,1)]'
+                      : 'opacity-0 pointer-events-none absolute inset-0 invisible z-0 transition-opacity duration-150 ease-[cubic-bezier(0.33,1,0.68,1)]'
+                  }
+                >
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-6">
+                    {STANDARDS_ITEMS.map((item) => (
+                      <div
+                        key={item.slug}
+                        onClick={() => handleStandardItemClick(item.slug)}
+                        className="flex items-start space-x-4 p-2.5 rounded-[16px] hover:bg-[#F2EFE4]/60 cursor-pointer transition-colors duration-100 group"
+                      >
+                        <div className="w-[70px] h-[70px] rounded-[16px] bg-[#FAF7ED] shrink-0 overflow-hidden border border-[#E2DDD5]/80 [contain:strict] [transform:translateZ(0)]">
+                          <img
+                            src={item.image}
+                            alt={item.title}
+                            className="w-full h-full object-cover select-none pointer-events-none [transform:translateZ(0)]"
+                            loading="eager"
+                            decoding="async"
+                          />
+                        </div>
+                        <div className="space-y-0.5 min-w-0 flex-1 pt-0.5">
+                          <h4 className="font-serif text-[18px] text-[#0C310A] group-hover:text-[#2D4C23] leading-snug transition-colors">
+                            {item.title}
+                          </h4>
+                          <p className="text-[13.5px] leading-[1.4] text-[#664A42] font-sans mt-0.5">
+                            {item.byline}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* 3. HOW IT WORKS: 2 Columns Grid */}
+                <div
+                  className={
+                    currentMenu === 'how-it-works'
+                      ? 'opacity-100 translate-y-0 pointer-events-auto relative z-10 transition-opacity duration-150 ease-[cubic-bezier(0.33,1,0.68,1)]'
+                      : 'opacity-0 pointer-events-none absolute inset-0 invisible z-0 transition-opacity duration-150 ease-[cubic-bezier(0.33,1,0.68,1)]'
+                  }
+                >
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto py-2">
+                    {HOW_IT_WORKS_ITEMS.map((item) => (
+                      <div
+                        key={item.slug}
+                        onClick={() => scrollToSection('process-section', 'home')}
+                        className="flex items-start space-x-4 p-3 rounded-[16px] hover:bg-[#F2EFE4]/60 cursor-pointer transition-colors duration-100 group"
+                      >
+                        <div className="w-[70px] h-[70px] rounded-[16px] bg-[#FAF7ED] shrink-0 flex items-center justify-center p-2.5 overflow-hidden border border-[#E2DDD5]/80 [contain:strict] [transform:translateZ(0)]">
+                          <img
+                            src={item.image}
+                            alt={item.title}
+                            className="w-full h-full object-contain select-none pointer-events-none [transform:translateZ(0)]"
+                            loading="eager"
+                            decoding="async"
+                          />
+                        </div>
+                        <div className="space-y-0.5 min-w-0 flex-1 pt-0.5">
+                          <h4 className="font-serif text-[18px] text-[#0C310A] group-hover:text-[#2D4C23] leading-snug transition-colors">
+                            {item.title}
+                          </h4>
+                          <p className="text-[13.5px] leading-[1.4] text-[#664A42] font-sans mt-0.5">
+                            {item.byline}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* 4. RESOURCES: 3 Columns Grid (6 items) */}
+                <div
+                  className={
+                    currentMenu === 'resources'
+                      ? 'opacity-100 translate-y-0 pointer-events-auto relative z-10 transition-opacity duration-150 ease-[cubic-bezier(0.33,1,0.68,1)]'
+                      : 'opacity-0 pointer-events-none absolute inset-0 invisible z-0 transition-opacity duration-150 ease-[cubic-bezier(0.33,1,0.68,1)]'
+                  }
+                >
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-6">
+                    {RESOURCES_ITEMS.map((item) => (
+                      <div
+                        key={item.slug}
+                        onClick={() => {
+                          if (item.slug === 'the-field-report') {
+                            scrollToSection('field-report-section', 'field-report');
+                          } else if (item.slug === 'tools' || item.slug === 'space-planner') {
+                            setActiveMenu(null);
+                            setIsHeaderHovered(false);
+                            openConfigurator();
+                          } else {
+                            scrollToSection('standards-section', 'home');
+                          }
+                        }}
+                        className="flex items-start space-x-4 p-2.5 rounded-[16px] hover:bg-[#F2EFE4]/60 cursor-pointer transition-colors duration-100 group"
+                      >
+                        <div className="w-[70px] h-[70px] rounded-[16px] bg-[#FAF7ED] shrink-0 flex items-center justify-center p-2.5 overflow-hidden border border-[#E2DDD5]/80 [contain:strict] [transform:translateZ(0)]">
+                          <img
+                            src={item.image}
+                            alt={item.title}
+                            className={`w-full h-full ${
+                              item.isCover ? 'object-cover' : 'object-contain'
+                            } select-none pointer-events-none [transform:translateZ(0)]`}
+                            loading="eager"
+                            decoding="async"
+                          />
+                        </div>
+                        <div className="space-y-0.5 min-w-0 flex-1 pt-0.5">
+                          <h4 className="font-serif text-[18px] text-[#0C310A] group-hover:text-[#2D4C23] leading-snug transition-colors">
+                            {item.title}
+                          </h4>
+                          <p className="text-[13.5px] leading-[1.4] text-[#664A42] font-sans mt-0.5">
+                            {item.byline}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
