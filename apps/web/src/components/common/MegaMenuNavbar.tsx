@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useConfiguratorStore } from '../../store/useConfiguratorStore';
 import { smoothScrollTo } from '../../utils/smoothScroll';
 import { SEED_STANDARD_PLANS } from '@tie/shared';
@@ -28,30 +28,13 @@ export const MegaMenuNavbar: React.FC = () => {
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isScrollingDown, setIsScrollingDown] = useState(false);
   const [isHeaderHovered, setIsHeaderHovered] = useState(false);
-  const [contentHeight, setContentHeight] = useState<number | undefined>(undefined);
 
   const menuCloseTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const innerRef = useRef<HTMLDivElement>(null);
+  const lastScrollYRef = useRef(0);
 
-  // ResizeObserver on innerRef to animate height changes dynamically between panels
-  useLayoutEffect(() => {
-    const el = innerRef.current;
-    if (!el) return;
-
-    const updateHeight = () => {
-      if (el) {
-        setContentHeight(el.offsetHeight);
-      }
-    };
-
-    updateHeight();
-    const ro = new ResizeObserver(updateHeight);
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, [currentMenu]);
-
-  // Scroll listener: transparent at very top, solid warm cream (#FAF7ED) when scrolled
+  // Scroll listener: Tự động ẩn navbar khi lướt xuống, hiện lại khi cuộn ngược lên hoặc ở đầu trang
   useEffect(() => {
     let ticking = false;
 
@@ -60,7 +43,19 @@ export const MegaMenuNavbar: React.FC = () => {
 
       if (!ticking) {
         window.requestAnimationFrame(() => {
+          const prevScrollY = lastScrollYRef.current;
+          const diff = currentScrollY - prevScrollY;
+
           setIsScrolled(currentScrollY > 40);
+
+          // Chỉ ẩn navbar khi cuộn xuống quá 80px, cuộn ngược lên (-5px) hoặc ở đầu trang thì hiện lại
+          if (currentScrollY > 80 && diff > 5) {
+            setIsScrollingDown(true);
+          } else if (diff < -5 || currentScrollY <= 80) {
+            setIsScrollingDown(false);
+          }
+
+          lastScrollYRef.current = currentScrollY;
           ticking = false;
         });
         ticking = true;
@@ -139,10 +134,15 @@ export const MegaMenuNavbar: React.FC = () => {
   const isMenuOpen = activeMenu !== null;
   const isSolid = isScrolled || isHeaderHovered || isMenuOpen || activeTab !== 'home' || selectedSolutionSlug !== null;
 
+  // Navbar chỉ ẩn khi đang lướt xuống VÀ người dùng KHÔNG rê chuột lên navbar / KHÔNG mở menu
+  const shouldHideNavbar = isScrollingDown && !isHeaderHovered && !isMenuOpen && !mobileMenuOpen;
+
   // Sibling dimming helper: dim other nav items to 50% opacity when a menu is open
   const getItemOpacityClass = (itemKey: MenuType | 'portfolio') => {
-    if (!isMenuOpen) return 'opacity-100';
-    return activeMenu === itemKey ? 'opacity-100' : 'opacity-50 hover:opacity-100';
+    if (!isMenuOpen) return 'opacity-100 transition-opacity duration-150';
+    return activeMenu === itemKey
+      ? 'opacity-100 transition-opacity duration-150'
+      : 'opacity-50 hover:opacity-100 transition-opacity duration-150';
   };
 
   return (
@@ -153,13 +153,15 @@ export const MegaMenuNavbar: React.FC = () => {
         onMouseLeave={handleHeaderMouseLeave}
         style={{
           transition:
-            'border-radius 0.3s cubic-bezier(0.33, 1, 0.68, 1), background-color 0.2s cubic-bezier(0.33, 1, 0.68, 1), color 0.2s cubic-bezier(0.33, 1, 0.68, 1), box-shadow 0.3s cubic-bezier(0.33, 1, 0.68, 1)',
+            'transform 0.45s cubic-bezier(0.33, 1, 0.68, 1), border-radius 0.3s cubic-bezier(0.33, 1, 0.68, 1), background-color 0.2s cubic-bezier(0.33, 1, 0.68, 1), color 0.2s cubic-bezier(0.33, 1, 0.68, 1)',
         }}
-        className={`fixed top-0 left-0 right-0 z-50 translate-y-0 ${
+        className={`fixed top-0 left-0 right-0 z-50 will-change-transform ${
+          shouldHideNavbar ? '-translate-y-full pointer-events-none' : 'translate-y-0 pointer-events-auto'
+        } ${
           isSolid
             ? 'bg-[#FAF7ED] text-[#1E1414]'
             : 'bg-transparent text-[#FAF7ED]'
-        } ${isMenuOpen ? 'rounded-b-[24px] shadow-xl' : 'rounded-b-0 shadow-none'}`}
+        } ${isMenuOpen ? 'rounded-b-[24px] border-b border-[#E2DDD5]/70' : 'rounded-b-0 border-b-transparent'}`}
       >
         {/* Top Navbar Row (HUTS height: 86px) */}
         <div className="max-w-[1584px] mx-auto px-6 sm:px-10 lg:px-12 h-[86px] flex items-center justify-between">
@@ -191,7 +193,7 @@ export const MegaMenuNavbar: React.FC = () => {
               >
                 <button
                   onClick={() => scrollToSection('solutions-section', 'home')}
-                  className={`py-2 flex items-center gap-1 cursor-pointer transition-all duration-200 ease-[cubic-bezier(0.33,1,0.68,1)] ${
+                  className={`py-2 flex items-center gap-1 cursor-pointer transition-colors duration-150 ease-[cubic-bezier(0.33,1,0.68,1)] ${
                     isSolid
                       ? 'text-[#1E1414] hover:text-[#0C310A]'
                       : 'text-[#FAF7ED] hover:text-white'
@@ -212,7 +214,7 @@ export const MegaMenuNavbar: React.FC = () => {
               >
                 <button
                   onClick={() => scrollToSection('standards-section', 'standards')}
-                  className={`py-2 flex items-center gap-1 cursor-pointer transition-all duration-200 ease-[cubic-bezier(0.33,1,0.68,1)] ${
+                  className={`py-2 flex items-center gap-1 cursor-pointer transition-colors duration-150 ease-[cubic-bezier(0.33,1,0.68,1)] ${
                     isSolid
                       ? 'text-[#1E1414] hover:text-[#0C310A]'
                       : 'text-[#FAF7ED] hover:text-white'
@@ -233,7 +235,7 @@ export const MegaMenuNavbar: React.FC = () => {
               >
                 <button
                   onClick={() => scrollToSection('process-section', 'home')}
-                  className={`py-2 flex items-center gap-1 cursor-pointer transition-all duration-200 ease-[cubic-bezier(0.33,1,0.68,1)] ${
+                  className={`py-2 flex items-center gap-1 cursor-pointer transition-colors duration-150 ease-[cubic-bezier(0.33,1,0.68,1)] ${
                     isSolid
                       ? 'text-[#1E1414] hover:text-[#0C310A]'
                       : 'text-[#FAF7ED] hover:text-white'
@@ -250,7 +252,7 @@ export const MegaMenuNavbar: React.FC = () => {
               {/* 4. Portfolio */}
               <button
                 onClick={() => scrollToSection('portfolio-section', 'portfolio')}
-                className={`py-2 cursor-pointer transition-all duration-200 ease-[cubic-bezier(0.33,1,0.68,1)] ${
+                className={`py-2 cursor-pointer transition-colors duration-150 ease-[cubic-bezier(0.33,1,0.68,1)] ${
                   isSolid
                     ? 'text-[#1E1414] hover:text-[#0C310A]'
                     : 'text-[#FAF7ED] hover:text-white'
@@ -266,7 +268,7 @@ export const MegaMenuNavbar: React.FC = () => {
               >
                 <button
                   onClick={() => scrollToSection('process-section', 'home')}
-                  className={`py-2 flex items-center gap-1 cursor-pointer transition-all duration-200 ease-[cubic-bezier(0.33,1,0.68,1)] ${
+                  className={`py-2 flex items-center gap-1 cursor-pointer transition-colors duration-150 ease-[cubic-bezier(0.33,1,0.68,1)] ${
                     isSolid
                       ? 'text-[#1E1414] hover:text-[#0C310A]'
                       : 'text-[#FAF7ED] hover:text-white'
@@ -306,30 +308,31 @@ export const MegaMenuNavbar: React.FC = () => {
 
         </div>
 
-        {/* Full-width MegaMenu Dropdown Panels with GPU-friendly smooth height transition */}
+        {/* Full-width MegaMenu Dropdown Panels with GPU-friendly CSS Grid 0fr -> 1fr transition */}
         <div
-          className="dropdown-menu overflow-hidden transition-[height,max-height,opacity] duration-300 ease-[cubic-bezier(0.33,1,0.68,1)]"
+          className="dropdown-menu grid transition-[grid-template-rows,opacity] duration-300 ease-[cubic-bezier(0.33,1,0.68,1)] will-change-[grid-template-rows,opacity]"
           style={{
-            height: isMenuOpen ? (contentHeight ? `${contentHeight}px` : 'auto') : '0px',
-            maxHeight: isMenuOpen ? (contentHeight ? `${contentHeight}px` : '800px') : '0px',
+            gridTemplateRows: isMenuOpen ? '1fr' : '0fr',
             opacity: isMenuOpen ? 1 : 0,
           }}
         >
-          <div ref={innerRef} className="max-w-[1584px] mx-auto px-6 sm:px-10 lg:px-12 pt-4 pb-10">
-            <MegaMenuPanels
-              activeMenu={currentMenu}
-              onStandardClick={handleStandardItemClick}
-              onSolutionSelect={handleSolutionSelect}
-              onScrollToSection={scrollToSection}
-              onOpenConfigurator={openConfigurator}
-            />
+          <div className="overflow-hidden min-h-0">
+            <div className="max-w-[1584px] mx-auto px-6 sm:px-10 lg:px-12 pt-4 pb-10">
+              <MegaMenuPanels
+                activeMenu={currentMenu}
+                onStandardClick={handleStandardItemClick}
+                onSolutionSelect={handleSolutionSelect}
+                onScrollToSection={scrollToSection}
+                onOpenConfigurator={openConfigurator}
+              />
+            </div>
           </div>
         </div>
       </header>
 
       {/* Dimmed backdrop overlay when MegaMenu is active */}
       <div
-        className={`fixed inset-0 bg-[#1E1414]/55 z-40 transition-opacity duration-200 ease-[cubic-bezier(0.33,1,0.68,1)] ${
+        className={`fixed inset-0 bg-[#1E1414]/50 z-40 transition-opacity duration-300 ease-[cubic-bezier(0.33,1,0.68,1)] will-change-opacity ${
           isMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         }`}
         onClick={() => {
