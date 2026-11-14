@@ -74,3 +74,17 @@ Dự án là một nền tảng PropTech tích hợp 2 phân hệ gắn kết ch
 ### E. Draggable Photo Stack (`NarrativeJourneySection`)
 - Chỉ thẻ trên cùng (`index === 0`) có `drag={true}` và `dragSnapToOrigin={true}`.
 - Bắt buộc dùng `key={card.id}` cố định (cấm dùng `key={index}`) và luôn ép `animate={{ x: 0, y: 0, rotate: ..., scale: ... }}` để thẻ tự hút về tâm xấp bài sau khi thả chuột.
+
+---
+
+# QUY CHUẨN QUẢN LÝ MÃ NGUỒN & GIT COMMIT (BẮT BUỘC)
+
+- **Ngôn ngữ thông điệp commit:** **100% TIẾNG VIỆT**. Tuyệt đối không dùng tiếng Anh cho commit message từ thời điểm này.
+- **Quy tắc định dạng Conventional Commits:** Giữ tiền tố chuẩn (feat, fix, refactor, style, chore, docs...) kèm phạm vi (scope) và mô tả hành động rõ ràng, súc tích bằng tiếng Việt:
+  - `feat(ten-module): mô tả tính năng mới bằng tiếng Việt`
+  - `fix(ten-module): mô tả lỗi đã sửa bằng tiếng Việt`
+  - `refactor(ten-module): mô tả tái cấu trúc/dọn dẹp bằng tiếng Việt`
+  - `style(ten-module): tinh chỉnh giao diện/css bằng tiếng Việt`
+  - Ví dụ chuẩn:
+    + `fix(cuon-ngang): tinh chỉnh công thức lưới 12 cột khớp 3 thẻ và tính động biên trượt cuối`
+    + `refactor(don-dep): xóa bỏ 22 file ảnh raster thừa và 6 component không còn dùng`
