@@ -70,7 +70,7 @@ const STANDARDS_ITEMS: MegaMenuItem[] = [
   {
     slug: 'what-is-a-standard',
     title: 'What is a Standard?',
-    byline: 'HUTS base plans that can be modified for your home site and unique lifestyle',
+    byline: 'TIE base plans that can be modified for your home site and unique lifestyle',
     image: 'https://cdn.sanity.io/images/xi1ruvdt/production/34fd9ee2836af6151ba6c0b074af234f8866d5dc-1330x1330.jpg?w=320&q=80&auto=format',
     isCover: true,
   },
@@ -134,8 +134,8 @@ const STANDARDS_ITEMS: MegaMenuItem[] = [
 
 const HOW_IT_WORKS_ITEMS: MegaMenuItem[] = [
   {
-    slug: 'the-huts-approach',
-    title: 'The HUTS Approach',
+    slug: 'the-tie-approach',
+    title: 'The TIE Approach',
     byline: 'We combine our experience in architecture, development, and placemaking to make the home design and building process better',
     image: 'https://cdn.sanity.io/images/xi1ruvdt/production/1ebb28dcfaa394e36f73bf58f618a500ce9e3471-73x73.svg',
   },
@@ -151,7 +151,7 @@ const RESOURCES_ITEMS: MegaMenuItem[] = [
   {
     slug: 'the-field-report',
     title: 'The Field Report',
-    byline: 'Our living report on the status of all HUTS design and development projects.',
+    byline: 'Our living report on the status of all TIE design and development projects.',
     image: 'https://cdn.sanity.io/images/xi1ruvdt/production/4a83dfcf853f60f5f49439bf329d873f3e1a9fc5-111x106.svg',
   },
   {
@@ -161,8 +161,8 @@ const RESOURCES_ITEMS: MegaMenuItem[] = [
     image: 'https://cdn.sanity.io/images/xi1ruvdt/production/b282609b7a1e2b383887fdd80ccc790f30e3fd2b-117x106.svg',
   },
   {
-    slug: 'huts-guides',
-    title: 'HUTS Guides',
+    slug: 'tie-guides',
+    title: 'TIE Guides',
     byline: 'Learn about all things home development from land, and construction to design and financing.',
     image: 'https://cdn.sanity.io/images/xi1ruvdt/production/51c01aa58e8bf9861b5afc4958530278b7302324-103x106.svg',
   },
@@ -175,7 +175,7 @@ const RESOURCES_ITEMS: MegaMenuItem[] = [
   {
     slug: 'tools',
     title: 'Tools',
-    byline: 'The tools behind every HUTS project.',
+    byline: 'The tools behind every TIE project.',
     image: 'https://cdn.sanity.io/images/xi1ruvdt/production/e7de0f76d667f37d82a0e3656302cdd18cbfce82-340x340.svg',
   },
   {
@@ -519,7 +519,7 @@ export const MegaMenuNavbar: React.FC = () => {
           }`}
         >
           <div className="overflow-hidden">
-            <div className="max-w-[1584px] mx-auto px-6 sm:px-10 lg:px-12 pt-4 pb-10 min-h-[360px]">
+            <div className="max-w-[1584px] mx-auto px-6 sm:px-10 lg:px-12 pt-2 pb-6 sm:pb-7">
               <div className="relative w-full">
                 {/* 1. HOUSING SOLUTIONS: 3 Columns x 8 Archetypes */}
                 <div

@@ -95,7 +95,7 @@ const STEP_ITEMS: StepItem[] = [
     number: '01',
     title: 'Understand the build site',
     description:
-      'Get started with HUTS Land to identify the perfect parcel for you. Some people take a long time to find the right spot, but we can point you in the right direction.',
+      'Get started with TIE Land to identify the perfect parcel for you. Some people take a long time to find the right spot, but we can point you in the right direction.',
     highlights: [
       'Comprehensive zoning analysis and legal municipal setback confirmation',
       'Topographical contour survey & natural drainage corridor mapping',

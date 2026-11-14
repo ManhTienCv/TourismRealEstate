@@ -7,7 +7,7 @@ export const STANDARDS_COLUMNS = [
     {
       slug: 'what-is-a-standard',
       title: 'What is a Standard?',
-      description: 'HUTS base plans that can be modified for your home site and unique lifestyle',
+      description: 'TIE base plans that can be modified for your home site and unique lifestyle',
       imageUrl: '/standards/thumbnails/what-is-a-standard.png',
       isInfo: true,
     },
@@ -129,7 +129,7 @@ export const SOLUTIONS_MENU_ITEMS = SOLUTIONS_COLUMNS.flat();
 export const HOW_IT_WORKS_ITEMS = [
   {
     id: 'approach',
-    title: 'The HUTS Approach',
+    title: 'The TIE Approach',
     description: 'We combine our experience in architecture, development, and placemaking to make the home design and building process better',
     type: 'approach',
   },

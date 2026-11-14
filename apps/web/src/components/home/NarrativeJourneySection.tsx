@@ -8,17 +8,17 @@ const INITIAL_CARDS = [
   {
     id: 'card-1',
     image: 'https://cdn.sanity.io/images/xi1ruvdt/production/adec57220fd43008ea6d5e08e95bf76e0b84c0d2-3200x2133.jpg?w=1024&q=85&auto=format',
-    alt: 'HUTS Country Property Aerial View',
+    alt: 'TIE Country Property Aerial View',
   },
   {
     id: 'card-2',
     image: 'https://cdn.sanity.io/images/xi1ruvdt/production/429ae55dedd3fdcda99c1bb5ad5dcadf0937262f-1440x800.png?w=1024&q=85&auto=format',
-    alt: 'HUTS Architectural Elevation Drawing',
+    alt: 'TIE Architectural Elevation Drawing',
   },
   {
     id: 'card-3',
     image: 'https://cdn.sanity.io/images/xi1ruvdt/production/b42fd76f6418c50eb7b7d84590c774a8915ae824-1440x810.jpg?w=1024&q=85&auto=format',
-    alt: 'HUTS Realized Country Residence',
+    alt: 'TIE Realized Country Residence',
   },
 ];
 

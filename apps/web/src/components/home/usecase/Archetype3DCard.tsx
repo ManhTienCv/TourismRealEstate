@@ -8,7 +8,7 @@ export interface ArchetypeCardProps {
   isScrolling?: boolean;
 }
 
-const HUTS_EDITORIAL_DATA: Record<string, { desc: string; buttonText: string }> = {
+const TIE_EDITORIAL_DATA: Record<string, { desc: string; buttonText: string }> = {
   'starter-home': {
     desc: 'First-time home buyer and don’t know where to start? We get it.',
     buttonText: 'Learn about the Starter Home',
@@ -45,7 +45,7 @@ const HUTS_EDITORIAL_DATA: Record<string, { desc: string; buttonText: string }> 
 
 export const Archetype3DCard: React.FC<ArchetypeCardProps> = ({ sol, onLearnMore }) => {
   const illustrationSrc = AVAILABLE_ILLUSTRATIONS[sol.slug] || '/illustrations/starter-home.svg';
-  const editorial = HUTS_EDITORIAL_DATA[sol.slug] || {
+  const editorial = TIE_EDITORIAL_DATA[sol.slug] || {
     desc: sol.description,
     buttonText: `Learn about the ${sol.title}`,
   };

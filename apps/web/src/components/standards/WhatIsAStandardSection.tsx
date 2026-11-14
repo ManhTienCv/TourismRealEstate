@@ -156,7 +156,7 @@ export const WhatIsAStandardSection: React.FC = () => {
             </h2>
             
             <p className="font-sans text-base sm:text-lg text-tie-muted leading-relaxed">
-              Our standards are designed with constructability in mind. The American construction trade has some existing patterns in place - 16" on center framing, 4'x8' sheets of plywood and drywall, regular 2' material increments. We don't work against those measurements, but instead work with them to minimize waste and increase the number of builders who can successfully deliver on HUTS projects, anywhere in the country.
+              Our standards are designed with constructability in mind. The American construction trade has some existing patterns in place - 16" on center framing, 4'x8' sheets of plywood and drywall, regular 2' material increments. We don't work against those measurements, but instead work with them to minimize waste and increase the number of builders who can successfully deliver on TIE projects, anywhere in the country.
             </p>
 
             {/* 4 Spec Pills in Warm Paper */}
