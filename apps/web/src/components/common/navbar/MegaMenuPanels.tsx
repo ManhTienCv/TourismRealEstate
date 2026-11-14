@@ -16,7 +16,7 @@ interface MegaMenuPanelsProps {
   onOpenConfigurator: () => void;
 }
 
-export const MegaMenuPanels: React.FC<MegaMenuPanelsProps> = ({
+export const MegaMenuPanels: React.FC<MegaMenuPanelsProps> = React.memo(({
   activeMenu,
   onStandardClick,
   onSolutionSelect,
@@ -42,13 +42,14 @@ export const MegaMenuPanels: React.FC<MegaMenuPanelsProps> = ({
                   className="flex items-start space-x-4 p-2.5 rounded-[16px] hover:bg-[#F2EFE4]/50 cursor-pointer transition-colors duration-150 group"
                 >
                   {/* Square thumbnail with rounded-[16px] bg-[#FAF7ED] matching Image 8 */}
-                  <div className="w-[70px] h-[70px] rounded-[16px] bg-[#FAF7ED] shrink-0 flex items-center justify-center p-2.5 overflow-hidden border border-[#E2DDD5]/80 group-hover:border-[#664A42]/30 transition-colors">
+                  <div className="w-[70px] h-[70px] rounded-[16px] bg-[#FAF7ED] shrink-0 flex items-center justify-center p-2.5 overflow-hidden border border-[#E2DDD5]/80 group-hover:border-[#664A42]/30 transition-colors [contain:paint]">
                     {AVAILABLE_ILLUSTRATIONS[sol.slug] ? (
                       <img
                         src={AVAILABLE_ILLUSTRATIONS[sol.slug]}
                         alt={sol.title}
                         className="w-full h-full object-contain select-none pointer-events-none group-hover:scale-105 transition-transform duration-200"
                         loading="eager"
+                        decoding="async"
                       />
                     ) : (
                       <div className="w-8 h-8 rounded-full bg-[#CBE282]/40" />
@@ -83,12 +84,13 @@ export const MegaMenuPanels: React.FC<MegaMenuPanelsProps> = ({
                   className="flex items-start space-x-4 p-2.5 rounded-[16px] hover:bg-[#F2EFE4]/50 cursor-pointer transition-colors duration-150 group"
                 >
                   {/* Square thumbnail with rounded-[16px] bg-[#FAF7ED] matching Image 9 */}
-                  <div className="w-[70px] h-[70px] rounded-[16px] bg-[#FAF7ED] shrink-0 overflow-hidden border border-[#E2DDD5]/80 group-hover:border-[#664A42]/30 transition-colors">
+                  <div className="w-[70px] h-[70px] rounded-[16px] bg-[#FAF7ED] shrink-0 overflow-hidden border border-[#E2DDD5]/80 group-hover:border-[#664A42]/30 transition-colors [contain:paint]">
                     <img
                       src={item.imageUrl}
                       alt={item.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       loading="eager"
+                      decoding="async"
                     />
                   </div>
 
@@ -176,6 +178,6 @@ export const MegaMenuPanels: React.FC<MegaMenuPanelsProps> = ({
       </div>
     </div>
   );
-};
+});
 
 export default MegaMenuPanels;

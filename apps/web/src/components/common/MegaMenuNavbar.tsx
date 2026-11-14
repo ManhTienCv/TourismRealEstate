@@ -153,7 +153,7 @@ export const MegaMenuNavbar: React.FC = () => {
         onMouseLeave={handleHeaderMouseLeave}
         style={{
           transition:
-            'transform 0.45s cubic-bezier(0.33, 1, 0.68, 1), border-radius 0.3s cubic-bezier(0.33, 1, 0.68, 1), background-color 0.2s cubic-bezier(0.33, 1, 0.68, 1), color 0.2s cubic-bezier(0.33, 1, 0.68, 1)',
+            'transform 0.4s cubic-bezier(0.33, 1, 0.68, 1), border-radius 0.25s cubic-bezier(0.33, 1, 0.68, 1), background-color 0.2s cubic-bezier(0.33, 1, 0.68, 1)',
         }}
         className={`fixed top-0 left-0 right-0 z-50 will-change-transform ${
           shouldHideNavbar ? '-translate-y-full pointer-events-none' : 'translate-y-0 pointer-events-auto'
@@ -251,6 +251,7 @@ export const MegaMenuNavbar: React.FC = () => {
 
               {/* 4. Portfolio */}
               <button
+                onMouseEnter={() => handleItemMouseEnter(null)}
                 onClick={() => scrollToSection('portfolio-section', 'portfolio')}
                 className={`py-2 cursor-pointer transition-colors duration-150 ease-[cubic-bezier(0.33,1,0.68,1)] ${
                   isSolid
@@ -286,6 +287,7 @@ export const MegaMenuNavbar: React.FC = () => {
 
             {/* Right CTA Button: Signature Soft Lime Pill Button (HUTS: #CBE282 / #0C310A / rounded-[104px]) */}
             <button
+              onMouseEnter={() => handleItemMouseEnter(null)}
               onClick={() => openConfigurator()}
               className="px-5 py-2.5 rounded-[104px] bg-[#CBE282] hover:bg-[#b8d867] text-[#0C310A] text-[14px] leading-none font-normal transition-colors active:scale-95 shrink-0 shadow-xs cursor-pointer"
             >
@@ -308,24 +310,22 @@ export const MegaMenuNavbar: React.FC = () => {
 
         </div>
 
-        {/* Full-width MegaMenu Dropdown Panels with GPU-friendly CSS Grid 0fr -> 1fr transition */}
+        {/* Full-width MegaMenu Dropdown Panels: 100% GPU Opacity & Transform transition */}
         <div
-          className="dropdown-menu grid transition-[grid-template-rows,opacity] duration-300 ease-[cubic-bezier(0.33,1,0.68,1)] will-change-[grid-template-rows,opacity]"
-          style={{
-            gridTemplateRows: isMenuOpen ? '1fr' : '0fr',
-            opacity: isMenuOpen ? 1 : 0,
-          }}
+          className={`dropdown-menu transition-[opacity,transform] duration-200 ease-[cubic-bezier(0.33,1,0.68,1)] will-change-[opacity,transform] ${
+            isMenuOpen
+              ? 'opacity-100 translate-y-0 pointer-events-auto visible'
+              : 'opacity-0 -translate-y-1.5 pointer-events-none invisible h-0 overflow-hidden'
+          }`}
         >
-          <div className="overflow-hidden min-h-0">
-            <div className="max-w-[1584px] mx-auto px-6 sm:px-10 lg:px-12 pt-4 pb-10">
-              <MegaMenuPanels
-                activeMenu={currentMenu}
-                onStandardClick={handleStandardItemClick}
-                onSolutionSelect={handleSolutionSelect}
-                onScrollToSection={scrollToSection}
-                onOpenConfigurator={openConfigurator}
-              />
-            </div>
+          <div className="max-w-[1584px] mx-auto px-6 sm:px-10 lg:px-12 pt-4 pb-10 min-h-[360px]">
+            <MegaMenuPanels
+              activeMenu={currentMenu}
+              onStandardClick={handleStandardItemClick}
+              onSolutionSelect={handleSolutionSelect}
+              onScrollToSection={scrollToSection}
+              onOpenConfigurator={openConfigurator}
+            />
           </div>
         </div>
       </header>
