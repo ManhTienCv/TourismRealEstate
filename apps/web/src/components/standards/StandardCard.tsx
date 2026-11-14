@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StandardPlan } from '@tie/shared';
 import { useConfiguratorStore } from '../../store/useConfiguratorStore';
-import { Eye, Sparkles, ArrowRight } from 'lucide-react';
+import { Eye, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 interface StandardCardProps {

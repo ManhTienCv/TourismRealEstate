@@ -1,7 +1,7 @@
 import React from 'react';
 import { useConfiguratorStore } from '../../store/useConfiguratorStore';
 import { SEED_PORTFOLIO_PROJECTS } from '@tie/shared';
-import { X, MapPin, Check, Sparkles, Building2, Quote, ArrowRight } from 'lucide-react';
+import { X, Check, Sparkles, Quote } from 'lucide-react';
 
 export const PortfolioGalleryModal: React.FC = () => {
   const { selectedProjectSlug, closeProjectDetail, openConfigurator } = useConfiguratorStore();

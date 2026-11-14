@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layers, ShieldCheck, Zap, Factory, Truck, KeyRound } from 'lucide-react';
+import { Zap, Factory } from 'lucide-react';
 
 export const ProcessSection: React.FC = () => {
   return (

@@ -80,4 +80,8 @@ PROMPTS_*.md
 PROMPTS_PHASE2_BANGHI1.md
 PROMPTS_UI_UX_HUTS.md
 
+# Large SingleFile HTML references (local reference only, do not commit 50MB dumps)
+*Huts*.html
+huts-reference.html
+
 Thumbs.db

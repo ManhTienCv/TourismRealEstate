@@ -5,15 +5,8 @@ import {
   Hammer,
   CloudSun,
   ShieldCheck,
-  Calendar,
   CheckCircle2,
-  Clock,
-  Camera,
   MapPin,
-  ChevronDown,
-  ChevronUp,
-  FileCheck,
-  Building,
 } from 'lucide-react';
 
 export const FieldReportPortal: React.FC = () => {

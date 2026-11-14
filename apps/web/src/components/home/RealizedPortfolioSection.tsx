@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useConfiguratorStore } from '../../store/useConfiguratorStore';
-import { smoothScrollTo, getLenis } from '../../utils/smoothScroll';
+import { smoothScrollTo } from '../../utils/smoothScroll';
 import { PillArrowButton } from '../common/PillArrowButton';
 import { DoubleLoopArrow } from './narrative/DoubleLoopArrow';
 

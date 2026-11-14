@@ -3,14 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   Camera,
   Compass,
-  MapPin,
   Plus,
-  X,
-  ExternalLink,
   CheckCircle2,
-  Maximize2,
-  Layers,
-  FileCheck,
 } from 'lucide-react';
 
 interface SurveyHotspot {

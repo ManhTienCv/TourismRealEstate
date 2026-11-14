@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useConfiguratorStore } from '../../store/useConfiguratorStore';
-import { X, Sparkles, Check, Layers, Ruler, Maximize2, Calendar, FileText } from 'lucide-react';
+import { X, Sparkles, Check } from 'lucide-react';
 
 export const PlanDetailModal: React.FC = () => {
   const { selectedPlanForDetail, closePlanDetail, openConfigurator } = useConfiguratorStore();
