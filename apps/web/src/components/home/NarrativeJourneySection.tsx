@@ -1,30 +1,24 @@
 import React, { useState, useRef } from 'react';
 import { motion, PanInfo } from 'framer-motion';
 import { useConfiguratorStore } from '../../store/useConfiguratorStore';
-import { PillArrowButton } from '../common/PillArrowButton';
-import { DoubleLoopArrow } from './narrative/DoubleLoopArrow';
+import { DividerArrow } from './narrative/DoubleLoopArrow';
 
-// 4 High-fidelity realized architectural project photos (HUTS style clean borderless deck)
+// 3 ảnh gốc của HUTS cho bộ xếp chồng
 const INITIAL_CARDS = [
   {
     id: 'card-1',
-    image: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1200&q=85',
-    alt: 'Catskills Forest Compound',
+    image: 'https://cdn.sanity.io/images/xi1ruvdt/production/adec57220fd43008ea6d5e08e95bf76e0b84c0d2-3200x2133.jpg?w=1024&q=85&auto=format',
+    alt: 'HUTS Country Property Aerial View',
   },
   {
     id: 'card-2',
-    image: 'https://images.unsplash.com/photo-1449844908441-8829872d2607?auto=format&fit=crop&w=1200&q=85',
-    alt: 'Birchwood Hill ADU',
+    image: 'https://cdn.sanity.io/images/xi1ruvdt/production/429ae55dedd3fdcda99c1bb5ad5dcadf0937262f-1440x800.png?w=1024&q=85&auto=format',
+    alt: 'HUTS Architectural Elevation Drawing',
   },
   {
     id: 'card-3',
-    image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=85',
-    alt: 'The Overlook Dogtrot',
-  },
-  {
-    id: 'card-4',
-    image: 'https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=1200&q=85',
-    alt: 'Sonoma Valley Big L',
+    image: 'https://cdn.sanity.io/images/xi1ruvdt/production/b42fd76f6418c50eb7b7d84590c774a8915ae824-1440x810.jpg?w=1024&q=85&auto=format',
+    alt: 'HUTS Realized Country Residence',
   },
 ];
 
@@ -33,7 +27,6 @@ const STACK_POSITIONS = [
   { rotate: 4, x: 0, y: 0, scale: 1 },
   { rotate: -6, x: -16, y: 12, scale: 0.98 },
   { rotate: 7, x: 14, y: -12, scale: 0.96 },
-  { rotate: -3, x: -10, y: 18, scale: 0.95 },
 ];
 
 export const NarrativeJourneySection: React.FC = () => {
@@ -41,7 +34,7 @@ export const NarrativeJourneySection: React.FC = () => {
   const [cards, setCards] = useState(INITIAL_CARDS);
   const isDraggingRef = useRef(false);
 
-  // Move top photo to back of stack
+  // Chuyển ảnh trên cùng xuống đáy xấp bài
   const moveTopCardToBack = () => {
     setCards((prev) => {
       const [first, ...rest] = prev;
@@ -80,23 +73,26 @@ export const NarrativeJourneySection: React.FC = () => {
   };
 
   return (
-    <section id="narrative-section" className="relative pt-0 pb-4 sm:pb-6 bg-[#FAF7ED] overflow-visible select-none">
+    <section id="narrative-section" className="relative pt-0 pb-8 sm:pb-12 bg-[#FAF7ED] overflow-visible select-none">
       
       {/* ========================================================= */}
-      {/* 1. SECTION: "WE DO IT ACROSS THE COUNTRY" (Matching HUTS Image 5) */}
+      {/* MŨI TÊN SỐ 1 (MẪU A — MŨI TÊN XOẮN) TRƯỚC "WE DO IT ACROSS THE COUNTRY" */}
       {/* ========================================================= */}
-      <div className="max-w-[1140px] mx-auto px-6 md:px-12 relative">
-
-        {/* Hand-drawn Double-Loop Arrow nhếch sát đáy dải thẻ bên trên, hiển thị nét vẽ dần khi lướt */}
-        <div className="flex justify-center items-center w-full -mt-28 sm:-mt-36 md:-mt-48 lg:-mt-56 mb-4 sm:mb-6 bg-transparent pointer-events-none z-10">
-          <DoubleLoopArrow />
+      <section className="divider-arrow flex justify-center items-center my-[-36.5px] relative z-10 pointer-events-none">
+        <div className="h-[217px] w-auto">
+          <DividerArrow variant="loop" />
         </div>
+      </section>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 items-center gap-12 max-w-[1140px] mx-auto py-8 lg:py-12">
+      {/* ========================================================= */}
+      {/* KHỐI 1: "WE DO IT ACROSS THE COUNTRY" (LƯỚI 2 CỘT ĐỀU NHAU) */}
+      {/* ========================================================= */}
+      <div className="max-w-[1440px] mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-12 lg:gap-[160px] px-6 md:px-16 py-12">
           
-          {/* LEFT: DRAGGABLE PHYSICS PHOTO STACK */}
-          <div className="lg:col-span-6 flex justify-center">
-            <div className="relative w-[340px] sm:w-[390px] md:w-[430px] lg:w-[450px] aspect-square flex items-center justify-center select-none">
+          {/* CỘT TRÁI: KHUNG 3 ẢNH XẾP CHỒNG ĐẶT P-[8%] */}
+          <div className="flex justify-center p-[8%]">
+            <div className="relative w-full max-w-[393px] aspect-square flex items-center justify-center select-none">
               {cards.map((card, index) => {
                 const isTop = index === 0;
                 const pos = STACK_POSITIONS[index] || { rotate: 0, x: 0, y: 0, scale: 0.95 };
@@ -131,14 +127,14 @@ export const NarrativeJourneySection: React.FC = () => {
                     style={{
                       zIndex: cards.length - index,
                     }}
-                    className={`absolute inset-0 rounded-[22px] overflow-hidden shadow-xl bg-[#FAF7ED] origin-center select-none ${
+                    className={`absolute inset-0 rounded-[20px] overflow-hidden shadow-xl bg-[#FAF7ED] origin-center select-none ${
                       isTop ? 'cursor-grab active:cursor-grabbing shadow-2xl' : 'pointer-events-none'
                     }`}
                   >
                     <img
                       src={card.image}
                       alt={card.alt}
-                      className="w-full h-full object-cover select-none pointer-events-none"
+                      className="w-full max-w-[393px] aspect-square rounded-[20px] object-cover select-none pointer-events-none"
                       draggable={false}
                       loading={isTop ? 'eager' : 'lazy'}
                     />
@@ -148,96 +144,82 @@ export const NarrativeJourneySection: React.FC = () => {
             </div>
           </div>
 
-          {/* RIGHT: EDITORIAL COPY & SYNCHRONIZED PILL ARROW BUTTON */}
-          <div className="lg:col-span-6 space-y-5 relative">
-            <h2 className="font-serif text-[38px] md:text-[44px] text-[#0C310A] tracking-[-0.01em] leading-[1.0] mb-5 font-normal lg:whitespace-nowrap">
+          {/* CỘT PHẢI: BLOCK-TEXT & NÚT BẤM SEE OUR PROJECTS */}
+          <div className="block-text max-w-[540px]">
+            <h4 className="text-[28px] lg:text-[36.1px] leading-[1.14] tracking-[-0.02em] font-serif font-normal text-[#0C310A] mb-[22px]">
               We do it across the country
-            </h2>
+            </h4>
 
-            <p className="max-w-[430px] text-[15px] md:text-[16px] leading-[1.6] text-[#664A42] font-normal mb-8">
+            <p className="large text-[17px] lg:text-[19.5px] leading-[1.4] text-[#664A42] mb-[30px]">
               We focused exclusively on delivering in rural locations. Coast-to-coast, TIE crafts beautiful properties through guidance, intent, and care. Have a specific area or state in mind? We've either built there, or will soon.
             </p>
 
-            {/* Reusable Unified Pill Arrow Button */}
-            <div className="pt-1">
-              <PillArrowButton
-                label="See Our Projects"
-                onClick={handleSeeProjects}
-                variant="dark"
-              />
+            {/* Nút bấm See Our Projects: Viên thuốc + Vòng tròn icon chạm sát nhau (gap-0) */}
+            <div
+              onClick={handleSeeProjects}
+              className="group inline-flex items-center gap-0 cursor-pointer select-none"
+            >
+              <div className="h-[48px] px-8 rounded-full border border-[#0C310A] text-[#0C310A] text-[14px] flex items-center justify-center transition-colors duration-200 group-hover:bg-[#0C310A] group-hover:text-[#FAF7ED]">
+                See Our Projects
+              </div>
+              <div className="w-[48px] h-[48px] rounded-full border border-[#0C310A] flex items-center justify-center transition-colors duration-200 group-hover:bg-[#0C310A] group-hover:text-[#FAF7ED]">
+                <svg width="19" height="18" viewBox="0 0 19 18" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-[18px] h-[18px] transition-transform duration-200 group-hover:translate-x-0.5">
+                  <path d="M0 8.99805H16.7802" stroke="currentColor" strokeWidth="1.8" />
+                  <path d="M11.0684 17.7976C11.0684 12.77 14.3032 8.99938 18.0001 8.99938C15.6895 8.41283 11.0684 5.83203 11.0684 0.201172" stroke="currentColor" strokeWidth="1.8" />
+                </svg>
+              </div>
             </div>
           </div>
 
         </div>
       </div>
 
-      {/* ========================================================================= */}
-      {/* 2. MIDDLE CONNECTOR ARROW: ELEGANT SWEEPING S-CURVE (Matches HUTS Image 3) */}
-      {/* Sweeps gracefully from under 'See Our Projects' -> plunges above 'Using a process built...' */}
-      {/* ========================================================================= */}
-      <div
-        className="relative w-full max-w-[1140px] mx-auto px-6 md:px-12 h-[190px] sm:h-[220px] md:h-[240px] pointer-events-none z-20 overflow-visible my-2 sm:my-4"
-      >
-        <svg
-          viewBox="0 0 1140 240"
-          fill="none"
-          className="w-full h-full overflow-visible"
-        >
-          {/* Authentic sweeping S-curve matching exact HUTS geometry */}
-          <motion.path
-            d="M 710 15 C 712 70, 680 115, 570 140 C 470 162, 425 185, 420 215"
-            stroke="#365327"
-            strokeWidth="2.4"
-            strokeLinecap="round"
-            initial={{ pathLength: 0.9, opacity: 0.85 }}
-            whileInView={{ pathLength: 1, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.9, ease: 'easeOut' }}
-          />
-          {/* Downward pointing crisp hand-drawn arrowhead */}
-          <path
-            d="M 408 198 L 420 215 L 433 202"
-            stroke="#365327"
-            strokeWidth="2.4"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      </div>
+      {/* ========================================================= */}
+      {/* MŨI TÊN SỐ 2 (MẪU B — MŨI TÊN VẮT CHÉO TỪ PHẢI SANG TRÁI) */}
+      {/* ========================================================= */}
+      <section className="divider-arrow flex justify-center items-center my-[-36.5px] relative z-10 pointer-events-none">
+        <div className="h-[217px] w-auto">
+          <DividerArrow variant="sweep" />
+        </div>
+      </section>
 
       {/* ========================================================= */}
-      {/* 3. "USING A PROCESS BUILT AROUND YOU" (Target HUTS Image 4) */}
+      {/* KHỐI 2: "USING A PROCESS BUILT AROUND YOU" (LƯỚI 2 CỘT ĐỀU NHAU) */}
       {/* ========================================================= */}
-      <div
-        id="process-section"
-        className="max-w-[1140px] mx-auto px-6 md:px-12 pt-0 pb-4 md:pb-6"
-      >
-        <div className="grid grid-cols-1 md:grid-cols-12 items-center gap-10 lg:gap-14">
+      <div id="process-section" className="max-w-[1440px] mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-12 lg:gap-[160px] px-6 md:px-16 py-12">
           
-          {/* Left Column: Headline, Narrative & Reusable Pill Arrow Button */}
-          <div className="md:col-span-6 space-y-6">
-            <h3 className="font-serif text-[38px] md:text-[44px] text-[#0C310A] leading-[1.0] tracking-[-0.01em] mb-6 max-w-[420px] font-normal">
+          {/* CỘT TRÁI: BLOCK-TEXT & NÚT BẤM HOW IT WORKS */}
+          <div className="block-text max-w-[540px]">
+            <h4 className="text-[28px] lg:text-[36.1px] leading-[1.14] tracking-[-0.02em] font-serif font-normal text-[#0C310A] mb-[22px]">
               Using a process built
               <br />
               around you
-            </h3>
-            
-            <p className="text-[15px] md:text-[16px] leading-[1.6] text-[#664A42] font-normal mb-8 max-w-[420px]">
+            </h4>
+
+            <p className="large text-[17px] lg:text-[19.5px] leading-[1.4] text-[#664A42] mb-[30px]">
               We deliver properties differently think of us as your sherpa on the path to your perfect property. Our people-first process goes far beyond floor plans—we coordinate every player needed to take you from a spark of an idea to raw land to a finished home. It's a start-to-finish approach that's proven, vetted, and simply the best way to build.
             </p>
 
-            {/* Reusable Unified Pill Arrow Button */}
-            <div className="pt-1">
-              <PillArrowButton
-                label="How It Works"
-                onClick={handleHowItWorksClick}
-                variant="dark"
-              />
+            {/* Nút bấm How It Works: Viên thuốc + Vòng tròn icon chạm sát nhau (gap-0) */}
+            <div
+              onClick={handleHowItWorksClick}
+              className="group inline-flex items-center gap-0 cursor-pointer select-none"
+            >
+              <div className="h-[48px] px-8 rounded-full border border-[#0C310A] text-[#0C310A] text-[14px] flex items-center justify-center transition-colors duration-200 group-hover:bg-[#0C310A] group-hover:text-[#FAF7ED]">
+                How It Works
+              </div>
+              <div className="w-[48px] h-[48px] rounded-full border border-[#0C310A] flex items-center justify-center transition-colors duration-200 group-hover:bg-[#0C310A] group-hover:text-[#FAF7ED]">
+                <svg width="19" height="18" viewBox="0 0 19 18" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-[18px] h-[18px] transition-transform duration-200 group-hover:translate-x-0.5">
+                  <path d="M0 8.99805H16.7802" stroke="currentColor" strokeWidth="1.8" />
+                  <path d="M11.0684 17.7976C11.0684 12.77 14.3032 8.99938 18.0001 8.99938C15.6895 8.41283 11.0684 5.83203 11.0684 0.201172" stroke="currentColor" strokeWidth="1.8" />
+                </svg>
+              </div>
             </div>
           </div>
 
-          {/* Right Column: Authentic HUTS line-art Sherpa by the fireplace (Matches Photo 2) */}
-          <div className="md:col-span-6 flex justify-center md:justify-end">
+          {/* CỘT PHẢI: HÌNH MINH HỌA SHERPA BÊN LÒ SƯỞI HUTS GỐC */}
+          <div className="flex justify-center lg:justify-end">
             <img
               src="/illustrations/process-sherpa-fireplace.svg"
               alt="Architectural sherpa enjoying tea by a cozy fireplace"
@@ -247,6 +229,7 @@ export const NarrativeJourneySection: React.FC = () => {
 
         </div>
       </div>
+
     </section>
   );
 };
