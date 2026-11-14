@@ -45,22 +45,25 @@ export const UseCaseSelector: React.FC = () => {
     <section
       ref={containerRef}
       id="solutions-section"
-      className="relative h-[320vh] bg-[#FAF7ED]"
+      className="card-slider relative h-[320vh] bg-[#FAF7ED]"
     >
-      <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-center select-none pt-10 md:pt-14 pb-8 z-10">
-        {/* Section Header: Centered Editorial Headline matching HUTS 1:1 */}
-        <div className="text-center max-w-[730px] mx-auto mb-7 md:mb-8 px-4 shrink-0">
-          <h2 className="font-serif text-[36px] md:text-[50px] leading-[1.1] tracking-[-0.02em] text-[#0C310A] font-normal max-w-[730px] mx-auto text-center">
-            Whatever type of place you have in mind
-          </h2>
+      {/* 100dvh sticky container with grid-template-rows: auto 1fr (matching HUTS) */}
+      <div className="scroll-content select-none">
+        {/* Section Header within grid row 1 */}
+        <div className="heading-wrapper">
+          <div className="block-text">
+            <div className="block-text-col">
+              <h3>Whatever type of place you have in mind</h3>
+            </div>
+          </div>
         </div>
 
-        {/* Sticky Horizontal Track */}
-        <div className="w-full overflow-hidden">
+        {/* Sticky Horizontal Track within grid row 2 */}
+        <div className="h-scroll-container">
           <motion.div
             ref={trackRef}
             style={{ x }}
-            className="flex gap-[18px] px-[31.4px] items-center shrink-0 w-max h-scroll-content transition-none will-change-transform"
+            className="h-scroll-content"
           >
             {SEED_HOUSING_SOLUTIONS.map((sol: HousingSolution) => (
               <Archetype3DCard

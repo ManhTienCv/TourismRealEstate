@@ -1,3 +1,19 @@
+@font-face {
+  font-family: 'HW Cigars';
+  src: url('/fonts/HWCigars.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ABC Walter Neue';
+  src: url('/fonts/ABCWalterNeue.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -22,22 +38,13 @@
     background-color: #FAF7ED;
     color: #0C310A;
     overflow-x: clip;
-    font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: "ABC Walter Neue", "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
   }
 
-  /* Standard HUTS Desktop Typography Hierarchy */
-  h1, h2 {
-    font-family: "Playfair Display", "Instrument Serif", Georgia, serif;
-    letter-spacing: -0.01em;
-  }
-
-  h3 {
-    font-family: "Playfair Display", "Instrument Serif", Georgia, serif;
-    letter-spacing: -0.02em;
-  }
-
-  h4 {
-    font-family: "Playfair Display", "Instrument Serif", Georgia, serif;
+  /* Authentic HUTS Typography Hierarchy (HW Cigars serif + ABC Walter Neue sans) */
+  h1, h2, h3, h4, h5 {
+    font-family: "HW Cigars", "Playfair Display", Georgia, serif;
+    font-weight: 400;
     letter-spacing: -0.015em;
   }
 
@@ -45,6 +52,7 @@
     color: #664A42;
     font-size: 15.5px;
     line-height: 1.48;
+    font-family: "ABC Walter Neue", "Plus Jakarta Sans", sans-serif;
   }
 
   /* Smooth architectural scrollbars */
@@ -129,4 +137,342 @@
   .rotate-y-180 {
     transform: rotateY(180deg);
   }
+}
+
+/* ==========================================================================
+   HUTS EXACT CARD-SLIDER ARCHITECTURE (Extracted from huts-reference.html)
+   ========================================================================== */
+
+/* Section root */
+section.card-slider {
+  padding-top: clamp(3rem, 3.38vw + 2.2rem, 5.25rem);
+  position: relative;
+}
+
+/* Sticky scroll-content: 100dvh with 2-row grid layout so h5 never clips at bottom */
+section.card-slider div.scroll-content {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  row-gap: clamp(1.5rem, 1.5vw + 1.2rem, 2.5rem);
+  height: 100dvh;
+  padding-top: clamp(2.5rem, 3vw + 1.8rem, 4.5rem);
+  padding-bottom: clamp(1.5rem, 1.8vw + 1.2rem, 2.75rem);
+  position: sticky;
+  top: 0;
+  overflow: hidden;
+}
+
+/* Heading wrapper within grid row 1 */
+section.card-slider div.heading-wrapper {
+  padding-left: clamp(1.5rem, 3.75vw + 0.62rem, 4rem);
+  padding-right: clamp(1.5rem, 3.75vw + 0.62rem, 4rem);
+  text-align: center;
+}
+
+section.card-slider div.heading-wrapper div.block-text {
+  max-width: 780px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+section.card-slider div.heading-wrapper div.block-text h3 {
+  font-family: 'HW Cigars', Georgia, serif;
+  font-size: clamp(2rem, 1.88vw + 1.56rem, 3.125rem);
+  line-height: 1.08;
+  color: #0C310A;
+  margin-bottom: 0.65rem;
+}
+
+section.card-slider div.heading-wrapper div.block-text p {
+  max-width: 680px;
+  margin-left: auto;
+  margin-right: auto;
+  font-family: 'ABC Walter Neue', sans-serif;
+  font-size: clamp(0.875rem, 0.25vw + 0.8rem, 0.975rem);
+  line-height: 1.48;
+  color: #664A42;
+}
+
+/* Horizontal scroll container within grid row 2 */
+section.card-slider div.h-scroll-container {
+  width: 100vw;
+  height: 100%;
+  min-height: 0; /* Important for grid 1fr overflow calculation */
+  display: flex;
+  overflow-x: clip;
+  align-items: center;
+}
+
+section.card-slider div.h-scroll-content {
+  padding-left: clamp(1.5rem, 3.75vw + 0.62rem, 4rem);
+  padding-right: clamp(1.5rem, 3.75vw + 0.62rem, 4rem);
+  will-change: transform;
+  align-items: center;
+  column-gap: clamp(1rem, 0.75vw + 0.82rem, 1.5rem);
+  display: flex;
+  height: 100%;
+}
+
+/* Each Card Wrapper: spans ~1/3 screen on desktop (4 columns of 12-col grid) */
+section.card-slider div.h-scroll-content div.card-wrapper {
+  width: clamp(320px, 28vw, 400px);
+  flex-direction: column;
+  row-gap: 1.25rem;
+  height: 100%;
+  max-height: 540px;
+  display: flex;
+  flex-shrink: 0;
+}
+
+/* Sibling h5 title below card */
+section.card-slider div.h-scroll-content div.card-wrapper > h5 {
+  font-family: 'HW Cigars', Georgia, serif;
+  font-size: clamp(1.25rem, 0.5vw + 1.1rem, 1.5rem);
+  line-height: 1.2;
+  color: #0C310A;
+  transition: color 0.2s cubic-bezier(0.33, 1, 0.68, 1);
+  text-align: center;
+}
+
+/* Base Card structure with 3D perspective */
+section.card-slider div.h-scroll-content .card {
+  perspective: 1000px;
+  border-radius: clamp(16px, 0.75vw + 13.2px, 24px);
+  flex: 1;
+  position: relative;
+  width: 100%;
+  cursor: pointer;
+}
+
+section.card-slider div.h-scroll-content .card div.card-inner {
+  border-radius: inherit;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.125);
+  position: relative;
+}
+
+/* ANTI-JITTER HOVER RULE: Only flip card when user is NOT actively scrolling */
+html:not(.lenis-scrolling) section.card-slider div.h-scroll-content .card:hover div.card-inner {
+  transform: rotateY(180deg);
+}
+
+html:not(.lenis-scrolling) section.card-slider div.h-scroll-content .card:hover ~ h5 {
+  color: #57772E;
+}
+
+/* Front and Back Faces */
+section.card-slider div.h-scroll-content .card div.card-front,
+section.card-slider div.h-scroll-content .card div.card-back {
+  border-radius: inherit;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  will-change: transform;
+  background-color: #FAF7ED;
+  border: 1px solid rgba(12, 49, 10, 0.2);
+  position: absolute;
+  inset: 0;
+  overflow: clip;
+}
+
+section.card-slider div.h-scroll-content .card div.card-back {
+  border: 1px solid #57772E;
+  transform: rotateY(180deg);
+}
+
+/* --------------------------------------------------------------------------
+   ILLUSTRATION CARDS (.card.illustration)
+   -------------------------------------------------------------------------- */
+section.card-slider div.h-scroll-content .card.illustration div.card-front,
+section.card-slider div.h-scroll-content .card.illustration div.card-back {
+  text-align: center;
+  padding: clamp(1.5rem, 2vw + 1rem, 2.5rem);
+}
+
+section.card-slider div.h-scroll-content .card.illustration div.card-front {
+  grid-template-rows: 1fr auto;
+  row-gap: clamp(1.25rem, 1.5vw + 0.8rem, 2rem);
+  display: grid;
+}
+
+section.card-slider div.h-scroll-content .card.illustration div.card-front div.illustration-wrapper {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  overflow: hidden;
+  height: 100%;
+}
+
+section.card-slider div.h-scroll-content .card.illustration div.card-front div.illustration-wrapper figure {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+section.card-slider div.h-scroll-content .card.illustration div.card-front div.text-wrapper h5 {
+  font-family: 'HW Cigars', Georgia, serif;
+  font-size: clamp(1.2rem, 0.4vw + 1.1rem, 1.45rem);
+  line-height: 1.25;
+  color: #0C310A;
+}
+
+section.card-slider div.h-scroll-content .card.illustration div.card-back {
+  flex-direction: column;
+  align-items: center;
+  row-gap: clamp(1rem, 0.75vw + 0.7rem, 1.5rem);
+  display: flex;
+  justify-content: space-between;
+}
+
+section.card-slider div.h-scroll-content .card.illustration div.card-back figure {
+  width: 100%;
+  height: 40%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+section.card-slider div.h-scroll-content .card.illustration div.card-back div.text-wrapper {
+  text-wrap: balance;
+  flex-direction: column;
+  row-gap: 0.65rem;
+  display: flex;
+}
+
+section.card-slider div.h-scroll-content .card.illustration div.card-back div.text-wrapper h5 {
+  font-family: 'HW Cigars', Georgia, serif;
+  font-size: clamp(1.15rem, 0.4vw + 1.05rem, 1.35rem);
+  line-height: 1.2;
+  color: #0C310A;
+}
+
+section.card-slider div.h-scroll-content .card.illustration div.card-back div.text-wrapper p {
+  font-family: 'ABC Walter Neue', sans-serif;
+  font-size: 0.875rem;
+  line-height: 1.45;
+  color: #664A42;
+}
+
+/* --------------------------------------------------------------------------
+   STANDARD CARDS (.card.standard)
+   -------------------------------------------------------------------------- */
+section.card-slider div.h-scroll-content .card.standard div.card-front figure {
+  width: 100%;
+  height: 100%;
+}
+
+section.card-slider div.h-scroll-content .card.standard div.card-front figure img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+section.card-slider div.h-scroll-content .card.standard div.card-back {
+  background-color: #FFFFFF;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: clamp(1.5rem, 2vw + 1rem, 2.5rem) 1.5rem;
+  display: flex;
+  position: relative;
+}
+
+section.card-slider div.h-scroll-content .card.standard div.card-back div.image-wrapper {
+  width: 100%;
+  height: 75%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+section.card-slider div.h-scroll-content .card.standard div.card-back div.image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+section.card-slider div.h-scroll-content .card.standard div.card-back div.tags-wrapper {
+  justify-content: flex-start;
+  flex-flow: wrap;
+  align-items: flex-start;
+  gap: 0.5rem;
+  display: flex;
+  position: absolute;
+  bottom: 1.25rem;
+  left: 1.25rem;
+  right: 1.25rem;
+}
+
+/* --------------------------------------------------------------------------
+   TAG PILLS & TEXT BUTTON
+   -------------------------------------------------------------------------- */
+.tag {
+  letter-spacing: -0.01em;
+  color: #1E1414;
+  font-family: 'ABC Walter Neue', sans-serif;
+  font-size: clamp(0.6875rem, 0.18vw + 0.6rem, 0.75rem);
+  font-weight: 400;
+  line-height: 1.4;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  background-color: rgba(255, 253, 246, 0.7);
+  border: 1px solid #D0D4C8;
+  border-radius: 999px;
+  width: fit-content;
+  padding: 0.25rem 0.65rem;
+}
+
+.button.button-text {
+  background: transparent;
+  border-radius: 0;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  column-gap: 0.35rem;
+  padding: 0;
+  display: flex;
+  cursor: pointer;
+  min-height: 1.5rem;
+  margin-top: auto;
+}
+
+.button.button-text div.text-wrapper span {
+  font-family: 'ABC Walter Neue', sans-serif;
+  font-size: 0.875rem;
+  color: #0C310A;
+  transition: color 0.2s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.button.button-text div.btn-icon {
+  width: 0.75rem;
+  height: 0.75rem;
+  display: grid;
+  align-items: center;
+  transition: transform 0.2s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.button.button-text div.btn-icon svg {
+  width: 100%;
+  height: 100%;
+  transition: transform 0.2s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.button.button-text div.btn-icon svg .stroke {
+  stroke: #0C310A;
+  transition: stroke 0.2s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.button.button-text:hover div.text-wrapper span {
+  color: #57772E;
+}
+
+.button.button-text:hover div.btn-icon svg {
+  transform: rotate(-45deg);
+}
+
+.button.button-text:hover div.btn-icon svg .stroke {
+  stroke: #57772E;
 }

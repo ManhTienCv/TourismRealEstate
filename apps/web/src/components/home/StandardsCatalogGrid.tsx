@@ -2,238 +2,72 @@ import React, { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { SEED_STANDARD_PLANS } from '@tie/shared';
 import { useConfiguratorStore } from '../../store/useConfiguratorStore';
-import { StandardIsometricIllustrations } from './standards/StandardIsometricIllustrations';
 
-// Authentic wide architectural photography & 3D Axonometrics from HUTS Sanity CDN
-const STANDARDS_GALLERY = [
+// Authentic Standards slider items matching exact HUTS DOM & assets
+const STANDARDS_SLIDER_ITEMS = [
+  {
+    slug: 'adu',
+    title: 'ADUs',
+    coverImg: '/standards/covers/adu.jpg',
+    axonImg: '/standards/axonometric/adu.png',
+    tags: ['Sleeping Areas', 'Wet Room'],
+  },
   {
     slug: 'small-bar',
-    cleanName: 'Small Bar',
-    imageUrl: 'https://cdn.sanity.io/images/xi1ruvdt/production/49b12a1c850a40727ce6b5d105d21a8459c35389-858x858.jpg?w=1920&q=85&auto=format',
-    axonImageUrl: 'https://cdn.sanity.io/images/xi1ruvdt/production/1d09b3431c239b3ac09deae6e4eb0d2ee9a4028a-2275x1880.jpg?w=1920&q=85&auto=format',
-    beds: '1',
-    baths: '1',
+    title: 'Small Bar',
+    coverImg: '/standards/covers/small-bar.jpg',
+    axonImg: '/standards/axonometric/small-bar.jpg',
+    tags: ['1 Bed', '1 Bath'],
   },
   {
     slug: 'medium-bar',
-    cleanName: 'Medium Bar',
-    imageUrl: 'https://cdn.sanity.io/images/xi1ruvdt/production/22e392c4e767684a13df77fed0553694c7b59ae6-2099x2099.jpg?w=1920&q=85&auto=format',
-    axonImageUrl: 'https://cdn.sanity.io/images/xi1ruvdt/production/68694549ea2c06f3fd73841fcc746d31cb0cd397-4800x4416.jpg?w=1920&q=85&auto=format',
-    beds: '2',
-    baths: '2',
+    title: 'Medium Bar',
+    coverImg: '/standards/covers/medium-bar.jpg',
+    axonImg: '/standards/axonometric/medium-bar.jpg',
+    tags: ['2.5 Bed', '1 Bath'],
   },
   {
     slug: 'big-bar',
-    cleanName: 'Big Bar',
-    imageUrl: 'https://cdn.sanity.io/images/xi1ruvdt/production/7d481791d6139e5f98a1455da75f6e3d63abf1d9-2233x2105.jpg?w=1920&q=85&auto=format',
-    axonImageUrl: 'https://cdn.sanity.io/images/xi1ruvdt/production/c85860ab65562ce2a2cbdab7d3d345278b9447aa-4800x3955.jpg?w=1920&q=85&auto=format',
-    beds: '3',
-    baths: '2.5',
+    title: 'Big Bar',
+    coverImg: '/standards/covers/big-bar.jpg',
+    axonImg: '/standards/axonometric/big-bar.jpg',
+    tags: ['3 Bed', '2 Bath'],
   },
   {
     slug: 'dogtrot',
-    cleanName: 'Dogtrot',
-    imageUrl: 'https://cdn.sanity.io/images/xi1ruvdt/production/b74ce20f2f5f1cae50eef9cdbc6a726ab8d382db-564x383.png?w=1920&q=85&auto=format',
-    axonImageUrl: 'https://cdn.sanity.io/images/xi1ruvdt/production/aab572bff3627e669f2b551ad1694bb679e8998e-4800x4338.jpg?w=1920&q=85&auto=format',
-    beds: '3',
-    baths: '2',
+    title: 'Dogtrot',
+    coverImg: '/standards/covers/dogtrot.png',
+    axonImg: '/standards/axonometric/dogtrot.jpg',
+    tags: ['2 Bed', '1.5 Bath'],
   },
   {
     slug: 'small-l',
-    cleanName: 'Small L',
-    imageUrl: 'https://cdn.sanity.io/images/xi1ruvdt/production/a7b6ffca0d4814f1354cd42e4563a1f43d03e4fd-2061x1932.jpg?w=1920&q=85&auto=format',
-    axonImageUrl: 'https://cdn.sanity.io/images/xi1ruvdt/production/d48224c53a662c3822c5a4991cf1eecbddbd3c77-4800x3965.jpg?w=1920&q=85&auto=format',
-    beds: '2',
-    baths: '2',
+    title: 'Small L',
+    coverImg: '/standards/covers/small-l.jpg',
+    axonImg: '/standards/axonometric/small-l.jpg',
+    tags: ['2.5 Bed', '1.5 Bath'],
   },
   {
     slug: 'big-l',
-    cleanName: 'Big L',
-    imageUrl: 'https://cdn.sanity.io/images/xi1ruvdt/production/94475e5020164a6f8ab9320e043f250b2000eb0d-772x703.jpg?w=1920&q=85&auto=format',
-    axonImageUrl: 'https://cdn.sanity.io/images/xi1ruvdt/production/566719422aa173d3ef049f99c5d3908c5d0bd003-4281x2808.jpg?w=1920&q=85&auto=format',
-    beds: '4',
-    baths: '3.5',
+    title: 'Big L',
+    coverImg: '/standards/covers/big-l.jpg',
+    axonImg: '/standards/axonometric/big-l.jpg',
+    tags: ['3 Bed', '2.5 Bath'],
   },
   {
     slug: 'village',
-    cleanName: 'Village',
-    imageUrl: 'https://cdn.sanity.io/images/xi1ruvdt/production/9ee66c5354de48ceb7b2c5e456303301ef947fbe-2367x2160.jpg?w=1920&q=85&auto=format',
-    axonImageUrl: 'https://cdn.sanity.io/images/xi1ruvdt/production/03e0167e89b28dc8472022956e8f7d95f1f61698-4800x3827.jpg?w=1920&q=85&auto=format',
-    beds: '4',
-    baths: '4',
-  },
-  {
-    slug: 'adu',
-    cleanName: 'ADU',
-    imageUrl: 'https://cdn.sanity.io/images/xi1ruvdt/production/12b724bfd8e075d0f39a1351f31264a32328f433-1467x1410.jpg?w=1920&q=85&auto=format',
-    axonImageUrl: 'https://cdn.sanity.io/images/xi1ruvdt/production/7cf70fd6532c49b49c69b70800720dc4cbdd680d-1618x1602.png?w=1920&q=85&auto=format',
-    beds: '1',
-    baths: '1',
+    title: 'Village',
+    coverImg: '/standards/covers/village.jpg',
+    axonImg: '/standards/axonometric/village.jpg',
+    tags: ['3 Bed', '2.5 Bath'],
   },
 ];
-
-interface StandardCardItemProps {
-  item: (typeof STANDARDS_GALLERY)[number];
-  onPlanClick: (slug: string) => void;
-  isScrolling: boolean;
-}
-
-const StandardCardItem: React.FC<StandardCardItemProps> = ({ item, onPlanClick, isScrolling }) => {
-  const [isFlipped, setIsFlipped] = useState(false);
-  const hoverTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  // Khi đang cuộn trang: Hủy ngay bộ đếm lật thẻ và úp lại mặt trước
-  useEffect(() => {
-    if (isScrolling) {
-      if (hoverTimerRef.current) {
-        clearTimeout(hoverTimerRef.current);
-        hoverTimerRef.current = null;
-      }
-      setIsFlipped(false);
-    }
-  }, [isScrolling]);
-
-  const handleMouseEnterOrMove = () => {
-    if (isScrolling || isFlipped || hoverTimerRef.current) return;
-
-    // Hover Intent: Giữ chuột trên thẻ 200ms mới lật 3D giống HUTS
-    hoverTimerRef.current = setTimeout(() => {
-      setIsFlipped(true);
-      hoverTimerRef.current = null;
-    }, 200);
-  };
-
-  const handleMouseLeave = () => {
-    if (hoverTimerRef.current) {
-      clearTimeout(hoverTimerRef.current);
-      hoverTimerRef.current = null;
-    }
-    setIsFlipped(false);
-  };
-
-  useEffect(() => {
-    return () => {
-      if (hoverTimerRef.current) {
-        clearTimeout(hoverTimerRef.current);
-      }
-    };
-  }, []);
-
-  const IsoComponent = StandardIsometricIllustrations[item.slug];
-
-  return (
-    <div
-      onClick={() => onPlanClick(item.slug)}
-      className="shrink-0 w-[320px] md:w-[360px] lg:w-[390px] cursor-pointer select-none group"
-    >
-      {/* Khung ảnh lật 3D: Thu gọn chiều cao chuẩn h-[300px] md:h-[340px] lg:h-[380px] */}
-      <div
-        onMouseEnter={handleMouseEnterOrMove}
-        onMouseMove={handleMouseEnterOrMove}
-        onMouseLeave={handleMouseLeave}
-        className="w-full h-[300px] md:h-[340px] lg:h-[380px] [perspective:1200px] select-none"
-      >
-        <div
-          className="relative w-full h-full rounded-[17.5px] shadow-sm group-hover:shadow-md card-inner"
-          style={{
-            transformStyle: isFlipped ? 'preserve-3d' : 'flat',
-            transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
-            transition: 'transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.125)',
-          }}
-        >
-          {/* MẶT TRƯỚC: Ảnh thực tế của ngôi nhà (Sanity CDN High-Res) */}
-          <div
-            className="absolute inset-0 [backface-visibility:hidden] rounded-[17.5px] overflow-hidden bg-[#FAF8F1] border border-[#DFDCD0]"
-            style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }}
-          >
-            <img
-              src={item.imageUrl}
-              alt={item.cleanName}
-              className="w-full h-full object-cover select-none pointer-events-none rounded-[17.5px]"
-              loading="lazy"
-              draggable={false}
-            />
-          </div>
-
-          {/* MẶT SAU: Mô hình kiến trúc 3D Axonometric từ Sanity CDN + 2 Pill thông số Bed/Bath */}
-          <div
-            className="absolute inset-0 [backface-visibility:hidden] rounded-[17.5px] overflow-hidden bg-[#F2EDE4] border border-[#DFDCD0] flex flex-col justify-between p-6"
-            style={{
-              backfaceVisibility: 'hidden',
-              WebkitBackfaceVisibility: 'hidden',
-              transform: 'rotateY(180deg)',
-            }}
-          >
-            {/* Ảnh bản vẽ 3D Axonometric Sanity CDN */}
-            <div className="relative w-full flex-1 flex items-center justify-center p-2 overflow-hidden">
-              <img
-                src={item.axonImageUrl}
-                alt={`${item.cleanName} 3D Axonometric`}
-                className="w-full h-full object-contain pointer-events-none select-none drop-shadow-xs"
-                loading="lazy"
-                draggable={false}
-              />
-              {IsoComponent ? (
-                <IsoComponent className="w-full h-full object-contain pointer-events-none select-none" />
-              ) : null}
-            </div>
-
-            {/* Góc dưới bên trái: 2 pill thông số Bed & Bath */}
-            <div className="absolute bottom-5 left-5 flex items-center gap-2">
-              <span className="px-3 py-1 text-[11px] font-medium text-[#0C310A] bg-white/80 backdrop-blur-xs border border-[#DFDCD0] rounded-full shadow-xs">
-                {item.beds} Bed
-              </span>
-              <span className="px-3 py-1 text-[11px] font-medium text-[#0C310A] bg-white/80 backdrop-blur-xs border border-[#DFDCD0] rounded-full shadow-xs">
-                {item.baths} Bath
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Dòng chữ tên mẫu nhà BÊN NGOÀI bên dưới khung lật: Đảm bảo luôn hiển thị trọn vẹn trong 100vh */}
-      <div className="pt-3 pb-1">
-        <h3
-          className={`font-serif text-[24px] sm:text-[26px] md:text-[28px] font-normal tracking-[-0.02em] leading-[1.15] transition-colors duration-300 ${
-            isFlipped ? 'text-[#5E8C31]' : 'text-[#0C310A]'
-          }`}
-        >
-          {item.cleanName}
-        </h3>
-      </div>
-    </div>
-  );
-};
 
 export const StandardsCatalogGrid: React.FC = () => {
   const { openPlanDetail } = useConfiguratorStore();
   const containerRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const [maxTranslateX, setMaxTranslateX] = useState(0);
-  const [isScrolling, setIsScrolling] = useState(false);
-  const scrollTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  // Theo dõi sự kiện cuộn trang để hủy lật thẻ khi đang cuộn (tránh re-render liên tục)
-  useEffect(() => {
-    let scrolling = false;
-    const handleScroll = () => {
-      if (!scrolling) {
-        scrolling = true;
-        setIsScrolling(true);
-      }
-      if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
-      scrollTimeoutRef.current = setTimeout(() => {
-        scrolling = false;
-        setIsScrolling(false);
-      }, 150);
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
-    };
-  }, []);
 
   // Tính động quãng đường trượt ngang maxTranslateX bằng ResizeObserver trên trackRef
   useEffect(() => {
@@ -277,36 +111,77 @@ export const StandardsCatalogGrid: React.FC = () => {
     <section
       ref={containerRef}
       id="standards-section"
-      className="relative w-full h-[320vh] bg-[#FAF8F1]"
+      className="card-slider relative w-full h-[320vh] bg-[#FAF8F1]"
     >
-      <div className="sticky top-0 left-0 w-full h-screen overflow-hidden flex flex-col justify-center select-none pt-16 pb-6 z-10">
+      {/* 100dvh sticky container with grid-template-rows: auto 1fr (matching HUTS) */}
+      <div className="scroll-content select-none">
         
-        {/* Section Header: Thu gọn khoảng cách trên dưới để nằm gọn trong 100vh */}
-        <div className="text-center max-w-4xl mx-auto px-4 mb-4 md:mb-6 shrink-0">
-          <h2 className="font-serif text-[34px] sm:text-[40px] md:text-[44px] font-normal tracking-[-0.01em] text-[#0C310A] leading-[1.0] mb-2.5">
-            It all starts with our Standards...
-          </h2>
-          <p className="text-[13px] md:text-[14px] leading-[1.5] text-[#664A42] max-w-[540px] mx-auto text-center">
-            They’re more than home plans, they’re home products—designed for real land, real budgets, and real life. TIE Standards combine timeless design with construction-ready details, making it faster and easier to build a home that feels anything but standard.
-          </p>
+        {/* Section Header within grid row 1 */}
+        <div className="heading-wrapper">
+          <div className="block-text">
+            <div className="block-text-col">
+              <h3>It all starts with our Standards...</h3>
+              <p>
+                They’re more than home plans, they’re home products—designed for real land, real budgets, and real life. TIE Standards combine timeless design with construction-ready details, making it faster and easier to build a home that feels anything but standard.
+              </p>
+            </div>
+          </div>
         </div>
 
-        {/* Sticky Horizontal Track */}
-        <div className="w-full overflow-hidden">
+        {/* Sticky Horizontal Track within grid row 2 */}
+        <div className="h-scroll-container">
           <motion.div
             ref={trackRef}
             style={{ x }}
-            className={`flex gap-[17.5px] px-[31.4px] items-center shrink-0 w-max h-scroll-content transition-none will-change-transform ${
-              isScrolling ? 'pointer-events-none' : ''
-            }`}
+            className="h-scroll-content"
           >
-            {STANDARDS_GALLERY.map((item) => (
-              <StandardCardItem
-                key={item.slug}
-                item={item}
-                onPlanClick={handlePlanClick}
-                isScrolling={isScrolling}
-              />
+            {STANDARDS_SLIDER_ITEMS.map((item) => (
+              <div key={item.slug} className="card-wrapper">
+                <div
+                  className="card standard"
+                  onClick={() => handlePlanClick(item.slug)}
+                >
+                  <div className="card-inner">
+                    {/* Front: Exterior Architectural Render */}
+                    <div className="card-front">
+                      <figure className="w-full h-full">
+                        <img
+                          src={item.coverImg}
+                          alt={item.title}
+                          className="w-full h-full object-cover select-none pointer-events-none"
+                          loading="lazy"
+                          draggable={false}
+                        />
+                      </figure>
+                    </div>
+
+                    {/* Back: 3D Axonometric Drawing on White BG with Tags */}
+                    <div className="card-back">
+                      <div className="image-wrapper">
+                        <figure className="w-full h-full flex items-center justify-center">
+                          <img
+                            src={item.axonImg}
+                            alt={`${item.title} 3D Axonometric`}
+                            className="w-full h-full object-contain select-none pointer-events-none drop-shadow-xs"
+                            loading="lazy"
+                            draggable={false}
+                          />
+                        </figure>
+                      </div>
+                      <div className="tags-wrapper">
+                        {item.tags.map((tag, tIdx) => (
+                          <div key={tIdx} className="tag">
+                            <span>{tag}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Sibling h5 title below card: turns green #57772E on card hover */}
+                <h5>{item.title}</h5>
+              </div>
             ))}
           </motion.div>
         </div>

@@ -34,9 +34,23 @@ export const App: React.FC = () => {
 
     setLenis(lenis);
 
+    // Anti-jitter: Add .lenis-scrolling to <html> while scrolling to disable card 3D hover-flip
+    let scrollTimeout: ReturnType<typeof setTimeout> | null = null;
+    const handleLenisScroll = () => {
+      document.documentElement.classList.add('lenis-scrolling');
+      if (scrollTimeout) clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        document.documentElement.classList.remove('lenis-scrolling');
+      }, 150);
+    };
+
+    lenis.on('scroll', handleLenisScroll);
+
     return () => {
       lenis.destroy();
       setLenis(null);
+      if (scrollTimeout) clearTimeout(scrollTimeout);
+      document.documentElement.classList.remove('lenis-scrolling');
     };
   }, []);
 

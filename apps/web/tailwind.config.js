@@ -36,8 +36,8 @@ export default {
         },
       },
       fontFamily: {
-        serif: ['"Playfair Display"', '"Instrument Serif"', 'Georgia', 'serif'],
-        sans: ['"Plus Jakarta Sans"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+        serif: ['"HW Cigars"', '"Playfair Display"', '"Instrument Serif"', 'Georgia', 'serif'],
+        sans: ['"ABC Walter Neue"', '"Plus Jakarta Sans"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
         mono: ['"JetBrains Mono"', 'Menlo', 'Monaco', 'monospace'],
       },
       boxShadow: {
