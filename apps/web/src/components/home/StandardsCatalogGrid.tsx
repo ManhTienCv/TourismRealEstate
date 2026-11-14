@@ -75,7 +75,15 @@ export const StandardsCatalogGrid: React.FC = () => {
     if (!trackEl) return;
 
     const updateDistance = () => {
-      const dist = Math.max(0, trackEl.scrollWidth - window.innerWidth + 64);
+      const lastChild = trackEl.lastElementChild as HTMLElement | null;
+      if (!lastChild) {
+        setMaxTranslateX(Math.max(0, trackEl.scrollWidth - window.innerWidth));
+        return;
+      }
+      const style = window.getComputedStyle(trackEl);
+      const paddingRight = parseFloat(style.paddingRight) || 64;
+      const totalContentRight = lastChild.offsetLeft + lastChild.offsetWidth + paddingRight;
+      const dist = Math.max(0, totalContentRight - window.innerWidth);
       setMaxTranslateX(dist);
     };
 
