@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 export interface DividerArrowProps {
   variant?: 'loop' | 'sweep' | 'A' | 'B';
@@ -17,25 +17,6 @@ export const DividerArrow: React.FC<DividerArrowProps> = ({
   height,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
-
-  // Hiệu ứng hiển thị dần nét vẽ theo nhịp cuộn trang của người dùng
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start 92%', 'center 45%'],
-  });
-
-  const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 140,
-    damping: 25,
-    restDelta: 0.001,
-  });
-
-  // Nét thân mũi tên vẽ từ trên xuống dưới (0.05 -> 0.85)
-  const linePathLength = useTransform(smoothProgress, [0.05, 0.85], [0, 1]);
-  // Đầu mũi tên vẽ tiếp nối ở cuối hành trình (0.75 -> 0.98)
-  const tipPathLength = useTransform(smoothProgress, [0.75, 0.98], [0, 1]);
-  const tipOpacity = useTransform(smoothProgress, [0.7, 0.82], [0, 1]);
-
   const isSweep = variant === 'sweep' || variant === 'B';
 
   return (
@@ -62,7 +43,13 @@ export const DividerArrow: React.FC<DividerArrowProps> = ({
               strokeWidth="3"
               strokeLinecap="round"
               strokeLinejoin="round"
-              style={{ pathLength: linePathLength }}
+              initial={{ pathLength: 0, opacity: 0.3 }}
+              whileInView={{ pathLength: 1, opacity: 1 }}
+              viewport={{ once: true, amount: 0.01 }}
+              transition={{
+                pathLength: { duration: 0.75, ease: [0.33, 1, 0.68, 1] },
+                opacity: { duration: 0.2 },
+              }}
             />
             {/* Path đầu mũi nhọn */}
             <motion.path
@@ -72,7 +59,13 @@ export const DividerArrow: React.FC<DividerArrowProps> = ({
               strokeWidth="3"
               strokeLinecap="round"
               strokeLinejoin="round"
-              style={{ pathLength: tipPathLength, opacity: tipOpacity }}
+              initial={{ pathLength: 0, opacity: 0 }}
+              whileInView={{ pathLength: 1, opacity: 1 }}
+              viewport={{ once: true, amount: 0.01 }}
+              transition={{
+                pathLength: { duration: 0.3, delay: 0.55, ease: [0.33, 1, 0.68, 1] },
+                opacity: { duration: 0.2, delay: 0.55 },
+              }}
             />
           </g>
         </svg>
@@ -95,7 +88,13 @@ export const DividerArrow: React.FC<DividerArrowProps> = ({
               strokeWidth="3"
               strokeLinecap="round"
               strokeLinejoin="round"
-              style={{ pathLength: linePathLength }}
+              initial={{ pathLength: 0, opacity: 0.3 }}
+              whileInView={{ pathLength: 1, opacity: 1 }}
+              viewport={{ once: true, amount: 0.01 }}
+              transition={{
+                pathLength: { duration: 0.75, ease: [0.33, 1, 0.68, 1] },
+                opacity: { duration: 0.2 },
+              }}
             />
             {/* Path đầu mũi nhọn */}
             <motion.path
@@ -105,7 +104,13 @@ export const DividerArrow: React.FC<DividerArrowProps> = ({
               strokeWidth="3"
               strokeLinecap="round"
               strokeLinejoin="round"
-              style={{ pathLength: tipPathLength, opacity: tipOpacity }}
+              initial={{ pathLength: 0, opacity: 0 }}
+              whileInView={{ pathLength: 1, opacity: 1 }}
+              viewport={{ once: true, amount: 0.01 }}
+              transition={{
+                pathLength: { duration: 0.3, delay: 0.55, ease: [0.33, 1, 0.68, 1] },
+                opacity: { duration: 0.2, delay: 0.55 },
+              }}
             />
           </g>
         </svg>
