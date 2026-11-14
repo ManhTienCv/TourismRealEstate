@@ -3,7 +3,6 @@ import { useConfiguratorStore } from '../../store/useConfiguratorStore';
 import { smoothScrollTo } from '../../utils/smoothScroll';
 import { SEED_STANDARD_PLANS } from '@tie/shared';
 import { Menu, X } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { MenuType } from './navbar/navbarData';
 import { PlusCrossIcon } from './navbar/PlusCrossIcon';
 import { MegaMenuPanels } from './navbar/MegaMenuPanels';
@@ -21,12 +20,40 @@ export const MegaMenuNavbar: React.FC = () => {
   } = useConfiguratorStore();
 
   const [activeMenu, setActiveMenu] = useState<MenuType>(null);
+  const [renderedMenu, setRenderedMenu] = useState<MenuType>('solutions');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isHeaderHovered, setIsHeaderHovered] = useState(false);
-  const menuCloseTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [contentHeight, setContentHeight] = useState<number>(0);
 
-  // Scroll listener: transparent at very top, solid warm cream (#FAF7ED) when scrolled (Always pinned like HUTS)
+  const menuCloseTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const innerRef = useRef<HTMLDivElement>(null);
+
+  // Keep renderedMenu alive during close transition so height collapses smoothly without jumping
+  useEffect(() => {
+    if (activeMenu !== null) {
+      setRenderedMenu(activeMenu);
+    }
+  }, [activeMenu]);
+
+  // ResizeObserver on innerRef to animate height changes dynamically between panels
+  useEffect(() => {
+    const el = innerRef.current;
+    if (!el) return;
+
+    const updateHeight = () => {
+      if (el) {
+        setContentHeight(el.offsetHeight);
+      }
+    };
+
+    updateHeight();
+    const ro = new ResizeObserver(updateHeight);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [renderedMenu]);
+
+  // Scroll listener: transparent at very top, solid warm cream (#FAF7ED) when scrolled
   useEffect(() => {
     let ticking = false;
 
@@ -56,10 +83,11 @@ export const MegaMenuNavbar: React.FC = () => {
 
   const handleHeaderMouseLeave = () => {
     if (menuCloseTimeoutRef.current) clearTimeout(menuCloseTimeoutRef.current);
+    // Short 100ms debounce (80-120ms) to close cleanly without hanging for 2-3s
     menuCloseTimeoutRef.current = setTimeout(() => {
       setActiveMenu(null);
       setIsHeaderHovered(false);
-    }, 180);
+    }, 100);
   };
 
   const handleItemMouseEnter = (menu: MenuType) => {
@@ -113,14 +141,21 @@ export const MegaMenuNavbar: React.FC = () => {
   const isMenuOpen = activeMenu !== null;
   const isSolid = isScrolled || isHeaderHovered || isMenuOpen || activeTab !== 'home' || selectedSolutionSlug !== null;
 
+  // Sibling dimming helper: dim other nav items to 50% opacity when a menu is open
+  const getItemOpacityClass = (itemKey: MenuType | 'portfolio') => {
+    if (!isMenuOpen) return 'opacity-100';
+    return activeMenu === itemKey ? 'opacity-100' : 'opacity-50 hover:opacity-100';
+  };
+
   return (
     <>
       <header
+        id="header"
         onMouseEnter={handleHeaderMouseEnter}
         onMouseLeave={handleHeaderMouseLeave}
         style={{
           transition:
-            'transform 0.4s cubic-bezier(0.33, 1, 0.68, 1), border-radius 0.4s cubic-bezier(0.33, 1, 0.68, 1), background-color 0.2s cubic-bezier(0.33, 1, 0.68, 1), color 0.2s cubic-bezier(0.33, 1, 0.68, 1), box-shadow 0.4s cubic-bezier(0.33, 1, 0.68, 1)',
+            'border-radius 0.3s cubic-bezier(0.33, 1, 0.68, 1), background-color 0.2s cubic-bezier(0.33, 1, 0.68, 1), color 0.2s cubic-bezier(0.33, 1, 0.68, 1), box-shadow 0.3s cubic-bezier(0.33, 1, 0.68, 1)',
         }}
         className={`fixed top-0 left-0 right-0 z-50 translate-y-0 ${
           isSolid
@@ -147,7 +182,7 @@ export const MegaMenuNavbar: React.FC = () => {
 
           {/* Right Group: Navigation Links & CTA Button gathered together */}
           <div className="flex items-center gap-6 lg:gap-7 ml-auto">
-
+            
             {/* Desktop Navigation Links (HUTS typography: 14px leading-none font-normal) */}
             <nav className="hidden lg:flex items-center gap-6 lg:gap-7 font-sans text-[14px] leading-none font-normal">
               
@@ -158,11 +193,11 @@ export const MegaMenuNavbar: React.FC = () => {
               >
                 <button
                   onClick={() => scrollToSection('solutions-section', 'home')}
-                  className={`py-2 transition-colors duration-200 flex items-center gap-1 cursor-pointer ${
+                  className={`py-2 flex items-center gap-1 cursor-pointer transition-all duration-200 ease-[cubic-bezier(0.33,1,0.68,1)] ${
                     isSolid
                       ? 'text-[#1E1414] hover:text-[#0C310A]'
                       : 'text-[#FAF7ED] hover:text-white'
-                  }`}
+                  } ${getItemOpacityClass('solutions')}`}
                 >
                   <span>Housing Solutions</span>
                   <PlusCrossIcon
@@ -179,11 +214,11 @@ export const MegaMenuNavbar: React.FC = () => {
               >
                 <button
                   onClick={() => scrollToSection('standards-section', 'standards')}
-                  className={`py-2 transition-colors duration-200 flex items-center gap-1 cursor-pointer ${
+                  className={`py-2 flex items-center gap-1 cursor-pointer transition-all duration-200 ease-[cubic-bezier(0.33,1,0.68,1)] ${
                     isSolid
                       ? 'text-[#1E1414] hover:text-[#0C310A]'
                       : 'text-[#FAF7ED] hover:text-white'
-                  }`}
+                  } ${getItemOpacityClass('standards')}`}
                 >
                   <span>Standards</span>
                   <PlusCrossIcon
@@ -200,11 +235,11 @@ export const MegaMenuNavbar: React.FC = () => {
               >
                 <button
                   onClick={() => scrollToSection('process-section', 'home')}
-                  className={`py-2 transition-colors duration-200 flex items-center gap-1 cursor-pointer ${
+                  className={`py-2 flex items-center gap-1 cursor-pointer transition-all duration-200 ease-[cubic-bezier(0.33,1,0.68,1)] ${
                     isSolid
                       ? 'text-[#1E1414] hover:text-[#0C310A]'
                       : 'text-[#FAF7ED] hover:text-white'
-                  }`}
+                  } ${getItemOpacityClass('how-it-works')}`}
                 >
                   <span>How It Works</span>
                   <PlusCrossIcon
@@ -217,11 +252,11 @@ export const MegaMenuNavbar: React.FC = () => {
               {/* 4. Portfolio */}
               <button
                 onClick={() => scrollToSection('portfolio-section', 'portfolio')}
-                className={`py-2 transition-colors duration-200 cursor-pointer ${
+                className={`py-2 cursor-pointer transition-all duration-200 ease-[cubic-bezier(0.33,1,0.68,1)] ${
                   isSolid
                     ? 'text-[#1E1414] hover:text-[#0C310A]'
                     : 'text-[#FAF7ED] hover:text-white'
-                }`}
+                } ${getItemOpacityClass('portfolio')}`}
               >
                 <span>Portfolio</span>
               </button>
@@ -233,11 +268,11 @@ export const MegaMenuNavbar: React.FC = () => {
               >
                 <button
                   onClick={() => scrollToSection('process-section', 'home')}
-                  className={`py-2 transition-colors duration-200 flex items-center gap-1 cursor-pointer ${
+                  className={`py-2 flex items-center gap-1 cursor-pointer transition-all duration-200 ease-[cubic-bezier(0.33,1,0.68,1)] ${
                     isSolid
                       ? 'text-[#1E1414] hover:text-[#0C310A]'
                       : 'text-[#FAF7ED] hover:text-white'
-                  }`}
+                  } ${getItemOpacityClass('resources')}`}
                 >
                   <span>Resources</span>
                   <PlusCrossIcon
@@ -273,46 +308,37 @@ export const MegaMenuNavbar: React.FC = () => {
 
         </div>
 
-        {/* Full-width MegaMenu Dropdown Panels (0.4s cubic-bezier(0.33, 1, 0.68, 1)) */}
-        <AnimatePresence>
-          {isMenuOpen && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.4, ease: [0.33, 1, 0.68, 1] }}
-              className="overflow-hidden"
-            >
-              <div className="max-w-[1584px] mx-auto px-6 sm:px-10 lg:px-12 pt-4 pb-10">
-                <MegaMenuPanels
-                  activeMenu={activeMenu}
-                  onStandardClick={handleStandardItemClick}
-                  onSolutionSelect={handleSolutionSelect}
-                  onScrollToSection={scrollToSection}
-                  onOpenConfigurator={openConfigurator}
-                />
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {/* Full-width MegaMenu Dropdown Panels with GPU-friendly smooth height transition */}
+        <div
+          className="dropdown-menu overflow-hidden transition-[height,opacity] duration-350 ease-[cubic-bezier(0.33,1,0.68,1)]"
+          style={{
+            height: isMenuOpen ? `${contentHeight}px` : '0px',
+            opacity: isMenuOpen ? 1 : 0,
+            transitionDuration: isMenuOpen ? '350ms' : '300ms',
+          }}
+        >
+          <div ref={innerRef} className="max-w-[1584px] mx-auto px-6 sm:px-10 lg:px-12 pt-4 pb-10">
+            <MegaMenuPanels
+              activeMenu={renderedMenu}
+              onStandardClick={handleStandardItemClick}
+              onSolutionSelect={handleSolutionSelect}
+              onScrollToSection={scrollToSection}
+              onOpenConfigurator={openConfigurator}
+            />
+          </div>
+        </div>
       </header>
 
       {/* Dimmed backdrop overlay when MegaMenu is active */}
-      <AnimatePresence>
-        {isMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-0 bg-black/40 backdrop-blur-[1px] z-40"
-            onClick={() => {
-              setActiveMenu(null);
-              setIsHeaderHovered(false);
-            }}
-          />
-        )}
-      </AnimatePresence>
+      <div
+        className={`fixed inset-0 bg-[#1E1414]/55 z-40 transition-opacity duration-200 ease-[cubic-bezier(0.33,1,0.68,1)] ${
+          isMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+        }`}
+        onClick={() => {
+          setActiveMenu(null);
+          setIsHeaderHovered(false);
+        }}
+      />
 
       {/* Mobile Drawer Menu */}
       <MobileMenuDrawer
