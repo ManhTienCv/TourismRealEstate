@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { SEED_STANDARD_PLANS } from '@tie/shared';
 import { useConfiguratorStore } from '../../store/useConfiguratorStore';
 
@@ -105,8 +105,16 @@ export const StandardsCatalogGrid: React.FC = () => {
     offset: ['start start', 'end end'],
   });
 
-  // Ánh xạ scrollYProgress với khoảng nghỉ đầu (0.08) và cuối (0.92) để trượt mượt một chiều từ trái sang phải
-  const x = useTransform(scrollYProgress, [0.08, 0.92], [0, -maxTranslateX]);
+  // Lọc scrollYProgress qua useSpring độ phản hồi cao để triệt tiêu bước nhảy con lăn chuột
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 160,
+    damping: 30,
+    mass: 0.2,
+    restDelta: 0.0005,
+  });
+
+  // Ánh xạ smoothProgress với khoảng nghỉ đầu (0.06) và cuối (0.94) để trượt mượt một chiều từ trái sang phải
+  const x = useTransform(smoothProgress, [0.06, 0.94], [0, -maxTranslateX]);
 
   const handlePlanClick = (slug: string) => {
     const plan = SEED_STANDARD_PLANS.find((p) => p.slug === slug);

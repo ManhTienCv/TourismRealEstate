@@ -25,8 +25,8 @@ export const MegaMenuPanels: React.FC<MegaMenuPanelsProps> = ({
 }) => {
   const getPanelClass = (key: MenuType) =>
     activeMenu === key
-      ? 'opacity-100 translate-y-0 pointer-events-auto relative z-10 transition-all duration-200 ease-[cubic-bezier(0.33,1,0.68,1)]'
-      : 'opacity-0 -translate-y-1 pointer-events-none absolute inset-x-0 top-0 z-0 transition-opacity duration-150 ease-[cubic-bezier(0.33,1,0.68,1)]';
+      ? 'opacity-100 translate-y-0 pointer-events-auto relative z-10 transition-opacity duration-150 ease-[cubic-bezier(0.33,1,0.68,1)]'
+      : 'opacity-0 pointer-events-none absolute inset-0 z-0 transition-opacity duration-150 ease-[cubic-bezier(0.33,1,0.68,1)]';
 
   return (
     <div className="relative w-full">

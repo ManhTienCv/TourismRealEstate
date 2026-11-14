@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
 import { useConfiguratorStore } from '../../store/useConfiguratorStore';
 import { smoothScrollTo } from '../../utils/smoothScroll';
 import { SEED_STANDARD_PLANS } from '@tie/shared';
@@ -20,24 +20,22 @@ export const MegaMenuNavbar: React.FC = () => {
   } = useConfiguratorStore();
 
   const [activeMenu, setActiveMenu] = useState<MenuType>(null);
-  const [renderedMenu, setRenderedMenu] = useState<MenuType>('solutions');
+  const lastActiveMenuRef = useRef<MenuType>('solutions');
+  if (activeMenu !== null) {
+    lastActiveMenuRef.current = activeMenu;
+  }
+  const currentMenu = activeMenu || lastActiveMenuRef.current;
+
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isHeaderHovered, setIsHeaderHovered] = useState(false);
-  const [contentHeight, setContentHeight] = useState<number>(0);
+  const [contentHeight, setContentHeight] = useState<number | undefined>(undefined);
 
   const menuCloseTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const innerRef = useRef<HTMLDivElement>(null);
 
-  // Keep renderedMenu alive during close transition so height collapses smoothly without jumping
-  useEffect(() => {
-    if (activeMenu !== null) {
-      setRenderedMenu(activeMenu);
-    }
-  }, [activeMenu]);
-
   // ResizeObserver on innerRef to animate height changes dynamically between panels
-  useEffect(() => {
+  useLayoutEffect(() => {
     const el = innerRef.current;
     if (!el) return;
 
@@ -51,7 +49,7 @@ export const MegaMenuNavbar: React.FC = () => {
     const ro = new ResizeObserver(updateHeight);
     ro.observe(el);
     return () => ro.disconnect();
-  }, [renderedMenu]);
+  }, [currentMenu]);
 
   // Scroll listener: transparent at very top, solid warm cream (#FAF7ED) when scrolled
   useEffect(() => {
@@ -310,16 +308,16 @@ export const MegaMenuNavbar: React.FC = () => {
 
         {/* Full-width MegaMenu Dropdown Panels with GPU-friendly smooth height transition */}
         <div
-          className="dropdown-menu overflow-hidden transition-[height,opacity] duration-350 ease-[cubic-bezier(0.33,1,0.68,1)]"
+          className="dropdown-menu overflow-hidden transition-[height,max-height,opacity] duration-300 ease-[cubic-bezier(0.33,1,0.68,1)]"
           style={{
-            height: isMenuOpen ? `${contentHeight}px` : '0px',
+            height: isMenuOpen ? (contentHeight ? `${contentHeight}px` : 'auto') : '0px',
+            maxHeight: isMenuOpen ? (contentHeight ? `${contentHeight}px` : '800px') : '0px',
             opacity: isMenuOpen ? 1 : 0,
-            transitionDuration: isMenuOpen ? '350ms' : '300ms',
           }}
         >
           <div ref={innerRef} className="max-w-[1584px] mx-auto px-6 sm:px-10 lg:px-12 pt-4 pb-10">
             <MegaMenuPanels
-              activeMenu={renderedMenu}
+              activeMenu={currentMenu}
               onStandardClick={handleStandardItemClick}
               onSolutionSelect={handleSolutionSelect}
               onScrollToSection={scrollToSection}

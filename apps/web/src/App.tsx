@@ -25,18 +25,24 @@ export const App: React.FC = () => {
   // Initialize Lenis Momentum / Inertia Scrolling (Matches Huts.com smooth luxury scroll physics)
   useEffect(() => {
     const lenis = new Lenis({
-      autoRaf: true, // Native high-precision RAF loop handled internally by Lenis
-      lerp: 0.12, // 0.12 = Snappy, instantaneous response on wheel/touchpad without floaty input lag
-      wheelMultiplier: 1.0,
+      lerp: 0.09,
       smoothWheel: true,
+      wheelMultiplier: 1.0,
       touchMultiplier: 1.5,
     });
 
     setLenis(lenis);
 
+    let rafId: number;
+    function raf(time: number) {
+      lenis.raf(time);
+      rafId = requestAnimationFrame(raf);
+    }
+    rafId = requestAnimationFrame(raf);
+
     // Anti-jitter: Add .lenis-scrolling to <html> while scrolling to disable card 3D hover-flip
     let scrollTimeout: ReturnType<typeof setTimeout> | null = null;
-    const handleLenisScroll = () => {
+    const handleScroll = () => {
       document.documentElement.classList.add('lenis-scrolling');
       if (scrollTimeout) clearTimeout(scrollTimeout);
       scrollTimeout = setTimeout(() => {
@@ -44,11 +50,14 @@ export const App: React.FC = () => {
       }, 150);
     };
 
-    lenis.on('scroll', handleLenisScroll);
+    lenis.on('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
 
     return () => {
+      cancelAnimationFrame(rafId);
       lenis.destroy();
       setLenis(null);
+      window.removeEventListener('scroll', handleScroll);
       if (scrollTimeout) clearTimeout(scrollTimeout);
       document.documentElement.classList.remove('lenis-scrolling');
     };

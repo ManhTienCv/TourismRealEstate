@@ -269,6 +269,11 @@ section.card-slider div.h-scroll-content .card div.card-inner {
   position: relative;
 }
 
+/* ANTI-JITTER: Disable pointer events completely on all cards while actively scrolling */
+html.lenis-scrolling section.card-slider div.h-scroll-content .card {
+  pointer-events: none !important;
+}
+
 /* ANTI-JITTER HOVER RULE: Only flip card when user is NOT actively scrolling */
 html:not(.lenis-scrolling) section.card-slider div.h-scroll-content .card:hover div.card-inner {
   transform: rotateY(180deg);
