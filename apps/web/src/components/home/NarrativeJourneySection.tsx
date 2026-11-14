@@ -80,15 +80,15 @@ export const NarrativeJourneySection: React.FC = () => {
   };
 
   return (
-    <section id="narrative-section" className="relative pt-0 pb-4 sm:pb-6 bg-[#FAF8F1] overflow-visible select-none">
+    <section id="narrative-section" className="relative pt-0 pb-4 sm:pb-6 bg-[#FAF7ED] overflow-visible select-none">
       
       {/* ========================================================= */}
       {/* 1. SECTION: "WE DO IT ACROSS THE COUNTRY" (Matching HUTS Image 5) */}
       {/* ========================================================= */}
       <div className="max-w-[1140px] mx-auto px-6 md:px-12 relative">
 
-        {/* Hand-drawn Double-Loop Arrow (Transition from Archetype cards above) */}
-        <div className="flex justify-center items-center w-full -mt-20 sm:-mt-28 md:-mt-36 mb-4 sm:mb-6 bg-transparent pointer-events-none z-10">
+        {/* Hand-drawn Double-Loop Arrow nhếch sát đáy dải thẻ bên trên, hiển thị nét vẽ dần khi lướt */}
+        <div className="flex justify-center items-center w-full -mt-28 sm:-mt-36 md:-mt-48 lg:-mt-56 mb-4 sm:mb-6 bg-transparent pointer-events-none z-10">
           <DoubleLoopArrow />
         </div>
 
@@ -131,7 +131,7 @@ export const NarrativeJourneySection: React.FC = () => {
                     style={{
                       zIndex: cards.length - index,
                     }}
-                    className={`absolute inset-0 rounded-[22px] overflow-hidden shadow-xl bg-[#FAF8F1] origin-center select-none ${
+                    className={`absolute inset-0 rounded-[22px] overflow-hidden shadow-xl bg-[#FAF7ED] origin-center select-none ${
                       isTop ? 'cursor-grab active:cursor-grabbing shadow-2xl' : 'pointer-events-none'
                     }`}
                   >

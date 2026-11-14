@@ -41,8 +41,8 @@ export const MegaMenuPanels: React.FC<MegaMenuPanelsProps> = ({
                   onClick={() => onSolutionSelect(sol.slug)}
                   className="flex items-start space-x-4 p-2.5 rounded-[16px] hover:bg-[#F2EFE4]/50 cursor-pointer transition-colors duration-150 group"
                 >
-                  {/* Square thumbnail with rounded-[16px] bg-[#FAF8F1] matching Image 8 */}
-                  <div className="w-[70px] h-[70px] rounded-[16px] bg-[#FAF8F1] shrink-0 flex items-center justify-center p-2.5 overflow-hidden border border-[#E2DDD5]/80 group-hover:border-[#664A42]/30 transition-colors">
+                  {/* Square thumbnail with rounded-[16px] bg-[#FAF7ED] matching Image 8 */}
+                  <div className="w-[70px] h-[70px] rounded-[16px] bg-[#FAF7ED] shrink-0 flex items-center justify-center p-2.5 overflow-hidden border border-[#E2DDD5]/80 group-hover:border-[#664A42]/30 transition-colors">
                     {AVAILABLE_ILLUSTRATIONS[sol.slug] ? (
                       <img
                         src={AVAILABLE_ILLUSTRATIONS[sol.slug]}
@@ -82,8 +82,8 @@ export const MegaMenuPanels: React.FC<MegaMenuPanelsProps> = ({
                   onClick={() => onStandardClick(item.slug)}
                   className="flex items-start space-x-4 p-2.5 rounded-[16px] hover:bg-[#F2EFE4]/50 cursor-pointer transition-colors duration-150 group"
                 >
-                  {/* Square thumbnail with rounded-[16px] bg-[#FAF8F1] matching Image 9 */}
-                  <div className="w-[70px] h-[70px] rounded-[16px] bg-[#FAF8F1] shrink-0 overflow-hidden border border-[#E2DDD5]/80 group-hover:border-[#664A42]/30 transition-colors">
+                  {/* Square thumbnail with rounded-[16px] bg-[#FAF7ED] matching Image 9 */}
+                  <div className="w-[70px] h-[70px] rounded-[16px] bg-[#FAF7ED] shrink-0 overflow-hidden border border-[#E2DDD5]/80 group-hover:border-[#664A42]/30 transition-colors">
                     <img
                       src={item.imageUrl}
                       alt={item.title}
@@ -117,7 +117,7 @@ export const MegaMenuPanels: React.FC<MegaMenuPanelsProps> = ({
               onClick={() => onScrollToSection('process-section', 'home')}
               className="flex items-start space-x-4 p-3 rounded-[16px] hover:bg-[#F2EFE4]/50 cursor-pointer transition-colors duration-150 group"
             >
-              <div className="w-[70px] h-[70px] rounded-[16px] bg-[#FAF8F1] shrink-0 flex items-center justify-center p-2.5 border border-[#E2DDD5]/80 group-hover:border-[#664A42]/30 transition-colors">
+              <div className="w-[70px] h-[70px] rounded-[16px] bg-[#FAF7ED] shrink-0 flex items-center justify-center p-2.5 border border-[#E2DDD5]/80 group-hover:border-[#664A42]/30 transition-colors">
                 {item.type === 'approach' ? (
                   <svg className="w-9 h-9" viewBox="0 0 36 36" fill="none">
                     <circle cx="18" cy="16" r="7.5" stroke="#365327" strokeWidth="1.8" />

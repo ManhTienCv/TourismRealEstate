@@ -10,21 +10,30 @@ export const UseCaseSelector: React.FC = () => {
   const trackRef = useRef<HTMLDivElement>(null);
   const [maxTranslateX, setMaxTranslateX] = useState(0);
 
-  // Tính động quãng đường trượt ngang maxTranslateX bằng ResizeObserver trên trackRef
+  // Tính động quãng đường trượt ngang maxTranslateX chuẩn xác tuyệt đối đến từng pixel
   useEffect(() => {
     const trackEl = trackRef.current;
     if (!trackEl) return;
 
     const updateDistance = () => {
-      const lastChild = trackEl.lastElementChild as HTMLElement | null;
-      if (!lastChild) {
-        setMaxTranslateX(Math.max(0, trackEl.scrollWidth - window.innerWidth));
-        return;
-      }
+      const children = Array.from(trackEl.children) as HTMLElement[];
+      if (children.length === 0) return;
+
       const style = window.getComputedStyle(trackEl);
-      const paddingRight = parseFloat(style.paddingRight) || 64;
-      const totalContentRight = lastChild.offsetLeft + lastChild.offsetWidth + paddingRight;
-      const dist = Math.max(0, totalContentRight - window.innerWidth);
+      const paddingLeft = parseFloat(style.paddingLeft) || 0;
+      const paddingRight = parseFloat(style.paddingRight) || 0;
+      const gap = parseFloat(style.columnGap) || 0;
+
+      let totalContentWidth = paddingLeft + paddingRight;
+      children.forEach((child, idx) => {
+        totalContentWidth += child.offsetWidth;
+        if (idx < children.length - 1) {
+          totalContentWidth += gap;
+        }
+      });
+
+      // Quãng đường trượt ngang để thẻ cuối cùng nằm khớp lề phải (window.innerWidth - paddingRight), triệt tiêu khoảng trống thừa
+      const dist = Math.max(0, Math.max(totalContentWidth, trackEl.scrollWidth) - window.innerWidth);
       setMaxTranslateX(dist);
     };
 
@@ -54,8 +63,8 @@ export const UseCaseSelector: React.FC = () => {
     restDelta: 0.0005,
   });
 
-  // Ánh xạ smoothProgress với khoảng nghỉ đầu (0.06) và cuối (0.94) để không bị trôi hụt thẻ
-  const x = useTransform(smoothProgress, [0.06, 0.94], [0, -maxTranslateX]);
+  // Ánh xạ smoothProgress với khoảng nghỉ đầu (0.05) và cuối (0.95) để thẻ cuối dừng vững ở lề phải
+  const x = useTransform(smoothProgress, [0.05, 0.95], [0, -maxTranslateX]);
 
   return (
     <section

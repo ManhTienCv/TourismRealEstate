@@ -8,7 +8,7 @@ export const FooterSocialLinks: React.FC = () => {
         href="https://youtube.com"
         target="_blank"
         rel="noreferrer"
-        className="w-6 h-6 rounded-full bg-[#FAF8F1] text-[#0E2D0B] flex items-center justify-center hover:bg-[#CFE87B] transition-colors"
+        className="w-6 h-6 rounded-full bg-[#FAF7ED] text-[#0E2D0B] flex items-center justify-center hover:bg-[#CFE87B] transition-colors"
         aria-label="YouTube"
       >
         <svg className="w-3 h-3 fill-current" viewBox="0 0 24 24">
@@ -21,7 +21,7 @@ export const FooterSocialLinks: React.FC = () => {
         href="https://tiktok.com"
         target="_blank"
         rel="noreferrer"
-        className="w-6 h-6 rounded-full bg-[#FAF8F1] text-[#0E2D0B] flex items-center justify-center hover:bg-[#CFE87B] transition-colors"
+        className="w-6 h-6 rounded-full bg-[#FAF7ED] text-[#0E2D0B] flex items-center justify-center hover:bg-[#CFE87B] transition-colors"
         aria-label="TikTok"
       >
         <svg className="w-3 h-3 fill-current" viewBox="0 0 24 24">
@@ -34,7 +34,7 @@ export const FooterSocialLinks: React.FC = () => {
         href="https://instagram.com"
         target="_blank"
         rel="noreferrer"
-        className="w-6 h-6 rounded-full bg-[#FAF8F1] text-[#0E2D0B] flex items-center justify-center hover:bg-[#CFE87B] transition-colors"
+        className="w-6 h-6 rounded-full bg-[#FAF7ED] text-[#0E2D0B] flex items-center justify-center hover:bg-[#CFE87B] transition-colors"
         aria-label="Instagram"
       >
         <svg className="w-3 h-3 fill-current" viewBox="0 0 24 24">
@@ -47,7 +47,7 @@ export const FooterSocialLinks: React.FC = () => {
         href="https://linkedin.com"
         target="_blank"
         rel="noreferrer"
-        className="w-6 h-6 rounded-full bg-[#FAF8F1] text-[#0E2D0B] flex items-center justify-center hover:bg-[#CFE87B] transition-colors"
+        className="w-6 h-6 rounded-full bg-[#FAF7ED] text-[#0E2D0B] flex items-center justify-center hover:bg-[#CFE87B] transition-colors"
         aria-label="LinkedIn"
       >
         <svg className="w-3 h-3 fill-current" viewBox="0 0 24 24">
@@ -60,7 +60,7 @@ export const FooterSocialLinks: React.FC = () => {
         href="https://pinterest.com"
         target="_blank"
         rel="noreferrer"
-        className="w-6 h-6 rounded-full bg-[#FAF8F1] text-[#0E2D0B] flex items-center justify-center hover:bg-[#CFE87B] transition-colors"
+        className="w-6 h-6 rounded-full bg-[#FAF7ED] text-[#0E2D0B] flex items-center justify-center hover:bg-[#CFE87B] transition-colors"
         aria-label="Pinterest"
       >
         <svg className="w-3 h-3 fill-current" viewBox="0 0 24 24">
@@ -73,7 +73,7 @@ export const FooterSocialLinks: React.FC = () => {
         href="https://spotify.com"
         target="_blank"
         rel="noreferrer"
-        className="w-6 h-6 rounded-full bg-[#FAF8F1] text-[#0E2D0B] flex items-center justify-center hover:bg-[#CFE87B] transition-colors"
+        className="w-6 h-6 rounded-full bg-[#FAF7ED] text-[#0E2D0B] flex items-center justify-center hover:bg-[#CFE87B] transition-colors"
         aria-label="Spotify"
       >
         <svg className="w-3 h-3 fill-current" viewBox="0 0 24 24">

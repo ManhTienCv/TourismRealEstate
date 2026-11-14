@@ -51,18 +51,18 @@ export const PreFooterBanner: React.FC = () => {
           className="group inline-flex items-center gap-1.5 cursor-pointer select-none shrink-0"
         >
           {/* Pill text */}
-          <div className="relative overflow-hidden h-[44px] px-7 rounded-[104px] bg-[#FAF8F1] text-[#0C310A] text-[14px] leading-[1.4] font-normal flex items-center justify-center transition-colors duration-300">
+          <div className="relative overflow-hidden h-[44px] px-7 rounded-[104px] bg-[#FAF7ED] text-[#0C310A] text-[14px] leading-[1.4] font-normal flex items-center justify-center transition-colors duration-300">
             <span className="absolute inset-0 bg-[#3F6628] translate-y-full -translate-x-1/4 rotate-12 group-hover:translate-y-0 group-hover:translate-x-0 group-hover:rotate-0 scale-150 transition-transform duration-300 ease-out rounded-[104px] pointer-events-none" />
-            <span className="relative z-10 transition-colors duration-300 group-hover:text-[#FAF8F1]">
+            <span className="relative z-10 transition-colors duration-300 group-hover:text-[#FAF7ED]">
               Get Started
             </span>
           </div>
 
           {/* Circle arrow */}
-          <div className="relative overflow-hidden w-[44px] h-[44px] rounded-[104px] bg-[#FAF8F1] text-[#0C310A] flex items-center justify-center transition-colors duration-300">
+          <div className="relative overflow-hidden w-[44px] h-[44px] rounded-[104px] bg-[#FAF7ED] text-[#0C310A] flex items-center justify-center transition-colors duration-300">
             <span className="absolute inset-0 bg-[#3F6628] translate-y-full -translate-x-1/4 rotate-12 group-hover:translate-y-0 group-hover:translate-x-0 group-hover:rotate-0 scale-150 transition-transform duration-300 ease-out rounded-[104px] pointer-events-none" />
             <svg
-              className="relative z-10 w-4 h-4 transition-all duration-300 group-hover:text-[#FAF8F1] group-hover:-rotate-45"
+              className="relative z-10 w-4 h-4 transition-all duration-300 group-hover:text-[#FAF7ED] group-hover:-rotate-45"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"

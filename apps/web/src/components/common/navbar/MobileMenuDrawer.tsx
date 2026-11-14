@@ -21,7 +21,7 @@ export const MobileMenuDrawer: React.FC<MobileMenuDrawerProps> = ({
           initial={{ opacity: 0, height: 0 }}
           animate={{ opacity: 1, height: 'auto' }}
           exit={{ opacity: 0, height: 0 }}
-          className="fixed top-20 left-0 right-0 z-40 lg:hidden bg-[#FAF8F1] text-tie-ink border-b border-[#E8E4DC] px-6 py-6 space-y-4 shadow-tie-float"
+          className="fixed top-20 left-0 right-0 z-40 lg:hidden bg-[#FAF7ED] text-tie-ink border-b border-[#E8E4DC] px-6 py-6 space-y-4 shadow-tie-float"
         >
           <div className="space-y-2">
             <button

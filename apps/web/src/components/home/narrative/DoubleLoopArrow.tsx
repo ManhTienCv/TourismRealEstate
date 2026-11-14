@@ -1,5 +1,5 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useRef } from 'react';
+import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 
 export interface DoubleLoopArrowProps {
   className?: string;
@@ -9,45 +9,65 @@ export interface DoubleLoopArrowProps {
 }
 
 export const DoubleLoopArrow: React.FC<DoubleLoopArrowProps> = ({
-  className = 'w-[200px] sm:w-[240px] md:w-[270px] lg:w-[285px] h-auto',
-  strokeColor = '#4B6B3B',
+  className = 'w-[180px] sm:w-[210px] md:w-[225px] h-auto',
+  strokeColor = '#57772E',
   width,
   height,
 }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Hiệu ứng hiển thị dần nét vẽ theo nhịp cuộn trang của người dùng
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ['start 92%', 'center 45%'],
+  });
+
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 140,
+    damping: 25,
+    restDelta: 0.001,
+  });
+
+  // Nét thân mũi tên vẽ từ trên xuống dưới (0.05 -> 0.85)
+  const linePathLength = useTransform(smoothProgress, [0.05, 0.85], [0, 1]);
+  // Đầu mũi tên vẽ tiếp nối ở cuối hành trình (0.75 -> 0.98)
+  const tipPathLength = useTransform(smoothProgress, [0.75, 0.98], [0, 1]);
+  const tipOpacity = useTransform(smoothProgress, [0.7, 0.82], [0, 1]);
+
   return (
-    <svg
-      {...(width ? { width } : {})}
-      {...(height ? { height } : {})}
-      viewBox="0 0 180 200"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className={`overflow-visible select-none pointer-events-none ${className}`}
-    >
-      {/* Thân mũi tên: đuôi móc nhẹ + 2 vòng xoắn lệch chuẩn 1:1 HUTS */}
-      <motion.path
-        d="M 21 13 C 22 28, 62 38, 88 58 C 98 66, 92 80, 82 76 C 73 72, 75 55, 92 56 C 112 57, 123 78, 122 108 C 121 130, 110 144, 102 139 C 94 134, 96 116, 118 116 C 142 116, 155 140, 152 181"
-        stroke={strokeColor}
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        initial={{ pathLength: 0.2, opacity: 0 }}
-        whileInView={{ pathLength: 1, opacity: 1 }}
-        viewport={{ once: true, amount: 0.05 }}
-        transition={{ duration: 0.9, ease: 'easeOut' }}
-      />
-      {/* Đầu mũi tên chữ V mở bất đối xứng tự nhiên */}
-      <motion.path
-        d="M 144 164 C 148 170, 151 176, 152 182 C 156 175, 161 169, 168 166"
-        stroke={strokeColor}
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        initial={{ pathLength: 0, opacity: 0 }}
-        whileInView={{ pathLength: 1, opacity: 1 }}
-        viewport={{ once: true, amount: 0.05 }}
-        transition={{ duration: 0.35, delay: 0.65, ease: 'easeOut' }}
-      />
-    </svg>
+    <div ref={containerRef} className="inline-flex justify-center items-center pointer-events-none select-none">
+      <svg
+        {...(width ? { width } : {})}
+        {...(height ? { height } : {})}
+        viewBox="0 0 225 263"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className={`overflow-visible select-none pointer-events-none ${className}`}
+      >
+        <g id="divider-arrow">
+          {/* Thân mũi tên xoắn 2 vòng chuẩn tọa độ 1:1 từ HUTS gốc, vẽ progressive từ trên xuống dưới */}
+          <motion.path
+            d="M2.4283 1.99998C-6.5736 40.4912 130.855 54.5 109.454 83.8518C97.5219 100.217 71.5809 53.5103 115.455 63.2918C159 73 160.964 147.471 149.464 183.748C149.167 190.281 140.842 201.464 130.855 195.38C121.891 189.92 117.983 180.022 122.955 172.686C133.459 157.189 168.466 154.842 192.253 183.319C204.219 197.643 208.962 237.817 206.266 254"
+            stroke={strokeColor}
+            strokeWidth="3"
+            strokeMiterlimit="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            style={{ pathLength: linePathLength }}
+          />
+          {/* Đầu mũi tên chữ V chỉ xuống dưới */}
+          <motion.path
+            d="M191.406 238.394C199.217 242.255 202.926 252.741 203.638 261.002C205.4 253.553 210.84 247.134 217.108 243.035C219.017 241.787 220.861 240.441 223.143 239.988"
+            stroke={strokeColor}
+            strokeWidth="3"
+            strokeMiterlimit="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            style={{ pathLength: tipPathLength, opacity: tipOpacity }}
+          />
+        </g>
+      </svg>
+    </div>
   );
 };
 

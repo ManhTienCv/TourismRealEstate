@@ -46,7 +46,7 @@ export const Footer: React.FC = () => {
   };
 
   return (
-    <footer className="relative z-20 -mt-14 w-full bg-[#0E2D0B] text-[#FAF8F1] rounded-t-[28px] pt-14 pb-10 px-8 md:px-16 overflow-hidden select-none">
+    <footer className="relative z-20 -mt-14 w-full bg-[#0E2D0B] text-[#FAF7ED] rounded-t-[28px] pt-14 pb-10 px-8 md:px-16 overflow-hidden select-none">
       <div className="max-w-[1240px] mx-auto">
         
         {/* Main Footer Grid: Logo Left (Col-4) + 4 Menu Columns Right (Col-8) */}
@@ -56,7 +56,7 @@ export const Footer: React.FC = () => {
           <div className="md:col-span-4 flex items-start">
             <span
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className="font-sans font-black text-5xl md:text-[64px] tracking-tight leading-none text-[#FAF8F1] -mt-1 select-none cursor-pointer block hover:opacity-90 transition-opacity"
+              className="font-sans font-black text-5xl md:text-[64px] tracking-tight leading-none text-[#FAF7ED] -mt-1 select-none cursor-pointer block hover:opacity-90 transition-opacity"
             >
               TIE
             </span>
@@ -75,7 +75,7 @@ export const Footer: React.FC = () => {
                   <li key={item.slug}>
                     <button
                       onClick={() => handleSolutionClick(item.slug)}
-                      className="font-sans text-[13px] md:text-[14px] font-normal text-[#FAF8F1]/90 hover:text-[#CFE87B] transition-colors block py-1 text-left"
+                      className="font-sans text-[13px] md:text-[14px] font-normal text-[#FAF7ED]/90 hover:text-[#CFE87B] transition-colors block py-1 text-left"
                     >
                       {item.label}
                     </button>
@@ -94,7 +94,7 @@ export const Footer: React.FC = () => {
                   <li key={item.label}>
                     <button
                       onClick={() => handleStandardClick(item.slug)}
-                      className="font-sans text-[13px] md:text-[14px] font-normal text-[#FAF8F1]/90 hover:text-[#CFE87B] transition-colors block py-1 text-left"
+                      className="font-sans text-[13px] md:text-[14px] font-normal text-[#FAF7ED]/90 hover:text-[#CFE87B] transition-colors block py-1 text-left"
                     >
                       {item.label}
                     </button>
@@ -112,7 +112,7 @@ export const Footer: React.FC = () => {
                 <li>
                   <button
                     onClick={() => handleScrollTo('process-section')}
-                    className="font-sans text-[13px] md:text-[14px] font-normal text-[#FAF8F1]/90 hover:text-[#CFE87B] transition-colors block py-1 text-left"
+                    className="font-sans text-[13px] md:text-[14px] font-normal text-[#FAF7ED]/90 hover:text-[#CFE87B] transition-colors block py-1 text-left"
                   >
                     The TIE Approach
                   </button>
@@ -120,7 +120,7 @@ export const Footer: React.FC = () => {
                 <li>
                   <button
                     onClick={() => handleScrollTo('portfolio-section')}
-                    className="font-sans text-[13px] md:text-[14px] font-normal text-[#FAF8F1]/90 hover:text-[#CFE87B] transition-colors block py-1 text-left"
+                    className="font-sans text-[13px] md:text-[14px] font-normal text-[#FAF7ED]/90 hover:text-[#CFE87B] transition-colors block py-1 text-left"
                   >
                     Portfolio
                   </button>
@@ -128,7 +128,7 @@ export const Footer: React.FC = () => {
                 <li>
                   <button
                     onClick={handleFieldReportClick}
-                    className="font-sans text-[13px] md:text-[14px] font-normal text-[#FAF8F1]/90 hover:text-[#CFE87B] transition-colors py-1 text-left inline-flex items-center space-x-1.5"
+                    className="font-sans text-[13px] md:text-[14px] font-normal text-[#FAF7ED]/90 hover:text-[#CFE87B] transition-colors py-1 text-left inline-flex items-center space-x-1.5"
                   >
                     <span>Field Report</span>
                     <span className="w-1.5 h-1.5 rounded-full bg-[#CFE87B] animate-pulse" />
@@ -137,7 +137,7 @@ export const Footer: React.FC = () => {
                 <li>
                   <button
                     onClick={() => openConfigurator()}
-                    className="font-sans text-[13px] md:text-[14px] font-normal text-[#FAF8F1]/90 hover:text-[#CFE87B] transition-colors block py-1 text-left"
+                    className="font-sans text-[13px] md:text-[14px] font-normal text-[#FAF7ED]/90 hover:text-[#CFE87B] transition-colors block py-1 text-left"
                   >
                     Get Started
                   </button>
@@ -155,7 +155,7 @@ export const Footer: React.FC = () => {
                   <li>
                     <button
                       onClick={() => handleStandardClick('what-is-a-standard')}
-                      className="font-sans text-[13px] md:text-[14px] font-normal text-[#FAF8F1]/90 hover:text-[#CFE87B] transition-colors block py-1 text-left"
+                      className="font-sans text-[13px] md:text-[14px] font-normal text-[#FAF7ED]/90 hover:text-[#CFE87B] transition-colors block py-1 text-left"
                     >
                       Standards Guide
                     </button>
@@ -163,7 +163,7 @@ export const Footer: React.FC = () => {
                   <li>
                     <button
                       onClick={() => openConfigurator()}
-                      className="font-sans text-[13px] md:text-[14px] font-normal text-[#FAF8F1]/90 hover:text-[#CFE87B] transition-colors block py-1 text-left"
+                      className="font-sans text-[13px] md:text-[14px] font-normal text-[#FAF7ED]/90 hover:text-[#CFE87B] transition-colors block py-1 text-left"
                     >
                       Cost Pro-Forma
                     </button>
@@ -179,7 +179,7 @@ export const Footer: React.FC = () => {
                   <li>
                     <a
                       href="mailto:hello@tie.com"
-                      className="font-sans text-[13px] md:text-[14px] font-normal text-[#FAF8F1]/90 hover:text-[#CFE87B] transition-colors block py-1 text-left"
+                      className="font-sans text-[13px] md:text-[14px] font-normal text-[#FAF7ED]/90 hover:text-[#CFE87B] transition-colors block py-1 text-left"
                     >
                       hello@tie.com
                     </a>
@@ -187,7 +187,7 @@ export const Footer: React.FC = () => {
                   <li>
                     <button
                       onClick={() => openConfigurator()}
-                      className="font-sans text-[13px] md:text-[14px] font-normal text-[#FAF8F1]/90 hover:text-[#CFE87B] transition-colors block py-1 text-left"
+                      className="font-sans text-[13px] md:text-[14px] font-normal text-[#FAF7ED]/90 hover:text-[#CFE87B] transition-colors block py-1 text-left"
                     >
                       For Partners
                     </button>
@@ -195,7 +195,7 @@ export const Footer: React.FC = () => {
                   <li>
                     <button
                       onClick={() => openConfigurator()}
-                      className="font-sans text-[13px] md:text-[14px] font-normal text-[#FAF8F1]/90 hover:text-[#CFE87B] transition-colors block py-1 text-left"
+                      className="font-sans text-[13px] md:text-[14px] font-normal text-[#FAF7ED]/90 hover:text-[#CFE87B] transition-colors block py-1 text-left"
                     >
                       Newsletter
                     </button>
@@ -208,7 +208,7 @@ export const Footer: React.FC = () => {
         </div>
 
         {/* Bottom Bar: Copyright & Terms Left + Social Pills Right */}
-        <div className="pt-6 border-t border-[#FAF8F1]/10 grid grid-cols-1 md:grid-cols-12 items-center gap-6 text-[11px] text-[#FAF8F1]/70">
+        <div className="pt-6 border-t border-[#FAF7ED]/10 grid grid-cols-1 md:grid-cols-12 items-center gap-6 text-[11px] text-[#FAF7ED]/70">
           
           <div className="md:col-span-4 flex items-center gap-6">
             <span className="font-sans">©2026 TIE</span>
@@ -219,7 +219,7 @@ export const Footer: React.FC = () => {
               >
                 Privacy Policy
               </button>
-              <span className="text-[#FAF8F1]/30">/</span>
+              <span className="text-[#FAF7ED]/30">/</span>
               <button
                 onClick={() => handleScrollTo('solutions-section')}
                 className="hover:text-[#CFE87B] transition-colors text-left"

@@ -129,7 +129,7 @@ export const TrustMetricsSection: React.FC = () => {
   };
 
   return (
-    <section className="pt-6 pb-20 sm:pb-28 bg-[#FAF8F1] overflow-hidden select-none">
+    <section className="pt-6 pb-20 sm:pb-28 bg-[#FAF7ED] overflow-hidden select-none">
       
       {/* 1. Header aligned with slide 1 */}
       <div className="w-full px-8 md:px-16 lg:px-24 mb-8 sm:mb-10">
@@ -149,7 +149,7 @@ export const TrustMetricsSection: React.FC = () => {
       >
         {/* Absolute Magnetic Cursor Follower inside Container */}
         <motion.div
-          className="absolute top-0 left-0 pointer-events-none z-50 w-[68px] h-[68px] rounded-full border border-[#182215]/60 bg-[#FAF8F1]/15 backdrop-blur-[2px] flex items-center justify-center text-[#182215]"
+          className="absolute top-0 left-0 pointer-events-none z-50 w-[68px] h-[68px] rounded-full border border-[#182215]/60 bg-[#FAF7ED]/15 backdrop-blur-[2px] flex items-center justify-center text-[#182215]"
           style={{ x: springX, y: springY }}
           animate={{
             opacity: isHoveringCarousel ? 1 : 0,
@@ -189,7 +189,7 @@ export const TrustMetricsSection: React.FC = () => {
               className="w-[86vw] max-w-[1240px] shrink-0 flex items-end select-none"
             >
               {/* LEFT: Text Card (Warm Cream surface, angular green quote, min-h-[430px] md:min-h-[460px]) */}
-              <div className="w-[66%] min-h-[430px] md:min-h-[460px] bg-[#FAF8F1] border border-[#DFDCD0] rounded-[20px] p-10 md:p-14 pr-28 md:pr-36 flex flex-col justify-between shrink-0 shadow-sm">
+              <div className="w-[66%] min-h-[430px] md:min-h-[460px] bg-[#FAF7ED] border border-[#DFDCD0] rounded-[20px] p-10 md:p-14 pr-28 md:pr-36 flex flex-col justify-between shrink-0 shadow-sm">
                 <div>
                   {/* Angular Olive Green Double Quotation SVG matching HUTS */}
                   <svg

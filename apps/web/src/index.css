@@ -222,7 +222,7 @@ section.card-slider div.h-scroll-content {
   height: 100%;
 }
 
-/* Each Card Wrapper: spans exactly 4 columns of the 12-column grid on desktop, so EXACTLY 3 cards fit on screen without clipping */
+/* Card Wrapper responsive width matching exact HUTS 12-column grid */
 section.card-slider div.h-scroll-content div.card-wrapper {
   width: calc(
     (100vw - (var(--grid-padding) * 2 + var(--grid-gutter) * (var(--grid-column-count) - 1)))
@@ -234,6 +234,36 @@ section.card-slider div.h-scroll-content div.card-wrapper {
   height: 100%;
   display: flex;
   flex-shrink: 0;
+}
+
+@media not (min-width: 90rem) {
+  section.card-slider div.h-scroll-content div.card-wrapper {
+    width: calc(
+      (100vw - (var(--grid-padding) * 2 + var(--grid-gutter) * (var(--grid-column-count) - 1)))
+      / var(--grid-column-count) * 5
+      + var(--grid-gutter) * 4
+    );
+  }
+}
+
+@media not (min-width: 68.75rem) {
+  section.card-slider div.h-scroll-content div.card-wrapper {
+    width: calc(
+      (100vw - (var(--grid-padding) * 2 + var(--grid-gutter) * (var(--grid-column-count) - 1)))
+      / var(--grid-column-count) * 6
+      + var(--grid-gutter) * 5
+    );
+  }
+}
+
+@media not (min-width: 58.75rem) {
+  section.card-slider div.h-scroll-content div.card-wrapper {
+    width: calc(
+      (100vw - (var(--grid-padding) * 2 + var(--grid-gutter) * (var(--grid-column-count) - 1)))
+      / var(--grid-column-count) * 8
+      + var(--grid-gutter) * 7
+    );
+  }
 }
 
 section.card-slider div.h-scroll-content .card.illustration {
@@ -392,7 +422,7 @@ section.card-slider div.h-scroll-content .card.standard div.card-front figure im
 }
 
 section.card-slider div.h-scroll-content .card.standard div.card-back {
-  background-color: #FFFFFF;
+  background-color: #FAF7ED;
   flex-direction: column;
   justify-content: center;
   align-items: center;
