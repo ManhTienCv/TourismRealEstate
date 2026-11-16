@@ -258,7 +258,6 @@ export const MegaMenuNavbar: React.FC = () => {
     menuCloseTimeoutRef.current = setTimeout(() => {
       setActiveMenu(null);
       setIsHeaderHovered(false);
-      window.dispatchEvent(new Event('tie:menu-close'));
     }, 100);
   };
 
@@ -267,7 +266,6 @@ export const MegaMenuNavbar: React.FC = () => {
       clearTimeout(menuCloseTimeoutRef.current);
       menuCloseTimeoutRef.current = null;
     }
-    window.dispatchEvent(new Event('tie:menu-open'));
     setIsHeaderHovered(true);
     setActiveMenu(menu);
   };
@@ -321,15 +319,6 @@ export const MegaMenuNavbar: React.FC = () => {
   );
 
   const isMenuOpen = activeMenu !== null;
-
-  // Phát tín hiệu native tie:menu-open / tie:menu-close tức thời (0ms, không gây re-render React)
-  useEffect(() => {
-    if (isMenuOpen) {
-      window.dispatchEvent(new Event('tie:menu-open'));
-    } else {
-      window.dispatchEvent(new Event('tie:menu-close'));
-    }
-  }, [isMenuOpen]);
   const isSolid = isScrolled || isHeaderHovered || isMenuOpen || activeTab !== 'home' || selectedSolutionSlug !== null;
 
   // Navbar chỉ ẩn khi đang lướt xuống VÀ người dùng KHÔNG rê chuột lên navbar / KHÔNG mở menu
@@ -354,7 +343,7 @@ export const MegaMenuNavbar: React.FC = () => {
           transition:
             'transform 0.4s cubic-bezier(0.33, 1, 0.68, 1), border-radius 0.25s cubic-bezier(0.33, 1, 0.68, 1), background-color 0.2s cubic-bezier(0.33, 1, 0.68, 1)',
         }}
-        className={`fixed top-0 left-0 right-0 z-50 will-change-transform ${
+        className={`fixed top-0 left-0 right-0 z-50 will-change-transform [transform:translateZ(0)] ${
           shouldHideNavbar ? '-translate-y-full pointer-events-none' : 'translate-y-0 pointer-events-auto'
         } ${
           isSolid
@@ -688,7 +677,7 @@ export const MegaMenuNavbar: React.FC = () => {
 
       {/* Dimmed backdrop overlay when MegaMenu is active */}
       <div
-        className={`fixed inset-0 bg-[#1E1414]/50 z-40 transition-opacity duration-300 ease-[cubic-bezier(0.33,1,0.68,1)] will-change-opacity ${
+        className={`fixed inset-0 bg-[#1E1414]/50 z-40 transition-opacity duration-250 ease-[cubic-bezier(0.33,1,0.68,1)] [transform:translateZ(0)] ${
           isMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         }`}
         onClick={() => {

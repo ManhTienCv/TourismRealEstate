@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { useConfiguratorStore } from '../../store/useConfiguratorStore';
 import { ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -13,56 +13,53 @@ export const HeroSection: React.FC = () => {
   const openConfigurator = useConfiguratorStore((s) => s.openConfigurator);
   const sectionRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [isInView, setIsInView] = useState(true);
-  const isMenuOpenRef = useRef(false);
 
-  // Tạm dừng video khi HeroSection cuộn ra khỏi màn hình (tiết kiệm GPU & CPU)
+  // Quản lý trạng thái phát video thông minh & tối ưu phần cứng:
+  // 1. Video LUÔN PHÁT liên tục, mượt mà khi HeroSection trong tầm nhìn (kể cả khi mở/chuyển tab MegaMenu).
+  // 2. Chỉ tạm dừng video khi HeroSection cuộn ra khỏi màn hình (IntersectionObserver).
+  // 3. Tạm dừng khi tab trình duyệt bị ẩn (visibilitychange) để tiết kiệm 100% tài nguyên CPU/GPU/Pin.
+  // 4. Sử dụng điều khiển trực tiếp trên DOM (0ms overhead, 0 React re-render).
   useEffect(() => {
     const el = sectionRef.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        const inView = entry.isIntersecting;
-        setIsInView(inView);
-        const video = videoRef.current;
-        if (video) {
-          if (!inView || isMenuOpenRef.current) {
-            video.pause();
-          } else {
-            video.play().catch(() => {});
-          }
-        }
-      },
-      { threshold: 0.05 }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-
-  // Lắng nghe sự kiện đồng bộ native tie:menu-open / tie:menu-close (0ms overhead, không kích hoạt React re-render)
-  useEffect(() => {
     const video = videoRef.current;
+    if (!el || !video) return;
 
-    const handleMenuOpen = () => {
-      isMenuOpenRef.current = true;
-      if (video) video.pause();
-    };
+    let isSectionInView = true;
 
-    const handleMenuClose = () => {
-      isMenuOpenRef.current = false;
-      if (video && isInView) {
-        video.play().catch(() => {});
+    const syncVideoPlayback = () => {
+      const isDocumentVisible = document.visibilityState === 'visible';
+      if (isSectionInView && isDocumentVisible) {
+        if (video.paused) {
+          video.play().catch(() => {});
+        }
+      } else {
+        if (!video.paused) {
+          video.pause();
+        }
       }
     };
 
-    window.addEventListener('tie:menu-open', handleMenuOpen);
-    window.addEventListener('tie:menu-close', handleMenuClose);
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isSectionInView = entry.isIntersecting;
+        syncVideoPlayback();
+      },
+      { threshold: 0.05 }
+    );
+
+    observer.observe(el);
+
+    const handleVisibilityChange = () => {
+      syncVideoPlayback();
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
 
     return () => {
-      window.removeEventListener('tie:menu-open', handleMenuOpen);
-      window.removeEventListener('tie:menu-close', handleMenuClose);
+      observer.disconnect();
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
-  }, [isInView]);
+  }, []);
 
   return (
     <section
@@ -70,28 +67,32 @@ export const HeroSection: React.FC = () => {
       className="relative w-full min-h-[92vh] sm:min-h-screen flex items-center justify-center overflow-hidden"
     >
       
-      {/* FULL-BLEED HERO BACKGROUND VIDEO WITH GPU ISOLATION LAYER */}
-      <div className="absolute inset-0 w-full h-full overflow-hidden [contain:strict] [transform:translateZ(0)]">
+      {/* FULL-BLEED HERO BACKGROUND VIDEO WITH GPU COMPOSITOR ISOLATION */}
+      <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none select-none [contain:strict] [transform:translateZ(0)]">
         <video
           ref={videoRef}
           autoPlay
           muted
           loop
           playsInline
+          preload="auto"
+          disablePictureInPicture
+          disableRemotePlayback
+          aria-hidden="true"
           poster={HERO_FALLBACK_IMAGE}
-          className="absolute inset-0 w-full h-full object-cover object-center will-change-transform [transform:translateZ(0)]"
+          className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none select-none [transform:translateZ(0)] [backface-visibility:hidden]"
         >
           <source src={HERO_VIDEO_URL} type="video/mp4" />
           <img
             src={HERO_FALLBACK_IMAGE}
             alt="Modern timber country home in scenic rural landscape"
-            className="w-full h-full object-cover object-center"
+            className="w-full h-full object-cover object-center pointer-events-none select-none"
           />
         </video>
       </div>
 
       {/* Cinematic Vignette Overlay (Darker at top for navbar readability, subtle in center) */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/55 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/55 pointer-events-none select-none [transform:translateZ(0)]" />
 
       {/* CENTERED HERO CONTENT (Exact composition, line breaks, and underline from Banghi.mp4) */}
       <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-24 sm:pt-28 pb-16 flex flex-col items-center justify-center">
