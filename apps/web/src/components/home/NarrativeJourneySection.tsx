@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import { motion, PanInfo } from 'framer-motion';
 import { useConfiguratorStore } from '../../store/useConfiguratorStore';
 import { DividerArrow } from './narrative/DoubleLoopArrow';
+import { HutsButton } from '../common/HutsButton';
 
 // 3 ảnh gốc của HUTS cho bộ xếp chồng
 const INITIAL_CARDS = [
@@ -154,21 +155,14 @@ export const NarrativeJourneySection: React.FC = () => {
               We focused exclusively on delivering in rural locations. Coast-to-coast, TIE crafts beautiful properties through guidance, intent, and care. Have a specific area or state in mind? We've either built there, or will soon.
             </p>
 
-            {/* Nút bấm See Our Projects: Viên thuốc + Vòng tròn icon chạm sát nhau (gap-0) */}
-            <div
+            {/* Nút bấm See Our Projects: Nút HUTS Scribble Fill Hover */}
+            <HutsButton
+              variant="secondary"
+              withArrow={true}
               onClick={handleSeeProjects}
-              className="group inline-flex items-center gap-0 cursor-pointer select-none"
             >
-              <div className="h-[48px] px-8 rounded-full border border-[#0C310A] text-[#0C310A] text-[14px] flex items-center justify-center transition-colors duration-200 group-hover:bg-[#0C310A] group-hover:text-[#FAF7ED]">
-                See Our Projects
-              </div>
-              <div className="w-[48px] h-[48px] rounded-full border border-[#0C310A] flex items-center justify-center transition-colors duration-200 group-hover:bg-[#0C310A] group-hover:text-[#FAF7ED]">
-                <svg width="19" height="18" viewBox="0 0 19 18" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-[18px] h-[18px] transition-transform duration-200 group-hover:translate-x-0.5">
-                  <path d="M0 8.99805H16.7802" stroke="currentColor" strokeWidth="1.8" />
-                  <path d="M11.0684 17.7976C11.0684 12.77 14.3032 8.99938 18.0001 8.99938C15.6895 8.41283 11.0684 5.83203 11.0684 0.201172" stroke="currentColor" strokeWidth="1.8" />
-                </svg>
-              </div>
-            </div>
+              See Our Projects
+            </HutsButton>
           </div>
 
         </div>
@@ -201,21 +195,14 @@ export const NarrativeJourneySection: React.FC = () => {
               We deliver properties differently think of us as your sherpa on the path to your perfect property. Our people-first process goes far beyond floor plans—we coordinate every player needed to take you from a spark of an idea to raw land to a finished home. It's a start-to-finish approach that's proven, vetted, and simply the best way to build.
             </p>
 
-            {/* Nút bấm How It Works: Viên thuốc + Vòng tròn icon chạm sát nhau (gap-0) */}
-            <div
+            {/* Nút bấm How It Works: Nút HUTS Scribble Fill Hover */}
+            <HutsButton
+              variant="secondary"
+              withArrow={true}
               onClick={handleHowItWorksClick}
-              className="group inline-flex items-center gap-0 cursor-pointer select-none"
             >
-              <div className="h-[48px] px-8 rounded-full border border-[#0C310A] text-[#0C310A] text-[14px] flex items-center justify-center transition-colors duration-200 group-hover:bg-[#0C310A] group-hover:text-[#FAF7ED]">
-                How It Works
-              </div>
-              <div className="w-[48px] h-[48px] rounded-full border border-[#0C310A] flex items-center justify-center transition-colors duration-200 group-hover:bg-[#0C310A] group-hover:text-[#FAF7ED]">
-                <svg width="19" height="18" viewBox="0 0 19 18" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-[18px] h-[18px] transition-transform duration-200 group-hover:translate-x-0.5">
-                  <path d="M0 8.99805H16.7802" stroke="currentColor" strokeWidth="1.8" />
-                  <path d="M11.0684 17.7976C11.0684 12.77 14.3032 8.99938 18.0001 8.99938C15.6895 8.41283 11.0684 5.83203 11.0684 0.201172" stroke="currentColor" strokeWidth="1.8" />
-                </svg>
-              </div>
-            </div>
+              How It Works
+            </HutsButton>
           </div>
 
           {/* CỘT PHẢI: HÌNH MINH HỌA SHERPA BÊN LÒ SƯỞI HUTS GỐC */}

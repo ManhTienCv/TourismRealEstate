@@ -1,0 +1,209 @@
+/* ==========================================================================
+   HUTS SIGNATURE "SCRIBBLE FILL HOVER" BUTTON
+   100% GPU Hardware Accelerated (stroke-dasharray + transform)
+   ========================================================================== */
+
+.huts-btn {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: stretch;
+  width: max-content;
+  border-radius: 104px;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  user-select: none;
+  text-decoration: none;
+  border: none;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  outline: none;
+  font-family: inherit;
+  transition: transform 0.2s cubic-bezier(0.33, 1, 0.68, 1);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.huts-btn:active {
+  transform: scale(0.98);
+}
+
+/* 1. Khối chữ bên trái */
+.huts-btn .text-wrapper {
+  border-radius: 104px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: box-shadow 0.35s cubic-bezier(0.33, 1, 0.68, 1), background-color 0.35s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.huts-btn .text-wrapper span {
+  z-index: 1;
+  padding: 1rem 2rem;
+  display: block;
+  position: relative;
+  font-family: "ABC Walter Neue", "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  line-height: 1.4;
+  font-weight: 400;
+  white-space: nowrap;
+  letter-spacing: -0.01em;
+  transition: color 0.35s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+/* 2. Khối tròn icon mũi tên bên phải */
+.huts-btn .btn-icon {
+  border-radius: 104px;
+  width: 3rem;
+  height: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+  transition: box-shadow 0.35s cubic-bezier(0.33, 1, 0.68, 1), background-color 0.35s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.huts-btn .btn-icon-svg {
+  z-index: 1;
+  width: 1.15rem;
+  height: 1.15rem;
+  position: relative;
+  transition: transform 0.45s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.huts-btn .btn-icon-svg .stroke {
+  transition: stroke 0.35s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+/* 3. Đồng bộ tọa độ nét vẽ SVG giữa 2 khối (QUAN TRỌNG NHẤT) */
+.huts-btn svg.btn-path {
+  z-index: 0;
+  min-width: 108%;
+  min-height: 100%;
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.huts-btn.w-arrow .text-wrapper svg.btn-path {
+  min-width: var(--btn-total-width, calc(100% + 3rem));
+  transform: translate(3rem, -50%);
+}
+
+.huts-btn.w-arrow .btn-icon svg.btn-path {
+  min-width: var(--btn-total-width, 16rem);
+  transform: translateY(-50%);
+}
+
+.huts-btn svg.btn-path path {
+  stroke-dasharray: 0 1010;
+  stroke-dashoffset: 0;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: stroke-dasharray 0.55s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+/* 4. Trạng thái Hover chung */
+.huts-btn:hover svg.btn-path path {
+  stroke-dasharray: 1010 0;
+}
+
+.huts-btn:hover .btn-icon-svg {
+  transform: rotate(-45deg);
+}
+
+/* 5. Biến thể secondary (như See Our Projects & Learn How It Works) */
+.huts-btn.button-secondary .text-wrapper,
+.huts-btn.button-secondary .btn-icon {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px #0c310a;
+}
+
+.huts-btn.button-secondary .text-wrapper span {
+  color: #0c310a;
+}
+
+.huts-btn.button-secondary .btn-icon-svg .stroke {
+  stroke: #0c310a;
+}
+
+.huts-btn.button-secondary svg.btn-path path {
+  stroke: #0c310a;
+}
+
+.huts-btn.button-secondary:hover .text-wrapper span {
+  color: #fffdf6;
+}
+
+.huts-btn.button-secondary:hover .btn-icon-svg .stroke {
+  stroke: #fffdf6;
+}
+
+/* 6. Biến thể primary (như Get Started ở Hero) */
+.huts-btn.button-primary .text-wrapper,
+.huts-btn.button-primary .btn-icon {
+  background-color: #57772e;
+  box-shadow: inset 0 0 0 1px #57772e;
+}
+
+.huts-btn.button-primary .text-wrapper span {
+  color: #fffdf6;
+}
+
+.huts-btn.button-primary .btn-icon-svg .stroke {
+  stroke: #fffdf6;
+}
+
+.huts-btn.button-primary svg.btn-path path {
+  stroke: #d5e798;
+}
+
+.huts-btn.button-primary:hover .text-wrapper span {
+  color: #0c310a;
+}
+
+.huts-btn.button-primary:hover .btn-icon-svg .stroke {
+  stroke: #0c310a;
+}
+
+/* 7. Biến thể nav (Nền xanh cốm HUTS, chữ rêu đậm) */
+.huts-btn.button-nav .text-wrapper,
+.huts-btn.button-nav .btn-icon {
+  background-color: #cbe282;
+  box-shadow: inset 0 0 0 1px #cbe282;
+}
+
+.huts-btn.button-nav .text-wrapper span {
+  color: #0c310a;
+  padding: 0.75rem 1.75rem;
+}
+
+.huts-btn.button-nav .btn-icon {
+  width: 2.625rem;
+  height: 2.625rem;
+}
+
+.huts-btn.button-nav .btn-icon-svg .stroke {
+  stroke: #0c310a;
+}
+
+.huts-btn.button-nav svg.btn-path path {
+  stroke: #0c310a;
+}
+
+.huts-btn.button-nav:hover .text-wrapper span {
+  color: #fffdf6;
+}
+
+.huts-btn.button-nav:hover .btn-icon-svg .stroke {
+  stroke: #fffdf6;
+}

@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import { useConfiguratorStore } from '../../store/useConfiguratorStore';
-import { ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { HutsButton } from '../common/HutsButton';
 
 // Authentic high-res ambient background video from HUTS Sanity CDN with static image fallback
 const HERO_VIDEO_URL =
@@ -141,15 +141,13 @@ export const HeroSection: React.FC = () => {
           transition={{ duration: 0.8, delay: 0.25 }}
           className="mt-10 sm:mt-12"
         >
-          <button
+          <HutsButton
+            variant="primary"
+            withArrow={true}
             onClick={() => openConfigurator()}
-            className="group inline-flex items-center space-x-3 px-8 py-3.5 rounded-[104px] text-[14px] leading-[1.4] font-normal text-[#FAF7ED] bg-[#567D42] hover:bg-[#466635] shadow-tie-card transition-all duration-300 active:scale-95 border border-[#6B9A53]/50"
           >
-            <span>Get Started</span>
-            <span className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center group-hover:translate-x-1 group-hover:bg-white/30 transition-all">
-              <ArrowRight className="w-3.5 h-3.5 text-[#FAF7ED]" />
-            </span>
-          </button>
+            Get Started
+          </HutsButton>
         </motion.div>
 
       </div>
