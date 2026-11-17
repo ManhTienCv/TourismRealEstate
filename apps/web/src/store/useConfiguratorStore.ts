@@ -266,10 +266,18 @@ export const useConfiguratorStore = create<ConfiguratorState>((set, get) => ({
   openSolutionDetail: (slug) => {
     set({ selectedSolutionSlug: slug, activeTab: 'home' });
     if (typeof window !== 'undefined') {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
+      if (window.location.pathname !== `/housing-solutions/${slug}`) {
+        window.history.pushState({}, '', `/housing-solutions/${slug}`);
+      }
     }
   },
-  closeSolutionDetail: () => set({ selectedSolutionSlug: null }),
+  closeSolutionDetail: () => {
+    set({ selectedSolutionSlug: null });
+    if (typeof window !== 'undefined' && window.location.pathname.startsWith('/housing-solutions')) {
+      window.history.pushState({}, '', '/');
+    }
+  },
   setIsMegaMenuOpen: (isOpen) => set({ isMegaMenuOpen: isOpen }),
 
   setFilterSolutionSlug: (slug) => set({ filterSolutionSlug: slug }),

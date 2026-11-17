@@ -520,9 +520,13 @@ export const MegaMenuNavbar: React.FC = () => {
                 >
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-6">
                     {HOUSING_SOLUTIONS_ITEMS.map((item) => (
-                      <div
+                      <a
                         key={item.slug}
-                        onClick={() => handleSolutionSelect(item.slug)}
+                        href={`/housing-solutions/${item.slug}`}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleSolutionSelect(item.slug);
+                        }}
                         className="flex items-start space-x-4 p-2.5 rounded-[16px] hover:bg-[#F2EFE4]/60 cursor-pointer transition-colors duration-100 group"
                       >
                         <div className="w-[70px] h-[70px] rounded-[16px] bg-[#FAF7ED] shrink-0 flex items-center justify-center p-2.5 overflow-hidden border border-[#E2DDD5]/80 [contain:strict] [transform:translateZ(0)]">
@@ -542,7 +546,7 @@ export const MegaMenuNavbar: React.FC = () => {
                             {item.byline}
                           </p>
                         </div>
-                      </div>
+                      </a>
                     ))}
                   </div>
                 </div>

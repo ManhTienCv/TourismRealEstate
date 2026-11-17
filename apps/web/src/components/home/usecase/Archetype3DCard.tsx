@@ -90,7 +90,15 @@ export const Archetype3DCard: React.FC<ArchetypeCardProps> = ({ sol, onLearnMore
               <p>{editorial.desc}</p>
             </div>
 
-            <div className="button button-text">
+            <a
+              href={`/housing-solutions/${sol.slug}`}
+              className="button button-text"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                onLearnMore(sol.slug);
+              }}
+            >
               <div className="text-wrapper">
                 <span>{editorial.buttonText}</span>
               </div>
@@ -117,7 +125,7 @@ export const Archetype3DCard: React.FC<ArchetypeCardProps> = ({ sol, onLearnMore
                   />
                 </svg>
               </div>
-            </div>
+            </a>
           </div>
         </div>
       </div>

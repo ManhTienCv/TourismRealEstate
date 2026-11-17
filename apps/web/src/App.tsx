@@ -16,12 +16,33 @@ import { PlanDetailModal } from './components/standards/PlanDetailModal';
 import { GetStartedWizard } from './components/configurator/GetStartedWizard';
 import { FieldReportPortal } from './components/field-report/FieldReportPortal';
 import { PortfolioGalleryModal } from './components/portfolio/PortfolioGalleryModal';
-import { SolutionDetailView } from './components/solutions/SolutionDetailView';
+import { HousingSolutionPage } from './components/solutions/HousingSolutionPage';
 import { WhatIsAStandardView } from './components/standards/WhatIsAStandardView';
 
 export const App: React.FC = () => {
   const activeTab = useConfiguratorStore((s) => s.activeTab);
   const selectedSolutionSlug = useConfiguratorStore((s) => s.selectedSolutionSlug);
+  const openSolutionDetail = useConfiguratorStore((s) => s.openSolutionDetail);
+  const closeSolutionDetail = useConfiguratorStore((s) => s.closeSolutionDetail);
+
+  // Sync route /housing-solutions/:slug with browser address bar and history
+  useEffect(() => {
+    const handlePopState = () => {
+      const path = window.location.pathname;
+      if (path.startsWith('/housing-solutions/')) {
+        const slug = path.replace('/housing-solutions/', '').replace(/\/$/, '');
+        if (slug) {
+          openSolutionDetail(slug);
+        }
+      } else if (path === '/' || path === '') {
+        closeSolutionDetail();
+      }
+    };
+
+    handlePopState();
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, [openSolutionDetail, closeSolutionDetail]);
 
   // Initialize Lenis Momentum / Inertia Scrolling (Matches Huts.com smooth luxury scroll physics)
   useEffect(() => {
@@ -76,7 +97,7 @@ export const App: React.FC = () => {
         ) : activeTab === 'standards' ? (
           <WhatIsAStandardView />
         ) : selectedSolutionSlug ? (
-          <SolutionDetailView />
+          <HousingSolutionPage slug={selectedSolutionSlug} />
         ) : (
           <>
             {/* 01. Hero with wide cinematic photography, headline & pro-forma teaser */}
