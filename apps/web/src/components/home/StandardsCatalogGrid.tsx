@@ -138,15 +138,60 @@ export const StandardsCatalogGrid: React.FC = () => {
       id="standards-section"
       className="card-slider relative w-full h-[320vh] bg-[#FAF7ED]"
     >
+      {/* Scoped CSS để ghi đè tuyệt đối các thuộc tính kích thước, màu nền và căn lề của HUTS */}
+      <style>{`
+        #standards-section .card-wrapper {
+          width: 340px !important;
+          height: auto !important;
+        }
+        @media (min-width: 768px) {
+          #standards-section .card-wrapper {
+            width: 444px !important;
+          }
+        }
+        #standards-section .card.standard {
+          width: 100% !important;
+          height: 380px !important;
+          flex: none !important;
+        }
+        @media (min-width: 768px) {
+          #standards-section .card.standard {
+            height: 479px !important;
+          }
+        }
+        #standards-section .card.standard .card-back {
+          background-color: #FFFFFF !important;
+          border: 1px solid #57772E !important;
+          padding: 42px 24px !important;
+        }
+        #standards-section .card-wrapper > h5 {
+          text-align: left !important;
+        }
+        #standards-section .h-scroll-content {
+          gap: 22.3px !important;
+          column-gap: 22.3px !important;
+          padding-left: 24px !important;
+          padding-right: 24px !important;
+        }
+        @media (min-width: 768px) {
+          #standards-section .h-scroll-content {
+            padding-left: 56px !important;
+            padding-right: 56px !important;
+          }
+        }
+      `}</style>
+
       {/* 100dvh sticky container with grid-template-rows: auto 1fr (matching HUTS) */}
       <div className="scroll-content select-none">
         
         {/* Section Header within grid row 1 */}
-        <div className="heading-wrapper">
+        <div className="heading-wrapper mb-[38px]">
           <div className="block-text">
             <div className="block-text-col">
-              <h3>It all starts with our Standards...</h3>
-              <p>
+              <h3 className="text-[34px] lg:text-[50px] leading-[1.1] tracking-[-0.03em] font-serif font-normal text-[#0C310A] text-center mb-[22px]">
+                It all starts with our Standards...
+              </h3>
+              <p className="max-w-[750px] mx-auto text-center text-[15.5px] leading-[23px] text-[#664A42] font-sans">
                 They’re more than home plans, they’re home products—designed for real land, real budgets, and real life. TIE Standards combine timeless design with construction-ready details, making it faster and easier to build a home that feels anything but standard.
               </p>
             </div>
@@ -158,17 +203,20 @@ export const StandardsCatalogGrid: React.FC = () => {
           <motion.div
             ref={trackRef}
             style={{ x }}
-            className="h-scroll-content"
+            className="h-scroll-content flex items-center gap-[22.3px] px-6 md:px-[56px] will-change-transform h-auto"
           >
             {STANDARDS_SLIDER_ITEMS.map((item) => (
-              <div key={item.slug} className="card-wrapper">
+              <div
+                key={item.slug}
+                className="card-wrapper w-[340px] md:w-[444px] shrink-0 flex flex-col gap-[24px] group"
+              >
                 <div
-                  className="card standard"
+                  className="card standard w-full h-[380px] md:h-[479px] rounded-[22px] [perspective:1000px] cursor-pointer"
                   onClick={() => handlePlanClick(item.slug)}
                 >
-                  <div className="card-inner">
+                  <div className="card-inner relative w-full h-full rounded-[22px] [transform-style:preserve-3d] transition-transform duration-[800ms] ease-[cubic-bezier(0.175,0.885,0.32,1.125)] group-hover:[transform:rotateY(180deg)]">
                     {/* Front: Exterior Architectural Render */}
-                    <div className="card-front">
+                    <div className="card-front absolute inset-0 w-full h-full rounded-[22px] overflow-hidden [backface-visibility:hidden] bg-[#FFFDF6] border border-[#0C310A]/25">
                       <figure className="w-full h-full">
                         <img
                           src={item.coverImg}
@@ -180,22 +228,27 @@ export const StandardsCatalogGrid: React.FC = () => {
                       </figure>
                     </div>
 
-                    {/* Back: 3D Axonometric Drawing on White BG with Tags */}
-                    <div className="card-back">
-                      <div className="image-wrapper">
+                    {/* Back: 3D Axonometric Drawing on Pure White BG with Tags */}
+                    <div className="card-back absolute inset-0 w-full h-full rounded-[22px] overflow-hidden [backface-visibility:hidden] [transform:rotateY(180deg)] bg-[#FFFFFF] border border-[#57772E] flex flex-col justify-center items-center px-[24px] py-[42px]">
+                      <div className="image-wrapper w-full h-full flex items-center justify-center">
                         <figure className="w-full h-full flex items-center justify-center">
                           <img
                             src={item.axonImg}
                             alt={`${item.title} 3D Axonometric`}
-                            className="w-full h-full object-contain select-none pointer-events-none drop-shadow-xs"
+                            className="w-full max-w-[396px] max-h-[360px] object-contain select-none pointer-events-none"
                             loading="lazy"
                             draggable={false}
                           />
                         </figure>
                       </div>
-                      <div className="tags-wrapper">
+
+                      {/* Nhãn thông số ở góc dưới trái */}
+                      <div className="tags-wrapper absolute bottom-[24px] left-[24px] right-[24px] flex flex-wrap items-start gap-[8px]">
                         {item.tags.map((tag, tIdx) => (
-                          <div key={tIdx} className="tag">
+                          <div
+                            key={tIdx}
+                            className="tag text-[12px] leading-[1.5] text-[#1E1414] bg-[#FFFDF6]/65 border border-[#D0D4C8] rounded-full px-[14px] py-[5px] font-sans select-none"
+                          >
                             <span>{tag}</span>
                           </div>
                         ))}
@@ -204,8 +257,10 @@ export const StandardsCatalogGrid: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Sibling h5 title below card: turns green #57772E on card hover */}
-                <h5>{item.title}</h5>
+                {/* Sibling h5 title below card: Căn trái, cách thẻ 24px, đổi màu xanh khi hover */}
+                <h5 className="text-[24px] md:text-[29.6px] leading-[1.35] tracking-[-0.025em] font-serif font-normal text-[#0C310A] text-left transition-colors duration-200 ease-[cubic-bezier(0.33,1,0.68,1)] group-hover:text-[#57772E]">
+                  {item.title}
+                </h5>
               </div>
             ))}
           </motion.div>
