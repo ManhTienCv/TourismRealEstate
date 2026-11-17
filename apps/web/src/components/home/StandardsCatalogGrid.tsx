@@ -69,6 +69,72 @@ export const StandardsCatalogGrid: React.FC = () => {
   const trackRef = useRef<HTMLDivElement>(null);
   const [maxTranslateX, setMaxTranslateX] = useState(0);
 
+  // State và refs kiểm soát cơ chế "Lướt trôi + Đứng im chuột mới lật thẻ" (Hover Intent + Scroll Lock)
+  const [flippedSlug, setFlippedSlug] = useState<string | null>(null);
+  const hoverTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const isScrollingRef = useRef(false);
+  const scrollEndTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Khóa lật thẻ khi đang cuộn trang: úp thẻ lại ngay lập tức và hủy timer
+  useEffect(() => {
+    const handleScroll = () => {
+      isScrollingRef.current = true;
+      if (hoverTimerRef.current) {
+        clearTimeout(hoverTimerRef.current);
+        hoverTimerRef.current = null;
+      }
+      setFlippedSlug(null);
+
+      if (scrollEndTimerRef.current) {
+        clearTimeout(scrollEndTimerRef.current);
+      }
+      scrollEndTimerRef.current = setTimeout(() => {
+        isScrollingRef.current = false;
+      }, 150);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
+      if (scrollEndTimerRef.current) clearTimeout(scrollEndTimerRef.current);
+    };
+  }, []);
+
+  const handleCardMouseEnter = (slug: string) => {
+    if (isScrollingRef.current || document.documentElement.classList.contains('lenis-scrolling')) {
+      return;
+    }
+    if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
+    // Độ trễ hover intent 200ms khi chuột đứng im trên thẻ
+    hoverTimerRef.current = setTimeout(() => {
+      if (!isScrollingRef.current && !document.documentElement.classList.contains('lenis-scrolling')) {
+        setFlippedSlug(slug);
+      }
+    }, 200);
+  };
+
+  const handleCardMouseMove = (slug: string) => {
+    if (isScrollingRef.current || document.documentElement.classList.contains('lenis-scrolling')) {
+      return;
+    }
+    if (flippedSlug !== slug && !hoverTimerRef.current) {
+      hoverTimerRef.current = setTimeout(() => {
+        if (!isScrollingRef.current && !document.documentElement.classList.contains('lenis-scrolling')) {
+          setFlippedSlug(slug);
+        }
+      }, 200);
+    }
+  };
+
+  const handleCardMouseLeave = () => {
+    if (hoverTimerRef.current) {
+      clearTimeout(hoverTimerRef.current);
+      hoverTimerRef.current = null;
+    }
+    setFlippedSlug(null);
+  };
+
   // Tính động quãng đường trượt ngang maxTranslateX chuẩn xác tuyệt đối đến từng pixel
   useEffect(() => {
     const trackEl = trackRef.current;
@@ -108,7 +174,7 @@ export const StandardsCatalogGrid: React.FC = () => {
     };
   }, []);
 
-  // Sticky Horizontal Scroll driven by vertical viewport scroll across 320vh
+  // Sticky Horizontal Scroll driven by vertical viewport scroll across 350vh (trôi mượt tương đương UseCaseSelector)
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ['start start', 'end end'],
@@ -136,37 +202,69 @@ export const StandardsCatalogGrid: React.FC = () => {
     <section
       ref={containerRef}
       id="standards-section"
-      className="card-slider relative w-full h-[320vh] bg-[#FAF7ED]"
+      className="card-slider relative w-full h-[350vh] bg-[#FAF7ED]"
     >
-      {/* Scoped CSS để ghi đè tuyệt đối các thuộc tính kích thước, màu nền và căn lề của HUTS */}
+      {/* Scoped CSS để định hình chính xác kích thước 388x388px, căn lề và padding thoáng đãng */}
       <style>{`
+        #standards-section .scroll-content {
+          padding-top: 6rem !important; /* pt-24 (96px) tránh Navbar che tiêu đề */
+          padding-bottom: 2.5rem !important; /* pb-10 */
+          display: flex !important;
+          flex-direction: column !important;
+          justify-content: center !important;
+          height: 100vh !important;
+          height: 100dvh !important;
+        }
+
+        #standards-section .heading-wrapper {
+          margin-bottom: 2rem !important; /* mb-8 (32px) */
+        }
+
         #standards-section .card-wrapper {
-          width: 340px !important;
+          width: 300px !important;
           height: auto !important;
+          row-gap: 18px !important;
         }
         @media (min-width: 768px) {
           #standards-section .card-wrapper {
-            width: 444px !important;
+            width: 388px !important;
           }
         }
+
         #standards-section .card.standard {
           width: 100% !important;
-          height: 380px !important;
+          height: 310px !important;
           flex: none !important;
+          border-radius: 20px !important;
         }
         @media (min-width: 768px) {
           #standards-section .card.standard {
-            height: 479px !important;
+            height: 388px !important;
           }
         }
+
+        #standards-section .card.standard .card-front,
+        #standards-section .card.standard .card-back {
+          border-radius: 20px !important;
+        }
+
         #standards-section .card.standard .card-back {
           background-color: #FFFFFF !important;
           border: 1px solid #57772E !important;
-          padding: 42px 24px !important;
+          padding: 1.5rem !important; /* p-6 */
         }
+
         #standards-section .card-wrapper > h5 {
           text-align: left !important;
+          font-size: 22px !important;
+          line-height: 1.2 !important;
         }
+        @media (min-width: 768px) {
+          #standards-section .card-wrapper > h5 {
+            font-size: 26px !important;
+          }
+        }
+
         #standards-section .h-scroll-content {
           gap: 22.3px !important;
           column-gap: 22.3px !important;
@@ -181,11 +279,11 @@ export const StandardsCatalogGrid: React.FC = () => {
         }
       `}</style>
 
-      {/* 100dvh sticky container with grid-template-rows: auto 1fr (matching HUTS) */}
-      <div className="scroll-content select-none">
+      {/* 100dvh sticky container with pt-24 pb-10 flex flex-col justify-center (matching HUTS) */}
+      <div className="scroll-content select-none pt-24 pb-10 flex flex-col justify-center">
         
-        {/* Section Header within grid row 1 */}
-        <div className="heading-wrapper mb-[38px]">
+        {/* Section Header */}
+        <div className="heading-wrapper mb-8">
           <div className="block-text">
             <div className="block-text-col">
               <h3 className="text-[34px] lg:text-[50px] leading-[1.1] tracking-[-0.03em] font-serif font-normal text-[#0C310A] text-center mb-[22px]">
@@ -198,71 +296,86 @@ export const StandardsCatalogGrid: React.FC = () => {
           </div>
         </div>
 
-        {/* Sticky Horizontal Track within grid row 2 */}
+        {/* Sticky Horizontal Track */}
         <div className="h-scroll-container">
           <motion.div
             ref={trackRef}
             style={{ x }}
             className="h-scroll-content flex items-center gap-[22.3px] px-6 md:px-[56px] will-change-transform h-auto"
           >
-            {STANDARDS_SLIDER_ITEMS.map((item) => (
-              <div
-                key={item.slug}
-                className="card-wrapper w-[340px] md:w-[444px] shrink-0 flex flex-col gap-[24px] group"
-              >
-                <div
-                  className="card standard w-full h-[380px] md:h-[479px] rounded-[22px] [perspective:1000px] cursor-pointer"
-                  onClick={() => handlePlanClick(item.slug)}
-                >
-                  <div className="card-inner relative w-full h-full rounded-[22px] [transform-style:preserve-3d] transition-transform duration-[800ms] ease-[cubic-bezier(0.175,0.885,0.32,1.125)] group-hover:[transform:rotateY(180deg)]">
-                    {/* Front: Exterior Architectural Render */}
-                    <div className="card-front absolute inset-0 w-full h-full rounded-[22px] overflow-hidden [backface-visibility:hidden] bg-[#FFFDF6] border border-[#0C310A]/25">
-                      <figure className="w-full h-full">
-                        <img
-                          src={item.coverImg}
-                          alt={item.title}
-                          className="w-full h-full object-cover select-none pointer-events-none"
-                          loading="lazy"
-                          draggable={false}
-                        />
-                      </figure>
-                    </div>
+            {STANDARDS_SLIDER_ITEMS.map((item) => {
+              const isFlipped = flippedSlug === item.slug;
 
-                    {/* Back: 3D Axonometric Drawing on Pure White BG with Tags */}
-                    <div className="card-back absolute inset-0 w-full h-full rounded-[22px] overflow-hidden [backface-visibility:hidden] [transform:rotateY(180deg)] bg-[#FFFFFF] border border-[#57772E] flex flex-col justify-center items-center px-[24px] py-[42px]">
-                      <div className="image-wrapper w-full h-full flex items-center justify-center">
-                        <figure className="w-full h-full flex items-center justify-center">
+              return (
+                <div
+                  key={item.slug}
+                  className="card-wrapper w-[300px] md:w-[388px] shrink-0 flex flex-col gap-[18px] group"
+                >
+                  <div
+                    className="card standard w-full h-[310px] md:h-[388px] rounded-[20px] [perspective:1000px] cursor-pointer"
+                    onClick={() => handlePlanClick(item.slug)}
+                    onMouseEnter={() => handleCardMouseEnter(item.slug)}
+                    onMouseMove={() => handleCardMouseMove(item.slug)}
+                    onMouseLeave={handleCardMouseLeave}
+                  >
+                    <div
+                      className={`card-inner relative w-full h-full rounded-[20px] [transform-style:preserve-3d] transition-transform duration-[800ms] ease-[cubic-bezier(0.175,0.885,0.32,1.125)] ${
+                        isFlipped ? '[transform:rotateY(180deg)]' : '[transform:rotateY(0deg)]'
+                      }`}
+                    >
+                      {/* Front: Exterior Architectural Render */}
+                      <div className="card-front absolute inset-0 w-full h-full rounded-[20px] overflow-hidden [backface-visibility:hidden] bg-[#FFFDF6] border border-[#0C310A]/25">
+                        <figure className="w-full h-full">
                           <img
-                            src={item.axonImg}
-                            alt={`${item.title} 3D Axonometric`}
-                            className="w-full max-w-[396px] max-h-[360px] object-contain select-none pointer-events-none"
+                            src={item.coverImg}
+                            alt={item.title}
+                            className="w-full h-full object-cover select-none pointer-events-none"
                             loading="lazy"
                             draggable={false}
                           />
                         </figure>
                       </div>
 
-                      {/* Nhãn thông số ở góc dưới trái */}
-                      <div className="tags-wrapper absolute bottom-[24px] left-[24px] right-[24px] flex flex-wrap items-start gap-[8px]">
-                        {item.tags.map((tag, tIdx) => (
-                          <div
-                            key={tIdx}
-                            className="tag text-[12px] leading-[1.5] text-[#1E1414] bg-[#FFFDF6]/65 border border-[#D0D4C8] rounded-full px-[14px] py-[5px] font-sans select-none"
-                          >
-                            <span>{tag}</span>
-                          </div>
-                        ))}
+                      {/* Back: 3D Axonometric Drawing on Pure White BG with Tags */}
+                      <div className="card-back absolute inset-0 w-full h-full rounded-[20px] overflow-hidden [backface-visibility:hidden] [transform:rotateY(180deg)] bg-[#FFFFFF] border border-[#57772E] flex flex-col justify-center items-center p-6">
+                        <div className="image-wrapper w-full h-full flex items-center justify-center">
+                          <figure className="w-full h-full flex items-center justify-center">
+                            <img
+                              src={item.axonImg}
+                              alt={`${item.title} 3D Axonometric`}
+                              className="w-full max-w-[330px] max-h-[290px] object-contain select-none pointer-events-none"
+                              loading="lazy"
+                              draggable={false}
+                            />
+                          </figure>
+                        </div>
+
+                        {/* Nhãn thông số ở góc dưới */}
+                        <div className="tags-wrapper absolute bottom-[20px] left-[20px] right-[20px] flex flex-wrap items-start gap-[8px]">
+                          {item.tags.map((tag, tIdx) => (
+                            <div
+                              key={tIdx}
+                              className="tag text-[12px] leading-[1.5] text-[#1E1414] bg-[#FFFDF6]/65 border border-[#D0D4C8] rounded-full px-[14px] py-[5px] font-sans select-none"
+                            >
+                              <span>{tag}</span>
+                            </div>
+                          ))}
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
 
-                {/* Sibling h5 title below card: Căn trái, cách thẻ 24px, đổi màu xanh khi hover */}
-                <h5 className="text-[24px] md:text-[29.6px] leading-[1.35] tracking-[-0.025em] font-serif font-normal text-[#0C310A] text-left transition-colors duration-200 ease-[cubic-bezier(0.33,1,0.68,1)] group-hover:text-[#57772E]">
-                  {item.title}
-                </h5>
-              </div>
-            ))}
+                  {/* Sibling h5 title below card: Căn trái, cách thẻ 18px, đổi màu xanh #57772E khi thẻ lật */}
+                  <h5
+                    className={`text-[22px] md:text-[26px] leading-[1.2] tracking-[-0.025em] font-serif font-normal text-left transition-colors duration-200 ease-[cubic-bezier(0.33,1,0.68,1)] ${
+                      isFlipped ? 'text-[#57772E]' : 'text-[#0C310A]'
+                    }`}
+                  >
+                    {item.title}
+                  </h5>
+                </div>
+              );
+            })}
           </motion.div>
         </div>
 
