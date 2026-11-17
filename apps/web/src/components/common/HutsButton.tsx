@@ -9,6 +9,8 @@ export interface HutsButtonProps {
   variant?: 'secondary' | 'primary' | 'nav';
   withArrow?: boolean;
   onClick?: (e: React.MouseEvent) => void;
+  onMouseEnter?: (e: React.MouseEvent) => void;
+  onMouseLeave?: (e: React.MouseEvent) => void;
   href?: string;
   className?: string;
   type?: 'button' | 'submit' | 'reset';
@@ -22,6 +24,8 @@ export const HutsButton: React.FC<HutsButtonProps> = ({
   variant = 'secondary',
   withArrow = true,
   onClick,
+  onMouseEnter,
+  onMouseLeave,
   href,
   className = '',
   type = 'button',
@@ -52,7 +56,7 @@ export const HutsButton: React.FC<HutsButtonProps> = ({
       {/* 1. Khối chữ */}
       <div className="text-wrapper">
         <svg viewBox="0 0 260 64" fill="none" className="btn-path" aria-hidden="true">
-          <path d={SCRIBBLE_PATH} strokeWidth="30" pathLength="1000" />
+          <path d={SCRIBBLE_PATH} strokeWidth="30" pathLength="1000" strokeLinecap="butt" />
         </svg>
         <span>{children}</span>
       </div>
@@ -61,7 +65,7 @@ export const HutsButton: React.FC<HutsButtonProps> = ({
       {withArrow && (
         <div className="btn-icon" aria-hidden="true">
           <svg viewBox="0 0 260 64" fill="none" className="btn-path" aria-hidden="true">
-            <path d={SCRIBBLE_PATH} strokeWidth="30" pathLength="1000" />
+            <path d={SCRIBBLE_PATH} strokeWidth="30" pathLength="1000" strokeLinecap="butt" />
           </svg>
           <svg width="19" height="18" viewBox="0 0 19 18" fill="none" className="btn-icon-svg">
             <path className="stroke" d="M0 8.99805H16.7802" strokeWidth="1.8" />
@@ -82,6 +86,8 @@ export const HutsButton: React.FC<HutsButtonProps> = ({
         ref={syncWidth as React.RefCallback<HTMLAnchorElement>}
         href={href}
         onClick={onClick}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
         className={buttonClasses}
         title={title}
         target={target}
@@ -97,6 +103,8 @@ export const HutsButton: React.FC<HutsButtonProps> = ({
       ref={syncWidth as React.RefCallback<HTMLButtonElement>}
       type={type}
       onClick={onClick}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
       className={buttonClasses}
       title={title}
     >

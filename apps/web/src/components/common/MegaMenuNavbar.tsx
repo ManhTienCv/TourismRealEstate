@@ -6,6 +6,7 @@ import { Menu, X } from 'lucide-react';
 import { MenuType } from './navbar/navbarData';
 import { PlusCrossIcon } from './navbar/PlusCrossIcon';
 import { MobileMenuDrawer } from './navbar/MobileMenuDrawer';
+import { HutsButton } from './HutsButton';
 
 interface MegaMenuItem {
   slug: string;
@@ -473,14 +474,16 @@ export const MegaMenuNavbar: React.FC = () => {
 
             </nav>
 
-            {/* Right CTA Button: Signature Soft Lime Pill Button (HUTS: #CBE282 / #0C310A / rounded-[104px]) */}
-            <button
+            {/* Right CTA Button: Signature Soft Lime Pill Button with Scribble Fill Hover */}
+            <HutsButton
+              variant="nav"
+              withArrow={false}
               onMouseEnter={() => handleItemMouseEnter(null)}
               onClick={() => openConfigurator()}
-              className="px-5 py-2.5 rounded-[104px] bg-[#CBE282] hover:bg-[#b8d867] text-[#0C310A] text-[14px] leading-none font-normal transition-colors active:scale-95 shrink-0 shadow-xs cursor-pointer"
+              className="shrink-0"
             >
               Get Started
-            </button>
+            </HutsButton>
 
             {/* Mobile Hamburger Toggle */}
             <button
