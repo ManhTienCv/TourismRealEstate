@@ -207,8 +207,8 @@ export const HousingSolutionPage: React.FC<HousingSolutionPageProps> = ({ slug: 
 
       {/* 6. KHỐI GỢI Ý 3 THẺ STANDARDS (section.card-slider) */}
       {data.standardsSlider && (
-        <section className="card-slider py-20 px-6 md:px-16 max-w-[1584px] mx-auto">
-          <div className="max-w-[800px] mx-auto text-center mb-14">
+        <section className="card-slider px-6 md:px-16 py-16 md:py-24 max-w-[1584px] mx-auto">
+          <div className="max-w-[800px] mx-auto text-center mb-10">
             <h3 className="text-[34px] lg:text-[50px] leading-[1.1] tracking-[-0.03em] font-serif font-normal text-[#0C310A] mb-4">
               {data.standardsSlider.title}
             </h3>
@@ -217,7 +217,7 @@ export const HousingSolutionPage: React.FC<HousingSolutionPageProps> = ({ slug: 
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-[22px] w-full">
             {data.standardsSlider.cards.map((cardKey) => {
               const card = STANDARDS_LOOKUP[cardKey];
               if (!card) return null;
@@ -341,20 +341,20 @@ const StandardDetailCard: React.FC<{
   const [isFlipped, setIsFlipped] = useState(false);
 
   return (
-    <div className="w-full max-w-[444px] flex flex-col gap-[20px] select-none">
+    <div className="card-wrapper w-full flex flex-col gap-[20px] group select-none">
       <div
-        className="card standard relative w-full h-[380px] md:h-[479px] rounded-[22px] [perspective:1000px] cursor-pointer group"
+        className="card standard relative w-full aspect-[6/5] max-h-[45vh] rounded-[20px] [perspective:1000px] cursor-pointer"
         onClick={onSelect}
         onMouseEnter={() => setIsFlipped(true)}
         onMouseLeave={() => setIsFlipped(false)}
       >
         <div
-          className={`card-inner relative w-full h-full rounded-[22px] [transform-style:preserve-3d] transition-transform duration-[800ms] ease-[cubic-bezier(0.175,0.885,0.32,1.125)] ${
+          className={`card-inner relative w-full h-full rounded-[20px] [transform-style:preserve-3d] transition-transform duration-[800ms] ease-[cubic-bezier(0.175,0.885,0.32,1.125)] ${
             isFlipped ? '[transform:rotateY(180deg)]' : '[transform:rotateY(0deg)]'
           }`}
         >
           {/* Mặt trước: Ảnh ngoại thất */}
-          <div className="card-front absolute inset-0 w-full h-full rounded-[22px] overflow-hidden [backface-visibility:hidden] bg-[#FFFDF6] border border-[#0C310A]/25">
+          <div className="card-front absolute inset-0 w-full h-full rounded-[20px] overflow-hidden [backface-visibility:hidden] bg-[#FFFDF6] border border-[#0C310A]/25">
             <img
               src={card.coverImg}
               alt={card.title}
@@ -364,17 +364,15 @@ const StandardDetailCard: React.FC<{
           </div>
 
           {/* Mặt sau: Bản vẽ 3D Axonometric nền trắng tinh */}
-          <div className="card-back absolute inset-0 w-full h-full rounded-[22px] overflow-hidden [backface-visibility:hidden] [transform:rotateY(180deg)] bg-[#FFFFFF] border border-[#57772E] flex flex-col justify-center items-center p-6">
-            <div className="w-full h-full flex items-center justify-center">
-              <img
-                src={card.axonImg}
-                alt={`${card.title} 3D Axonometric`}
-                className="w-full max-w-[330px] max-h-[290px] object-contain select-none pointer-events-none"
-                loading="lazy"
-              />
-            </div>
+          <div className="card-back absolute inset-0 w-full h-full rounded-[20px] overflow-hidden [backface-visibility:hidden] [transform:rotateY(180deg)] bg-[#FFFFFF] border border-[#57772E] px-5 pt-5 pb-14 flex items-center justify-center">
+            <img
+              src={card.axonImg}
+              alt={`${card.title} 3D Axonometric`}
+              className="w-full h-full max-h-[220px] object-contain select-none pointer-events-none"
+              loading="lazy"
+            />
             {/* Nhãn thông số */}
-            <div className="tags-wrapper absolute bottom-[20px] left-[20px] right-[20px] flex flex-wrap items-start gap-[8px]">
+            <div className="tags-wrapper absolute bottom-4 left-4 right-4 flex flex-wrap gap-2">
               {card.tags.map((tag, tIdx) => (
                 <div
                   key={tIdx}
@@ -390,9 +388,9 @@ const StandardDetailCard: React.FC<{
 
       {/* Tiêu đề bên dưới thẻ */}
       <h5
-        className={`text-[22px] md:text-[26px] leading-[1.2] tracking-[-0.025em] font-serif font-normal text-left transition-colors duration-200 ${
+        className={`text-left text-[24px] md:text-[28px] leading-[1.2] font-serif transition-colors duration-200 ${
           isFlipped ? 'text-[#57772E]' : 'text-[#0C310A]'
-        }`}
+        } group-hover:text-[#57772E]`}
       >
         {card.title}
       </h5>
