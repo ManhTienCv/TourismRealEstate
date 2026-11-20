@@ -504,7 +504,7 @@ export const MegaMenuNavbar: React.FC = () => {
         {/* Full-width MegaMenu Dropdown Panels: 100% GPU Opacity & Transform transition */}
         <div
           data-lenis-prevent
-          className={`dropdown-menu grid transition-[grid-template-rows,opacity] duration-250 ease-[cubic-bezier(0.33,1,0.68,1)] ${
+          className={`dropdown-menu grid transition-[grid-template-rows,opacity] duration-[420ms] ease-[cubic-bezier(0.33,1,0.68,1)] ${
             isMenuOpen
               ? 'grid-rows-[1fr] opacity-100 pointer-events-auto visible'
               : 'grid-rows-[0fr] opacity-0 pointer-events-none invisible'
@@ -684,7 +684,7 @@ export const MegaMenuNavbar: React.FC = () => {
 
       {/* Dimmed backdrop overlay when MegaMenu is active */}
       <div
-        className={`fixed inset-0 bg-[#1E1414]/50 z-40 transition-opacity duration-250 ease-[cubic-bezier(0.33,1,0.68,1)] [transform:translateZ(0)] ${
+        className={`fixed inset-0 bg-[#1E1414]/55 z-40 transition-opacity duration-[350ms] ease-[cubic-bezier(0.33,1,0.68,1)] [transform:translateZ(0)] ${
           isMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         }`}
         onClick={() => {

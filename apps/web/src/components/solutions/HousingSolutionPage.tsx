@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 import { useConfiguratorStore } from '../../store/useConfiguratorStore';
 import { HutsButton } from '../common/HutsButton';
 import {
@@ -10,7 +11,6 @@ import {
 } from './housingSolutionsData';
 import { getLenis } from '../../utils/smoothScroll';
 import { SEED_STANDARD_PLANS } from '@tie/shared';
-import { ArrowLeft } from 'lucide-react';
 
 interface HousingSolutionPageProps {
   slug?: string;
@@ -20,7 +20,6 @@ export const HousingSolutionPage: React.FC<HousingSolutionPageProps> = ({ slug: 
   const storeSlug = useConfiguratorStore((s) => s.selectedSolutionSlug);
   const openConfigurator = useConfiguratorStore((s) => s.openConfigurator);
   const openPlanDetail = useConfiguratorStore((s) => s.openPlanDetail);
-  const closeSolutionDetail = useConfiguratorStore((s) => s.closeSolutionDetail);
 
   const activeSlug = propSlug || storeSlug || 'starter-home';
   const data: HousingSolutionDetailData = getHousingSolution(activeSlug);
@@ -42,20 +41,24 @@ export const HousingSolutionPage: React.FC<HousingSolutionPageProps> = ({ slug: 
     return (
       <>
         {before}
-        <span className="relative inline-block z-10">
-          {underlined}
+        <span className="relative inline-block">
+          <span className="relative z-10">{underlined}</span>
           <svg
             viewBox="0 0 412 26"
-            className="absolute left-0 right-0 top-[calc(100%-8px)] -z-10 w-full h-auto pointer-events-none"
+            className="absolute left-0 right-0 -bottom-2 w-full h-[14px] pointer-events-none overflow-visible z-0"
+            preserveAspectRatio="none"
             fill="none"
           >
-            <path
+            <motion.path
               d="M255.8,23.8c-35.1-1.6-92.1-2.1-99.5-3-7-.8-6.6-1.9-.7-2.6,39.4-3.2,81.7,1.2,121.9-2.5,3.1-.7-2.6-1.4-4-1.6-46.3-3.1-94.4-1.2-140.4-3.3-16.6-.8-11.7-1.6,2.5-1.8,82.3-1.2,165.4,1,247.6-1.1,7.1-.3,15.8-.5,21.7-1.5.4,0,1.4-.3.5-.6C292.1,1.4,121.4.5,1.2,5.3"
               fill="none"
               stroke="#D5E798"
-              strokeWidth="2"
+              strokeWidth="3.5"
               strokeLinecap="round"
               strokeLinejoin="round"
+              initial={{ pathLength: 0, opacity: 0 }}
+              animate={{ pathLength: 1, opacity: 1 }}
+              transition={{ duration: 0.85, delay: 0.55, ease: [0.33, 1, 0.68, 1] }}
             />
           </svg>
         </span>
@@ -64,31 +67,23 @@ export const HousingSolutionPage: React.FC<HousingSolutionPageProps> = ({ slug: 
     );
   };
 
-  const handleBackHome = (e: React.MouseEvent) => {
-    e.preventDefault();
-    closeSolutionDetail();
-    if (typeof window !== 'undefined') {
-      window.history.pushState({}, '', '/');
-    }
-  };
-
   return (
-    <div className="w-full bg-[#FAF7ED] text-[#1E1414] overflow-x-clip font-sans selection:bg-[#CBE282] selection:text-[#0C310A]">
+    <motion.div
+      key={activeSlug}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5, ease: [0.33, 1, 0.68, 1] }}
+      className="w-full bg-[#FAF7ED] text-[#1E1414] overflow-x-clip font-sans selection:bg-[#CBE282] selection:text-[#0C310A]"
+    >
       {/* 1. HERO SECTION (section.page-header.page-header-centered.w-illo) */}
       <section className="page-header page-header-centered w-illo min-h-[100svh] flex flex-col justify-center items-center text-center px-6 md:px-24 pt-28 pb-16 gap-10">
-        {/* Nút quay lại trang chủ gọn gàng */}
-        <div className="w-full max-w-[1584px] mx-auto flex items-center justify-start -mb-4">
-          <a
-            href="/"
-            onClick={handleBackHome}
-            className="inline-flex items-center gap-2 text-[14px] text-[#57772E] hover:underline font-sans cursor-pointer transition-colors"
-          >
-            <ArrowLeft className="w-4 h-4" /> Back to Home
-          </a>
-        </div>
-
         {/* Hình minh họa Illo SVG */}
-        <figure className="illo w-[256px] md:w-[375px] aspect-square flex items-center justify-center">
+        <motion.figure
+          className="illo w-[256px] md:w-[375px] aspect-square flex items-center justify-center"
+          initial={{ opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.65, delay: 0.12, ease: [0.33, 1, 0.68, 1] }}
+        >
           <img
             src={data.illo}
             alt={data.label}
@@ -96,10 +91,15 @@ export const HousingSolutionPage: React.FC<HousingSolutionPageProps> = ({ slug: 
             loading="eager"
             decoding="async"
           />
-        </figure>
+        </motion.figure>
 
         {/* Khối Tiêu đề & Nhãn */}
-        <div className="max-w-[900px] mx-auto flex flex-col items-center">
+        <motion.div
+          className="max-w-[900px] mx-auto flex flex-col items-center"
+          initial={{ opacity: 0, y: 18 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.22, ease: [0.33, 1, 0.68, 1] }}
+        >
           <p className="label text-[#57772E] text-[15.5px] font-sans mb-3 font-normal tracking-wide">
             {data.label}
           </p>
@@ -108,15 +108,21 @@ export const HousingSolutionPage: React.FC<HousingSolutionPageProps> = ({ slug: 
           </h1>
 
           {/* Nút CTA dẫn tới /get-started hoặc mở wizard */}
-          <HutsButton
-            variant="primary"
-            withArrow={true}
-            onClick={() => openConfigurator(undefined, data.slug as any)}
+          <motion.div
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4, ease: [0.33, 1, 0.68, 1] }}
             className="mt-2"
           >
-            {data.cta}
-          </HutsButton>
-        </div>
+            <HutsButton
+              variant="primary"
+              withArrow={true}
+              onClick={() => openConfigurator(undefined, data.slug as any)}
+            >
+              {data.cta}
+            </HutsButton>
+          </motion.div>
+        </motion.div>
       </section>
 
       {/* 2. KHỐI DẪN NHẬP (section.text-block) */}
@@ -271,7 +277,7 @@ export const HousingSolutionPage: React.FC<HousingSolutionPageProps> = ({ slug: 
           </div>
         </div>
       </section>
-    </div>
+    </motion.div>
   );
 };
 
