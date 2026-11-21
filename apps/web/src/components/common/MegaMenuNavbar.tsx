@@ -196,6 +196,10 @@ export const MegaMenuNavbar: React.FC = () => {
   const openPlanDetail = useConfiguratorStore((s) => s.openPlanDetail);
   const openSolutionDetail = useConfiguratorStore((s) => s.openSolutionDetail);
   const closeSolutionDetail = useConfiguratorStore((s) => s.closeSolutionDetail);
+  const openStandardDetail = useConfiguratorStore((s) => s.openStandardDetail);
+  const closeStandardDetail = useConfiguratorStore((s) => s.closeStandardDetail);
+  const openWhatIsAStandard = useConfiguratorStore((s) => s.openWhatIsAStandard);
+  const closeWhatIsAStandard = useConfiguratorStore((s) => s.closeWhatIsAStandard);
   const selectedSolutionSlug = useConfiguratorStore((s) => s.selectedSolutionSlug);
 
   const [activeMenu, setActiveMenu] = useState<MenuType>(null);
@@ -339,22 +343,14 @@ export const MegaMenuNavbar: React.FC = () => {
       setActiveMenu(null);
       setIsHeaderHovered(false);
       if (slug === 'what-is-a-standard') {
-        closeSolutionDetail();
-        setActiveTab('standards');
-        smoothScrollTo(0, { duration: 0.8 });
+        openWhatIsAStandard();
         return;
       }
 
-      const plan = SEED_STANDARD_PLANS.find((p) => p.slug === slug);
-      if (plan) {
-        openPlanDetail(plan);
-      } else {
-        closeSolutionDetail();
-        setActiveTab('home');
-        smoothScrollTo('standards-section', { offset: -24, duration: 1.0 });
-      }
+      const targetSlug = slug === 'adu' ? 'adus' : slug;
+      openStandardDetail(targetSlug);
     },
-    [closeSolutionDetail, openPlanDetail, setActiveTab]
+    [openStandardDetail, openWhatIsAStandard]
   );
 
   const handleSolutionSelect = useCallback(
@@ -369,6 +365,8 @@ export const MegaMenuNavbar: React.FC = () => {
   const scrollToSection = useCallback(
     (id: string, tab: 'home' | 'standards' | 'portfolio' | 'field-report') => {
       closeSolutionDetail();
+      closeStandardDetail();
+      closeWhatIsAStandard();
       setActiveTab(tab);
       setMobileMenuOpen(false);
       setActiveMenu(null);
@@ -626,31 +624,41 @@ export const MegaMenuNavbar: React.FC = () => {
                   }
                 >
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-6">
-                    {STANDARDS_ITEMS.map((item) => (
-                      <div
-                        key={item.slug}
-                        onClick={() => handleStandardItemClick(item.slug)}
-                        className="flex items-start space-x-4 p-2.5 rounded-[16px] hover:bg-[#F2EFE4]/60 cursor-pointer transition-colors duration-100 group"
-                      >
-                        <div className="w-[70px] h-[70px] rounded-[16px] bg-[#FAF7ED] shrink-0 overflow-hidden border border-[#E2DDD5]/80 [contain:strict] [transform:translateZ(0)]">
-                          <img
-                            src={item.image}
-                            alt={item.title}
-                            className="w-full h-full object-cover select-none pointer-events-none [transform:translateZ(0)]"
-                            loading="eager"
-                            decoding="async"
-                          />
-                        </div>
-                        <div className="space-y-0.5 min-w-0 flex-1 pt-0.5">
-                          <h4 className="font-serif text-[18px] text-[#0C310A] group-hover:text-[#2D4C23] leading-snug transition-colors">
-                            {item.title}
-                          </h4>
-                          <p className="text-[13.5px] leading-[1.4] text-[#664A42] font-sans mt-0.5">
-                            {item.byline}
-                          </p>
-                        </div>
-                      </div>
-                    ))}
+                    {STANDARDS_ITEMS.map((item) => {
+                      const itemHref =
+                        item.slug === 'what-is-a-standard'
+                          ? '/what-is-a-standard'
+                          : `/standards/${item.slug === 'adu' ? 'adus' : item.slug}`;
+                      return (
+                        <a
+                          key={item.slug}
+                          href={itemHref}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            handleStandardItemClick(item.slug);
+                          }}
+                          className="flex items-start space-x-4 p-2.5 rounded-[16px] hover:bg-[#F2EFE4]/60 cursor-pointer transition-colors duration-100 group"
+                        >
+                          <div className="w-[70px] h-[70px] rounded-[16px] bg-[#FAF7ED] shrink-0 overflow-hidden border border-[#E2DDD5]/80 [contain:strict] [transform:translateZ(0)]">
+                            <img
+                              src={item.image}
+                              alt={item.title}
+                              className="w-full h-full object-cover select-none pointer-events-none [transform:translateZ(0)]"
+                              loading="eager"
+                              decoding="async"
+                            />
+                          </div>
+                          <div className="space-y-0.5 min-w-0 flex-1 pt-0.5">
+                            <h4 className="font-serif text-[18px] text-[#0C310A] group-hover:text-[#2D4C23] leading-snug transition-colors">
+                              {item.title}
+                            </h4>
+                            <p className="text-[13.5px] leading-[1.4] text-[#664A42] font-sans mt-0.5">
+                              {item.byline}
+                            </p>
+                          </div>
+                        </a>
+                      );
+                    })}
                   </div>
                 </div>
 

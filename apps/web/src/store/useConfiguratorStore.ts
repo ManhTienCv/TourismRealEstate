@@ -28,6 +28,8 @@ export interface ConfiguratorState {
   selectedPlanForDetail: StandardPlan | null;
   selectedProjectSlug: string | null;
   selectedSolutionSlug: string | null; // Controls Solution Detail View (Starter Home, Forever Home, etc.)
+  selectedStandardSlug: string | null; // Controls Standard Detail View (/standards/:slug)
+  isWhatIsAStandard: boolean; // Controls /what-is-a-standard page
   isMegaMenuOpen: boolean; // Tracks whether Mega Menu is expanded to pause background video
 
   // Catalog Filters
@@ -58,6 +60,10 @@ export interface ConfiguratorState {
   closeProjectDetail: () => void;
   openSolutionDetail: (slug: string) => void;
   closeSolutionDetail: () => void;
+  openStandardDetail: (slug: string) => void;
+  closeStandardDetail: () => void;
+  openWhatIsAStandard: () => void;
+  closeWhatIsAStandard: () => void;
   setIsMegaMenuOpen: (isOpen: boolean) => void;
 
   setFilterSolutionSlug: (slug: string | null) => void;
@@ -201,6 +207,8 @@ export const useConfiguratorStore = create<ConfiguratorState>((set, get) => ({
   selectedPlanForDetail: null,
   selectedProjectSlug: null,
   selectedSolutionSlug: null,
+  selectedStandardSlug: null,
+  isWhatIsAStandard: false,
   isMegaMenuOpen: false,
 
   filterSolutionSlug: null,
@@ -264,7 +272,12 @@ export const useConfiguratorStore = create<ConfiguratorState>((set, get) => ({
   closeProjectDetail: () => set({ selectedProjectSlug: null }),
 
   openSolutionDetail: (slug) => {
-    set({ selectedSolutionSlug: slug, activeTab: 'home' });
+    set({
+      selectedSolutionSlug: slug,
+      selectedStandardSlug: null,
+      isWhatIsAStandard: false,
+      activeTab: 'home',
+    });
     if (typeof window !== 'undefined') {
       window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
       if (window.location.pathname !== `/housing-solutions/${slug}`) {
@@ -275,6 +288,47 @@ export const useConfiguratorStore = create<ConfiguratorState>((set, get) => ({
   closeSolutionDetail: () => {
     set({ selectedSolutionSlug: null });
     if (typeof window !== 'undefined' && window.location.pathname.startsWith('/housing-solutions')) {
+      window.history.pushState({}, '', '/');
+    }
+  },
+  openStandardDetail: (rawSlug) => {
+    const slug = rawSlug === 'adu' ? 'adus' : rawSlug;
+    set({
+      selectedStandardSlug: slug,
+      selectedSolutionSlug: null,
+      isWhatIsAStandard: false,
+      activeTab: 'home',
+    });
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
+      if (window.location.pathname !== `/standards/${slug}`) {
+        window.history.pushState({}, '', `/standards/${slug}`);
+      }
+    }
+  },
+  closeStandardDetail: () => {
+    set({ selectedStandardSlug: null });
+    if (typeof window !== 'undefined' && window.location.pathname.startsWith('/standards')) {
+      window.history.pushState({}, '', '/');
+    }
+  },
+  openWhatIsAStandard: () => {
+    set({
+      isWhatIsAStandard: true,
+      selectedStandardSlug: null,
+      selectedSolutionSlug: null,
+      activeTab: 'standards',
+    });
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
+      if (window.location.pathname !== '/what-is-a-standard') {
+        window.history.pushState({}, '', '/what-is-a-standard');
+      }
+    }
+  },
+  closeWhatIsAStandard: () => {
+    set({ isWhatIsAStandard: false, activeTab: 'home' });
+    if (typeof window !== 'undefined' && window.location.pathname === '/what-is-a-standard') {
       window.history.pushState({}, '', '/');
     }
   },

@@ -17,15 +17,22 @@ import { GetStartedWizard } from './components/configurator/GetStartedWizard';
 import { FieldReportPortal } from './components/field-report/FieldReportPortal';
 import { PortfolioGalleryModal } from './components/portfolio/PortfolioGalleryModal';
 import { HousingSolutionPage } from './components/solutions/HousingSolutionPage';
-import { WhatIsAStandardView } from './components/standards/WhatIsAStandardView';
+import { StandardDetailPage } from './components/standards/StandardDetailPage';
+import { WhatIsAStandardPage } from './components/standards/WhatIsAStandardPage';
 
 export const App: React.FC = () => {
   const activeTab = useConfiguratorStore((s) => s.activeTab);
   const selectedSolutionSlug = useConfiguratorStore((s) => s.selectedSolutionSlug);
+  const selectedStandardSlug = useConfiguratorStore((s) => s.selectedStandardSlug);
+  const isWhatIsAStandard = useConfiguratorStore((s) => s.isWhatIsAStandard);
   const openSolutionDetail = useConfiguratorStore((s) => s.openSolutionDetail);
   const closeSolutionDetail = useConfiguratorStore((s) => s.closeSolutionDetail);
+  const openStandardDetail = useConfiguratorStore((s) => s.openStandardDetail);
+  const closeStandardDetail = useConfiguratorStore((s) => s.closeStandardDetail);
+  const openWhatIsAStandard = useConfiguratorStore((s) => s.openWhatIsAStandard);
+  const closeWhatIsAStandard = useConfiguratorStore((s) => s.closeWhatIsAStandard);
 
-  // Sync route /housing-solutions/:slug with browser address bar and history
+  // Sync route /housing-solutions/:slug, /standards/:slug, and /what-is-a-standard with browser address bar and history
   useEffect(() => {
     const handlePopState = () => {
       const path = window.location.pathname;
@@ -34,15 +41,32 @@ export const App: React.FC = () => {
         if (slug) {
           openSolutionDetail(slug);
         }
+      } else if (path === '/what-is-a-standard' || path === '/what-is-a-standard/') {
+        openWhatIsAStandard();
+      } else if (path.startsWith('/standards/')) {
+        let slug = path.replace('/standards/', '').replace(/\/$/, '');
+        if (slug === 'adu') slug = 'adus';
+        if (slug) {
+          openStandardDetail(slug);
+        }
       } else if (path === '/' || path === '') {
         closeSolutionDetail();
+        closeStandardDetail();
+        closeWhatIsAStandard();
       }
     };
 
     handlePopState();
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
-  }, [openSolutionDetail, closeSolutionDetail]);
+  }, [
+    openSolutionDetail,
+    closeSolutionDetail,
+    openStandardDetail,
+    closeStandardDetail,
+    openWhatIsAStandard,
+    closeWhatIsAStandard,
+  ]);
 
   // Initialize Lenis Momentum / Inertia Scrolling (Matches Huts.com smooth luxury scroll physics)
   useEffect(() => {
@@ -94,8 +118,10 @@ export const App: React.FC = () => {
       <main className="flex-1">
         {activeTab === 'field-report' ? (
           <FieldReportPortal />
-        ) : activeTab === 'standards' ? (
-          <WhatIsAStandardView />
+        ) : isWhatIsAStandard || activeTab === 'standards' ? (
+          <WhatIsAStandardPage />
+        ) : selectedStandardSlug ? (
+          <StandardDetailPage slug={selectedStandardSlug} />
         ) : selectedSolutionSlug ? (
           <HousingSolutionPage slug={selectedSolutionSlug} />
         ) : (
