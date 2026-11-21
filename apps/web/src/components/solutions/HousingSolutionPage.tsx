@@ -11,6 +11,7 @@ import {
 } from './housingSolutionsData';
 import { getLenis } from '../../utils/smoothScroll';
 import { SEED_STANDARD_PLANS } from '@tie/shared';
+import { ProjectFeatureSection } from './ProjectFeatureSection';
 
 interface HousingSolutionPageProps {
   slug?: string;
@@ -246,38 +247,74 @@ export const HousingSolutionPage: React.FC<HousingSolutionPageProps> = ({ slug: 
         </section>
       )}
 
-      {/* 7. KHỐI DỰ ÁN CUỐI TRANG (section.project-feature) */}
-      <section className="project-feature py-20 px-6 md:px-16 max-w-[1584px] mx-auto">
-        <h3 className="max-w-[800px] mx-auto text-center mb-12 text-[34px] lg:text-[50px] font-serif font-normal text-[#0C310A] leading-[1.1] tracking-[-0.03em]">
-          {data.projectFeature.heading}
-        </h3>
-
-        <div className="relative w-full h-[70vh] md:h-[85vh] lg:h-screen rounded-[24px] overflow-hidden group shadow-lg">
-          <img
-            src={data.projectFeature.image}
-            alt={data.projectFeature.title}
-            className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-            loading="lazy"
-            decoding="async"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent flex flex-col justify-end p-8 md:p-14">
-            <div className="flex flex-wrap gap-2 mb-4">
-              {data.projectFeature.tags.map((tag, tIdx) => (
-                <span
-                  key={tIdx}
-                  className="text-[12px] uppercase tracking-wider text-white bg-white/20 backdrop-blur-md px-3.5 py-1.5 rounded-full font-sans font-medium"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
-            <h4 className="text-[32px] md:text-[50px] font-serif text-[#FAF7ED] font-normal leading-tight">
-              {data.projectFeature.title}
-            </h4>
-          </div>
-        </div>
-      </section>
+      {/* 9. KHỐI DỰ ÁN RÈM TRƯỢT PARALLAX CHUẨN HUTS (ProjectFeatureSection) */}
+      <ProjectFeatureSection
+        heading={data.projectFeature.heading}
+        includeInterior={data.projectFeature.includeInterior}
+        projects={data.projectFeature.projects}
+      />
     </motion.div>
+  );
+};
+
+// Component con: Chồng 4 ảnh xoay nhẹ tương tác (cho hybrid-home)
+const ROTATIONS = [0, -4, 3, -2];
+
+const InteractivePhotoStack: React.FC<{ images: string[]; alt: string }> = ({ images, alt }) => {
+  const [cards, setCards] = useState(images);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const handleNext = () => {
+    setCards((prev) => {
+      if (prev.length <= 1) return prev;
+      const [first, ...rest] = prev;
+      return [...rest, first];
+    });
+    setCurrentIndex((prev) => (prev + 1) % images.length);
+  };
+
+  return (
+    <div
+      onClick={handleNext}
+      className="aspect-square w-full rounded-[22px] bg-transparent p-[6%] relative select-none cursor-pointer flex items-center justify-center group"
+    >
+      <div className="relative w-full h-full">
+        {cards.map((imgUrl, idx) => {
+          const isTop = idx === 0;
+          const rotate = ROTATIONS[idx % ROTATIONS.length];
+
+          return (
+            <motion.div
+              key={imgUrl}
+              layout
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{
+                scale: 1 - idx * 0.03,
+                rotate: rotate,
+                zIndex: cards.length - idx,
+                opacity: 1,
+              }}
+              transition={{ duration: 0.45, ease: [0.33, 1, 0.68, 1] }}
+              className="absolute inset-0 rounded-[18px] overflow-hidden shadow-xl bg-[#FAF7ED] border border-[#DFDCD0]"
+            >
+              <img
+                src={`${imgUrl}?w=1200&q=85&auto=format`}
+                alt={`${alt} ${idx + 1}`}
+                className="w-full h-full object-cover select-none pointer-events-none"
+                draggable={false}
+                loading={isTop ? 'eager' : 'lazy'}
+                decoding="async"
+              />
+            </motion.div>
+          );
+        })}
+
+        {/* Nhãn nhỏ số thứ tự ảnh góc dưới: 1 / 4 */}
+        <div className="absolute -bottom-2 right-2 z-20 px-3 py-1 rounded-full text-[12px] font-sans font-medium bg-[#1E1414]/75 text-[#FFFDF6] backdrop-blur-md shadow-md">
+          {currentIndex + 1} / {images.length}
+        </div>
+      </div>
+    </div>
   );
 };
 
@@ -291,30 +328,36 @@ const BackAndForthBlock: React.FC<{ item: BackAndForthItem; isWhyHuts?: boolean 
   return (
     <section className="back-and-forth grid grid-cols-1 lg:grid-cols-2 items-center gap-12 lg:gap-[160px] px-6 md:px-16 py-14 max-w-[1584px] mx-auto">
       {/* Media Column */}
-      <div
-        className={`aspect-square w-full rounded-[22px] overflow-hidden bg-[#EAE6DF] ${
-          isRight ? 'lg:order-2' : 'lg:order-1'
-        }`}
-      >
-        {item.mediaType === 'video' ? (
-          <video
-            src={item.mediaUrl}
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="w-full h-full object-cover"
-          />
-        ) : (
-          <img
-            src={`${item.mediaUrl}?w=1200&q=85&auto=format`}
-            alt={item.title}
-            className="w-full h-full object-cover"
-            decoding="async"
-            loading="lazy"
-          />
-        )}
-      </div>
+      {item.galleryImages && item.galleryImages.length > 0 ? (
+        <div className={`w-full ${isRight ? 'lg:order-2' : 'lg:order-1'}`}>
+          <InteractivePhotoStack images={item.galleryImages} alt={item.title} />
+        </div>
+      ) : (
+        <div
+          className={`aspect-square w-full rounded-[22px] overflow-hidden bg-[#EAE6DF] ${
+            isRight ? 'lg:order-2' : 'lg:order-1'
+          }`}
+        >
+          {item.mediaType === 'video' ? (
+            <video
+              src={item.mediaUrl}
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <img
+              src={`${item.mediaUrl}?w=1200&q=85&auto=format`}
+              alt={item.title}
+              className="w-full h-full object-cover"
+              decoding="async"
+              loading="lazy"
+            />
+          )}
+        </div>
+      )}
 
       {/* Text Column */}
       <div

@@ -4,6 +4,7 @@ export interface BackAndForthItem {
   mediaUrl: string;
   title: string;
   desc: string;
+  galleryImages?: string[];
 }
 
 export interface ListItem {
@@ -17,11 +18,18 @@ export interface StandardsSliderData {
   cards: string[];
 }
 
+export interface ProjectFeatureItem {
+  title: string;
+  slug: string;
+  image: string;
+  interiorImage?: string;
+  tags: string[];
+}
+
 export interface ProjectFeatureData {
   heading: string;
-  title: string;
-  image: string;
-  tags: string[];
+  includeInterior?: boolean;
+  projects: ProjectFeatureItem[];
 }
 
 export interface HousingSolutionDetailData {
@@ -207,10 +215,16 @@ export const HOUSING_SOLUTIONS_DATA: Record<string, HousingSolutionDetailData> =
     },
     projectFeature: {
       heading: '...and we work with you to make it stand the test of time.',
-      title: 'Stonewall House',
-      image:
-        'https://cdn.sanity.io/images/xi1ruvdt/production/e49727a2dd6f922a5857096b982d068bdfb84990-2048x1152.jpg',
-      tags: ['Medium Bar', '2 Bed', '2 Bath', '1,000-1,500 Sqft', 'Starter Home'],
+      includeInterior: false,
+      projects: [
+        {
+          title: 'Stonewall House',
+          slug: '/portfolio/stonewall-house',
+          image:
+            'https://cdn.sanity.io/images/xi1ruvdt/production/e49727a2dd6f922a5857096b982d068bdfb84990-2048x1152.jpg',
+          tags: ['Medium Bar', '2 Bed', '2 Bath', '1,000-1,500 Sqft', 'Starter Home'],
+        },
+      ],
     },
   },
 
@@ -307,10 +321,30 @@ export const HOUSING_SOLUTIONS_DATA: Record<string, HousingSolutionDetailData> =
     },
     projectFeature: {
       heading: '...and we work with you to make it stand the test of time.',
-      title: 'Break House',
-      image:
-        'https://cdn.sanity.io/images/xi1ruvdt/production/d0a7eb5d3bd18987b5bf79bd7e5e51fb8fb5d038-1792x1080.png',
-      tags: ['Custom', '4 Bed', '3.5 Bath', '2,500+ Sqft', 'Forever Home'],
+      includeInterior: false,
+      projects: [
+        {
+          title: 'Arrowhead Ridge',
+          slug: '/portfolio/arrowhead-ridge',
+          image:
+            'https://cdn.sanity.io/images/xi1ruvdt/production/2867afd2262b02bd559af982c9d4fccd0d2e08c6-1440x810.png',
+          tags: ['Big L', '2 Bed', '2.5 Bath', '2,000-3,000 Sqft', 'Forever Home', 'ADU'],
+        },
+        {
+          title: 'Reservoir House',
+          slug: '/portfolio/reservoir-house',
+          image:
+            'https://cdn.sanity.io/images/xi1ruvdt/production/344ae7e6b8b1cb18635e9b5a00fa0bbd851542de-1440x810.png',
+          tags: ['Small L', '2 Bed', '2.5 Bath', '2,000-3,000 Sqft', 'Forever Home'],
+        },
+        {
+          title: 'Ketchum Modern',
+          slug: '/portfolio/ketchum-modern',
+          image:
+            'https://cdn.sanity.io/images/xi1ruvdt/production/57dce8f176b93c3db145ff7f14a6d657d4b37c5c-1440x850.png',
+          tags: ['Small L', '2 Bed', '2.5 Bath', '2,000-3,000 Sqft', 'Forever Home'],
+        },
+      ],
     },
   },
 
@@ -407,10 +441,30 @@ export const HOUSING_SOLUTIONS_DATA: Record<string, HousingSolutionDetailData> =
     },
     projectFeature: {
       heading: '…and we work with you to make it everything you’ve dreamed of.',
-      title: 'Pond House',
-      image:
-        'https://cdn.sanity.io/images/xi1ruvdt/production/575480bc8b99dc015f4bfefab61dc0d08a41e825-2560x1440.png',
-      tags: ['Small L', '2 Bed', '2 Bath', '1,500-2,000 Sqft', 'Second Home'],
+      includeInterior: false,
+      projects: [
+        {
+          title: 'Walla Walla',
+          slug: '/portfolio/walla-walla',
+          image:
+            'https://cdn.sanity.io/images/xi1ruvdt/production/229bbd46ce998a03c741b1d1f4900e3a5fe551e9-2048x1152.jpg',
+          tags: ['Dogtrot', 'Village', '5 Bed', '4+ Bath', '3,000+ Sqft', 'Micro Hospitality'],
+        },
+        {
+          title: 'Sea Ranch',
+          slug: '/portfolio/sea-ranch',
+          image:
+            'https://cdn.sanity.io/images/xi1ruvdt/production/e2cc3422dcd6b11a9237cc1d7c36ee3d453973e5-1440x810.png',
+          tags: ['Small L', '2 Bed', '2.5 Bath', '1,500-2,000 Sqft', 'Hybrid Home'],
+        },
+        {
+          title: 'Swamp Pond Road',
+          slug: '/portfolio/swamp-pond-road',
+          image:
+            'https://cdn.sanity.io/images/xi1ruvdt/production/84bd48e38412f3083d1e97d6e9216721de79d567-1440x810.png',
+          tags: ['Big Bar', '3 Bed', '2.5 Bath', '1,500-2,000 Sqft', 'Second Home'],
+        },
+      ],
     },
   },
 
@@ -499,6 +553,12 @@ export const HOUSING_SOLUTIONS_DATA: Record<string, HousingSolutionDetailData> =
         'https://cdn.sanity.io/images/xi1ruvdt/production/ad0b520aa33618093f05deca223dcb20815fb24d-2880x2160.png',
       title: 'Why HUTS Works on Hybrid Homes',
       desc: 'Most builders aren’t thinking about a home that lives two lives. We are. Hybrid Homes require a clear plan, thoughtful design, and a development process that balances emotion with economics. At HUTS, we don’t just help you build a house—we help you figure out how it all works, from the day you get the keys to the day it’s your full-time home. Or your launchpad. Or your long game.',
+      galleryImages: [
+        'https://cdn.sanity.io/images/xi1ruvdt/production/ad0b520aa33618093f05deca223dcb20815fb24d-2880x2160.png',
+        'https://cdn.sanity.io/images/xi1ruvdt/production/24bfc69a3480a71bc23a5c2c643f04c262e1f48c-3200x2133.jpg',
+        'https://cdn.sanity.io/images/xi1ruvdt/production/4ef818b6d5765e3ac2d8aef64f64c1dec838d177-2160x1215.jpg',
+        'https://cdn.sanity.io/images/xi1ruvdt/production/860b4971fae3b7006d4527194ca0a846cee2fceb-2160x1662.jpg',
+      ],
     },
     standardsSlider: {
       title: 'Start your Hybrid Home with our Standards...',
@@ -507,10 +567,43 @@ export const HOUSING_SOLUTIONS_DATA: Record<string, HousingSolutionDetailData> =
     },
     projectFeature: {
       heading: "...and we'll work with you to make your home work for you.",
-      title: 'Blueberry Hill ADU',
-      image:
-        'https://cdn.sanity.io/images/xi1ruvdt/production/c45e208f072aacfdde60517b84638f6805f62aec-3200x2133.png',
-      tags: ['Small Bar', '2 Bed', '1 Bath', '<1,000 Sqft', 'Hybrid Home'],
+      includeInterior: true,
+      projects: [
+        {
+          title: 'Break House',
+          slug: '/portfolio/break-house',
+          image:
+            'https://cdn.sanity.io/images/xi1ruvdt/production/dacfea2a387f782e7dfe3b00f40ed7276da964a5-3070x2047.jpg',
+          interiorImage:
+            'https://cdn.sanity.io/images/xi1ruvdt/production/c45e208f072aacfdde60517b84638f6805f62aec-3200x2133.png',
+          tags: ['Big Bar', '3 Bed', '2 Bath', '1,000-1,500 Sqft', 'Hybrid Home'],
+        },
+        {
+          title: 'The Trail House',
+          slug: '/portfolio/the-trail-house',
+          image:
+            'https://cdn.sanity.io/images/xi1ruvdt/production/8c963ceba25c36785c663a6ff460e400add60882-3981x2239.jpg',
+          interiorImage:
+            'https://cdn.sanity.io/images/xi1ruvdt/production/9615ee4e24f1cc8dba13a9490b3eccc55778e9a9-2500x1875.jpg',
+          tags: ['ADU', 'Medium Bar', '2 Bed', '2 Bath', '1,000-1,500 Sqft', 'Hybrid Home'],
+        },
+        {
+          title: 'Oak Bluffs House',
+          slug: '/portfolio/oak-bluffs-house',
+          image:
+            'https://cdn.sanity.io/images/xi1ruvdt/production/ee9912cbdab0c67e080162bdde1a50588d4cdf1a-1440x850.png',
+          interiorImage:
+            'https://cdn.sanity.io/images/xi1ruvdt/production/860b4971fae3b7006d4527194ca0a846cee2fceb-2160x1662.jpg',
+          tags: ['Small Bar', '1 Bed', '2 Bath', '500 - 1,000 Sqft', 'Hybrid Home'],
+        },
+        {
+          title: 'Blueberry Hill House',
+          slug: '/portfolio/blueberry-hill-house',
+          image:
+            'https://cdn.sanity.io/images/xi1ruvdt/production/7dd63d9c9da5e1e7906c40a22fee8cdfecc34093-2048x1365.jpg',
+          tags: ['2 Bed', '2 Bath', '1,500-2,000 Sqft', 'Second Home'],
+        },
+      ],
     },
   },
 
@@ -603,10 +696,30 @@ export const HOUSING_SOLUTIONS_DATA: Record<string, HousingSolutionDetailData> =
     standardsSlider: null,
     projectFeature: {
       heading: 'We’ll help you create a little space made just for you.',
-      title: 'Blueberry Hill ADU',
-      image:
-        'https://cdn.sanity.io/images/xi1ruvdt/production/67dee40ff89a85c4c56137766c5f4d94a1887fe2-3000x1688.png',
-      tags: ['ADU', '1 Bed', '1 Bath', '<1,000 Sqft'],
+      includeInterior: false,
+      projects: [
+        {
+          title: 'Blueberry Hill ADU',
+          slug: '/portfolio/blueberry-hill-adu',
+          image:
+            'https://cdn.sanity.io/images/xi1ruvdt/production/6015a1a13a97d8b2cf7e19d320b7fc3292d6e5b9-2160x1440.jpg',
+          tags: ['ADU', 'Studio', '1 Bath', '<500 Sqft'],
+        },
+        {
+          title: 'Old Gladstone Hollow',
+          slug: '/portfolio/old-gladstone-hollow',
+          image:
+            'https://cdn.sanity.io/images/xi1ruvdt/production/77a01ee01c7585843447b2fb8728b3522db6af8d-1440x850.png',
+          tags: ['ADU', 'Studio', '1 Bath', '<500 Sqft'],
+        },
+        {
+          title: 'Moose Aly Guest House',
+          slug: '/portfolio/moose-aly-guest-house',
+          image:
+            'https://cdn.sanity.io/images/xi1ruvdt/production/39d6a22295c5e94f66fc02a9278881ce7d60a83d-1440x810.png',
+          tags: ['Small Bar', '3 Bed', '1 Bath', '1,000-1,500 Sqft', 'ADU'],
+        },
+      ],
     },
   },
 
@@ -703,10 +816,37 @@ export const HOUSING_SOLUTIONS_DATA: Record<string, HousingSolutionDetailData> =
     },
     projectFeature: {
       heading: '…and we work with you to make it more than just another property.',
-      title: 'Ridge House',
-      image:
-        'https://cdn.sanity.io/images/xi1ruvdt/production/a2584cd4bf308339d3c2e951e1071832cf4a192f-2500x1405.jpg',
-      tags: ['Medium Bar', '2 Bed', '2 Bath', 'Investment Property'],
+      includeInterior: false,
+      projects: [
+        {
+          title: 'Endless Meadow House',
+          slug: '/portfolio/endless-meadow-house',
+          image:
+            'https://cdn.sanity.io/images/xi1ruvdt/production/6d3a862d9d5bdd023c5ee3a8f40378c4d26ed2c8-2048x1366.jpg',
+          tags: ['Small L', '3 Bed', '2 Bath', '1,000-1,500 Sqft', 'Investment Property'],
+        },
+        {
+          title: 'Sunset Beach',
+          slug: '/portfolio/sunset-beach',
+          image:
+            'https://cdn.sanity.io/images/xi1ruvdt/production/73464b52d04c9f3e6ced17bf60d03c8c3c4a4e49-2048x1152.jpg',
+          tags: ['Custom', '2 Bed', '2 Bath', '1,500-2,000 Sqft', 'Investment Property'],
+        },
+        {
+          title: "Fisherman's Retreat",
+          slug: '/portfolio/fishermans-retreat',
+          image:
+            'https://cdn.sanity.io/images/xi1ruvdt/production/d2fcb349a4bb5bfcc2024e3512adac575c562801-2048x1366.jpg',
+          tags: ['Medium Bar', '2 Bed', '2 Bath', '1,500-2,000 Sqft', 'Investment Property'],
+        },
+        {
+          title: 'North Peak',
+          slug: '/portfolio/north-peak',
+          image:
+            'https://cdn.sanity.io/images/xi1ruvdt/production/51419a5688876ba0ca2f0ff4f1c0ac16345a4607-1440x810.png',
+          tags: ['Small L', 'Dogtrot', '3 Bed', '2 Bath', '1,000-1,500 Sqft', 'Investment Property'],
+        },
+      ],
     },
   },
 
@@ -803,10 +943,51 @@ export const HOUSING_SOLUTIONS_DATA: Record<string, HousingSolutionDetailData> =
     },
     projectFeature: {
       heading: '…and we work with you to make it more than just a place to stay.',
-      title: 'Catskills Retreat',
-      image:
-        'https://cdn.sanity.io/images/xi1ruvdt/production/25d87690b987cd6fe241a1faae95a3686459aea4-1080x1080.jpg',
-      tags: ['Village', 'Micro-Hospitality', 'Multi-Unit'],
+      includeInterior: false,
+      projects: [
+        {
+          title: 'Gulf Road',
+          slug: '/portfolio/gulf-road',
+          image:
+            'https://cdn.sanity.io/images/xi1ruvdt/production/c9055fc6f8ab4cad9fd1f570ee00fc0f0ba09f88-2048x1229.jpg',
+          tags: ['ADU', '4 Bed', '4+ Bath', '1,000-1,500 Sqft', 'Micro Hospitality'],
+        },
+        {
+          title: 'Branch Berkeley Springs',
+          slug: '/portfolio/branch-berkeley-springs',
+          image:
+            'https://cdn.sanity.io/images/xi1ruvdt/production/334af504ced666d5f6fdff76e4aa0a5a2d11355a-4000x2250.jpg',
+          tags: ['Custom', '6+ Bed', '4+ Bath', '3,000+ Sqft', 'Micro Hospitality'],
+        },
+        {
+          title: 'The Billy',
+          slug: '/portfolio/the-billy',
+          image:
+            'https://cdn.sanity.io/images/xi1ruvdt/production/c308841445f33b9b7ea9c78120ba381aee20f37b-2044x1358.png',
+          tags: ['Custom', '6+ Bed', '4+ Bath', '3,000+ Sqft', 'Micro Hospitality'],
+        },
+        {
+          title: 'Meeker Hollow Road',
+          slug: '/portfolio/meeker-hollow-road',
+          image:
+            'https://cdn.sanity.io/images/xi1ruvdt/production/c010cf77285b234b5fac121eaad4340d8f013132-4000x2250.jpg',
+          tags: ['Village', 'Dogtrot', 'ADU', '6+ Bed', '3,000+ Sqft', 'Micro Hospitality'],
+        },
+        {
+          title: 'Medo Resorts',
+          slug: '/portfolio/medo-resorts',
+          image:
+            'https://cdn.sanity.io/images/xi1ruvdt/production/969fa392cb0010c3c8669093c8e9957b285708b4-4000x2250.jpg',
+          tags: ['Small Bar', 'Medium Bar', '6+ Bed', '3,000+ Sqft', 'Micro Hospitality'],
+        },
+        {
+          title: 'Walla Walla',
+          slug: '/portfolio/walla-walla',
+          image:
+            'https://cdn.sanity.io/images/xi1ruvdt/production/229bbd46ce998a03c741b1d1f4900e3a5fe551e9-2048x1152.jpg',
+          tags: ['Dogtrot', 'Village', '5 Bed', '4+ Bath', '3,000+ Sqft', 'Micro Hospitality'],
+        },
+      ],
     },
   },
 
@@ -903,10 +1084,30 @@ export const HOUSING_SOLUTIONS_DATA: Record<string, HousingSolutionDetailData> =
     },
     projectFeature: {
       heading: '...and we work with you to make it stand the test of time.',
-      title: 'Family Compound',
-      image:
-        'https://cdn.sanity.io/images/xi1ruvdt/production/8dbe4904532a66227b5f9e32913d0e442a567588-1080x1080.jpg',
-      tags: ['Village', 'Multi-Generational', 'Compound'],
+      includeInterior: false,
+      projects: [
+        {
+          title: 'Endless Meadow House',
+          slug: '/portfolio/endless-meadow-house',
+          image:
+            'https://cdn.sanity.io/images/xi1ruvdt/production/6d3a862d9d5bdd023c5ee3a8f40378c4d26ed2c8-2048x1366.jpg',
+          tags: ['Small L', '3 Bed', '2 Bath', '1,000-1,500 Sqft', 'Investment Property'],
+        },
+        {
+          title: 'Sunset Beach',
+          slug: '/portfolio/sunset-beach',
+          image:
+            'https://cdn.sanity.io/images/xi1ruvdt/production/73464b52d04c9f3e6ced17bf60d03c8c3c4a4e49-2048x1152.jpg',
+          tags: ['Custom', '2 Bed', '2 Bath', '1,500-2,000 Sqft', 'Investment Property'],
+        },
+        {
+          title: "Fisherman's Retreat",
+          slug: '/portfolio/fishermans-retreat',
+          image:
+            'https://cdn.sanity.io/images/xi1ruvdt/production/d2fcb349a4bb5bfcc2024e3512adac575c562801-2048x1366.jpg',
+          tags: ['Medium Bar', '2 Bed', '2 Bath', '1,500-2,000 Sqft', 'Investment Property'],
+        },
+      ],
     },
   },
 };
