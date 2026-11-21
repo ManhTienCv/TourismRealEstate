@@ -231,3 +231,49 @@
 .huts-btn.button-secondary:hover .btn-icon-svg .stroke {
   stroke: #fffdf6;
 }
+
+/* ==========================================================================
+   BIẾN THỂ 4: VARIANT="SOCK" (Nút Get Started trên PreFooterBanner xanh cốm)
+   withArrow={true}
+   ========================================================================== */
+.huts-btn.button-sock .text-wrapper,
+.huts-btn.button-sock .btn-icon {
+  background-color: #FFFDF6;
+  box-shadow: inset 0 0 0 1px #FFFDF6;
+}
+
+.huts-btn.button-sock .text-wrapper span {
+  padding: 18px 32px;
+  font-size: 14px;
+  line-height: 1;
+  font-weight: 500;
+  color: #0C310A;
+  transition: color 0.3s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.huts-btn.button-sock .btn-icon {
+  width: 54px;
+  height: 54px;
+}
+
+.huts-btn.button-sock.w-arrow .text-wrapper svg.btn-path {
+  transform: translate(54px, -50%);
+}
+
+.huts-btn.button-sock .btn-icon-svg .stroke {
+  stroke: #0C310A;
+  transition: stroke 0.35s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.huts-btn.button-sock svg.btn-path path {
+  stroke: #57772E;
+}
+
+.huts-btn.button-sock:hover .text-wrapper span {
+  color: #FFFDF6;
+}
+
+.huts-btn.button-sock:hover .btn-icon-svg .stroke {
+  stroke: #FFFDF6;
+}
+

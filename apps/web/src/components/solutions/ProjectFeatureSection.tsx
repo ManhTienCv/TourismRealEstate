@@ -121,7 +121,7 @@ export const ProjectFeatureSection: React.FC<ProjectFeatureSectionProps> = ({
   if (!projects || projects.length === 0) return null;
 
   return (
-    <section className="relative z-0 pt-14 md:pt-20 bg-[#FAF7ED]">
+    <section className="relative z-0 pt-14 md:pt-20 pb-14 md:pb-[5.25rem] bg-[#FAF7ED]">
       {/* Tiêu đề section */}
       <h3 className="max-w-[820px] mx-auto px-6 text-center font-serif font-normal text-[#0C310A] text-[clamp(1.75rem,2.63vw+1.13rem,3.5rem)] leading-[1.1] tracking-[-0.03em] mb-10 md:mb-14">
         {heading}

@@ -31,11 +31,18 @@ export const App: React.FC = () => {
   const closeStandardDetail = useConfiguratorStore((s) => s.closeStandardDetail);
   const openWhatIsAStandard = useConfiguratorStore((s) => s.openWhatIsAStandard);
   const closeWhatIsAStandard = useConfiguratorStore((s) => s.closeWhatIsAStandard);
+  const openConfigurator = useConfiguratorStore((s) => s.openConfigurator);
 
-  // Sync route /housing-solutions/:slug, /standards/:slug, and /what-is-a-standard with browser address bar and history
+  const [pathname, setPathname] = React.useState<string>(() =>
+    typeof window !== 'undefined' ? window.location.pathname : '/'
+  );
+  const isGetStarted = pathname.startsWith('/get-started');
+
+  // Sync route /housing-solutions/:slug, /standards/:slug, /what-is-a-standard, and /get-started with browser address bar and history
   useEffect(() => {
     const handlePopState = () => {
       const path = window.location.pathname;
+      setPathname(path);
       if (path.startsWith('/housing-solutions/')) {
         const slug = path.replace('/housing-solutions/', '').replace(/\/$/, '');
         if (slug) {
@@ -49,6 +56,8 @@ export const App: React.FC = () => {
         if (slug) {
           openStandardDetail(slug);
         }
+      } else if (path.startsWith('/get-started')) {
+        openConfigurator();
       } else if (path === '/' || path === '') {
         closeSolutionDetail();
         closeStandardDetail();
@@ -66,7 +75,13 @@ export const App: React.FC = () => {
     closeStandardDetail,
     openWhatIsAStandard,
     closeWhatIsAStandard,
+    openConfigurator,
   ]);
+
+  // Keep pathname updated with internal store changes
+  useEffect(() => {
+    setPathname(window.location.pathname);
+  }, [activeTab, selectedSolutionSlug, selectedStandardSlug, isWhatIsAStandard]);
 
   // Initialize Lenis Momentum / Inertia Scrolling (Matches Huts.com smooth luxury scroll physics)
   useEffect(() => {
@@ -143,9 +158,6 @@ export const App: React.FC = () => {
 
             {/* 07. Client Testimonial & 4 Massive Stat Counters (200K+, 18, ±5.0%, 5,000+) */}
             <TrustMetricsSection />
-
-            {/* 08. Pistachio Pre-Footer Banner ("Let’s find that place you’ve been dreaming about") */}
-            <PreFooterBanner />
           </>
         )}
       </main>
@@ -155,8 +167,11 @@ export const App: React.FC = () => {
       <GetStartedWizard />
       <PortfolioGalleryModal />
 
+      {/* Pistachio Pre-Footer Banner (Shown on all pages except /get-started) */}
+      {!isGetStarted && <PreFooterBanner />}
+
       {/* Deep Forest Pine Footer */}
-      <Footer />
+      <Footer hasPreFooter={!isGetStarted} />
     </div>
   );
 };

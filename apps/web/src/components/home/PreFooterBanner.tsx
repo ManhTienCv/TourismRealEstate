@@ -1,63 +1,39 @@
-import React, { useRef } from 'react';
-import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
+import React from 'react';
 import { useConfiguratorStore } from '../../store/useConfiguratorStore';
 import { HutsButton } from '../common/HutsButton';
 
 export const PreFooterBanner: React.FC = () => {
-  const containerRef = useRef<HTMLElement>(null);
   const { openConfigurator } = useConfiguratorStore();
 
-  // Scroll-linked spring parallax: banner bounces gently behind footer top edge
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start end', 'end 70%'],
-  });
-
-  const rawY = useTransform(scrollYProgress, [0, 1], [50, -10]);
-  const y = useSpring(rawY, { stiffness: 130, damping: 20, mass: 0.6 });
-
   return (
-    <section ref={containerRef} className="relative w-full z-10">
-      <motion.div
-        style={{ y }}
-        className="w-full bg-[#CBE282] text-[#182215] rounded-t-[28px] pt-10 pb-24 md:pt-12 md:pb-28 px-8 md:px-16 overflow-hidden select-none"
-      >
-        <div className="max-w-[1240px] mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
-        
-        {/* Left: Whimsical Daydreaming Character + Editorial Headline */}
-        <div className="flex items-center gap-8 md:gap-10 text-center md:text-left">
-          {/* Hand-drawn Character Illustration from Sanity CDN */}
-          <div className="w-24 h-24 md:w-28 md:h-28 shrink-0 flex items-center justify-center">
-            <img
-              src="https://cdn.sanity.io/images/xi1ruvdt/production/5950b2b3cc53f79646218dad8be5132223257be8-164x164.svg"
-              alt="Dreaming of a country home"
-              className="w-full h-full object-contain pointer-events-none select-none"
-              draggable={false}
-            />
-          </div>
+    <section className="relative w-full bg-[#FAF7ED] z-10">
+      <div className="sock w-full bg-[#D5E798] rounded-t-[24px] px-6 md:px-16 py-8 md:py-10 flex flex-col lg:flex-row items-center gap-8 lg:gap-12 relative">
+        {/* Hình minh họa SVG bên trái (figure.illo) */}
+        <figure className="illo w-[140px] md:w-[175px] aspect-square shrink-0 object-contain flex items-center justify-center m-0">
+          <img
+            src="https://cdn.sanity.io/images/xi1ruvdt/production/5950b2b3cc53f79646218dad8be5132223257be8-164x164.svg"
+            alt="Dreaming of a country home"
+            className="w-full h-full object-contain pointer-events-none select-none"
+            draggable={false}
+          />
+        </figure>
 
-          {/* Editorial Headline */}
-          <h3 className="font-serif font-normal text-[clamp(1.75rem,2.2vw+1.15rem,3.15rem)] leading-[1.08] tracking-[-0.025em] text-[#0C310A]">
-            Let’s find that place
-            <br />
-            you’ve been dreaming
-            <br />
-            about
-          </h3>
-        </div>
+        {/* Tiêu đề h3 */}
+        <h3 className="font-serif font-normal text-[#0C310A] text-[clamp(1.75rem,2.63vw+1.13rem,3.5rem)] leading-[1.1] tracking-[-0.03em] text-center lg:text-left max-w-[600px]">
+          Let’s find that place you’ve been dreaming about
+        </h3>
 
-        {/* Right: Signature HUTS Dual Button ("Get Started" Scribble Fill Hover) */}
+        {/* Nút CTA bên phải */}
         <HutsButton
-          variant="secondary"
-          withArrow={true}
+          variant="sock"
+          withArrow
+          to="/get-started"
           onClick={() => openConfigurator()}
-          className="shrink-0"
+          className="lg:ml-auto shrink-0"
         >
           Get Started
         </HutsButton>
-
-        </div>
-      </motion.div>
+      </div>
     </section>
   );
 };

@@ -4,7 +4,11 @@ import { SEED_STANDARD_PLANS } from '@tie/shared';
 import { FOOTER_SOLUTIONS, FOOTER_STANDARDS } from './footer/footerData';
 import { FooterSocialLinks } from './footer/FooterSocialLinks';
 
-export const Footer: React.FC = () => {
+export interface FooterProps {
+  hasPreFooter?: boolean;
+}
+
+export const Footer: React.FC<FooterProps> = ({ hasPreFooter = true }) => {
   const { setActiveTab, openConfigurator, openPlanDetail, setFilterSolutionSlug, closeSolutionDetail } = useConfiguratorStore();
 
   const handleSolutionClick = (slug: string) => {
@@ -46,8 +50,9 @@ export const Footer: React.FC = () => {
   };
 
   return (
-    <footer className="relative z-20 -mt-14 w-full bg-[#0E2D0B] text-[#FAF7ED] rounded-t-[28px] pt-14 pb-10 px-8 md:px-16 overflow-hidden select-none">
-      <div className="max-w-[1240px] mx-auto">
+    <footer className={`relative z-20 w-full ${hasPreFooter ? 'bg-[#D5E798] w-sock' : 'bg-[#FAF7ED]'}`}>
+      <div className="footer-wrapper w-full bg-[#0C310A] text-[#FAF7ED] rounded-t-[24px] pt-14 pb-10 px-8 md:px-16 overflow-hidden select-none">
+        <div className="max-w-[1240px] mx-auto">
         
         {/* Main Footer Grid: Logo Left (Col-4) + 4 Menu Columns Right (Col-8) */}
         <div className="grid grid-cols-1 md:grid-cols-12 items-start gap-10 mb-14">
@@ -235,6 +240,7 @@ export const Footer: React.FC = () => {
 
         </div>
 
+      </div>
       </div>
     </footer>
   );

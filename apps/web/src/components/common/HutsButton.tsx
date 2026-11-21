@@ -6,12 +6,13 @@ const SCRIBBLE_PATH =
 
 export interface HutsButtonProps {
   children: React.ReactNode;
-  variant?: 'secondary' | 'primary' | 'nav';
+  variant?: 'secondary' | 'primary' | 'nav' | 'sock';
   withArrow?: boolean;
   onClick?: (e: React.MouseEvent) => void;
   onMouseEnter?: (e: React.MouseEvent) => void;
   onMouseLeave?: (e: React.MouseEvent) => void;
   href?: string;
+  to?: string;
   className?: string;
   type?: 'button' | 'submit' | 'reset';
   title?: string;
@@ -27,6 +28,7 @@ export const HutsButton: React.FC<HutsButtonProps> = ({
   onMouseEnter,
   onMouseLeave,
   href,
+  to,
   className = '',
   type = 'button',
   title,
@@ -80,11 +82,12 @@ export const HutsButton: React.FC<HutsButtonProps> = ({
     </>
   );
 
-  if (href) {
+  const linkUrl = href || to;
+  if (linkUrl) {
     return (
       <a
         ref={syncWidth as React.RefCallback<HTMLAnchorElement>}
-        href={href}
+        href={linkUrl}
         onClick={onClick}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
