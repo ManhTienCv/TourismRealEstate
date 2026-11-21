@@ -1,74 +1,26 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { HutsButton } from '../common/HutsButton';
 import {
   WHAT_IS_A_STANDARD_DATA,
   getAllStandards,
 } from '../solutions/standardsData';
+import { StandardsHorizontalSlider } from './StandardsHorizontalSlider';
 import { useConfiguratorStore } from '../../store/useConfiguratorStore';
 
 export const WhatIsAStandardPage: React.FC = () => {
   const openConfigurator = useConfiguratorStore((s) => s.openConfigurator);
-  const openStandardDetail = useConfiguratorStore((s) => s.openStandardDetail);
 
   const data = WHAT_IS_A_STANDARD_DATA;
   const allStandards = getAllStandards();
 
   const [activeStepIndex, setActiveStepIndex] = useState(0);
 
-  // States for Standards Catalog 3D cards
-  const [flippedSlug, setFlippedSlug] = useState<string | null>(null);
-  const hoverTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const isScrollingRef = useRef(false);
-  const scrollEndTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
   useEffect(() => {
     if (typeof window !== 'undefined') {
       window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
     }
   }, []);
-
-  // Lock 3D flip when scrolling
-  useEffect(() => {
-    const handleScroll = () => {
-      isScrollingRef.current = true;
-      if (hoverTimerRef.current) {
-        clearTimeout(hoverTimerRef.current);
-        hoverTimerRef.current = null;
-      }
-      setFlippedSlug(null);
-
-      if (scrollEndTimerRef.current) clearTimeout(scrollEndTimerRef.current);
-      scrollEndTimerRef.current = setTimeout(() => {
-        isScrollingRef.current = false;
-      }, 150);
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
-      if (scrollEndTimerRef.current) clearTimeout(scrollEndTimerRef.current);
-    };
-  }, []);
-
-  const handleCardMouseEnter = (slug: string) => {
-    if (isScrollingRef.current) return;
-    if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
-    hoverTimerRef.current = setTimeout(() => {
-      if (!isScrollingRef.current) {
-        setFlippedSlug(slug);
-      }
-    }, 180);
-  };
-
-  const handleCardMouseLeave = () => {
-    if (hoverTimerRef.current) {
-      clearTimeout(hoverTimerRef.current);
-      hoverTimerRef.current = null;
-    }
-    setFlippedSlug(null);
-  };
 
   return (
     <motion.div
@@ -291,90 +243,11 @@ export const WhatIsAStandardPage: React.FC = () => {
         </div>
       </section>
 
-      {/* 5. KHỐI OUR STANDARDS CATALOG */}
-      <section className="standards-catalog-section py-24 bg-[#FAF7ED] overflow-hidden">
-        <div className="max-w-[1584px] mx-auto px-6 md:px-16 mb-12 text-center">
-          <h3 className="text-[34px] lg:text-[50px] font-serif font-normal text-[#0C310A] tracking-[-0.03em] mb-4">
-            Our Standards Catalog
-          </h3>
-          <p className="text-[15.5px] text-[#664A42] max-w-[650px] mx-auto font-sans">
-            Explore all 8 productized architectural plans designed for real land and real budgets.
-          </p>
-        </div>
-
-        <div className="flex gap-6 overflow-x-auto px-6 md:px-16 pb-8 no-scrollbar snap-x snap-mandatory max-w-[1584px] mx-auto">
-          {allStandards.map((std) => {
-            const isFlipped = flippedSlug === std.slug;
-            return (
-              <div
-                key={std.slug}
-                className="w-[300px] md:w-[360px] shrink-0 snap-start flex flex-col select-none cursor-pointer group"
-                onClick={() => openStandardDetail(std.slug)}
-                onMouseEnter={() => handleCardMouseEnter(std.slug)}
-                onMouseLeave={handleCardMouseLeave}
-              >
-                {/* 3D Flip Card Container */}
-                <div className="relative w-full aspect-[6/5] rounded-[20px] [perspective:1000px]">
-                  <div
-                    className={`relative w-full h-full rounded-[20px] [transform-style:preserve-3d] transition-transform duration-[800ms] ease-[cubic-bezier(0.175,0.885,0.32,1.125)] ${
-                      isFlipped ? '[transform:rotateY(180deg)]' : '[transform:rotateY(0deg)]'
-                    }`}
-                  >
-                    {/* Front Face: Realistic 3D Cover */}
-                    <div className="absolute inset-0 w-full h-full rounded-[20px] overflow-hidden border border-[#D0D4C8] bg-white [backface-visibility:hidden] -webkit-backface-visibility-hidden shadow-sm">
-                      <img
-                        src={std.thumbnail}
-                        alt={std.title}
-                        className="w-full h-full object-cover select-none pointer-events-none"
-                        loading="lazy"
-                      />
-                      {/* Sub-tags */}
-                      <div className="absolute bottom-3 left-3 flex flex-wrap gap-1.5 z-10">
-                        {std.tags.map((t, idx) => (
-                          <span
-                            key={idx}
-                            className="bg-white/85 backdrop-blur-sm text-[#0C310A] text-[11px] px-2.5 py-1 rounded-full font-sans border border-[#0C310A]/10 font-medium"
-                          >
-                            {t}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Back Face: Axonometric drawing + Specs */}
-                    <div className="absolute inset-0 w-full h-full rounded-[20px] overflow-hidden border border-[#57772E] bg-white p-5 flex flex-col justify-between [backface-visibility:hidden] -webkit-backface-visibility-hidden [transform:rotateY(180deg)] shadow-sm">
-                      <div className="w-full h-[60%] flex items-center justify-center p-2">
-                        <img
-                          src={std.floorplan}
-                          alt={`${std.title} axonometric`}
-                          className="w-full h-full object-contain"
-                          loading="lazy"
-                        />
-                      </div>
-                      <div className="flex items-center justify-between pt-3 border-t border-[#D0D4C8]">
-                        <div>
-                          <p className="text-[12px] text-[#664A42] font-sans">Specifications</p>
-                          <p className="text-[13.5px] font-medium text-[#0C310A] font-sans">
-                            {std.specs.map((s) => s.text).join(' • ')}
-                          </p>
-                        </div>
-                        <span className="text-[13px] font-medium text-[#57772E] group-hover:underline">
-                          Explore →
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Tên mẫu nhà dưới thẻ */}
-                <h4 className="font-serif text-[22px] text-[#0C310A] group-hover:text-[#57772E] transition-colors mt-4 text-center">
-                  {std.title}
-                </h4>
-              </div>
-            );
-          })}
-        </div>
-      </section>
+      {/* 5. KHỐI OUR STANDARDS CATALOG (Sticky Horizontal Scroll + 3D Flip Cards) */}
+      <StandardsHorizontalSlider
+        title="Our Standards Catalog"
+        items={allStandards}
+      />
     </motion.div>
   );
 };

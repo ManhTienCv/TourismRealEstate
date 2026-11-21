@@ -75,7 +75,8 @@ export interface ImageGridItem {
 
 export interface StandardProject {
   title: string;
-  bgImage: string;
+  slug: string;
+  image: string;
   interiorImage?: string;
   tags: string[];
 }
@@ -96,6 +97,7 @@ export interface StandardDetailData {
   sliderItems: StandardSliderItem[];
   imageGrid: ImageGridItem[];
   interiorBackAndForth: BackAndForthMedia[];
+  includeInterior?: boolean;
   projectsTitle: string;
   projects: StandardProject[];
 }
@@ -307,12 +309,32 @@ export const STANDARDS_DETAIL_DATA: Record<string, StandardDetailData> = {
       { image: 'https://cdn.sanity.io/images/xi1ruvdt/production/d52c7cff11737d727ebe088169d55b19753badaa-2133x3200.jpg' },
     ],
     interiorBackAndForth: [],
+    includeInterior: false,
     projectsTitle: 'Projects using ADUs',
     projects: [
       {
-        title: 'Blueberry Hill ADU',
-        bgImage: 'https://cdn.sanity.io/images/xi1ruvdt/production/3509b42ab50657c7d06651b6060ac2b05e403c12-3200x2133.jpg',
-        tags: ['ADUs', '1 Bed', '1 Bath', '<500 Sqft'],
+        title: 'Bloomer Lane',
+        slug: '/portfolio/bloomer-lane',
+        image: 'https://cdn.sanity.io/images/xi1ruvdt/production/087912e9b945ca5251ae21835fbfc4e15495cf07-1440x850.png',
+        tags: ['ADU', 'Studio', '1 Bath', '<500 Sqft'],
+      },
+      {
+        title: 'Hudson Valley Pool House',
+        slug: '/portfolio/hudson-valley-pool-house',
+        image: 'https://cdn.sanity.io/images/xi1ruvdt/production/41ac6f36ef05d259d30c1ed66d425cb0c6b8175d-1440x810.png',
+        tags: ['ADU', 'Studio', '1 Bath', '<500 Sqft'],
+      },
+      {
+        title: 'Gulf Road',
+        slug: '/portfolio/gulf-road',
+        image: 'https://cdn.sanity.io/images/xi1ruvdt/production/c9055fc6f8ab4cad9fd1f570ee00fc0f0ba09f88-2048x1229.jpg',
+        tags: ['ADU', '4 Bed', '4+ Bath', '1,000-1,500 Sqft', 'Micro Hospitality'],
+      },
+      {
+        title: 'The Trail House',
+        slug: '/portfolio/the-trail-house',
+        image: 'https://cdn.sanity.io/images/xi1ruvdt/production/8c963ceba25c36785c663a6ff460e400add60882-3981x2239.jpg',
+        tags: ['ADU', 'Medium Bar', '2 Bed', '2 Bath', '1,000-1,500 Sqft', 'Hybrid Home'],
       },
     ],
   },
@@ -457,19 +479,36 @@ export const STANDARDS_DETAIL_DATA: Record<string, StandardDetailData> = {
         url: 'https://cdn.sanity.io/images/xi1ruvdt/production/06e1ee71c078a73ab739b6a8dfe52892a978e1c9-1920x1080.jpg',
       },
     ],
+    includeInterior: true,
     projectsTitle: 'Projects using Small Bar',
     projects: [
       {
-        title: 'Woodland Cabin',
-        bgImage: 'https://cdn.sanity.io/images/xi1ruvdt/production/b3968c6d376ff106c92edd04d82e31870bea60c7-1920x1080.jpg',
+        title: 'Moose Aly Guest House',
+        slug: '/portfolio/moose-aly-guest-house',
+        image: 'https://cdn.sanity.io/images/xi1ruvdt/production/39d6a22295c5e94f66fc02a9278881ce7d60a83d-1440x810.png',
         interiorImage: 'https://cdn.sanity.io/images/xi1ruvdt/production/2b0167027ea1631b1b62eeaa901e44b9c0d7c0ce-1440x810.png',
-        tags: ['Small Bar', '1 Bed', '1 Bath', '<1,000 Sqft'],
+        tags: ['Small Bar', '3 Bed', '1 Bath', '1,000-1,500 Sqft', 'ADU'],
       },
       {
-        title: 'Catskills Retreat',
-        bgImage: 'https://cdn.sanity.io/images/xi1ruvdt/production/7c33802d8006001df4d90a5d9d31b81f77e5714a-1920x1080.jpg',
+        title: 'Oak Bluffs House',
+        slug: '/portfolio/oak-bluffs-house',
+        image: 'https://cdn.sanity.io/images/xi1ruvdt/production/ee9912cbdab0c67e080162bdde1a50588d4cdf1a-1440x850.png',
         interiorImage: 'https://cdn.sanity.io/images/xi1ruvdt/production/cc5436fecd35854a1600cd0df4aa13ccdbf35ec3-3000x2308.jpg',
-        tags: ['Small Bar', '1 Bed', '1 Bath', 'Hybrid Home'],
+        tags: ['Small Bar', '1 Bed', '2 Bath', '500 - 1,000 Sqft', 'Hybrid Home'],
+      },
+      {
+        title: 'Rustic Meadow House',
+        slug: '/portfolio/rustic-meadow-house',
+        image: 'https://cdn.sanity.io/images/xi1ruvdt/production/b99eaba3f3ab982b821556258f52e25906bd6823-1440x810.png',
+        interiorImage: 'https://cdn.sanity.io/images/xi1ruvdt/production/3c2c2d39284f36fd24f33e1ff718095e3bac79f2-1440x810.png',
+        tags: ['Small Bar', '3 Bed', '1 Bath', '1,500-2,000 Sqft', 'Second Home'],
+      },
+      {
+        title: 'Rhinecliff Road',
+        slug: '/portfolio/rhinecliff-road',
+        image: 'https://cdn.sanity.io/images/xi1ruvdt/production/5018fb9d5ee22b0fa48d3c94bb9284340312f246-2048x1281.jpg',
+        interiorImage: 'https://cdn.sanity.io/images/xi1ruvdt/production/b03396bed2d524b77df10862d7d44e92d9c6cc38-1920x1080.png',
+        tags: ['Medium Bar', '3 Bed', '2 Bath', '1,000-1,500 Sqft', 'Second Home'],
       },
     ],
   },
@@ -614,23 +653,27 @@ export const STANDARDS_DETAIL_DATA: Record<string, StandardDetailData> = {
         url: 'https://cdn.sanity.io/images/xi1ruvdt/production/9317b3f9b97534c6a13f396a66cde8a7f88e9f77-3840x2160.jpg',
       },
     ],
+    includeInterior: true,
     projectsTitle: 'Projects using Small L',
     projects: [
       {
         title: 'Appalachian Retreat',
-        bgImage: 'https://cdn.sanity.io/images/xi1ruvdt/production/3d6b3177b98085d0999a62a0670540539c2f6de8-2160x1215.jpg',
+        slug: '/portfolio/appalachian-retreat',
+        image: 'https://cdn.sanity.io/images/xi1ruvdt/production/3d6b3177b98085d0999a62a0670540539c2f6de8-2160x1215.jpg',
         interiorImage: 'https://cdn.sanity.io/images/xi1ruvdt/production/e06ed4f9f37be7e14b16cea823571a8daa355aca-2160x1216.png',
         tags: ['Small L', '3 Bed', '2 Bath', '1,000-1,500 Sqft', 'Forever Home'],
       },
       {
         title: 'Reservoir House',
-        bgImage: 'https://cdn.sanity.io/images/xi1ruvdt/production/344ae7e6b8b1cb18635e9b5a00fa0bbd851542de-1440x810.png',
+        slug: '/portfolio/reservoir-house',
+        image: 'https://cdn.sanity.io/images/xi1ruvdt/production/344ae7e6b8b1cb18635e9b5a00fa0bbd851542de-1440x810.png',
         interiorImage: 'https://cdn.sanity.io/images/xi1ruvdt/production/7c6aa08b3006095c3e0f870b85713eb8313a391d-1440x810.png',
         tags: ['Small L', '2 Bed', '2.5 Bath', '2,000-3,000 Sqft', 'Forever Home'],
       },
       {
         title: 'Ketchum Modern',
-        bgImage: 'https://cdn.sanity.io/images/xi1ruvdt/production/57dce8f176b93c3db145ff7f14a6d657d4b37c5c-1440x850.png',
+        slug: '/portfolio/ketchum-modern',
+        image: 'https://cdn.sanity.io/images/xi1ruvdt/production/57dce8f176b93c3db145ff7f14a6d657d4b37c5c-1440x850.png',
         interiorImage: 'https://cdn.sanity.io/images/xi1ruvdt/production/4088c9fc9c0ef8a7d6031e6e12c81d60f64dac7f-1440x810.png',
         tags: ['Small L', '2 Bed', '2.5 Bath', '2,000-3,000 Sqft', 'Forever Home'],
       },
@@ -777,19 +820,29 @@ export const STANDARDS_DETAIL_DATA: Record<string, StandardDetailData> = {
         url: 'https://cdn.sanity.io/images/xi1ruvdt/production/7f06ebfd392905cd6e81864d9b7330226e636c5a-3840x2160.jpg',
       },
     ],
+    includeInterior: true,
     projectsTitle: 'Projects using Medium Bar',
     projects: [
       {
         title: 'Stonewall House',
-        bgImage: 'https://cdn.sanity.io/images/xi1ruvdt/production/e49727a2dd6f922a5857096b982d068bdfb84990-2048x1152.jpg',
+        slug: '/portfolio/stonewall-house',
+        image: 'https://cdn.sanity.io/images/xi1ruvdt/production/e49727a2dd6f922a5857096b982d068bdfb84990-2048x1152.jpg',
         interiorImage: 'https://cdn.sanity.io/images/xi1ruvdt/production/44800598be7609e8f5254aa6a51e475b9f6d99c7-3000x1688.jpg',
         tags: ['Medium Bar', '2 Bed', '2 Bath', '1,000-1,500 Sqft', 'Starter Home'],
       },
       {
-        title: 'River Shore House',
-        bgImage: 'https://cdn.sanity.io/images/xi1ruvdt/production/3945027ff598f28d2c14e344078d4fae53e34fdf-3840x2160.jpg',
+        title: 'Beaver Brook',
+        slug: '/portfolio/beaver-brook',
+        image: 'https://cdn.sanity.io/images/xi1ruvdt/production/023f15276a079e42e88e7edd021c0306ab47e313-1440x850.png',
+        interiorImage: 'https://cdn.sanity.io/images/xi1ruvdt/production/7a0bdd55869d428857899d2d4987e12600666dba-1152x768.png',
+        tags: ['Medium Bar', '3 Bed', '2 Bath', '1,000-1,500 Sqft', 'Hybrid Home'],
+      },
+      {
+        title: 'Twin Mountain',
+        slug: '/portfolio/twin-mountain',
+        image: 'https://cdn.sanity.io/images/xi1ruvdt/production/1414f42fb2fb2677d706625820fb62a2c26bee84-3000x1688.jpg',
         interiorImage: 'https://cdn.sanity.io/images/xi1ruvdt/production/4f9bfd5df0ab24f4b09cf8155f800606f04ae1d2-3000x1689.png',
-        tags: ['Medium Bar', '2.5 Bed', '1 Bath', 'Second Home'],
+        tags: ['Medium Bar', '5 Bed', '4 Bath', '3,000+ Sqft', 'Hybrid Home'],
       },
     ],
   },
@@ -922,13 +975,15 @@ export const STANDARDS_DETAIL_DATA: Record<string, StandardDetailData> = {
         url: 'https://cdn.sanity.io/images/xi1ruvdt/production/ea34d832c947c5e05cec7f743871a091064b4232-3840x2160.jpg',
       },
     ],
+    includeInterior: true,
     projectsTitle: 'Projects using Dogtrot',
     projects: [
       {
-        title: 'Breezeway House',
-        bgImage: 'https://cdn.sanity.io/images/xi1ruvdt/production/f6d25176904f9198812bddec5b82bc117f38f464-3840x2160.jpg',
+        title: 'North Peak',
+        slug: '/portfolio/north-peak',
+        image: 'https://cdn.sanity.io/images/xi1ruvdt/production/51419a5688876ba0ca2f0ff4f1c0ac16345a4607-1440x810.png',
         interiorImage: 'https://cdn.sanity.io/images/xi1ruvdt/production/317df148d7216c59f67236c3f20e6b077f62ee1f-1440x810.png',
-        tags: ['Dogtrot', '2 Bed', '1.5 Bath', '1,000-1,500 Sqft'],
+        tags: ['Small L', 'Dogtrot', '3 Bed', '2 Bath', '1,000-1,500 Sqft', 'Investment Property'],
       },
     ],
   },
@@ -1077,19 +1132,29 @@ export const STANDARDS_DETAIL_DATA: Record<string, StandardDetailData> = {
         url: 'https://cdn.sanity.io/images/xi1ruvdt/production/f04d9c378bbedeebd93afadff98b9e1d49b193fa-3840x2160.jpg',
       },
     ],
+    includeInterior: true,
     projectsTitle: 'Projects using Big Bar',
     projects: [
       {
-        title: 'Ridgeview Longhouse',
-        bgImage: 'https://cdn.sanity.io/images/xi1ruvdt/production/652f1a590f8c24a81984a97afd52fd14113267a9-3840x2160.jpg',
+        title: 'Break House',
+        slug: '/portfolio/break-house',
+        image: 'https://cdn.sanity.io/images/xi1ruvdt/production/dacfea2a387f782e7dfe3b00f40ed7276da964a5-3070x2047.jpg',
         interiorImage: 'https://cdn.sanity.io/images/xi1ruvdt/production/c45e208f072aacfdde60517b84638f6805f62aec-3200x2133.png',
-        tags: ['Big Bar', '3 Bed', '2 Bath', 'Forever Home'],
+        tags: ['Big Bar', '3 Bed', '2 Bath', '1,000-1,500 Sqft', 'Hybrid Home'],
       },
       {
-        title: 'Forest Ridge Residence',
-        bgImage: 'https://cdn.sanity.io/images/xi1ruvdt/production/cc11c619e778a543f8439582f83fd82171194ca1-3840x2160.jpg',
+        title: 'Mombaccus Modern',
+        slug: '/portfolio/mombaccus-modern',
+        image: 'https://cdn.sanity.io/images/xi1ruvdt/production/4137d9155afd3738d014985968936f7f7b3b30a3-2160x1215.jpg',
         interiorImage: 'https://cdn.sanity.io/images/xi1ruvdt/production/6be655ea947d7c03be3de492f790d6352153a0cb-2160x1200.png',
-        tags: ['Big Bar', '3 Bed', '2 Bath', '1,200-1,500 Sqft'],
+        tags: ['Big Bar', '3 Bed', '2 Bath', '1,500-2,000 Sqft', 'Forever Home'],
+      },
+      {
+        title: 'Creekside Compound',
+        slug: '/portfolio/creekside-compound',
+        image: 'https://cdn.sanity.io/images/xi1ruvdt/production/212b49dc352468037ad6e960041b3be578005dcc-1440x810.jpg',
+        interiorImage: 'https://cdn.sanity.io/images/xi1ruvdt/production/826dc5c73893229b805a048e1885d398c3b77c15-1152x768.png',
+        tags: ['Medium Bar', 'Big Bar', '6+ Bed', '4+ Bath', '3,000+ Sqft', 'Multi-Generational Compound'],
       },
     ],
   },
@@ -1234,19 +1299,29 @@ export const STANDARDS_DETAIL_DATA: Record<string, StandardDetailData> = {
         url: 'https://cdn.sanity.io/images/xi1ruvdt/production/5078171777c9610cf2c9fe6f436bac2ee07504a7-3840x2160.jpg',
       },
     ],
+    includeInterior: true,
     projectsTitle: 'Projects using Big L',
     projects: [
       {
-        title: 'Meadow Courtyard Home',
-        bgImage: 'https://cdn.sanity.io/images/xi1ruvdt/production/5cbaf2b23ab6dde546fe55cd3d8d13fb5f60e427-3840x2160.jpg',
+        title: 'Fremont Forever Home',
+        slug: '/portfolio/fremont-forever-home',
+        image: 'https://cdn.sanity.io/images/xi1ruvdt/production/5c494328c3c94eea753b3e02732909b31d3b41f5-3000x1688.jpg',
         interiorImage: 'https://cdn.sanity.io/images/xi1ruvdt/production/67dee40ff89a85c4c56137766c5f4d94a1887fe2-3000x1688.png',
-        tags: ['Big L', '3 Bed', '2.5 Bath', '1,800+ Sqft', 'Forever Home'],
+        tags: ['Big L', 'Village', '4 Bed', '2.5 Bath', '3,000+ Sqft', 'Forever Home'],
       },
       {
-        title: 'Panoramic Crest',
-        bgImage: 'https://cdn.sanity.io/images/xi1ruvdt/production/bb8da1d95d9d007e37ebecb3102a37685c03915a-3840x2160.jpg',
+        title: 'Mountain View Meadow',
+        slug: '/portfolio/mountain-view-meadow',
+        image: 'https://cdn.sanity.io/images/xi1ruvdt/production/5c3cc3da09c516a2ba6f0339d635553934dcf2aa-2048x1365.jpg',
         interiorImage: 'https://cdn.sanity.io/images/xi1ruvdt/production/4788e850b34ff622c9c47d57a7f5dc4f3a8d8947-2048x1365.png',
-        tags: ['Big L', '3 Bed', '2.5 Bath', 'Second Home'],
+        tags: ['Big L', '2 Bed', '2.5 Bath', '1,500-2,000 Sqft', 'Investment Property'],
+      },
+      {
+        title: 'Hill Top House',
+        slug: '/portfolio/hill-top-house',
+        image: 'https://cdn.sanity.io/images/xi1ruvdt/production/cd5aca7a968602961bf143ed26569651b33c929f-1998x1124.png',
+        interiorImage: 'https://cdn.sanity.io/images/xi1ruvdt/production/cbf7c4654ac53b012c66abeb10071a2f70297af0-1440x825.png',
+        tags: ['Big L', '2 Bed', '2 Bath', '2,000-3,000 Sqft', 'Second Home'],
       },
     ],
   },
@@ -1387,19 +1462,36 @@ export const STANDARDS_DETAIL_DATA: Record<string, StandardDetailData> = {
         url: 'https://cdn.sanity.io/images/xi1ruvdt/production/979e5fb94b20384430b26ee4dc2ea36af7881b0d-3840x2160.jpg',
       },
     ],
+    includeInterior: true,
     projectsTitle: 'Projects using Village',
     projects: [
       {
-        title: 'Meadow Cluster Compound',
-        bgImage: 'https://cdn.sanity.io/images/xi1ruvdt/production/45ec2688cb355e82859d688f8ccafa86dc9c7a9f-3840x2160.jpg',
+        title: 'Live-Work House',
+        slug: '/portfolio/live-work-house',
+        image: 'https://cdn.sanity.io/images/xi1ruvdt/production/d46484e4b60a3acc8cc7d4df39300dd1889ae785-3000x1688.jpg',
         interiorImage: 'https://cdn.sanity.io/images/xi1ruvdt/production/bf1d1d18c08e8d91a31903a5d633315784ddc2bf-3000x1689.png',
-        tags: ['Village', '3 Bed', '2.5 Bath', 'Compound'],
+        tags: ['Village', '2 Bed', '2.5 Bath', '1,500-2,000 Sqft', 'Forever Home'],
       },
       {
-        title: 'Timber Grove Retreat',
-        bgImage: 'https://cdn.sanity.io/images/xi1ruvdt/production/36f712b9819ff5b3348f62fa29ca2ee1c14a497b-3840x2160.jpg',
+        title: 'Garden Home',
+        slug: '/portfolio/garden-home',
+        image: 'https://cdn.sanity.io/images/xi1ruvdt/production/c5749355747204a48ad9eee6df922eb1dde33a58-1440x800.png',
         interiorImage: 'https://cdn.sanity.io/images/xi1ruvdt/production/c4c5ec89c4be1d24b4d94fabdab623c9daad84d6-1440x825.png',
-        tags: ['Village', '3 Bed', '2.5 Bath', 'Micro-Hospitality'],
+        tags: ['Village', '2 Bed', '2.5 Bath', '1,500-2,000 Sqft', 'Forever Home'],
+      },
+      {
+        title: 'The Barn House',
+        slug: '/portfolio/the-barn-house',
+        image: 'https://cdn.sanity.io/images/xi1ruvdt/production/3110715101dd3b5872d13ee53024420cdc9f06e3-1440x800.png',
+        interiorImage: 'https://cdn.sanity.io/images/xi1ruvdt/production/f7296c6b37925e9e238668ee3f00971aad732029-1440x810.png',
+        tags: ['Village', '2 Bed', '2.5 Bath', '2,000-3,000 Sqft', 'Investment Property'],
+      },
+      {
+        title: 'Kerhonkson',
+        slug: '/portfolio/kerhonkson',
+        image: 'https://cdn.sanity.io/images/xi1ruvdt/production/fe90a153b38b340201b93841f6f2f73215569bec-1440x810.png',
+        interiorImage: 'https://cdn.sanity.io/images/xi1ruvdt/production/007a8f2c338fec571894a4e608be071b7aac259c-1152x768.png',
+        tags: ['Village', '2 Bed', '2 Bath', '2,000-3,000 Sqft', 'Second Home'],
       },
     ],
   },
