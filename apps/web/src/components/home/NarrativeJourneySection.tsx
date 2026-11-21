@@ -147,9 +147,9 @@ export const NarrativeJourneySection: React.FC = () => {
 
           {/* CỘT PHẢI: BLOCK-TEXT & NÚT BẤM SEE OUR PROJECTS */}
           <div className="block-text max-w-[540px]">
-            <h4 className="text-[28px] lg:text-[36.1px] leading-[1.14] tracking-[-0.02em] font-serif font-normal text-[#0C310A] mb-[22px]">
+            <h3 className="text-[clamp(1.75rem,1.88vw+1.15rem,3rem)] leading-[1.12] tracking-[-0.025em] font-serif font-normal text-[#0C310A] mb-[22px]">
               We do it across the country
-            </h4>
+            </h3>
 
             <p className="large text-[17px] lg:text-[19.5px] leading-[1.4] text-[#664A42] mb-[30px]">
               We focused exclusively on delivering in rural locations. Coast-to-coast, TIE crafts beautiful properties through guidance, intent, and care. Have a specific area or state in mind? We've either built there, or will soon.
@@ -185,11 +185,11 @@ export const NarrativeJourneySection: React.FC = () => {
           
           {/* CỘT TRÁI: BLOCK-TEXT & NÚT BẤM HOW IT WORKS */}
           <div className="block-text max-w-[540px]">
-            <h4 className="text-[28px] lg:text-[36.1px] leading-[1.14] tracking-[-0.02em] font-serif font-normal text-[#0C310A] mb-[22px]">
+            <h3 className="text-[clamp(1.75rem,1.88vw+1.15rem,3rem)] leading-[1.12] tracking-[-0.025em] font-serif font-normal text-[#0C310A] mb-[22px]">
               Using a process built
               <br />
               around you
-            </h4>
+            </h3>
 
             <p className="large text-[17px] lg:text-[19.5px] leading-[1.4] text-[#664A42] mb-[30px]">
               We deliver properties differently think of us as your sherpa on the path to your perfect property. Our people-first process goes far beyond floor plans—we coordinate every player needed to take you from a spark of an idea to raw land to a finished home. It's a start-to-finish approach that's proven, vetted, and simply the best way to build.

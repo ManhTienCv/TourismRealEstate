@@ -37,7 +37,7 @@ export const PreFooterBanner: React.FC = () => {
           </div>
 
           {/* Editorial Headline */}
-          <h3 className="font-serif font-normal text-[34px] md:text-[42px] leading-[1.08] tracking-[-0.02em] text-[#0C310A]">
+          <h3 className="font-serif font-normal text-[clamp(1.75rem,2.2vw+1.15rem,3.15rem)] leading-[1.08] tracking-[-0.025em] text-[#0C310A]">
             Let’s find that place
             <br />
             you’ve been dreaming

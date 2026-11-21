@@ -133,7 +133,7 @@ export const TrustMetricsSection: React.FC = () => {
       
       {/* 1. Header aligned with slide 1 */}
       <div className="w-full px-8 md:px-16 lg:px-24 mb-8 sm:mb-10">
-        <h2 className="font-serif text-4xl sm:text-5xl lg:text-[54px] font-normal tracking-tight text-[#182215] leading-tight">
+        <h2 className="font-serif text-[clamp(1.75rem,2.63vw+1.13rem,3.5rem)] font-normal tracking-[-0.025em] text-[#0C310A] leading-[1.1]">
           But, don’t take it from us...
         </h2>
       </div>

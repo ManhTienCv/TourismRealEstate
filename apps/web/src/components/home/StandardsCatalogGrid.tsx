@@ -286,10 +286,10 @@ export const StandardsCatalogGrid: React.FC = () => {
         <div className="heading-wrapper mb-8">
           <div className="block-text">
             <div className="block-text-col">
-              <h3 className="text-[34px] lg:text-[50px] leading-[1.1] tracking-[-0.03em] font-serif font-normal text-[#0C310A] text-center mb-[22px]">
+              <h3 className="text-[clamp(1.75rem,2.63vw+1.13rem,3.5rem)] leading-[1.1] tracking-[-0.03em] font-serif font-normal text-[#0C310A] text-center mb-[22px]">
                 It all starts with our Standards...
               </h3>
-              <p className="max-w-[750px] mx-auto text-center text-[15.5px] leading-[23px] text-[#664A42] font-sans">
+              <p className="max-w-[760px] mx-auto text-center text-[17px] lg:text-[19.5px] leading-[1.45] text-[#664A42] font-sans">
                 They’re more than home plans, they’re home products—designed for real land, real budgets, and real life. TIE Standards combine timeless design with construction-ready details, making it faster and easier to build a home that feels anything but standard.
               </p>
             </div>
@@ -367,7 +367,7 @@ export const StandardsCatalogGrid: React.FC = () => {
 
                   {/* Sibling h5 title below card: Căn trái, cách thẻ 18px, đổi màu xanh #57772E khi thẻ lật */}
                   <h5
-                    className={`text-[22px] md:text-[26px] leading-[1.2] tracking-[-0.025em] font-serif font-normal text-left transition-colors duration-200 ease-[cubic-bezier(0.33,1,0.68,1)] ${
+                    className={`text-[clamp(1.375rem,0.94vw+1.15rem,1.85rem)] leading-[1.2] tracking-[-0.025em] font-serif font-normal text-left transition-colors duration-200 ease-[cubic-bezier(0.33,1,0.68,1)] ${
                       isFlipped ? 'text-[#57772E]' : 'text-[#0C310A]'
                     }`}
                   >
