@@ -123,14 +123,14 @@ export const UseCaseSelector: React.FC = () => {
       id="solutions-section"
       className="card-slider relative h-[320vh] bg-[#FAF7ED]"
     >
-      {/* Scoped CSS để định hình chính xác kích thước pixel thực tế của HUTS */}
+      {/* Scoped CSS để định hình chính xác kích thước tỷ lệ ~0.91 (10/11) của HUTS */}
       <style>{`
         #solutions-section .scroll-content {
-          display: grid !important;
-          grid-template-rows: auto 1fr !important;
-          gap: 2rem !important; /* gap-8 (32px) */
-          padding-top: 3.5rem !important; /* pt-14 (56px) */
-          padding-bottom: 2rem !important; /* pb-8 (32px) */
+          display: flex !important;
+          flex-direction: column !important;
+          justify-content: space-between !important;
+          padding-top: 96px !important;
+          padding-bottom: 1.75rem !important; /* pb-7 (28px) */
           overflow: hidden !important;
           height: 100vh !important;
           height: 100dvh !important;
@@ -138,21 +138,34 @@ export const UseCaseSelector: React.FC = () => {
         }
         @media (min-width: 768px) {
           #solutions-section .scroll-content {
-            gap: 36px !important; /* md:gap-[36px] */
-            padding-top: 60px !important; /* md:pt-[60px] */
-            padding-bottom: 42px !important; /* md:pb-[42px] */
+            padding-top: 104px !important; /* md:pt-[104px] */
+            padding-bottom: 2.25rem !important; /* md:pb-9 (36px) */
+          }
+        }
+
+        #solutions-section .heading-wrapper {
+          max-width: 880px !important;
+          margin: 0 auto !important;
+          padding-left: 1.5rem !important;
+          padding-right: 1.5rem !important;
+          margin-bottom: 1.5rem !important; /* mb-6 */
+          flex-shrink: 0 !important;
+        }
+        @media (min-width: 768px) {
+          #solutions-section .heading-wrapper {
+            margin-bottom: 2rem !important; /* md:mb-8 */
           }
         }
 
         #solutions-section .heading-wrapper h3 {
           font-size: 32px !important;
-          line-height: 1.1 !important;
-          letter-spacing: -0.025em !important;
+          line-height: 1.08 !important;
+          letter-spacing: -0.03em !important;
           font-family: 'HW Cigars', Georgia, serif !important;
           font-weight: 400 !important;
           color: #0C310A !important;
           text-align: center !important;
-          max-width: 740px !important;
+          max-width: 880px !important;
           margin: 0 auto !important;
           text-wrap: balance !important;
           font-feature-settings: 'kern' 1 !important;
@@ -160,43 +173,42 @@ export const UseCaseSelector: React.FC = () => {
         }
         @media (min-width: 768px) {
           #solutions-section .heading-wrapper h3 {
-            font-size: 47.5px !important;
+            font-size: 46px !important;
           }
         }
 
         #solutions-section .h-scroll-container {
+          flex: 1 1 0% !important;
+          min-height: 0 !important;
           display: flex !important;
           align-items: center !important;
-          height: 100% !important;
+          height: auto !important;
+          width: 100% !important;
           overflow: hidden !important;
         }
 
         #solutions-section .h-scroll-content {
           display: flex !important;
           align-items: center !important;
-          column-gap: 22px !important;
-          height: 100% !important;
+          column-gap: 20px !important; /* gap-[20px] */
+          height: auto !important;
           padding-left: clamp(1.5rem, 4vw, 4.5rem) !important;
           padding-right: clamp(1.5rem, 4vw, 4.5rem) !important;
         }
 
         #solutions-section .card-wrapper {
-          width: 300px !important;
-          height: 380px !important;
+          height: min(430px, 56dvh) !important;
+          aspect-ratio: 10 / 11 !important;
+          width: auto !important;
           flex-shrink: 0 !important;
           display: flex !important;
           flex-direction: column !important;
-        }
-        @media (min-width: 768px) {
-          #solutions-section .card-wrapper {
-            width: 409px !important;
-            height: min(505px, 64dvh) !important;
-          }
         }
 
         #solutions-section .card.illustration {
           width: 100% !important;
           height: 100% !important;
+          aspect-ratio: 10 / 11 !important;
           max-height: none !important;
           border-radius: 22px !important;
         }
@@ -207,69 +219,62 @@ export const UseCaseSelector: React.FC = () => {
           border-radius: 22px !important;
         }
 
-        #solutions-section .card.illustration .card-front,
-        #solutions-section .card.illustration .card-back {
-          padding: 1.75rem !important; /* p-7 (28px) */
+        #solutions-section .card.illustration .card-front {
+          display: grid !important;
+          grid-template-rows: 1fr auto !important;
+          row-gap: 1rem !important; /* gap-4 (16px) */
+          padding: 1.5rem !important; /* p-6 (24px) */
           box-sizing: border-box !important;
           background-color: #FAF8F1 !important;
+          border: 1px solid #DFDCD0 !important;
+          align-items: center !important;
         }
         @media (min-width: 768px) {
-          #solutions-section .card.illustration .card-front,
-          #solutions-section .card.illustration .card-back {
-            padding: 41px !important; /* md:p-[41px] */
+          #solutions-section .card.illustration .card-front {
+            padding: 2rem !important; /* md:p-8 (32px) */
           }
         }
 
-        #solutions-section .card.illustration .card-front {
-          display: flex !important;
-          flex-direction: column !important;
-          justify-content: space-between !important;
-          align-items: center !important;
-          border: 1px solid #DFDCD0 !important;
-        }
-
         #solutions-section .card.illustration .card-front .illustration-wrapper {
-          flex: 1 !important;
+          width: 100% !important;
+          height: 100% !important;
+          min-height: 0 !important;
           display: flex !important;
           align-items: center !important;
           justify-content: center !important;
-          width: 100% !important;
           overflow: hidden !important;
         }
 
         #solutions-section .card.illustration .card-front .illustration-wrapper figure {
           width: 100% !important;
           height: 100% !important;
+          min-height: 0 !important;
           display: flex !important;
           align-items: center !important;
           justify-content: center !important;
         }
 
         #solutions-section .card.illustration .card-front .illustration-wrapper figure img {
-          width: 190px !important;
-          height: 190px !important;
+          width: 82% !important;
+          height: 82% !important;
+          max-width: 260px !important;
+          max-height: 245px !important;
           object-fit: contain !important;
           margin: auto !important;
-        }
-        @media (min-width: 768px) {
-          #solutions-section .card.illustration .card-front .illustration-wrapper figure img {
-            width: 235px !important;
-            height: 235px !important;
-          }
         }
 
         #solutions-section .card.illustration .card-front .text-wrapper h5 {
           font-family: 'HW Cigars', Georgia, serif !important;
           font-weight: 400 !important;
           font-size: 22px !important;
-          line-height: 1.3 !important;
-          letter-spacing: -0.025em !important;
+          line-height: 1.2 !important;
+          letter-spacing: -0.02em !important;
           color: #0C310A !important;
           text-align: center !important;
         }
         @media (min-width: 768px) {
           #solutions-section .card.illustration .card-front .text-wrapper h5 {
-            font-size: 29px !important;
+            font-size: 27px !important;
           }
         }
 
@@ -278,6 +283,15 @@ export const UseCaseSelector: React.FC = () => {
           flex-direction: column !important;
           align-items: center !important;
           text-align: center !important;
+          padding: 1.5rem !important; /* p-6 (24px) */
+          box-sizing: border-box !important;
+          background-color: #FAF8F1 !important;
+          border: 1px solid #57772E !important;
+        }
+        @media (min-width: 768px) {
+          #solutions-section .card.illustration .card-back {
+            padding: 2rem !important; /* md:p-8 (32px) */
+          }
         }
 
         #solutions-section .card.illustration .card-back figure {
@@ -289,13 +303,13 @@ export const UseCaseSelector: React.FC = () => {
         }
 
         #solutions-section .card.illustration .card-back figure img {
-          height: 110px !important;
+          height: 88px !important;
           width: auto !important;
           object-fit: contain !important;
         }
         @media (min-width: 768px) {
           #solutions-section .card.illustration .card-back figure img {
-            height: 135px !important;
+            height: 104px !important;
           }
         }
 
@@ -309,20 +323,20 @@ export const UseCaseSelector: React.FC = () => {
 
         #solutions-section .card.illustration .card-back .text-wrapper h5 {
           font-family: 'HW Cigars', Georgia, serif !important;
-          font-size: 24px !important;
+          font-size: 22px !important;
           font-weight: 400 !important;
           color: #0C310A !important;
-          margin-bottom: 0.5rem !important;
+          margin-bottom: 0.35rem !important;
         }
         @media (min-width: 768px) {
           #solutions-section .card.illustration .card-back .text-wrapper h5 {
-            font-size: 29px !important;
+            font-size: 26px !important;
           }
         }
 
         #solutions-section .card.illustration .card-back .text-wrapper p {
-          font-size: 14.5px !important;
-          line-height: 1.45 !important;
+          font-size: 14px !important;
+          line-height: 1.4 !important;
           color: #664A42 !important;
           text-align: center !important;
         }
@@ -332,21 +346,21 @@ export const UseCaseSelector: React.FC = () => {
         }
       `}</style>
 
-      {/* 100dvh sticky container with grid-template-rows: auto 1fr (matching HUTS) */}
-      <div className="scroll-content sticky top-0 left-0 w-full h-[100dvh] grid grid-rows-[auto_1fr] gap-8 md:gap-[36px] pt-14 md:pt-[60px] pb-8 md:pb-[42px] overflow-hidden select-none">
-        {/* Section Header within grid row 1 */}
-        <div className="heading-wrapper max-w-[740px] mx-auto px-6 text-center">
-          <h3 className="text-[32px] md:text-[47.5px] leading-[1.1] tracking-[-0.025em] font-serif font-normal text-[#0C310A] text-balance">
-            Whatever type of place <br className="hidden md:inline" />you have in mind
+      {/* 100dvh sticky container with flex-col justify-between pt-[96px] md:pt-[104px] pb-7 md:pb-9 (né hoàn toàn Navbar) */}
+      <div className="scroll-content sticky top-0 left-0 w-full h-[100dvh] flex flex-col justify-between pt-[96px] md:pt-[104px] pb-7 md:pb-9 overflow-hidden select-none">
+        {/* Section Header */}
+        <div className="heading-wrapper max-w-[880px] mx-auto px-6 mb-6 md:mb-8 shrink-0 text-center">
+          <h3 className="text-[32px] md:text-[46px] leading-[1.08] tracking-[-0.03em] font-serif font-normal text-[#0C310A] text-center max-w-[880px] mx-auto text-balance">
+            Whatever type of place you have <br className="hidden md:inline" />in mind
           </h3>
         </div>
 
-        {/* Sticky Horizontal Track within grid row 2 */}
-        <div className="h-scroll-container">
+        {/* Sticky Horizontal Track */}
+        <div className="h-scroll-container flex-1 min-h-0 flex items-center">
           <motion.div
             ref={trackRef}
             style={{ x }}
-            className="h-scroll-content flex items-center gap-[22px]"
+            className="h-scroll-content flex items-center gap-[20px]"
           >
             {SEED_HOUSING_SOLUTIONS.map((sol: HousingSolution) => (
               <Archetype3DCard
