@@ -215,30 +215,32 @@ export const MegaMenuNavbar: React.FC = () => {
   const [isHeaderHovered, setIsHeaderHovered] = useState(false);
 
   const menuCloseTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const lastScrollYRef = useRef(0);
 
-  // Scroll listener: Tự động ẩn navbar khi lướt xuống, hiện lại khi cuộn ngược lên hoặc ở đầu trang chuẩn HUTS
+  // Scroll listener theo cơ chế tích lũy ngưỡng (KHÔNG reset lastAnchorY khi chưa vượt ngưỡng)
   useEffect(() => {
-    lastScrollYRef.current = window.scrollY;
+    let lastAnchorY = window.scrollY || document.documentElement.scrollTop || 0;
 
     const handleScroll = () => {
-      const currentY = window.scrollY;
-      const delta = currentY - lastScrollYRef.current;
+      const currentY = window.scrollY || document.documentElement.scrollTop || 0;
+      const diff = currentY - lastAnchorY;
 
       setIsScrolled(currentY > 40);
 
-      // Nếu đang mở Mega Menu, con trỏ đang hover trên navbar, hoặc ở đỉnh trang (<= 60px): luôn hiện
-      if (currentY <= 60 || activeMenu !== null || isHeaderHovered) {
+      // Luôn hiện khi ở sát đỉnh trang hoặc đang mở Mega Menu
+      if (currentY <= 80 || activeMenu !== null) {
         setIsHidden(false);
-      } else if (delta > 6 && currentY > 100) {
-        // Cuộn xuống: ẩn navbar mượt lên trên (-translate-y-full)
-        setIsHidden(true);
-      } else if (delta < -6) {
-        // Cuộn ngược lên: hiện navbar trở lại (translate-y-0)
-        setIsHidden(false);
+        lastAnchorY = currentY;
+        return;
       }
 
-      lastScrollYRef.current = currentY;
+      // Chỉ đổi trạng thái và cập nhật mốc khi đã cuộn tích lũy đủ >= 12px
+      if (diff >= 12 && !isHeaderHovered) {
+        setIsHidden(true);
+        lastAnchorY = currentY;
+      } else if (diff <= -12) {
+        setIsHidden(false);
+        lastAnchorY = currentY;
+      }
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -341,7 +343,7 @@ export const MegaMenuNavbar: React.FC = () => {
           transitionDuration: '550ms, 250ms, 200ms',
           transitionTimingFunction: 'cubic-bezier(0.33, 1, 0.68, 1)',
         }}
-        className={`fixed top-0 left-0 right-0 z-50 will-change-transform [transform:translateZ(0)] transition-transform duration-[550ms] ease-[cubic-bezier(0.33,1,0.68,1)] ${
+        className={`fixed top-0 left-0 right-0 z-50 will-change-transform transition-transform duration-[550ms] ease-[cubic-bezier(0.33,1,0.68,1)] ${
           shouldHideNavbar ? '-translate-y-full pointer-events-none' : 'translate-y-0 pointer-events-auto'
         } ${
           isSolid

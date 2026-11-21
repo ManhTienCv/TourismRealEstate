@@ -107,15 +107,15 @@ export const UseCaseSelector: React.FC = () => {
 
   // Lọc scrollYProgress qua useSpring độ phản hồi cao để triệt tiêu bước nhảy con lăn chuột
   const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 160,
-    damping: 30,
+    stiffness: 260,
+    damping: 34,
     mass: 0.2,
     restDelta: 0.0005,
   });
 
-  // Ánh xạ smoothProgress trong khoảng [0.04, 0.86] với clamp: true
-  // 14% cuối hành trình (0.86 -> 1.0) hãm phanh giúp useSpring dừng hẳn trước khi nhả sticky
-  const x = useTransform(smoothProgress, [0.04, 0.86], [0, -maxTranslateX], { clamp: true });
+  // Ánh xạ smoothProgress trong khoảng [0.01, 0.97] với clamp: true
+  // Quán tính dừng kịp trong 3% cuối hành trình (0.97 -> 1.0), loại bỏ đoạn cuộn chết
+  const x = useTransform(smoothProgress, [0.01, 0.97], [0, -maxTranslateX], { clamp: true });
 
   return (
     <section
