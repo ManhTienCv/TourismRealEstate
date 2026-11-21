@@ -46,7 +46,7 @@ export const StandardsHorizontalSlider: React.FC<StandardsHorizontalSliderProps>
       }
       scrollEndTimerRef.current = setTimeout(() => {
         isScrollingRef.current = false;
-      }, 150);
+      }, 110);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -90,13 +90,13 @@ export const StandardsHorizontalSlider: React.FC<StandardsHorizontalSliderProps>
   });
 
   const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 260,
-    damping: 34,
-    mass: 0.2,
+    stiffness: 300,
+    damping: 36,
+    mass: 0.18,
     restDelta: 0.0005,
   });
 
-  const x = useTransform(smoothProgress, [0.01, 0.97], [0, -maxTranslate], { clamp: true });
+  const x = useTransform(smoothProgress, [0.02, 0.90], [0, -maxTranslate], { clamp: true });
 
   const handleCardMouseEnter = (slug: string) => {
     if (isScrollingRef.current) return;
@@ -106,7 +106,7 @@ export const StandardsHorizontalSlider: React.FC<StandardsHorizontalSliderProps>
       if (!isScrollingRef.current) {
         setFlippedSlug(slug);
       }
-    }, 190);
+    }, 130);
   };
 
   const handleCardMouseLeave = () => {

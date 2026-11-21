@@ -20,11 +20,11 @@ interface StandardImageSliderProps {
   title: string;
   items: StandardSliderItem[];
   isADUs: boolean;
+  slug?: string;
 }
 
-const StandardImageSlider: React.FC<StandardImageSliderProps> = ({ title, items, isADUs }) => {
+const StandardImageSlider: React.FC<StandardImageSliderProps> = ({ title, items, isADUs, slug }) => {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [slideWidth, setSlideWidth] = useState(isADUs ? 440 : 620);
   const [cursorState, setCursorState] = useState({
     x: 0,
     y: 0,
@@ -32,19 +32,64 @@ const StandardImageSlider: React.FC<StandardImageSliderProps> = ({ title, items,
     isLeft: false,
   });
 
-  const firstSlideRef = useRef<HTMLDivElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const [sliderMetrics, setSliderMetrics] = useState({
+    maxOffset: 0,
+    slideStep: 0,
+    maxStepIndex: 0,
+  });
 
+  const viewportRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const firstSlideRef = useRef<HTMLDivElement>(null);
+
+  // Reset activeIndex = 0 khi đổi slug hoặc danh sách items
   useEffect(() => {
-    const updateWidth = () => {
-      if (firstSlideRef.current) {
-        setSlideWidth(firstSlideRef.current.offsetWidth);
-      }
+    setActiveIndex(0);
+  }, [slug, items]);
+
+  // Đo bằng ResizeObserver và cập nhật khi slug, items hoặc kích thước thay đổi
+  useEffect(() => {
+    const updateMetrics = () => {
+      const viewportEl = viewportRef.current;
+      const trackEl = trackRef.current;
+      const firstSlideEl = firstSlideRef.current;
+      if (!viewportEl || !trackEl) return;
+
+      const viewportWidth = viewportEl.clientWidth;
+      const trackScrollWidth = trackEl.scrollWidth;
+      const slideStep = firstSlideEl ? firstSlideEl.offsetWidth + 24 : (isADUs ? 440 + 24 : 620 + 24);
+      const maxOffset = Math.max(0, trackScrollWidth - viewportWidth);
+      const maxStepIndex = slideStep > 0 ? Math.ceil(maxOffset / slideStep) : 0;
+
+      setSliderMetrics({
+        maxOffset,
+        slideStep,
+        maxStepIndex,
+      });
     };
-    updateWidth();
-    window.addEventListener('resize', updateWidth);
-    return () => window.removeEventListener('resize', updateWidth);
-  }, [isADUs, items]);
+
+    updateMetrics();
+
+    const viewportEl = viewportRef.current;
+    const trackEl = trackRef.current;
+    if (!viewportEl || !trackEl) return;
+
+    const ro = new ResizeObserver(updateMetrics);
+    ro.observe(viewportEl);
+    ro.observe(trackEl);
+    window.addEventListener('resize', updateMetrics);
+
+    return () => {
+      ro.disconnect();
+      window.removeEventListener('resize', updateMetrics);
+    };
+  }, [slug, items, isADUs]);
+
+  const { maxOffset, slideStep, maxStepIndex } = sliderMetrics;
+  const targetOffset = Math.min(activeIndex * slideStep, maxOffset);
+
+  const canGoPrev = targetOffset > 2;
+  const canGoNext = targetOffset < maxOffset - 2;
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -78,16 +123,17 @@ const StandardImageSlider: React.FC<StandardImageSliderProps> = ({ title, items,
     const rect = e.currentTarget.getBoundingClientRect();
     const clickX = e.clientX - rect.left;
     if (clickX < rect.width / 2) {
-      setActiveIndex((prev) => Math.max(0, prev - 1));
+      if (canGoPrev) {
+        setActiveIndex((prev) => Math.max(0, prev - 1));
+      }
     } else {
-      setActiveIndex((prev) => Math.min(items.length - 1, prev + 1));
+      if (canGoNext) {
+        setActiveIndex((prev) => Math.min(maxStepIndex, prev + 1));
+      }
     }
   };
 
-  const isAtFirst = activeIndex === 0;
-  const isAtLast = activeIndex === items.length - 1;
-  const isDimmed = (cursorState.isLeft && isAtFirst) || (!cursorState.isLeft && isAtLast);
-  const slideOffset = activeIndex * (slideWidth + 24);
+  const isDimmed = (cursorState.isLeft && !canGoPrev) || (!cursorState.isLeft && !canGoNext);
 
   return (
     <section className="image-slider py-20 bg-[#FAF7ED] overflow-hidden">
@@ -98,8 +144,8 @@ const StandardImageSlider: React.FC<StandardImageSliderProps> = ({ title, items,
       </div>
 
       <div
-        ref={containerRef}
-        className="relative overflow-hidden px-6 md:px-16 cursor-pointer md:cursor-none select-none"
+        ref={viewportRef}
+        className="relative overflow-hidden cursor-pointer md:cursor-none select-none"
         onMouseMove={handleMouseMove}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
@@ -133,11 +179,12 @@ const StandardImageSlider: React.FC<StandardImageSliderProps> = ({ title, items,
           </div>
         )}
 
-        {/* Dải Slides với Framer Motion mượt */}
+        {/* Dải Slides với Framer Motion kẹp chặn tuyệt đối targetOffset */}
         <motion.div
-          animate={{ x: -slideOffset }}
+          ref={trackRef}
+          animate={{ x: -targetOffset }}
           transition={{ duration: 0.65, ease: [0.33, 1, 0.68, 1] }}
-          className="flex gap-6 will-change-transform"
+          className="flex gap-6 w-max px-6 md:px-16 will-change-transform"
         >
           {items.map((item, idx) => (
             <div
@@ -165,10 +212,10 @@ const StandardImageSlider: React.FC<StandardImageSliderProps> = ({ title, items,
         </motion.div>
       </div>
 
-      {/* Pagination dots cho Mobile */}
-      {items.length > 1 && (
+      {/* Pagination dots cho Mobile theo maxStepIndex + 1 */}
+      {maxStepIndex > 0 && (
         <div className="flex md:hidden justify-center items-center gap-2 mt-6">
-          {items.map((_, idx) => (
+          {Array.from({ length: maxStepIndex + 1 }).map((_, idx) => (
             <button
               key={idx}
               type="button"
@@ -373,6 +420,7 @@ export const StandardDetailPage: React.FC<StandardDetailPageProps> = ({ slug: pr
               title={data.sliderTitle}
               items={data.sliderItems}
               isADUs={true}
+              slug={activeSlug}
             />
           )}
 
@@ -506,6 +554,7 @@ export const StandardDetailPage: React.FC<StandardDetailPageProps> = ({ slug: pr
               title={data.sliderTitle}
               items={data.sliderItems}
               isADUs={false}
+              slug={activeSlug}
             />
           )}
 
