@@ -209,6 +209,7 @@ export const MegaMenuNavbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isScrollingDown, setIsScrollingDown] = useState(false);
   const [isHeaderHovered, setIsHeaderHovered] = useState(false);
+  const [isTopEdgeHovered, setIsTopEdgeHovered] = useState(false);
 
   const menuCloseTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const lastScrollYRef = useRef(0);
@@ -216,6 +217,29 @@ export const MegaMenuNavbar: React.FC = () => {
   // Scroll listener: Tự động ẩn navbar khi lướt xuống, hiện lại khi cuộn ngược lên hoặc ở đầu trang
   useEffect(() => {
     let ticking = false;
+    let accumulatedUpScroll = 0;
+    let isTopHovered = false;
+
+    // Khởi tạo trạng thái ban đầu dựa trên scroll position
+    const initialY = window.scrollY;
+    setIsScrolled(initialY > 40);
+    if (initialY > 80) {
+      setIsScrollingDown(true);
+    }
+    lastScrollYRef.current = initialY;
+
+    // Helper: kiểm tra xem viewport có đang nằm trong phân đoạn card-slider cuộn ngang (UseCaseSelector / Standards) không
+    const isInsideStickySlider = () => {
+      const sliders = document.querySelectorAll('.card-slider');
+      for (let i = 0; i < sliders.length; i++) {
+        const rect = sliders[i].getBoundingClientRect();
+        // Section đang dính cố định toàn màn hình khi mép trên chạm đỉnh và mép dưới còn phủ kín màn hình
+        if (rect.top <= 10 && rect.bottom >= window.innerHeight - 10) {
+          return true;
+        }
+      }
+      return false;
+    };
 
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
@@ -227,11 +251,29 @@ export const MegaMenuNavbar: React.FC = () => {
 
           setIsScrolled(currentScrollY > 40);
 
-          // Chỉ ẩn navbar khi cuộn xuống quá 80px, cuộn ngược lên (-5px) hoặc ở đầu trang thì hiện lại
-          if (currentScrollY > 80 && diff > 5) {
-            setIsScrollingDown(true);
-          } else if (diff < -5 || currentScrollY <= 80) {
+          if (currentScrollY <= 60) {
+            // Ở đầu trang: luôn hiện navbar
             setIsScrollingDown(false);
+            accumulatedUpScroll = 0;
+          } else if (diff > 1) {
+            // Đang cuộn xuống: ẩn navbar để không gian thoáng đãng theo mẫu HUTS
+            setIsScrollingDown(true);
+            accumulatedUpScroll = 0;
+            if (isTopHovered) {
+              isTopHovered = false;
+              setIsTopEdgeHovered(false);
+            }
+          } else if (diff < -1) {
+            // Đang cuộn lên: nếu đang trong sticky horizontal slider, người dùng đang duyệt thẻ ngang qua lại
+            // Không tự động bật navbar che khuất tiêu đề và thẻ như ở ảnh 2
+            if (!isInsideStickySlider()) {
+              accumulatedUpScroll += Math.abs(diff);
+              if (accumulatedUpScroll > 50) {
+                setIsScrollingDown(false);
+              }
+            } else {
+              accumulatedUpScroll = 0;
+            }
           }
 
           lastScrollYRef.current = currentScrollY;
@@ -241,8 +283,28 @@ export const MegaMenuNavbar: React.FC = () => {
       }
     };
 
+    const handleMouseMove = (e: MouseEvent) => {
+      // Khi rê chuột sát mép trên màn hình (<= 36px), hiện navbar để thao tác tiện lợi
+      if (e.clientY <= 36) {
+        if (!isTopHovered) {
+          isTopHovered = true;
+          setIsTopEdgeHovered(true);
+        }
+      } else if (e.clientY > 96) {
+        if (isTopHovered) {
+          isTopHovered = false;
+          setIsTopEdgeHovered(false);
+        }
+      }
+    };
+
     window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
   }, []);
 
   const handleHeaderMouseEnter = () => {
@@ -259,6 +321,7 @@ export const MegaMenuNavbar: React.FC = () => {
     menuCloseTimeoutRef.current = setTimeout(() => {
       setActiveMenu(null);
       setIsHeaderHovered(false);
+      setIsTopEdgeHovered(false);
     }, 100);
   };
 
@@ -320,10 +383,10 @@ export const MegaMenuNavbar: React.FC = () => {
   );
 
   const isMenuOpen = activeMenu !== null;
-  const isSolid = isScrolled || isHeaderHovered || isMenuOpen || activeTab !== 'home' || selectedSolutionSlug !== null;
+  const isSolid = isScrolled || isHeaderHovered || isTopEdgeHovered || isMenuOpen || activeTab !== 'home' || selectedSolutionSlug !== null;
 
   // Navbar chỉ ẩn khi đang lướt xuống VÀ người dùng KHÔNG rê chuột lên navbar / KHÔNG mở menu
-  const shouldHideNavbar = isScrollingDown && !isHeaderHovered && !isMenuOpen && !mobileMenuOpen;
+  const shouldHideNavbar = isScrollingDown && !isHeaderHovered && !isTopEdgeHovered && !isMenuOpen && !mobileMenuOpen;
 
   // Sibling dimming helper: dim other nav items to 50% opacity when a menu is open
   const getItemOpacityClass = (itemKey: MenuType | 'portfolio') => {
@@ -342,7 +405,7 @@ export const MegaMenuNavbar: React.FC = () => {
         onMouseLeave={handleHeaderMouseLeave}
         style={{
           transition:
-            'transform 0.4s cubic-bezier(0.33, 1, 0.68, 1), border-radius 0.25s cubic-bezier(0.33, 1, 0.68, 1), background-color 0.2s cubic-bezier(0.33, 1, 0.68, 1)',
+            'transform 0.5s cubic-bezier(0.33, 1, 0.68, 1), border-radius 0.25s cubic-bezier(0.33, 1, 0.68, 1), background-color 0.2s cubic-bezier(0.33, 1, 0.68, 1)',
         }}
         className={`fixed top-0 left-0 right-0 z-50 will-change-transform [transform:translateZ(0)] ${
           shouldHideNavbar ? '-translate-y-full pointer-events-none' : 'translate-y-0 pointer-events-auto'

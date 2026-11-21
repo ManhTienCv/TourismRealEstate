@@ -5,7 +5,10 @@ import { AVAILABLE_ILLUSTRATIONS } from './CharacterIllustrations';
 export interface ArchetypeCardProps {
   sol: HousingSolution;
   onLearnMore: (slug: string) => void;
-  isScrolling?: boolean;
+  isFlipped?: boolean;
+  onMouseEnter?: () => void;
+  onMouseMove?: () => void;
+  onMouseLeave?: () => void;
 }
 
 const TIE_EDITORIAL_DATA: Record<string, { desc: string; buttonText: string }> = {
@@ -43,7 +46,14 @@ const TIE_EDITORIAL_DATA: Record<string, { desc: string; buttonText: string }> =
   },
 };
 
-export const Archetype3DCard: React.FC<ArchetypeCardProps> = ({ sol, onLearnMore }) => {
+export const Archetype3DCard: React.FC<ArchetypeCardProps> = ({
+  sol,
+  onLearnMore,
+  isFlipped = false,
+  onMouseEnter,
+  onMouseMove,
+  onMouseLeave,
+}) => {
   const illustrationSrc = AVAILABLE_ILLUSTRATIONS[sol.slug] || '/illustrations/starter-home.svg';
   const editorial = TIE_EDITORIAL_DATA[sol.slug] || {
     desc: sol.description,
@@ -53,12 +63,19 @@ export const Archetype3DCard: React.FC<ArchetypeCardProps> = ({ sol, onLearnMore
   return (
     <div className="card-wrapper select-none">
       <div
-        className="card illustration"
+        className="card illustration cursor-pointer"
         onClick={() => onLearnMore(sol.slug)}
+        onMouseEnter={onMouseEnter}
+        onMouseMove={onMouseMove}
+        onMouseLeave={onMouseLeave}
       >
-        <div className="card-inner">
+        <div
+          className={`card-inner relative w-full h-full rounded-[inherit] [transform-style:preserve-3d] transition-transform duration-[800ms] ease-[cubic-bezier(0.175,0.885,0.32,1.125)] ${
+            isFlipped ? '[transform:rotateY(180deg)]' : '[transform:rotateY(0deg)]'
+          }`}
+        >
           {/* MẶT TRƯỚC: Hình SVG lớn + Tiêu đề h5 */}
-          <div className="card-front">
+          <div className="card-front bg-[#FFFDF6] border border-[#0C310A]/25 rounded-[clamp(16px,0.75vw+13.2px,24px)] overflow-hidden">
             <div className="illustration-wrapper">
               <figure className="w-full h-full flex items-center justify-center">
                 <img
@@ -75,7 +92,7 @@ export const Archetype3DCard: React.FC<ArchetypeCardProps> = ({ sol, onLearnMore
           </div>
 
           {/* MẶT SAU: Hình SVG nhỏ 40% + Đoạn mô tả + Nút button-text */}
-          <div className="card-back">
+          <div className="card-back bg-[#FFFDF6] border border-[#57772E] rounded-[clamp(16px,0.75vw+13.2px,24px)] overflow-hidden">
             <figure className="w-full h-[40%] flex items-center justify-center">
               <img
                 src={illustrationSrc}

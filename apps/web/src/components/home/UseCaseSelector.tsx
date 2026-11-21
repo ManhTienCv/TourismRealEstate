@@ -10,6 +10,71 @@ export const UseCaseSelector: React.FC = () => {
   const trackRef = useRef<HTMLDivElement>(null);
   const [maxTranslateX, setMaxTranslateX] = useState(0);
 
+  // State và refs kiểm soát Hover Intent (200ms) + Scroll Lock cho 3D flip card
+  const [flippedSlug, setFlippedSlug] = useState<string | null>(null);
+  const hoverTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const isScrollingRef = useRef(false);
+  const scrollEndTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Khóa lật thẻ khi đang cuộn trang: úp thẻ lại ngay lập tức và hủy timer
+  useEffect(() => {
+    const handleScroll = () => {
+      isScrollingRef.current = true;
+      if (hoverTimerRef.current) {
+        clearTimeout(hoverTimerRef.current);
+        hoverTimerRef.current = null;
+      }
+      setFlippedSlug(null);
+
+      if (scrollEndTimerRef.current) {
+        clearTimeout(scrollEndTimerRef.current);
+      }
+      scrollEndTimerRef.current = setTimeout(() => {
+        isScrollingRef.current = false;
+      }, 150);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
+      if (scrollEndTimerRef.current) clearTimeout(scrollEndTimerRef.current);
+    };
+  }, []);
+
+  const handleCardMouseEnter = (slug: string) => {
+    if (isScrollingRef.current || document.documentElement.classList.contains('lenis-scrolling')) {
+      return;
+    }
+    if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
+    hoverTimerRef.current = setTimeout(() => {
+      if (!isScrollingRef.current && !document.documentElement.classList.contains('lenis-scrolling')) {
+        setFlippedSlug(slug);
+      }
+    }, 200);
+  };
+
+  const handleCardMouseMove = (slug: string) => {
+    if (isScrollingRef.current || document.documentElement.classList.contains('lenis-scrolling')) {
+      return;
+    }
+    if (flippedSlug !== slug && !hoverTimerRef.current) {
+      hoverTimerRef.current = setTimeout(() => {
+        if (!isScrollingRef.current && !document.documentElement.classList.contains('lenis-scrolling')) {
+          setFlippedSlug(slug);
+        }
+      }, 200);
+    }
+  };
+
+  const handleCardMouseLeave = () => {
+    if (hoverTimerRef.current) {
+      clearTimeout(hoverTimerRef.current);
+      hoverTimerRef.current = null;
+    }
+    setFlippedSlug(null);
+  };
+
   // Tính động quãng đường trượt ngang maxTranslateX chuẩn xác tuyệt đối đến từng pixel
   useEffect(() => {
     const trackEl = trackRef.current;
@@ -94,6 +159,10 @@ export const UseCaseSelector: React.FC = () => {
               <Archetype3DCard
                 key={sol.id}
                 sol={sol}
+                isFlipped={flippedSlug === sol.slug}
+                onMouseEnter={() => handleCardMouseEnter(sol.slug)}
+                onMouseMove={() => handleCardMouseMove(sol.slug)}
+                onMouseLeave={handleCardMouseLeave}
                 onLearnMore={(slug) => {
                   openSolutionDetail(slug);
                 }}
