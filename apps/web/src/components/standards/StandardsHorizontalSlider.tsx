@@ -46,7 +46,7 @@ export const StandardsHorizontalSlider: React.FC<StandardsHorizontalSliderProps>
       }
       scrollEndTimerRef.current = setTimeout(() => {
         isScrollingRef.current = false;
-      }, 110);
+      }, 100);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -106,7 +106,7 @@ export const StandardsHorizontalSlider: React.FC<StandardsHorizontalSliderProps>
       if (!isScrollingRef.current) {
         setFlippedSlug(slug);
       }
-    }, 130);
+    }, 160);
   };
 
   const handleCardMouseLeave = () => {
@@ -127,14 +127,14 @@ export const StandardsHorizontalSlider: React.FC<StandardsHorizontalSliderProps>
   return (
     <section
       ref={sectionRef}
-      className="card-slider relative w-full h-[260vh] md:h-[290vh] bg-[#FAF7ED]"
+      className="card-slider relative w-full h-[280vh] md:h-[320vh] bg-[#FAF7ED]"
     >
       <div
         ref={containerRef}
-        className="sticky top-0 h-[100dvh] flex flex-col justify-center pt-16 pb-10 [overflow:clip]"
+        className="sticky top-0 h-[100dvh] flex flex-col justify-center pt-[clamp(2.5rem,5.5dvh,4.25rem)] pb-[clamp(1.5rem,3.5dvh,2.5rem)] [overflow:clip]"
       >
         {/* Section Heading */}
-        <h3 className="font-serif font-normal text-[#0C310A] text-[clamp(1.75rem,2.63vw+1.13rem,3.5rem)] leading-[1.1] tracking-[-0.03em] text-center mb-8 md:mb-10 px-6">
+        <h3 className="font-serif font-normal text-[#0C310A] text-[clamp(2rem,2.8vw+1.15rem,3.625rem)] leading-[1.08] tracking-[-0.03em] text-center mb-[clamp(1.75rem,4.5dvh,3rem)] px-6 shrink-0">
           {title}
         </h3>
 
@@ -143,7 +143,7 @@ export const StandardsHorizontalSlider: React.FC<StandardsHorizontalSliderProps>
           <motion.div
             ref={trackRef}
             style={{ x }}
-            className="flex gap-[22px] px-6 md:px-16 w-max will-change-transform"
+            className="flex gap-6 px-6 md:px-16 w-max will-change-transform"
           >
             {items.map((item) => {
               const isFlipped = flippedSlug === item.slug;
@@ -151,22 +151,22 @@ export const StandardsHorizontalSlider: React.FC<StandardsHorizontalSliderProps>
               return (
                 <div
                   key={item.slug}
-                  className="w-[300px] md:w-[388px] shrink-0 flex flex-col gap-[18px] group select-none"
+                  className="w-[min(320px,78vw)] md:w-[min(460px,56dvh)] shrink-0 flex flex-col gap-5 group select-none"
                 >
                   {/* 3D Flip Card Frame */}
                   <div
-                    className="aspect-square w-full rounded-[20px] [perspective:1000px] cursor-pointer"
+                    className="aspect-square w-full rounded-[22px] [perspective:1000px] cursor-pointer"
                     onClick={() => handleSelectStandard(item.slug)}
                     onMouseEnter={() => handleCardMouseEnter(item.slug)}
                     onMouseLeave={handleCardMouseLeave}
                   >
                     <div
-                      className={`relative w-full h-full rounded-[20px] [transform-style:preserve-3d] transition-transform duration-[800ms] ease-[cubic-bezier(0.175,0.885,0.32,1.125)] ${
+                      className={`relative w-full h-full rounded-[22px] [transform-style:preserve-3d] transition-transform duration-[800ms] ease-[cubic-bezier(0.175,0.885,0.32,1.125)] ${
                         isFlipped ? '[transform:rotateY(180deg)]' : '[transform:rotateY(0deg)]'
                       }`}
                     >
                       {/* Mặt trước: CHỈ hiển thị ảnh thumbnail, TUYỆT ĐỐI KHÔNG gắn các nhãn tag đè lên mặt trước ảnh */}
-                      <div className="card-front absolute inset-0 w-full h-full rounded-[20px] overflow-hidden [backface-visibility:hidden] -webkit-backface-visibility-hidden bg-white border border-[#D0D4C8] shadow-sm">
+                      <div className="card-front absolute inset-0 w-full h-full rounded-[22px] overflow-hidden [backface-visibility:hidden] -webkit-backface-visibility-hidden bg-white border border-[#D0D4C8] shadow-sm">
                         <img
                           src={item.thumbnail}
                           alt={item.title}
@@ -176,8 +176,8 @@ export const StandardsHorizontalSlider: React.FC<StandardsHorizontalSliderProps>
                         />
                       </div>
 
-                      {/* Mặt sau: Nền trắng #FFFFFF, viền border #57772E, bo góc 20px, padding p-6 pb-14, ảnh 3D Axonometric floorplan căn giữa và dãy nhãn tags ở đáy */}
-                      <div className="card-back absolute inset-0 w-full h-full rounded-[20px] overflow-hidden [backface-visibility:hidden] -webkit-backface-visibility-hidden [transform:rotateY(180deg)] bg-[#FFFFFF] border border-[#57772E] p-6 pb-14 flex flex-col justify-center items-center shadow-sm relative">
+                      {/* Mặt sau: Nền trắng #FFFFFF, viền border #57772E, bo góc 22px, padding p-7 pb-16, ảnh 3D Axonometric floorplan căn giữa và dãy nhãn tags ở đáy */}
+                      <div className="card-back absolute inset-0 w-full h-full rounded-[22px] overflow-hidden [backface-visibility:hidden] -webkit-backface-visibility-hidden [transform:rotateY(180deg)] bg-[#FFFFFF] border border-[#57772E] p-7 pb-16 flex flex-col justify-center items-center shadow-sm relative">
                         <div className="w-full h-full flex items-center justify-center">
                           <img
                             src={item.floorplan}
@@ -205,7 +205,7 @@ export const StandardsHorizontalSlider: React.FC<StandardsHorizontalSliderProps>
 
                   {/* Tên mẫu nhà h5 bên dưới thẻ: CĂN TRÁI, đổi màu sang #57772E khi thẻ đang lật */}
                   <h5
-                    className={`text-left font-serif font-normal text-[24px] md:text-[28px] leading-[1.2] transition-colors duration-200 cursor-pointer ${
+                    className={`text-left font-serif font-normal text-[24px] md:text-[clamp(1.625rem,1.2vw+1.1rem,2rem)] leading-[1.2] tracking-[-0.02em] transition-colors duration-200 cursor-pointer ${
                       isFlipped ? 'text-[#57772E]' : 'text-[#0C310A]'
                     }`}
                     onClick={() => handleSelectStandard(item.slug)}
