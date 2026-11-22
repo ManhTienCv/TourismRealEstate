@@ -167,11 +167,11 @@ export const App: React.FC = () => {
       <GetStartedWizard />
       <PortfolioGalleryModal />
 
-      {/* Pistachio Pre-Footer Banner (Shown on all pages except /get-started) */}
-      {!isGetStarted && <PreFooterBanner />}
-
-      {/* Deep Forest Pine Footer */}
-      <Footer hasPreFooter={!isGetStarted} />
+      {/* PreFooterBanner & Footer Group (Always stacked above sticky sections with z-20) */}
+      <div className="relative z-20">
+        {!isGetStarted && <PreFooterBanner />}
+        <Footer hasPreFooter={!isGetStarted} />
+      </div>
     </div>
   );
 };

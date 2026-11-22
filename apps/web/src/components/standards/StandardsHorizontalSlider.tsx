@@ -96,7 +96,7 @@ export const StandardsHorizontalSlider: React.FC<StandardsHorizontalSliderProps>
     restDelta: 0.0005,
   });
 
-  const x = useTransform(smoothProgress, [0.02, 0.90], [0, -maxTranslate], { clamp: true });
+  const x = useTransform(smoothProgress, [0.02, 0.86], [0, -maxTranslate], { clamp: true });
 
   const handleCardMouseEnter = (slug: string) => {
     if (isScrollingRef.current) return;
@@ -127,11 +127,11 @@ export const StandardsHorizontalSlider: React.FC<StandardsHorizontalSliderProps>
   return (
     <section
       ref={sectionRef}
-      className="card-slider relative w-full h-[280vh] md:h-[320vh] bg-[#FAF7ED]"
+      className="card-slider relative z-10 w-full h-[290vh] md:h-[330vh] bg-[#FAF7ED] mb-[-10vh] md:mb-[-12vh]"
     >
       <div
         ref={containerRef}
-        className="sticky top-0 h-[100dvh] flex flex-col justify-center pt-[clamp(2.5rem,5.5dvh,4.25rem)] pb-[clamp(1.5rem,3.5dvh,2.5rem)] [overflow:clip]"
+        className="sticky top-0 h-[100dvh] flex flex-col justify-center pt-[clamp(2.5rem,5.5dvh,4.25rem)] pb-[clamp(3.25rem,11dvh,5.75rem)] [overflow:clip]"
       >
         {/* Section Heading */}
         <h3 className="font-serif font-normal text-[#0C310A] text-[clamp(2rem,2.8vw+1.15rem,3.625rem)] leading-[1.08] tracking-[-0.03em] text-center mb-[clamp(1.75rem,4.5dvh,3rem)] px-6 shrink-0">

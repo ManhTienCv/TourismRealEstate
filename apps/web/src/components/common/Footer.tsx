@@ -50,7 +50,7 @@ export const Footer: React.FC<FooterProps> = ({ hasPreFooter = true }) => {
   };
 
   return (
-    <footer className={`relative z-20 w-full ${hasPreFooter ? 'bg-[#D5E798] w-sock' : 'bg-[#FAF7ED]'}`}>
+    <footer className={`relative z-20 w-full ${hasPreFooter ? 'bg-transparent w-sock' : 'bg-[#FAF7ED]'}`}>
       <div className="footer-wrapper w-full bg-[#0C310A] text-[#FAF7ED] rounded-t-[24px] pt-14 pb-10 px-8 md:px-16 overflow-hidden select-none">
         <div className="max-w-[1240px] mx-auto">
         
