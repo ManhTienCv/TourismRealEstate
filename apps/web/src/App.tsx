@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { Suspense, lazy, useEffect } from 'react';
 import Lenis from 'lenis';
 import 'lenis/dist/lenis.css';
 import { setLenis } from './utils/smoothScroll';
@@ -12,25 +12,42 @@ import { StandardsCatalogGrid } from './components/home/StandardsCatalogGrid';
 import { RealizedPortfolioSection } from './components/home/RealizedPortfolioSection';
 import { TrustMetricsSection } from './components/home/TrustMetricsSection';
 import { PreFooterBanner } from './components/home/PreFooterBanner';
-import { PlanDetailModal } from './components/standards/PlanDetailModal';
-import { GetStartedWizard } from './components/configurator/GetStartedWizard';
-import { FieldReportPortal } from './components/field-report/FieldReportPortal';
-import { PortfolioGalleryModal } from './components/portfolio/PortfolioGalleryModal';
-import { HousingSolutionPage } from './components/solutions/HousingSolutionPage';
-import { StandardDetailPage } from './components/standards/StandardDetailPage';
-import { WhatIsAStandardPage } from './components/standards/WhatIsAStandardPage';
+
+// Lazy-loaded sub-pages & interactive modals for optimal initial Home bundle
+const PlanDetailModal = lazy(() =>
+  import('./components/standards/PlanDetailModal').then((m) => ({ default: m.PlanDetailModal }))
+);
+const GetStartedWizard = lazy(() =>
+  import('./components/configurator/GetStartedWizard').then((m) => ({ default: m.GetStartedWizard }))
+);
+const FieldReportPortal = lazy(() =>
+  import('./components/field-report/FieldReportPortal').then((m) => ({ default: m.FieldReportPortal }))
+);
+const PortfolioGalleryModal = lazy(() =>
+  import('./components/portfolio/PortfolioGalleryModal').then((m) => ({ default: m.PortfolioGalleryModal }))
+);
+const HousingSolutionPage = lazy(() =>
+  import('./components/solutions/HousingSolutionPage').then((m) => ({ default: m.HousingSolutionPage }))
+);
+const StandardDetailPage = lazy(() =>
+  import('./components/standards/StandardDetailPage').then((m) => ({ default: m.StandardDetailPage }))
+);
+const WhatIsAStandardPage = lazy(() =>
+  import('./components/standards/WhatIsAStandardPage').then((m) => ({ default: m.WhatIsAStandardPage }))
+);
 
 export const App: React.FC = () => {
   const activeTab = useConfiguratorStore((s) => s.activeTab);
   const selectedSolutionSlug = useConfiguratorStore((s) => s.selectedSolutionSlug);
   const selectedStandardSlug = useConfiguratorStore((s) => s.selectedStandardSlug);
   const isWhatIsAStandard = useConfiguratorStore((s) => s.isWhatIsAStandard);
+  const isConfiguratorOpen = useConfiguratorStore((s) => s.isConfiguratorOpen);
+  const selectedPlanForDetail = useConfiguratorStore((s) => s.selectedPlanForDetail);
+  const selectedProjectSlug = useConfiguratorStore((s) => s.selectedProjectSlug);
+  const setActiveTab = useConfiguratorStore((s) => s.setActiveTab);
   const openSolutionDetail = useConfiguratorStore((s) => s.openSolutionDetail);
-  const closeSolutionDetail = useConfiguratorStore((s) => s.closeSolutionDetail);
   const openStandardDetail = useConfiguratorStore((s) => s.openStandardDetail);
-  const closeStandardDetail = useConfiguratorStore((s) => s.closeStandardDetail);
   const openWhatIsAStandard = useConfiguratorStore((s) => s.openWhatIsAStandard);
-  const closeWhatIsAStandard = useConfiguratorStore((s) => s.closeWhatIsAStandard);
   const openConfigurator = useConfiguratorStore((s) => s.openConfigurator);
 
   const [pathname, setPathname] = React.useState<string>(() =>
@@ -38,7 +55,7 @@ export const App: React.FC = () => {
   );
   const isGetStarted = pathname.startsWith('/get-started');
 
-  // Sync route /housing-solutions/:slug, /standards/:slug, /what-is-a-standard, and /get-started with browser address bar and history
+  // Sync route /housing-solutions/:slug, /standards/:slug, /what-is-a-standard, /field-report, and /get-started with browser history
   useEffect(() => {
     const handlePopState = () => {
       const path = window.location.pathname;
@@ -56,12 +73,12 @@ export const App: React.FC = () => {
         if (slug) {
           openStandardDetail(slug);
         }
+      } else if (path === '/field-report' || path === '/field-report/') {
+        setActiveTab('field-report');
       } else if (path.startsWith('/get-started')) {
         openConfigurator();
       } else if (path === '/' || path === '') {
-        closeSolutionDetail();
-        closeStandardDetail();
-        closeWhatIsAStandard();
+        setActiveTab('home');
       }
     };
 
@@ -69,12 +86,10 @@ export const App: React.FC = () => {
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
   }, [
+    setActiveTab,
     openSolutionDetail,
-    closeSolutionDetail,
     openStandardDetail,
-    closeStandardDetail,
     openWhatIsAStandard,
-    closeWhatIsAStandard,
     openConfigurator,
   ]);
 
@@ -132,13 +147,21 @@ export const App: React.FC = () => {
       {/* 2. Main Page Content (Matching exact Huts.com narrative flow) */}
       <main className="flex-1">
         {activeTab === 'field-report' ? (
-          <FieldReportPortal />
+          <Suspense fallback={<div className="min-h-screen bg-[#FAF7ED]" />}>
+            <FieldReportPortal />
+          </Suspense>
         ) : isWhatIsAStandard || activeTab === 'standards' ? (
-          <WhatIsAStandardPage />
+          <Suspense fallback={<div className="min-h-screen bg-[#FAF7ED]" />}>
+            <WhatIsAStandardPage />
+          </Suspense>
         ) : selectedStandardSlug ? (
-          <StandardDetailPage slug={selectedStandardSlug} />
+          <Suspense fallback={<div className="min-h-screen bg-[#FAF7ED]" />}>
+            <StandardDetailPage slug={selectedStandardSlug} />
+          </Suspense>
         ) : selectedSolutionSlug ? (
-          <HousingSolutionPage slug={selectedSolutionSlug} />
+          <Suspense fallback={<div className="min-h-screen bg-[#FAF7ED]" />}>
+            <HousingSolutionPage slug={selectedSolutionSlug} />
+          </Suspense>
         ) : (
           <>
             {/* 01. Hero with wide cinematic photography, headline & pro-forma teaser */}
@@ -162,10 +185,12 @@ export const App: React.FC = () => {
         )}
       </main>
 
-      {/* Interactive Drawers & Modals */}
-      <PlanDetailModal />
-      <GetStartedWizard />
-      <PortfolioGalleryModal />
+      {/* Interactive Drawers & Modals (Mounted & chunk-loaded only when opened) */}
+      <Suspense fallback={null}>
+        {selectedPlanForDetail && <PlanDetailModal />}
+        {isConfiguratorOpen && <GetStartedWizard />}
+        {selectedProjectSlug && <PortfolioGalleryModal />}
+      </Suspense>
 
       {/* PreFooterBanner & Footer Group (Always stacked above sticky sections with z-20) */}
       <div className="relative z-20">

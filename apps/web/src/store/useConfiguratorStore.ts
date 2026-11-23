@@ -240,7 +240,43 @@ export const useConfiguratorStore = create<ConfiguratorState>((set, get) => ({
     evCarport: false,
   }),
 
-  setActiveTab: (tab) => set({ activeTab: tab }),
+  setActiveTab: (tab) => {
+    if (tab === 'standards') {
+      set({
+        activeTab: 'standards',
+        isWhatIsAStandard: true,
+        selectedSolutionSlug: null,
+        selectedStandardSlug: null,
+      });
+      if (typeof window !== 'undefined' && window.location.pathname !== '/what-is-a-standard') {
+        window.history.pushState({}, '', '/what-is-a-standard');
+      }
+      return;
+    }
+
+    if (tab === 'field-report') {
+      set({
+        activeTab: 'field-report',
+        isWhatIsAStandard: false,
+        selectedSolutionSlug: null,
+        selectedStandardSlug: null,
+      });
+      if (typeof window !== 'undefined' && window.location.pathname !== '/field-report') {
+        window.history.pushState({}, '', '/field-report');
+      }
+      return;
+    }
+
+    set({
+      activeTab: tab,
+      isWhatIsAStandard: false,
+      selectedSolutionSlug: null,
+      selectedStandardSlug: null,
+    });
+    if (tab === 'home' && typeof window !== 'undefined' && window.location.pathname !== '/') {
+      window.history.pushState({}, '', '/');
+    }
+  },
 
   openConfigurator: (planSlug, solutionSlug) => {
     const currentPlanSlug = planSlug || get().standardPlanSlug;
