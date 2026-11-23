@@ -127,14 +127,14 @@ export const StandardsHorizontalSlider: React.FC<StandardsHorizontalSliderProps>
   return (
     <section
       ref={sectionRef}
-      className="card-slider relative z-10 w-full h-[290vh] md:h-[330vh] bg-[#FAF7ED] mb-[-10vh] md:mb-[-12vh]"
+      className="card-slider relative z-10 w-full h-[290vh] md:h-[330vh] bg-[#FAF7ED] mb-[-6vh] md:mb-[-8vh]"
     >
       <div
         ref={containerRef}
-        className="sticky top-0 h-[100dvh] flex flex-col justify-center pt-[clamp(2.5rem,5.5dvh,4.25rem)] pb-[clamp(3.25rem,11dvh,5.75rem)] [overflow:clip]"
+        className="sticky top-0 h-[100dvh] flex flex-col justify-center pt-[clamp(5.75rem,11.5dvh,6.75rem)] pb-[clamp(2.75rem,6.5dvh,3.75rem)] [overflow:clip]"
       >
         {/* Section Heading */}
-        <h3 className="font-serif font-normal text-[#0C310A] text-[clamp(2rem,2.8vw+1.15rem,3.625rem)] leading-[1.08] tracking-[-0.03em] text-center mb-[clamp(1.75rem,4.5dvh,3rem)] px-6 shrink-0">
+        <h3 className="font-serif font-normal text-[#0C310A] text-[clamp(2rem,2.75vw+1.1rem,3.5rem)] leading-[1.08] tracking-[-0.03em] text-center mb-[clamp(1.25rem,3dvh,2rem)] px-6 shrink-0">
           {title}
         </h3>
 
@@ -143,7 +143,7 @@ export const StandardsHorizontalSlider: React.FC<StandardsHorizontalSliderProps>
           <motion.div
             ref={trackRef}
             style={{ x }}
-            className="flex gap-6 px-6 md:px-16 w-max will-change-transform"
+            className="flex gap-5 md:gap-6 px-6 md:px-16 w-max will-change-transform"
           >
             {items.map((item) => {
               const isFlipped = flippedSlug === item.slug;
@@ -151,11 +151,11 @@ export const StandardsHorizontalSlider: React.FC<StandardsHorizontalSliderProps>
               return (
                 <div
                   key={item.slug}
-                  className="w-[min(320px,78vw)] md:w-[min(460px,56dvh)] shrink-0 flex flex-col gap-5 group select-none"
+                  className="w-[min(300px,74vw)] md:w-[min(425px,50.5dvh)] shrink-0 flex flex-col gap-4 group select-none"
                 >
                   {/* 3D Flip Card Frame */}
                   <div
-                    className="aspect-square w-full rounded-[22px] [perspective:1000px] cursor-pointer"
+                    className="aspect-[14/15] w-full rounded-[22px] [perspective:1000px] cursor-pointer"
                     onClick={() => handleSelectStandard(item.slug)}
                     onMouseEnter={() => handleCardMouseEnter(item.slug)}
                     onMouseLeave={handleCardMouseLeave}
@@ -205,7 +205,7 @@ export const StandardsHorizontalSlider: React.FC<StandardsHorizontalSliderProps>
 
                   {/* Tên mẫu nhà h5 bên dưới thẻ: CĂN TRÁI, đổi màu sang #57772E khi thẻ đang lật */}
                   <h5
-                    className={`text-left font-serif font-normal text-[24px] md:text-[clamp(1.625rem,1.2vw+1.1rem,2rem)] leading-[1.2] tracking-[-0.02em] transition-colors duration-200 cursor-pointer ${
+                    className={`text-left font-serif font-normal text-[23px] md:text-[clamp(1.5rem,1.15vw+1.05rem,1.9rem)] leading-[1.2] tracking-[-0.02em] transition-colors duration-200 cursor-pointer ${
                       isFlipped ? 'text-[#57772E]' : 'text-[#0C310A]'
                     }`}
                     onClick={() => handleSelectStandard(item.slug)}
