@@ -25,12 +25,11 @@ const THEME_BG_MAP: Record<PrincipleBgTheme, string> = {
 };
 
 interface StackedCardProps {
-  smoothProgress: MotionValue<number>;
-  startP: number;
-  endP: number;
-  parkedX: number;
-  endX: number;
-  zIndex: number;
+  conveyorProgress: MotionValue<number>;
+  k: number;
+  viewportW: number;
+  naturalStart: number;
+  totalScroll: number;
   isDesktop: boolean;
   className: string;
   cardRef: (el: HTMLDivElement | null) => void;
@@ -38,26 +37,31 @@ interface StackedCardProps {
 }
 
 const StackedCard: React.FC<StackedCardProps> = ({
-  smoothProgress,
-  startP,
-  endP,
-  parkedX,
-  endX,
-  zIndex,
+  conveyorProgress,
+  k,
+  viewportW,
+  naturalStart,
+  totalScroll,
   isDesktop,
   className,
   cardRef,
   children,
 }) => {
-  const safeEndP = endP > startP ? endP : startP + 0.0001;
-  const x = useTransform(smoothProgress, [startP, safeEndP], [parkedX, endX], {
-    clamp: true,
-  });
+  const parkedX = viewportW - (7 - k) * SPINE;
+  const detachScroll = Math.max(0, naturalStart - parkedX);
+  const detachP = Math.min(0.9999, detachScroll / totalScroll);
+  const endX = naturalStart - totalScroll;
+
+  const x = useTransform(
+    conveyorProgress,
+    detachP > 0.0001 ? [0, detachP, 1] : [0, 1],
+    detachP > 0.0001 ? [parkedX, parkedX, endX] : [parkedX, endX]
+  );
 
   return (
     <motion.div
       ref={cardRef}
-      style={isDesktop ? { x, zIndex } : undefined}
+      style={isDesktop ? { x, zIndex: k } : undefined}
       className={className}
     >
       {children}
@@ -77,11 +81,13 @@ const PrincipleCardContent: React.FC<{ card: PrincipleCardItem; index: number }>
 
   return (
     <>
-      {/* Dải extender 24px bên phải cùng màu nền để không bao giờ hở khe phía sau góc bo tròn 22px của thẻ kế tiếp */}
-      <div
-        aria-hidden="true"
-        className={`hidden lg:block absolute top-0 -right-[24px] w-[24px] h-full pointer-events-none ${THEME_BG_MAP[card.bgTheme]}`}
-      />
+      {/* Dải extender 24px bên phải cùng màu nền trên các thẻ 01..04 để lấp kín góc bo tròn 22px của thẻ đứng sau */}
+      {index < 4 && (
+        <div
+          aria-hidden="true"
+          className={`hidden lg:block absolute top-0 -right-[24px] w-[24px] h-full pointer-events-none ${THEME_BG_MAP[card.bgTheme]}`}
+        />
+      )}
 
       <div className="flex flex-col lg:flex-row lg:h-full items-stretch gap-10 lg:gap-[104px] px-6 md:px-12 lg:px-[82px] py-14 lg:py-[76px]">
         {/* Cột 1: Header (Số thứ tự + Tiêu đề + Mô tả) */}
@@ -260,7 +266,15 @@ const EditorialChecklistSection: React.FC<{
 export const TheApproachPage: React.FC = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
-  const cardRefs = useRef<Array<HTMLDivElement | null>>([null, null, null, null, null, null]);
+  const cardRefs = useRef<Array<HTMLDivElement | null>>([
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+  ]);
 
   const [isDesktop, setIsDesktop] = useState(() =>
     typeof window !== 'undefined' ? window.innerWidth >= 1024 : true
@@ -268,12 +282,16 @@ export const TheApproachPage: React.FC = () => {
   const [metrics, setMetrics] = useState<{
     viewportW: number;
     viewportH: number;
-    cardWidths: number[];
-  }>(() => ({
-    viewportW: typeof window !== 'undefined' ? window.innerWidth : 1440,
-    viewportH: typeof window !== 'undefined' ? window.innerHeight : 900,
-    cardWidths: [1440, 1440, 1440, 1440, 1440, 1440],
-  }));
+    widths: number[];
+  }>(() => {
+    const w = typeof window !== 'undefined' ? window.innerWidth : 1440;
+    const h = typeof window !== 'undefined' ? window.innerHeight : 900;
+    return {
+      viewportW: w,
+      viewportH: h,
+      widths: [w - 144, w - 120, w - 48, w - 48, w - 48, w - 48, w - 48],
+    };
+  });
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -291,7 +309,7 @@ export const TheApproachPage: React.FC = () => {
     return () => mq.removeEventListener('change', update);
   }, []);
 
-  // Đo động viewportW, viewportH và chiều rộng thực tế của 6 thẻ trượt Card 1..6 bằng ResizeObserver
+  // Đo động viewportW, viewportH và chiều rộng thực tế của đủ 7 thẻ Card 0..6 bằng ResizeObserver
   useEffect(() => {
     const measure = () => {
       const viewportEl = viewportRef.current;
@@ -299,16 +317,18 @@ export const TheApproachPage: React.FC = () => {
 
       const viewportW = viewportEl.clientWidth || window.innerWidth;
       const viewportH = viewportEl.clientHeight || window.innerHeight;
-      const cardWidths = [0, 1, 2, 3, 4, 5].map(
-        (idx) => cardRefs.current[idx]?.offsetWidth || viewportW
-      );
+      const widths = [0, 1, 2, 3, 4, 5, 6].map((idx) => {
+        const fallback =
+          idx === 0 ? viewportW - 144 : idx === 1 ? viewportW - 120 : viewportW - 48;
+        return cardRefs.current[idx]?.offsetWidth || fallback;
+      });
 
       setMetrics((prev) => {
         const same =
           prev.viewportW === viewportW &&
           prev.viewportH === viewportH &&
-          prev.cardWidths.every((w, i) => w === cardWidths[i]);
-        return same ? prev : { viewportW, viewportH, cardWidths };
+          prev.widths.every((w, i) => w === widths[i]);
+        return same ? prev : { viewportW, viewportH, widths };
       });
     };
 
@@ -329,27 +349,16 @@ export const TheApproachPage: React.FC = () => {
     };
   }, [isDesktop]);
 
-  // Tính toán vị trí đỗ (parkedX), đích cuối (endX) và dải tiến trình [startP, endP] cho từng thẻ k = 1..6
-  const { cardConfigs, totalTravel } = useMemo(() => {
-    const { viewportW, cardWidths } = metrics;
-    const raw = [1, 2, 3, 4, 5, 6].map((k) => {
-      const parkedX = viewportW - (7 - k) * SPINE;
-      const nextParkedX = k < 6 ? viewportW - (6 - k) * SPINE : viewportW;
-      const endX = k === 1 ? 0 : Math.min(0, nextParkedX - cardWidths[k - 1]);
-      const travel = Math.max(1, parkedX - endX);
-      return { k, parkedX, endX, travel };
-    });
-
-    const total = raw.reduce((sum, item) => sum + item.travel, 0);
-    let cumBefore = 0;
-    const configs = raw.map((item) => {
-      const startP = cumBefore / total;
-      cumBefore += item.travel;
-      const endP = cumBefore / total;
-      return { ...item, startP, endP };
-    });
-
-    return { cardConfigs: configs, totalTravel: total };
+  // Tính mảng tọa độ nối đuôi naturalStarts[0..6] và tổng quãng đường cuộn totalScroll
+  const { naturalStarts, totalScroll } = useMemo(() => {
+    const { viewportW, widths } = metrics;
+    const starts: number[] = [0];
+    for (let i = 1; i < 7; i++) {
+      starts.push(starts[i - 1] + widths[i - 1]);
+    }
+    const totalConveyorWidth = starts[6] + widths[6];
+    const scroll = Math.max(1, totalConveyorWidth - viewportW);
+    return { naturalStarts: starts, totalScroll: scroll };
   }, [metrics]);
 
   const { scrollYProgress } = useScroll({
@@ -364,20 +373,32 @@ export const TheApproachPage: React.FC = () => {
     restDelta: 0.0005,
   });
 
+  const conveyorProgress = useTransform(smoothProgress, [0, 0.98], [0, 1], {
+    clamp: true,
+  });
+
+  const card0X = useTransform(conveyorProgress, [0, 1], [0, -totalScroll]);
+
   return (
     <div className="w-full bg-[#FAF7ED] [overflow-x:clip] font-sans text-[#1E1414]">
-      {/* Section 1: Động cơ 7 thẻ xếp chồng (Card 0 nền + Card 1..6 trượt đỗ tại W-144..W-24) */}
+      {/* Section 1: Cơ chế băng chuyền nối đuôi + gáy chờ mép phải chuẩn HUTS */}
       <section
         ref={sectionRef}
-        style={{ height: isDesktop ? metrics.viewportH + totalTravel : 'auto' }}
+        style={{ height: isDesktop ? metrics.viewportH + totalScroll : 'auto' }}
         className="relative bg-[#FAF7ED]"
       >
         <div
           ref={viewportRef}
           className="lg:sticky lg:top-0 lg:h-[100dvh] w-full [overflow:clip] relative bg-[#FAF7ED]"
         >
-          {/* Card 0: Tấm Mở đầu cố định bên trái (z-0) */}
-          <div className="lg:absolute lg:inset-y-0 lg:left-0 lg:w-[calc(100%-144px)] bg-[#FAF7ED] z-0">
+          {/* Card 0: Tấm Mở đầu trượt cùng băng chuyền (z-0) */}
+          <motion.div
+            ref={(el) => {
+              cardRefs.current[0] = el;
+            }}
+            style={{ x: isDesktop ? card0X : 0 }}
+            className="lg:absolute lg:inset-y-0 lg:left-0 lg:w-[calc(100vw-144px)] bg-[#FAF7ED] z-0 will-change-transform"
+          >
             <div className="relative h-full w-full px-6 sm:px-10 lg:px-12 pt-24 lg:pt-[118px] pb-12 lg:pb-14 flex flex-col">
               {/* Khối trên trái: H1 3 dòng cân đối chuẩn HUTS */}
               <h1 className="font-serif font-normal text-[#0C310A] text-[clamp(2.75rem,4.5vw+0.8rem,4.75rem)] leading-[1.06] tracking-[-0.03em] max-w-[640px]">
@@ -424,46 +445,46 @@ export const TheApproachPage: React.FC = () => {
                 ))}
               </div>
             </div>
-          </div>
+          </motion.div>
 
-          {/* Card 1: Tấm Ảnh đại diện toàn màn hình (zIndex = 1, đỗ tại W - 144) */}
+          {/* Card 1: Tấm Ảnh đại diện nối đuôi Card 0 (zIndex = 1, đỗ tại W - 144) */}
           <StackedCard
-            smoothProgress={smoothProgress}
-            startP={cardConfigs[0].startP}
-            endP={cardConfigs[0].endP}
-            parkedX={cardConfigs[0].parkedX}
-            endX={cardConfigs[0].endX}
-            zIndex={1}
+            conveyorProgress={conveyorProgress}
+            k={1}
+            viewportW={metrics.viewportW}
+            naturalStart={naturalStarts[1]}
+            totalScroll={totalScroll}
             isDesktop={isDesktop}
             cardRef={(el) => {
-              cardRefs.current[0] = el;
+              cardRefs.current[1] = el;
             }}
-            className="lg:absolute lg:inset-y-0 lg:left-0 w-full lg:w-[100vw] h-[50vh] lg:h-full rounded-l-[22px] overflow-hidden bg-[#555835] will-change-transform"
+            className="lg:w-[calc(100vw-120px)] lg:absolute lg:inset-y-0 lg:left-0 w-full h-[50vh] lg:h-full rounded-l-[22px] overflow-visible will-change-transform"
           >
-            <img
-              src={`${APPROACH_DATA.intro.image}?w=1600&q=85&auto=format`}
-              alt="TIE Studio craft and development"
-              className="w-full h-full object-cover select-none"
-              loading="eager"
-              decoding="async"
-            />
+            <div className="w-full lg:w-[calc(100%+24px)] h-full rounded-l-[22px] overflow-hidden bg-[#555835]">
+              <img
+                src={`${APPROACH_DATA.intro.image}?w=1600&q=85&auto=format`}
+                alt="TIE Studio craft and development"
+                className="w-full h-full object-cover select-none"
+                loading="eager"
+                decoding="async"
+              />
+            </div>
           </StackedCard>
 
-          {/* Card 2 -> Card 6: 5 Tấm Nguyên lý (zIndex = 2..6, đỗ tại W - 120 .. W - 24) */}
+          {/* Card 2 -> Card 6: 5 Tấm Nguyên lý nối đuôi (zIndex = 2..6, đỗ tại W - 120 .. W - 24) */}
           {APPROACH_DATA.principleCards.map((card, idx) => {
-            const cfg = cardConfigs[idx + 1];
+            const k = idx + 2;
             return (
               <StackedCard
                 key={card.id}
-                smoothProgress={smoothProgress}
-                startP={cfg.startP}
-                endP={cfg.endP}
-                parkedX={cfg.parkedX}
-                endX={cfg.endX}
-                zIndex={idx + 2}
+                conveyorProgress={conveyorProgress}
+                k={k}
+                viewportW={metrics.viewportW}
+                naturalStart={naturalStarts[k]}
+                totalScroll={totalScroll}
                 isDesktop={isDesktop}
                 cardRef={(el) => {
-                  cardRefs.current[idx + 1] = el;
+                  cardRefs.current[k] = el;
                 }}
                 className={`lg:absolute lg:inset-y-0 lg:left-0 lg:h-full lg:w-max lg:min-w-[calc(100vw-48px)] rounded-l-[22px] relative will-change-transform ${THEME_BG_MAP[card.bgTheme]}`}
               >
