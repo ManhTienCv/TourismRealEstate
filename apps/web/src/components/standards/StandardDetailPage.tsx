@@ -32,11 +32,7 @@ const StandardImageSlider: React.FC<StandardImageSliderProps> = ({ title, items,
     isLeft: false,
   });
 
-  const [sliderMetrics, setSliderMetrics] = useState({
-    maxOffset: 0,
-    slideStep: 0,
-    maxStepIndex: 0,
-  });
+  const [snapOffsets, setSnapOffsets] = useState<number[]>([0]);
 
   const viewportRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
@@ -47,7 +43,7 @@ const StandardImageSlider: React.FC<StandardImageSliderProps> = ({ title, items,
     setActiveIndex(0);
   }, [slug, items]);
 
-  // Đo bằng ResizeObserver và cập nhật khi slug, items hoặc kích thước thay đổi
+  // Đo bằng ResizeObserver và sinh mảng mốc dừng gộp bước lẻ snapOffsets
   useEffect(() => {
     const updateMetrics = () => {
       const viewportEl = viewportRef.current;
@@ -59,13 +55,23 @@ const StandardImageSlider: React.FC<StandardImageSliderProps> = ({ title, items,
       const trackScrollWidth = trackEl.scrollWidth;
       const slideStep = firstSlideEl ? firstSlideEl.offsetWidth + 24 : (isADUs ? 440 + 24 : 620 + 24);
       const maxOffset = Math.max(0, trackScrollWidth - viewportWidth);
-      const maxStepIndex = slideStep > 0 ? Math.ceil(maxOffset / slideStep) : 0;
 
-      setSliderMetrics({
-        maxOffset,
-        slideStep,
-        maxStepIndex,
-      });
+      const offsets: number[] = [0];
+      if (maxOffset > 4 && slideStep > 0) {
+        let pos = 0;
+        while (pos < maxOffset - 4) {
+          const remaining = maxOffset - pos;
+          // Nếu phần còn lại sau 1 bước nhỏ hơn 45% chiều rộng thẻ -> gộp thẳng vào mốc cuối, cấm đẻ bước nhích lẻ
+          if (remaining <= slideStep * 1.45) {
+            offsets.push(maxOffset);
+            break;
+          }
+          pos += slideStep;
+          offsets.push(pos);
+        }
+      }
+      setSnapOffsets(offsets);
+      setActiveIndex((prev) => Math.min(prev, Math.max(0, offsets.length - 1)));
     };
 
     updateMetrics();
@@ -85,11 +91,11 @@ const StandardImageSlider: React.FC<StandardImageSliderProps> = ({ title, items,
     };
   }, [slug, items, isADUs]);
 
-  const { maxOffset, slideStep, maxStepIndex } = sliderMetrics;
-  const targetOffset = Math.min(activeIndex * slideStep, maxOffset);
+  const safeIndex = Math.min(activeIndex, Math.max(0, snapOffsets.length - 1));
+  const targetOffset = snapOffsets[safeIndex] ?? 0;
 
-  const canGoPrev = targetOffset > 2;
-  const canGoNext = targetOffset < maxOffset - 2;
+  const canGoPrev = safeIndex > 0;
+  const canGoNext = safeIndex < snapOffsets.length - 1;
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -124,11 +130,11 @@ const StandardImageSlider: React.FC<StandardImageSliderProps> = ({ title, items,
     const clickX = e.clientX - rect.left;
     if (clickX < rect.width / 2) {
       if (canGoPrev) {
-        setActiveIndex((prev) => Math.max(0, prev - 1));
+        setActiveIndex((prev) => Math.max(prev - 1, 0));
       }
     } else {
       if (canGoNext) {
-        setActiveIndex((prev) => Math.min(maxStepIndex, prev + 1));
+        setActiveIndex((prev) => Math.min(prev + 1, snapOffsets.length - 1));
       }
     }
   };
@@ -212,10 +218,10 @@ const StandardImageSlider: React.FC<StandardImageSliderProps> = ({ title, items,
         </motion.div>
       </div>
 
-      {/* Pagination dots cho Mobile theo maxStepIndex + 1 */}
-      {maxStepIndex > 0 && (
+      {/* Pagination dots cho Mobile theo snapOffsets.length */}
+      {snapOffsets.length > 1 && (
         <div className="flex md:hidden justify-center items-center gap-2 mt-6">
-          {Array.from({ length: maxStepIndex + 1 }).map((_, idx) => (
+          {snapOffsets.map((_, idx) => (
             <button
               key={idx}
               type="button"
@@ -225,7 +231,7 @@ const StandardImageSlider: React.FC<StandardImageSliderProps> = ({ title, items,
               }}
               aria-label={`Go to slide ${idx + 1}`}
               className={`h-2 rounded-full transition-all duration-300 ${
-                activeIndex === idx ? 'w-6 bg-[#0C310A]' : 'w-2 bg-[#0C310A]/20'
+                safeIndex === idx ? 'w-6 bg-[#0C310A]' : 'w-2 bg-[#0C310A]/20'
               }`}
             />
           ))}
