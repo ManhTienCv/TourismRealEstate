@@ -73,19 +73,19 @@ export interface ServicesPageData {
   phases: ServicePhaseItem[];
 }
 
-// Trích dẫn Testimonials dùng cho các thẻ nguyên lý của The TIE Approach (đồng bộ với dữ liệu Trang chủ)
+// Trích dẫn Testimonials chuẩn HUTS dùng cho Thẻ 01 (Lauren W.) và Thẻ 04 (Dan S.)
 export const APPROACH_TESTIMONIALS: Record<'Lauren W.' | 'Dan S.', PrincipleTestimonial> = {
   'Lauren W.': {
     author: 'Lauren W.',
     quote:
-      'The transparency on budget and schedule was unlike any construction project we’ve managed. A truly effortless experience from start to finish.',
-    location: 'Forever Home Client',
+      'As a couple with no experience in this field or idea on where to begin, TIE made something like building a home a reality for us. We learned a lot along the way and felt confident at each step of the process that we were in good hands.',
+    location: 'Tusten, NY',
   },
   'Dan S.': {
     author: 'Dan S.',
     quote:
-      'As a couple with no experience in this field or idea on where to begin, TIE made something like building a home feel possible, organized, and deeply intentional.',
-    location: 'Second Home Client',
+      'The team at TIE addressed all these known issues head-on and through established best practices, experience, and effective communication they removed the stress, did the heavy lifting, and allowed me to focus on creating my ideal get-away spot.',
+    location: 'Twin Mountain, NH',
   },
 };
 
