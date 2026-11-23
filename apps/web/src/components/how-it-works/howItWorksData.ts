@@ -60,6 +60,14 @@ export interface ServicePhaseItem {
   rows: ServicePhaseRow[];
 }
 
+export interface ServiceTestimonialItem {
+  author: string;
+  location: string;
+  tag: string;
+  quote: string;
+  image: string;
+}
+
 export interface ServicesPageData {
   hero: {
     label: string;
@@ -71,6 +79,7 @@ export interface ServicesPageData {
   };
   leadStatement: string;
   phases: ServicePhaseItem[];
+  testimonials: ServiceTestimonialItem[];
 }
 
 // Trích dẫn Testimonials chuẩn HUTS dùng cho Thẻ 01 (Lauren W.) và Thẻ 04 (Dan S.)
@@ -509,6 +518,35 @@ export const SERVICES_DATA: ServicesPageData = {
           ],
         },
       ],
+    },
+  ],
+  testimonials: [
+    {
+      author: 'Dan S.',
+      location: 'Twin Mountain, NH',
+      tag: 'Investment Property',
+      quote:
+        'The team at TIE addressed all these known issues head-on and through established best practices, experience, and effective communication they removed the stress, did the heavy lifting, and allowed me to focus on creating my ideal get-away spot.',
+      image:
+        'https://cdn.sanity.io/images/xi1ruvdt/production/c8b5cf2b34240b94ff32f54df51102a56f9c1cdf-1440x810.jpg',
+    },
+    {
+      author: 'Lauren W.',
+      location: 'Tusten, NY',
+      tag: 'Second Home',
+      quote:
+        'As a couple with no experience in this field or idea on where to begin, TIE made something like building a home a reality for us. We learned a lot along the way and felt confident at each step of the process that we were in good hands.',
+      image:
+        'https://cdn.sanity.io/images/xi1ruvdt/production/d585d1cf9adaca594d00f7c14a040e3d7f6c293b-1440x960.png',
+    },
+    {
+      author: 'Steven D.',
+      location: 'Athens, NY',
+      tag: 'Secondary Home',
+      quote:
+        'I couldn’t recommend TIE more, they’ve been absolutely fantastic! I have been recommending them to many clients and hope to see them build their own TIE too!',
+      image:
+        'https://cdn.sanity.io/images/xi1ruvdt/production/b1056953e77a1adeba63790f132bf72414e49004-4000x2250.jpg',
     },
   ],
 };
