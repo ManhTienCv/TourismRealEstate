@@ -612,7 +612,18 @@ export const MegaMenuNavbar: React.FC = () => {
                     {HOW_IT_WORKS_ITEMS.map((item) => (
                       <div
                         key={item.slug}
-                        onClick={() => scrollToSection('process-section', 'home')}
+                        onClick={() => {
+                          const targetPath =
+                            item.slug === 'our-services' ? '/our-services' : '/the-tie-approach';
+                          setActiveMenu(null);
+                          setIsHeaderHovered(false);
+                          setMobileMenuOpen(false);
+                          if (typeof window !== 'undefined') {
+                            window.history.pushState({}, '', targetPath);
+                            window.dispatchEvent(new PopStateEvent('popstate'));
+                            window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
+                          }
+                        }}
                         className="flex items-start space-x-4 p-3 rounded-[16px] hover:bg-[#F2EFE4]/60 cursor-pointer transition-colors duration-100 group"
                       >
                         <div className="w-[70px] h-[70px] rounded-[16px] bg-[#FAF7ED] shrink-0 flex items-center justify-center p-2.5 overflow-hidden border border-[#E2DDD5]/80 [contain:strict] [transform:translateZ(0)]">

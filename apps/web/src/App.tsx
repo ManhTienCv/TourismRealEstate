@@ -35,6 +35,15 @@ const StandardDetailPage = lazy(() =>
 const WhatIsAStandardPage = lazy(() =>
   import('./components/standards/WhatIsAStandardPage').then((m) => ({ default: m.WhatIsAStandardPage }))
 );
+const TheApproachPage = lazy(() =>
+  import('./components/how-it-works/TheApproachPage').then((m) => ({ default: m.TheApproachPage }))
+);
+const OurServicesPage = lazy(() =>
+  import('./components/how-it-works/OurServicesPage').then((m) => ({ default: m.OurServicesPage }))
+);
+
+const APPROACH_ROUTES = ['/the-tie-approach', '/the-huts-approach', '/how-it-works/approach'];
+const SERVICES_ROUTES = ['/our-services', '/how-it-works/services'];
 
 export const App: React.FC = () => {
   const activeTab = useConfiguratorStore((s) => s.activeTab);
@@ -46,26 +55,33 @@ export const App: React.FC = () => {
   const selectedProjectSlug = useConfiguratorStore((s) => s.selectedProjectSlug);
   const setActiveTab = useConfiguratorStore((s) => s.setActiveTab);
   const openSolutionDetail = useConfiguratorStore((s) => s.openSolutionDetail);
+  const closeSolutionDetail = useConfiguratorStore((s) => s.closeSolutionDetail);
   const openStandardDetail = useConfiguratorStore((s) => s.openStandardDetail);
+  const closeStandardDetail = useConfiguratorStore((s) => s.closeStandardDetail);
   const openWhatIsAStandard = useConfiguratorStore((s) => s.openWhatIsAStandard);
+  const closeWhatIsAStandard = useConfiguratorStore((s) => s.closeWhatIsAStandard);
   const openConfigurator = useConfiguratorStore((s) => s.openConfigurator);
 
   const [pathname, setPathname] = React.useState<string>(() =>
     typeof window !== 'undefined' ? window.location.pathname : '/'
   );
-  const isGetStarted = pathname.startsWith('/get-started');
+  const normalizedPath = pathname.replace(/\/$/, '') || '/';
+  const isGetStarted = normalizedPath.startsWith('/get-started');
+  const isApproachPage = APPROACH_ROUTES.includes(normalizedPath);
+  const isServicesPage = SERVICES_ROUTES.includes(normalizedPath);
 
-  // Sync route /housing-solutions/:slug, /standards/:slug, /what-is-a-standard, /field-report, and /get-started with browser history
+  // Sync route /housing-solutions/:slug, /standards/:slug, /what-is-a-standard, /the-tie-approach, /our-services, /field-report, and /get-started with browser history
   useEffect(() => {
     const handlePopState = () => {
       const path = window.location.pathname;
+      const cleanPath = path.replace(/\/$/, '') || '/';
       setPathname(path);
       if (path.startsWith('/housing-solutions/')) {
         const slug = path.replace('/housing-solutions/', '').replace(/\/$/, '');
         if (slug) {
           openSolutionDetail(slug);
         }
-      } else if (path === '/what-is-a-standard' || path === '/what-is-a-standard/') {
+      } else if (cleanPath === '/what-is-a-standard') {
         openWhatIsAStandard();
       } else if (path.startsWith('/standards/')) {
         let slug = path.replace('/standards/', '').replace(/\/$/, '');
@@ -73,7 +89,11 @@ export const App: React.FC = () => {
         if (slug) {
           openStandardDetail(slug);
         }
-      } else if (path === '/field-report' || path === '/field-report/') {
+      } else if (APPROACH_ROUTES.includes(cleanPath) || SERVICES_ROUTES.includes(cleanPath)) {
+        closeSolutionDetail();
+        closeStandardDetail();
+        closeWhatIsAStandard();
+      } else if (cleanPath === '/field-report') {
         setActiveTab('field-report');
       } else if (path.startsWith('/get-started')) {
         openConfigurator();
@@ -82,14 +102,26 @@ export const App: React.FC = () => {
       }
     };
 
+    const originalPushState = window.history.pushState;
+    window.history.pushState = function (...args) {
+      originalPushState.apply(this, args);
+      setPathname(window.location.pathname);
+    };
+
     handlePopState();
     window.addEventListener('popstate', handlePopState);
-    return () => window.removeEventListener('popstate', handlePopState);
+    return () => {
+      window.history.pushState = originalPushState;
+      window.removeEventListener('popstate', handlePopState);
+    };
   }, [
     setActiveTab,
     openSolutionDetail,
+    closeSolutionDetail,
     openStandardDetail,
+    closeStandardDetail,
     openWhatIsAStandard,
+    closeWhatIsAStandard,
     openConfigurator,
   ]);
 
@@ -146,7 +178,15 @@ export const App: React.FC = () => {
 
       {/* 2. Main Page Content (Matching exact Huts.com narrative flow) */}
       <main className="flex-1">
-        {activeTab === 'field-report' ? (
+        {isApproachPage ? (
+          <Suspense fallback={<div className="min-h-screen bg-[#FAF7ED]" />}>
+            <TheApproachPage />
+          </Suspense>
+        ) : isServicesPage ? (
+          <Suspense fallback={<div className="min-h-screen bg-[#FAF7ED]" />}>
+            <OurServicesPage />
+          </Suspense>
+        ) : activeTab === 'field-report' ? (
           <Suspense fallback={<div className="min-h-screen bg-[#FAF7ED]" />}>
             <FieldReportPortal />
           </Suspense>

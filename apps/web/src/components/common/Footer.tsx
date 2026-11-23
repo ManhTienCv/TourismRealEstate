@@ -116,7 +116,13 @@ export const Footer: React.FC<FooterProps> = ({ hasPreFooter = true }) => {
               <ul className="space-y-0.5">
                 <li>
                   <button
-                    onClick={() => handleScrollTo('process-section')}
+                    onClick={() => {
+                      if (typeof window !== 'undefined') {
+                        window.history.pushState({}, '', '/the-tie-approach');
+                        window.dispatchEvent(new PopStateEvent('popstate'));
+                        window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
+                      }
+                    }}
                     className="font-sans text-[13px] md:text-[14px] font-normal text-[#FAF7ED]/90 hover:text-[#CFE87B] transition-colors block py-1 text-left"
                   >
                     The TIE Approach
