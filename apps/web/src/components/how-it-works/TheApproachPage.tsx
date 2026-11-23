@@ -16,6 +16,10 @@ import {
 } from './howItWorksData';
 
 const SPINE = 24;
+// Khi thẻ sau tiến vào ở tốc độ 100%, thẻ trước tiếp tục trôi chậm sang trái ở 45% tốc độ
+const PARALLAX_RATIO = 0.45;
+// Kéo giãn quãng cuộn dọc thêm 25% để thẻ trôi chậm, đầm tay hơn
+const SCROLL_PACE = 1.25;
 
 const THEME_BG_MAP: Record<PrincipleBgTheme, string> = {
   meadow: 'bg-[#D5E798]',
@@ -24,12 +28,48 @@ const THEME_BG_MAP: Record<PrincipleBgTheme, string> = {
   beige: 'bg-[#E4DAB4]',
 };
 
+interface CardSegment {
+  parkedX: number;
+  internalScroll: number;
+  enterStart: number;
+  enterEnd: number;
+  internalEnd: number;
+}
+
+interface Keyframes {
+  inputP: number[];
+  outputX: number[];
+}
+
+// Lọc mảng điểm [p, x] tăng dần nghiêm ngặt và đóng mốc cuối tại p = 1
+const buildKeyframes = (points: Array<[number, number]>): Keyframes => {
+  const inputP: number[] = [];
+  const outputX: number[] = [];
+  points.forEach(([rawP, x]) => {
+    const p = Math.min(1, Math.max(0, rawP));
+    const lastP = inputP.length ? inputP[inputP.length - 1] : -1;
+    if (p > lastP + 1e-6) {
+      inputP.push(p);
+      outputX.push(x);
+    } else if (inputP.length) {
+      outputX[outputX.length - 1] = x;
+    }
+  });
+  const lastP = inputP[inputP.length - 1];
+  if (lastP < 0.9999) {
+    inputP.push(1);
+    outputX.push(outputX[outputX.length - 1]);
+  }
+  if (inputP.length < 2) {
+    return { inputP: [0, 1], outputX: [outputX[0] ?? 0, outputX[0] ?? 0] };
+  }
+  return { inputP, outputX };
+};
+
 interface StackedCardProps {
-  conveyorProgress: MotionValue<number>;
+  progress: MotionValue<number>;
   k: number;
-  viewportW: number;
-  naturalStart: number;
-  totalScroll: number;
+  keyframes: Keyframes;
   isDesktop: boolean;
   className: string;
   cardRef: (el: HTMLDivElement | null) => void;
@@ -37,26 +77,15 @@ interface StackedCardProps {
 }
 
 const StackedCard: React.FC<StackedCardProps> = ({
-  conveyorProgress,
+  progress,
   k,
-  viewportW,
-  naturalStart,
-  totalScroll,
+  keyframes,
   isDesktop,
   className,
   cardRef,
   children,
 }) => {
-  const parkedX = viewportW - (7 - k) * SPINE;
-  const detachScroll = Math.max(0, naturalStart - parkedX);
-  const detachP = Math.min(0.9999, detachScroll / totalScroll);
-  const endX = naturalStart - totalScroll;
-
-  const x = useTransform(
-    conveyorProgress,
-    detachP > 0.0001 ? [0, detachP, 1] : [0, 1],
-    detachP > 0.0001 ? [parkedX, parkedX, endX] : [parkedX, endX]
-  );
+  const x = useTransform(progress, keyframes.inputP, keyframes.outputX);
 
   return (
     <motion.div
@@ -349,16 +378,63 @@ export const TheApproachPage: React.FC = () => {
     };
   }, [isDesktop]);
 
-  // Tính mảng tọa độ nối đuôi naturalStarts[0..6] và tổng quãng đường cuộn totalScroll
-  const { naturalStarts, totalScroll } = useMemo(() => {
+  // Tính các mốc phân đoạn enterStart / enterEnd / internalEnd cho từng thẻ k = 1..6 và keyframes 7 thẻ
+  const { totalScroll, card0Keyframes, cardKeyframes } = useMemo(() => {
     const { viewportW, widths } = metrics;
-    const starts: number[] = [0];
-    for (let i = 1; i < 7; i++) {
-      starts.push(starts[i - 1] + widths[i - 1]);
+
+    const segments: CardSegment[] = [];
+    let cursor = 0;
+    for (let k = 1; k <= 6; k++) {
+      const parkedX = viewportW - (7 - k) * SPINE;
+      const nextParkedX = k < 6 ? viewportW - (6 - k) * SPINE : viewportW;
+      // Card 1 là ảnh 1 khung hình -> internalScroll = 0; Card 2..6 trượt ngang hết phần nội dung thừa bên trong
+      const internalScroll = k === 1 ? 0 : Math.max(0, widths[k] - nextParkedX);
+      const enterStart = cursor;
+      const enterEnd = enterStart + parkedX;
+      const internalEnd = enterEnd + internalScroll;
+      segments[k] = { parkedX, internalScroll, enterStart, enterEnd, internalEnd };
+      cursor = internalEnd;
     }
-    const totalConveyorWidth = starts[6] + widths[6];
-    const scroll = Math.max(1, totalConveyorWidth - viewportW);
-    return { naturalStarts: starts, totalScroll: scroll };
+    const total = Math.max(1, cursor);
+
+    // Card 0: trôi chậm 45% sang trái trong lúc Card 1 (ảnh) trượt vào đè nhẹ lên
+    const p1End = segments[1].enterEnd / total;
+    const card0ExitX = -PARALLAX_RATIO * segments[1].parkedX;
+    const card0 = buildKeyframes([
+      [0, 0],
+      [p1End, card0ExitX],
+      [1, card0ExitX],
+    ]);
+
+    // Card 1..6: đỗ chờ ở gáy -> trượt vào 100% -> trượt nội dung bên trong -> trôi chậm 45% khi thẻ sau đè lên
+    const cards: Keyframes[] = [];
+    for (let k = 1; k <= 6; k++) {
+      const seg = segments[k];
+      const points: Array<[number, number]> = [];
+
+      if (seg.enterStart > 1) {
+        points.push([0, seg.parkedX]);
+        points.push([seg.enterStart / total, seg.parkedX]);
+      } else {
+        points.push([0, seg.parkedX]);
+      }
+
+      points.push([seg.enterEnd / total, 0]);
+
+      if (seg.internalScroll > 1) {
+        points.push([seg.internalEnd / total, -seg.internalScroll]);
+      }
+
+      if (k < 6) {
+        const next = segments[k + 1];
+        const driftEndX = -seg.internalScroll - PARALLAX_RATIO * next.parkedX;
+        points.push([next.enterEnd / total, driftEndX]);
+      }
+
+      cards[k] = buildKeyframes(points);
+    }
+
+    return { totalScroll: total, card0Keyframes: card0, cardKeyframes: cards };
   }, [metrics]);
 
   const { scrollYProgress } = useScroll({
@@ -366,25 +442,28 @@ export const TheApproachPage: React.FC = () => {
     offset: ['start start', 'end end'],
   });
 
+  // Spring mềm, đầm và không nảy (giống cảm giác Lenis của HUTS)
   const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 280,
-    damping: 36,
-    mass: 0.18,
-    restDelta: 0.0005,
+    stiffness: 115,
+    damping: 24,
+    mass: 0.55,
+    restDelta: 0.0004,
   });
 
-  const conveyorProgress = useTransform(smoothProgress, [0, 0.98], [0, 1], {
+  const progress = useTransform(smoothProgress, [0, 0.985], [0, 1], {
     clamp: true,
   });
 
-  const card0X = useTransform(conveyorProgress, [0, 1], [0, -totalScroll]);
+  const card0X = useTransform(progress, card0Keyframes.inputP, card0Keyframes.outputX);
 
   return (
     <div className="w-full bg-[#FAF7ED] [overflow-x:clip] font-sans text-[#1E1414]">
-      {/* Section 1: Cơ chế băng chuyền nối đuôi + gáy chờ mép phải chuẩn HUTS */}
+      {/* Section 1: Cơ chế Parallax hơi đè 45% + trôi chậm mượt chuẩn HUTS */}
       <section
         ref={sectionRef}
-        style={{ height: isDesktop ? metrics.viewportH + totalScroll : 'auto' }}
+        style={{
+          height: isDesktop ? metrics.viewportH + totalScroll * SCROLL_PACE : 'auto',
+        }}
         className="relative bg-[#FAF7ED]"
       >
         <div
@@ -447,13 +526,11 @@ export const TheApproachPage: React.FC = () => {
             </div>
           </motion.div>
 
-          {/* Card 1: Tấm Ảnh đại diện nối đuôi Card 0 (zIndex = 1, đỗ tại W - 144) */}
+          {/* Card 1: Tấm Ảnh đại diện (zIndex = 1, đỗ tại W - 144) */}
           <StackedCard
-            conveyorProgress={conveyorProgress}
+            progress={progress}
             k={1}
-            viewportW={metrics.viewportW}
-            naturalStart={naturalStarts[1]}
-            totalScroll={totalScroll}
+            keyframes={cardKeyframes[1]}
             isDesktop={isDesktop}
             cardRef={(el) => {
               cardRefs.current[1] = el;
@@ -471,17 +548,15 @@ export const TheApproachPage: React.FC = () => {
             </div>
           </StackedCard>
 
-          {/* Card 2 -> Card 6: 5 Tấm Nguyên lý nối đuôi (zIndex = 2..6, đỗ tại W - 120 .. W - 24) */}
+          {/* Card 2 -> Card 6: 5 Tấm Nguyên lý (zIndex = 2..6, đỗ tại W - 120 .. W - 24) */}
           {APPROACH_DATA.principleCards.map((card, idx) => {
             const k = idx + 2;
             return (
               <StackedCard
                 key={card.id}
-                conveyorProgress={conveyorProgress}
+                progress={progress}
                 k={k}
-                viewportW={metrics.viewportW}
-                naturalStart={naturalStarts[k]}
-                totalScroll={totalScroll}
+                keyframes={cardKeyframes[k]}
                 isDesktop={isDesktop}
                 cardRef={(el) => {
                   cardRefs.current[k] = el;
