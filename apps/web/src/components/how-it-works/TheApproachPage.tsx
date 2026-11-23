@@ -378,10 +378,12 @@ export const TheApproachPage: React.FC = () => {
         >
           {/* Card 0: Tấm Mở đầu cố định bên trái (z-0) */}
           <div className="lg:absolute lg:inset-y-0 lg:left-0 lg:w-[calc(100%-144px)] bg-[#FAF7ED] z-0">
-            <div className="px-6 md:px-14 pt-24 lg:pt-[96px] pb-12 lg:pb-[72px] h-full relative flex flex-col justify-between gap-10">
-              {/* Khối trên trái: H1 3 dòng */}
-              <h1 className="max-w-[540px] lg:max-w-[600px] font-serif font-normal text-[#0C310A] text-[clamp(2.5rem,3.8vw+1.1rem,4.35rem)] leading-[1.06] tracking-[-0.03em]">
-                {APPROACH_DATA.intro.title}
+            <div className="relative h-full w-full px-6 sm:px-10 lg:px-12 pt-24 lg:pt-[118px] pb-12 lg:pb-14 flex flex-col">
+              {/* Khối trên trái: H1 3 dòng cân đối chuẩn HUTS */}
+              <h1 className="font-serif font-normal text-[#0C310A] text-[clamp(2.75rem,4.5vw+0.8rem,4.75rem)] leading-[1.06] tracking-[-0.03em] max-w-[640px]">
+                Perfecting the craft
+                <br className="hidden lg:block" /> of home design
+                <br className="hidden lg:block" /> and development.
               </h1>
 
               {/* Mũi tên uốn vòng SVG thật của HUTS */}
@@ -390,7 +392,7 @@ export const TheApproachPage: React.FC = () => {
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
                 aria-hidden="true"
-                className="hidden lg:block absolute left-[240px] xl:left-[280px] top-[46%] w-[143px] h-[160px] pointer-events-none select-none"
+                className="hidden lg:block absolute left-[29%] xl:left-[31%] top-[49%] w-[138px] xl:w-[152px] h-auto pointer-events-none select-none"
               >
                 <path
                   d="M112.578 112.529C87.7735 115.734 62.3504 112.667 42.2961 95.8689C24.1948 80.7062 19.1604 58.6469 42.9131 46.1591C54.157 40.2476 71.44 40.7544 79.8094 51.4121C89.1338 63.2857 71.9937 73.1837 61.9805 73.5363C38.5936 74.3602 15.0847 57.0131 12.1339 31.5424C8.63949 1.37918 1.99519 2.00093 1.99519 2.00093"
@@ -410,10 +412,15 @@ export const TheApproachPage: React.FC = () => {
                 />
               </svg>
 
-              {/* Khối dưới phải: 2 đoạn giới thiệu font-serif */}
-              <div className="lg:ml-auto lg:w-[46%] lg:max-w-[440px] lg:pb-6 space-y-5 font-serif font-normal text-[20px] lg:text-[23px] leading-[1.36] tracking-[-0.015em] text-[#0C310A]">
+              {/* Khối văn bản phải ngang tầm mũi tên: Font Serif cỡ lớn màu #0C310A */}
+              <div className="mt-8 lg:mt-6 lg:ml-[50%] xl:ml-[52%] w-full lg:w-[44%] max-w-[440px] space-y-5">
                 {APPROACH_DATA.intro.paragraphs.map((para, idx) => (
-                  <p key={idx}>{para}</p>
+                  <p
+                    key={idx}
+                    className="font-serif font-normal text-[20px] lg:text-[clamp(1.3rem,1.25vw+0.7rem,1.6rem)] leading-[1.36] tracking-[-0.015em] text-[#0C310A]"
+                  >
+                    {para}
+                  </p>
                 ))}
               </div>
             </div>
