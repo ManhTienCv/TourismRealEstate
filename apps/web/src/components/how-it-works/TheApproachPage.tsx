@@ -16,10 +16,10 @@ import {
 } from './howItWorksData';
 
 const SPINE = 24;
-// Khi thẻ sau tiến vào ở tốc độ 100%, thẻ trước tiếp tục trôi chậm sang trái ở 45% tốc độ
-const PARALLAX_RATIO = 0.45;
-// Kéo giãn quãng cuộn dọc thêm 25% để thẻ trôi chậm, đầm tay hơn
-const SCROLL_PACE = 1.25;
+// Khi thẻ sau tiến vào ở tốc độ 100%, thẻ trước tiếp tục trôi sang trái ở 82% tốc độ (~18% độ đè nhẹ)
+const PARALLAX_RATIO = 0.82;
+// Kéo giãn quãng cuộn dọc thêm 35% để thẻ trôi chậm, đầm và dễ đọc hơn
+const SCROLL_PACE = 1.35;
 
 const THEME_BG_MAP: Record<PrincipleBgTheme, string> = {
   meadow: 'bg-[#D5E798]',
@@ -90,8 +90,8 @@ const StackedCard: React.FC<StackedCardProps> = ({
   return (
     <motion.div
       ref={cardRef}
-      style={isDesktop ? { x, zIndex: k } : undefined}
-      className={className}
+      style={isDesktop ? { x, z: 0, zIndex: k } : { z: 0 }}
+      className={`${className} [backface-visibility:hidden] [contain:layout_style]`}
     >
       {children}
     </motion.div>
@@ -226,7 +226,7 @@ const PrincipleCardContent: React.FC<{ card: PrincipleCardItem; index: number }>
                 src={`${imgUrl}?w=1400&q=85&auto=format`}
                 alt={`${card.title} ${iIdx + 1}`}
                 className="w-full h-full object-cover select-none"
-                loading="lazy"
+                loading="eager"
                 decoding="async"
               />
             </div>
@@ -442,12 +442,13 @@ export const TheApproachPage: React.FC = () => {
     offset: ['start start', 'end end'],
   });
 
-  // Spring mềm, đầm và không nảy (giống cảm giác Lenis của HUTS)
+  // Spring trượt êm kiểu Lenis (không nảy, hãm mịn tới dưới 0.5px/giây)
   const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 115,
-    damping: 24,
-    mass: 0.55,
-    restDelta: 0.0004,
+    stiffness: 75,
+    damping: 20,
+    mass: 0.45,
+    restDelta: 0.000015,
+    restSpeed: 0.00004,
   });
 
   const progress = useTransform(smoothProgress, [0, 0.985], [0, 1], {
@@ -458,7 +459,7 @@ export const TheApproachPage: React.FC = () => {
 
   return (
     <div className="w-full bg-[#FAF7ED] [overflow-x:clip] font-sans text-[#1E1414]">
-      {/* Section 1: Cơ chế Parallax hơi đè 45% + trôi chậm mượt chuẩn HUTS */}
+      {/* Section 1: Cơ chế Parallax đè nhẹ ~18% + trôi êm 60fps chuẩn HUTS */}
       <section
         ref={sectionRef}
         style={{
@@ -475,8 +476,8 @@ export const TheApproachPage: React.FC = () => {
             ref={(el) => {
               cardRefs.current[0] = el;
             }}
-            style={{ x: isDesktop ? card0X : 0 }}
-            className="lg:absolute lg:inset-y-0 lg:left-0 lg:w-[calc(100vw-144px)] bg-[#FAF7ED] z-0 will-change-transform"
+            style={{ x: isDesktop ? card0X : 0, z: 0 }}
+            className="lg:absolute lg:inset-y-0 lg:left-0 lg:w-[calc(100vw-144px)] bg-[#FAF7ED] z-0 will-change-transform [backface-visibility:hidden] [contain:layout_style]"
           >
             <div className="relative h-full w-full px-6 sm:px-10 lg:px-12 pt-24 lg:pt-[118px] pb-12 lg:pb-14 flex flex-col">
               {/* Khối trên trái: H1 3 dòng cân đối chuẩn HUTS */}
