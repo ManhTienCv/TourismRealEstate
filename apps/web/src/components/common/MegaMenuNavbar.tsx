@@ -319,6 +319,16 @@ export const MegaMenuNavbar: React.FC = () => {
 
   const isMenuOpen = activeMenu !== null;
   const isSolid = isScrolled || isHeaderHovered || isMenuOpen || activeTab !== 'home' || selectedSolutionSlug !== null;
+  const currentPathname =
+    typeof window !== 'undefined' ? window.location.pathname.replace(/\/$/, '') : '';
+  const isLightHeroPage = [
+    '/the-tie-approach',
+    '/the-huts-approach',
+    '/how-it-works/approach',
+    '/our-services',
+    '/how-it-works/services',
+  ].includes(currentPathname);
+  const isDarkText = isSolid || isLightHeroPage;
 
   // Navbar chỉ ẩn khi isHidden === true VÀ người dùng KHÔNG mở menu / KHÔNG hover trên navbar / KHÔNG mở mobile drawer
   const shouldHideNavbar = isHidden && !isMenuOpen && !isHeaderHovered && !mobileMenuOpen;
@@ -348,7 +358,9 @@ export const MegaMenuNavbar: React.FC = () => {
         } ${
           isSolid
             ? 'bg-[#FAF7ED] text-[#1E1414]'
-            : 'bg-transparent text-[#FAF7ED]'
+            : isDarkText
+              ? 'bg-transparent text-[#1E1414]'
+              : 'bg-transparent text-[#FAF7ED]'
         } ${isMenuOpen ? 'rounded-b-[24px] border-b border-[#E2DDD5]/70' : 'rounded-b-0 border-b-transparent'}`}
       >
         {/* Top Navbar Row (HUTS height: 86px) */}
@@ -361,7 +373,7 @@ export const MegaMenuNavbar: React.FC = () => {
           >
             <span
               className={`font-sans text-[26px] md:text-[28px] font-black tracking-[-0.03em] leading-none transition-colors duration-200 select-none ${
-                isSolid ? 'text-[#1E1414]' : 'text-[#FAF7ED]'
+                isDarkText ? 'text-[#1E1414]' : 'text-[#FAF7ED]'
               }`}
             >
               TIE
@@ -382,7 +394,7 @@ export const MegaMenuNavbar: React.FC = () => {
                 <button
                   onClick={() => scrollToSection('solutions-section', 'home')}
                   className={`py-2 flex items-center gap-1 cursor-pointer transition-colors duration-150 ease-[cubic-bezier(0.33,1,0.68,1)] ${
-                    isSolid
+                    isDarkText
                       ? 'text-[#1E1414] hover:text-[#0C310A]'
                       : 'text-[#FAF7ED] hover:text-white'
                   } ${getItemOpacityClass('solutions')}`}
@@ -390,7 +402,7 @@ export const MegaMenuNavbar: React.FC = () => {
                   <span>Housing Solutions</span>
                   <PlusCrossIcon
                     isOpen={activeMenu === 'solutions'}
-                    colorClass={isSolid ? 'text-[#1E1414]' : 'text-[#FAF7ED]'}
+                    colorClass={isDarkText ? 'text-[#1E1414]' : 'text-[#FAF7ED]'}
                   />
                 </button>
               </div>
@@ -403,7 +415,7 @@ export const MegaMenuNavbar: React.FC = () => {
                 <button
                   onClick={() => scrollToSection('standards-section', 'standards')}
                   className={`py-2 flex items-center gap-1 cursor-pointer transition-colors duration-150 ease-[cubic-bezier(0.33,1,0.68,1)] ${
-                    isSolid
+                    isDarkText
                       ? 'text-[#1E1414] hover:text-[#0C310A]'
                       : 'text-[#FAF7ED] hover:text-white'
                   } ${getItemOpacityClass('standards')}`}
@@ -411,7 +423,7 @@ export const MegaMenuNavbar: React.FC = () => {
                   <span>Standards</span>
                   <PlusCrossIcon
                     isOpen={activeMenu === 'standards'}
-                    colorClass={isSolid ? 'text-[#1E1414]' : 'text-[#FAF7ED]'}
+                    colorClass={isDarkText ? 'text-[#1E1414]' : 'text-[#FAF7ED]'}
                   />
                 </button>
               </div>
@@ -424,7 +436,7 @@ export const MegaMenuNavbar: React.FC = () => {
                 <button
                   onClick={() => scrollToSection('process-section', 'home')}
                   className={`py-2 flex items-center gap-1 cursor-pointer transition-colors duration-150 ease-[cubic-bezier(0.33,1,0.68,1)] ${
-                    isSolid
+                    isDarkText
                       ? 'text-[#1E1414] hover:text-[#0C310A]'
                       : 'text-[#FAF7ED] hover:text-white'
                   } ${getItemOpacityClass('how-it-works')}`}
@@ -432,7 +444,7 @@ export const MegaMenuNavbar: React.FC = () => {
                   <span>How It Works</span>
                   <PlusCrossIcon
                     isOpen={activeMenu === 'how-it-works'}
-                    colorClass={isSolid ? 'text-[#1E1414]' : 'text-[#FAF7ED]'}
+                    colorClass={isDarkText ? 'text-[#1E1414]' : 'text-[#FAF7ED]'}
                   />
                 </button>
               </div>
@@ -442,7 +454,7 @@ export const MegaMenuNavbar: React.FC = () => {
                 onMouseEnter={() => handleItemMouseEnter(null)}
                 onClick={() => scrollToSection('portfolio-section', 'portfolio')}
                 className={`py-2 cursor-pointer transition-colors duration-150 ease-[cubic-bezier(0.33,1,0.68,1)] ${
-                  isSolid
+                  isDarkText
                     ? 'text-[#1E1414] hover:text-[#0C310A]'
                     : 'text-[#FAF7ED] hover:text-white'
                 } ${getItemOpacityClass('portfolio')}`}
@@ -458,7 +470,7 @@ export const MegaMenuNavbar: React.FC = () => {
                 <button
                   onClick={() => scrollToSection('process-section', 'home')}
                   className={`py-2 flex items-center gap-1 cursor-pointer transition-colors duration-150 ease-[cubic-bezier(0.33,1,0.68,1)] ${
-                    isSolid
+                    isDarkText
                       ? 'text-[#1E1414] hover:text-[#0C310A]'
                       : 'text-[#FAF7ED] hover:text-white'
                   } ${getItemOpacityClass('resources')}`}
@@ -466,7 +478,7 @@ export const MegaMenuNavbar: React.FC = () => {
                   <span>Resources</span>
                   <PlusCrossIcon
                     isOpen={activeMenu === 'resources'}
-                    colorClass={isSolid ? 'text-[#1E1414]' : 'text-[#FAF7ED]'}
+                    colorClass={isDarkText ? 'text-[#1E1414]' : 'text-[#FAF7ED]'}
                   />
                 </button>
               </div>

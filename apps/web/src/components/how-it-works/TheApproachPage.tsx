@@ -35,13 +35,13 @@ const SpineTab: React.FC<{
   range: [number, number];
   progress: MotionValue<number>;
 }> = ({ color, range, progress }) => {
-  const width = useTransform(progress, range, [12, 0], { clamp: true });
+  const width = useTransform(progress, range, [22, 0], { clamp: true });
   const opacity = useTransform(progress, range, [1, 0], { clamp: true });
 
   return (
     <motion.div
       style={{ width, opacity, backgroundColor: color }}
-      className="h-full rounded-l-[12px] -ml-[4px] shadow-[-2px_0_8px_rgba(12,49,10,0.06)] shrink-0"
+      className="h-full rounded-l-[24px] -ml-[6px] shadow-[-2px_0_10px_rgba(12,49,10,0.06)] shrink-0"
     />
   );
 };
@@ -306,49 +306,53 @@ export const TheApproachPage: React.FC = () => {
             style={{ x: isDesktop ? x : 0 }}
             className="flex flex-col lg:flex-row lg:h-full lg:w-max will-change-transform"
           >
-            {/* 1. Panel Mở đầu (Intro Panel) */}
+            {/* 1. Panel Mở đầu (Intro Panel — khớp bố cục đường chéo & bo góc phải chuẩn HUTS) */}
             <div className="bg-[#FAF7ED] flex flex-col lg:flex-row items-stretch shrink-0 lg:h-full">
-              {/* Khối chữ trái */}
-              <div className="px-6 md:px-12 lg:px-16 pt-28 pb-10 lg:py-24 flex flex-col lg:flex-row lg:items-center gap-8 lg:gap-12 lg:w-[68vw] lg:max-w-[1020px] shrink-0">
-                <div className="flex flex-col gap-7 flex-1">
-                  <h1 className="font-serif font-normal text-[#0C310A] text-[clamp(2.5rem,3.6vw+1.2rem,4.4rem)] leading-[1.05] tracking-[-0.03em]">
-                    {APPROACH_DATA.intro.title}
-                  </h1>
-                  {/* Mũi tên vẽ nét ngang màu xanh rêu (#57772E, width ~64px) */}
+              {/* Khối nền kem chiếm ~87vw để hé lộ 1 phần ảnh ngôi nhà + 5 gáy màu ở mép phải */}
+              <div className="relative z-10 bg-[#FAF7ED] lg:rounded-r-[24px] px-6 md:px-12 lg:px-14 pt-28 pb-12 lg:pt-[15vh] lg:pb-[10vh] flex flex-col justify-between gap-8 lg:w-[87vw] shrink-0">
+                {/* Hàng trên trái: Tiêu đề H1 lớn 3 dòng */}
+                <h1 className="font-serif font-normal text-[#0C310A] text-[clamp(2.5rem,4.1vw+1.1rem,4.75rem)] leading-[1.06] tracking-[-0.03em] max-w-[660px]">
+                  {APPROACH_DATA.intro.title}
+                </h1>
+
+                {/* Hàng dưới lệch phải: Mũi tên xoắn vòng (#57772E) + 2 đoạn mô tả font-serif lớn */}
+                <div className="flex flex-col lg:flex-row items-start lg:items-start gap-6 lg:gap-12 lg:pl-[25%]">
+                  {/* Mũi tên xoắn vòng vẽ tay chuẩn HUTS */}
                   <svg
-                    width="64"
-                    height="24"
-                    viewBox="0 0 64 24"
+                    width="156"
+                    height="126"
+                    viewBox="0 0 156 126"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
                     aria-hidden="true"
-                    className="w-16 h-6 shrink-0"
+                    className="w-[120px] h-[98px] lg:w-[152px] lg:h-[124px] shrink-0 lg:-mt-4 select-none pointer-events-none"
                   >
                     <path
-                      d="M2 12.5C18 11.2 42 11.4 60 12"
+                      d="M12 6C24 44 48 66 76 62C102 58 106 30 82 26C56 22 44 54 62 78C78 98 108 102 140 97"
                       stroke="#57772E"
-                      strokeWidth="2.2"
+                      strokeWidth="2.4"
                       strokeLinecap="round"
+                      strokeLinejoin="round"
                     />
                     <path
-                      d="M49 4.5C52.5 8.5 56.5 10.8 61 12C56.5 13.4 52.5 16 49 19.5"
+                      d="M124 85C130 90 136 94 143 97C135 101 129 107 124 115"
                       stroke="#57772E"
-                      strokeWidth="2.2"
+                      strokeWidth="2.4"
                       strokeLinecap="round"
                       strokeLinejoin="round"
                     />
                   </svg>
-                </div>
 
-                <div className="text-[16px] leading-[1.6] text-[#664A42] max-w-[360px] space-y-4 font-sans">
-                  {APPROACH_DATA.intro.paragraphs.map((para, idx) => (
-                    <p key={idx}>{para}</p>
-                  ))}
+                  <div className="font-serif font-normal text-[#0C310A] text-[20px] md:text-[22px] lg:text-[25px] leading-[1.42] tracking-[-0.015em] max-w-[440px] space-y-6">
+                    {APPROACH_DATA.intro.paragraphs.map((para, idx) => (
+                      <p key={idx}>{para}</p>
+                    ))}
+                  </div>
                 </div>
               </div>
 
-              {/* Ảnh đại diện lớn nối liền bên phải */}
-              <div className="lg:w-[58vw] lg:max-w-[920px] h-[46vh] lg:h-full shrink-0 bg-[#EAE6DF]">
+              {/* Ảnh đại diện lớn nối liền bên phải (lùi -ml-6 để bo góc phải khối kem ôm mượt lên ảnh) */}
+              <div className="lg:w-[62vw] lg:max-w-[960px] h-[46vh] lg:h-full shrink-0 lg:-ml-6 bg-[#EAE6DF]">
                 <img
                   src={`${APPROACH_DATA.intro.image}?w=1600&q=85&auto=format`}
                   alt="TIE Studio craft and development"
