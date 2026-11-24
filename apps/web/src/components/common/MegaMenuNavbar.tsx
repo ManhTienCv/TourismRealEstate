@@ -193,7 +193,6 @@ export const MegaMenuNavbar: React.FC = () => {
   const activeTab = useConfiguratorStore((s) => s.activeTab);
   const setActiveTab = useConfiguratorStore((s) => s.setActiveTab);
   const openConfigurator = useConfiguratorStore((s) => s.openConfigurator);
-  const openPlanDetail = useConfiguratorStore((s) => s.openPlanDetail);
   const openSolutionDetail = useConfiguratorStore((s) => s.openSolutionDetail);
   const closeSolutionDetail = useConfiguratorStore((s) => s.closeSolutionDetail);
   const openStandardDetail = useConfiguratorStore((s) => s.openStandardDetail);

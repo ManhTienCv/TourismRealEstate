@@ -17,7 +17,7 @@
     "db:push": "npm run prisma:push --workspace=@tie/api",
     "db:seed": "npm run prisma:seed --workspace=@tie/api",
     "db:generate": "npm run prisma:generate --workspace=@tie/api",
-    "db:check": "ts-node check-db.ts"
+    "db:check": "ts-node scripts/check-db.ts"
   },
   "devDependencies": {
     "typescript": "^5.4.5"
