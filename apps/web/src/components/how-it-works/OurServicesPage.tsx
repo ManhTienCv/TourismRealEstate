@@ -242,7 +242,7 @@ export const OurServicesPage: React.FC = () => {
   return (
     <div className="w-full bg-[#FAF7ED] [overflow-x:clip] font-sans text-[#1E1414]">
       {/* Section 1: Hero căn giữa */}
-      <section className="relative z-0 min-h-[88dvh] md:min-h-[94dvh] pt-4 md:pt-2 pb-16 md:pb-24 px-6 text-center max-w-[1000px] mx-auto flex flex-col items-center justify-start">
+      <section className="relative z-0 pt-24 md:pt-[108px] pb-16 md:pb-24 px-6 text-center max-w-[1000px] mx-auto flex flex-col items-center justify-start">
         <img
           src={SERVICES_DATA.hero.illustration}
           alt="TIE home design and development sherpas"
@@ -250,7 +250,7 @@ export const OurServicesPage: React.FC = () => {
           draggable={false}
         />
 
-        <span className="mt-5 md:mt-7 mb-3 md:mb-4 text-[15px] md:text-[16px] tracking-[0.01em] text-[#664A42] font-normal">
+        <span className="mt-8 md:mt-10 mb-4 md:mb-5 text-[15px] md:text-[16px] tracking-[0.01em] text-[#664A42] font-normal">
           {SERVICES_DATA.hero.label}
         </span>
 
