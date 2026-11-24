@@ -242,24 +242,24 @@ export const OurServicesPage: React.FC = () => {
   return (
     <div className="w-full bg-[#FAF7ED] [overflow-x:clip] font-sans text-[#1E1414]">
       {/* Section 1: Hero căn giữa */}
-      <section className="pt-28 md:pt-36 pb-14 px-6 text-center max-w-[920px] mx-auto flex flex-col items-center gap-5">
+      <section className="relative z-0 min-h-[88dvh] md:min-h-[94dvh] pt-4 md:pt-2 pb-16 md:pb-24 px-6 text-center max-w-[1000px] mx-auto flex flex-col items-center justify-start">
         <img
           src={SERVICES_DATA.hero.illustration}
           alt="TIE home design and development sherpas"
-          className="w-[96px] h-[96px] md:w-[116px] md:h-[116px] object-contain select-none pointer-events-none"
+          className="w-[240px] sm:w-[290px] md:w-[360px] lg:w-[400px] h-auto object-contain select-none pointer-events-none"
           draggable={false}
         />
 
-        <span className="text-[13.5px] tracking-[0.01em] text-[#664A42] font-normal">
+        <span className="mt-5 md:mt-7 mb-3 md:mb-4 text-[15px] md:text-[16px] tracking-[0.01em] text-[#664A42] font-normal">
           {SERVICES_DATA.hero.label}
         </span>
 
-        <h1 className="font-serif font-normal text-[#0C310A] text-[clamp(2.5rem,4.2vw+1.2rem,4.75rem)] leading-[1.06] tracking-[-0.03em]">
+        <h1 className="font-serif font-normal text-[#0C310A] text-[clamp(2.5rem,4.2vw+1.2rem,4.75rem)] leading-[1.06] tracking-[-0.03em] mb-7 md:mb-9">
           {SERVICES_DATA.hero.titlePrefix}
           {SERVICES_DATA.hero.titleHighlight}
         </h1>
 
-        <div className="mt-2">
+        <div>
           <HutsButton
             variant="primary"
             withArrow
