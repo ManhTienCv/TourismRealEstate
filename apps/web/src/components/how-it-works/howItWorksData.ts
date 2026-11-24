@@ -528,7 +528,7 @@ export const SERVICES_DATA: ServicesPageData = {
       quote:
         'The team at TIE addressed all these known issues head-on and through established best practices, experience, and effective communication they removed the stress, did the heavy lifting, and allowed me to focus on creating my ideal get-away spot.',
       image:
-        'https://cdn.sanity.io/images/xi1ruvdt/production/c8b5cf2b34240b94ff32f54df51102a56f9c1cdf-1440x810.jpg',
+        'https://cdn.sanity.io/images/xi1ruvdt/production/a4f4ab26811d0c7bbb343f642871b0c15ca9317b-3000x1688.jpg',
     },
     {
       author: 'Lauren W.',
@@ -537,7 +537,7 @@ export const SERVICES_DATA: ServicesPageData = {
       quote:
         'As a couple with no experience in this field or idea on where to begin, TIE made something like building a home a reality for us. We learned a lot along the way and felt confident at each step of the process that we were in good hands.',
       image:
-        'https://cdn.sanity.io/images/xi1ruvdt/production/d585d1cf9adaca594d00f7c14a040e3d7f6c293b-1440x960.png',
+        'https://cdn.sanity.io/images/xi1ruvdt/production/b2818d8ef4548f13d7422ea3464fc8318865e207-3070x2047.jpg',
     },
     {
       author: 'Steven D.',
@@ -546,7 +546,7 @@ export const SERVICES_DATA: ServicesPageData = {
       quote:
         'I couldn’t recommend TIE more, they’ve been absolutely fantastic! I have been recommending them to many clients and hope to see them build their own TIE too!',
       image:
-        'https://cdn.sanity.io/images/xi1ruvdt/production/b1056953e77a1adeba63790f132bf72414e49004-4000x2250.jpg',
+        'https://cdn.sanity.io/images/xi1ruvdt/production/b42fd76f6418c50eb7b7d84590c774a8915ae824-1440x810.jpg',
     },
   ],
 };
