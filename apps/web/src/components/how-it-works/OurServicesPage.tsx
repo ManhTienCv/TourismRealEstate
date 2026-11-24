@@ -2,20 +2,16 @@ import React, { useEffect, useRef, useState } from 'react';
 import {
   AnimatePresence,
   motion,
-  useMotionValue,
   useScroll,
   useSpring,
   useTransform,
 } from 'framer-motion';
 import { HutsButton } from '../common/HutsButton';
+import { TestimonialsCarousel } from '../common/TestimonialsCarousel';
 import { StandardsHorizontalSlider } from '../standards/StandardsHorizontalSlider';
 import { getAllStandards } from '../solutions/standardsData';
 import { useConfiguratorStore } from '../../store/useConfiguratorStore';
-import {
-  SERVICES_DATA,
-  ServicePhaseItem,
-  ServiceTestimonialItem,
-} from './howItWorksData';
+import { SERVICES_DATA, ServicePhaseItem } from './howItWorksData';
 
 interface ParallaxFullMediaProps {
   mediaType: 'video' | 'image';
@@ -233,233 +229,6 @@ const PhaseAccordion: React.FC<{ phase: ServicePhaseItem }> = ({ phase }) => {
   );
 };
 
-const CAROUSEL_GAP = 40;
-
-const ServicesTestimonialsCarousel: React.FC<{
-  items: ServiceTestimonialItem[];
-}> = ({ items }) => {
-  const count = items.length;
-  const extendedItems = [...items, ...items, ...items];
-
-  const viewportRef = useRef<HTMLDivElement>(null);
-  const firstSlideRef = useRef<HTMLDivElement>(null);
-  const isAnimatingRef = useRef(false);
-  const lockTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  const [activeIndex, setActiveIndex] = useState(count);
-  const [isInstant, setIsInstant] = useState(true);
-  const [dimensions, setDimensions] = useState({ viewportW: 1440, slideW: 1040 });
-  const [isHovering, setIsHovering] = useState(false);
-  const [cursorDir, setCursorDir] = useState<'left' | 'right'>('right');
-
-  // Con trỏ mũi tên tròn bay theo chuột dùng MotionValue + Spring (không dùng useState cho tọa độ)
-  const cursorX = useMotionValue(-100);
-  const cursorY = useMotionValue(-100);
-  const springX = useSpring(cursorX, { stiffness: 1500, damping: 50, mass: 0.05 });
-  const springY = useSpring(cursorY, { stiffness: 1500, damping: 50, mass: 0.05 });
-
-  useEffect(() => {
-    const measure = () => {
-      const vp = viewportRef.current;
-      const slide = firstSlideRef.current;
-      if (!vp || !slide) return;
-      const viewportW = vp.clientWidth;
-      const slideW = slide.offsetWidth;
-      setDimensions((prev) =>
-        prev.viewportW === viewportW && prev.slideW === slideW
-          ? prev
-          : { viewportW, slideW }
-      );
-    };
-
-    measure();
-    const rafId = requestAnimationFrame(measure);
-    const ro = new ResizeObserver(measure);
-    if (viewportRef.current) ro.observe(viewportRef.current);
-    if (firstSlideRef.current) ro.observe(firstSlideRef.current);
-    window.addEventListener('resize', measure);
-
-    return () => {
-      cancelAnimationFrame(rafId);
-      ro.disconnect();
-      window.removeEventListener('resize', measure);
-      if (lockTimerRef.current) clearTimeout(lockTimerRef.current);
-    };
-  }, []);
-
-  const stepSlide = (delta: 1 | -1) => {
-    if (isAnimatingRef.current) return;
-    isAnimatingRef.current = true;
-    setIsInstant(false);
-    setActiveIndex((prev) =>
-      Math.max(1, Math.min(extendedItems.length - 2, prev + delta))
-    );
-
-    if (lockTimerRef.current) clearTimeout(lockTimerRef.current);
-    lockTimerRef.current = setTimeout(() => {
-      isAnimatingRef.current = false;
-    }, 700);
-  };
-
-  const handleAnimationComplete = () => {
-    if (lockTimerRef.current) {
-      clearTimeout(lockTimerRef.current);
-      lockTimerRef.current = null;
-    }
-
-    if (activeIndex >= count * 2) {
-      setIsInstant(true);
-      setActiveIndex(activeIndex - count);
-      requestAnimationFrame(() => {
-        isAnimatingRef.current = false;
-      });
-      return;
-    }
-
-    if (activeIndex < count) {
-      setIsInstant(true);
-      setActiveIndex(activeIndex + count);
-      requestAnimationFrame(() => {
-        isAnimatingRef.current = false;
-      });
-      return;
-    }
-
-    isAnimatingRef.current = false;
-  };
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const vp = viewportRef.current;
-    if (!vp) return;
-    const rect = vp.getBoundingClientRect();
-    const relX = e.clientX - rect.left;
-    const relY = e.clientY - rect.top;
-
-    // Căn tâm vòng tròn 56px (w-14 h-14 -> offset 28px)
-    cursorX.set(relX - 28);
-    cursorY.set(relY - 28);
-
-    const nextDir = relX < rect.width / 2 ? 'left' : 'right';
-    setCursorDir((prev) => (prev !== nextDir ? nextDir : prev));
-  };
-
-  const handleViewportClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    const vp = viewportRef.current;
-    if (!vp) return;
-    const rect = vp.getBoundingClientRect();
-    const relX = e.clientX - rect.left;
-    stepSlide(relX < rect.width / 2 ? -1 : 1);
-  };
-
-  const targetX =
-    (dimensions.viewportW - dimensions.slideW) / 2 -
-    activeIndex * (dimensions.slideW + CAROUSEL_GAP);
-
-  return (
-    <section className="py-16 md:py-24 w-full [overflow:clip] bg-[#FAF7ED]">
-      <div
-        ref={viewportRef}
-        onMouseEnter={() => setIsHovering(true)}
-        onMouseLeave={() => {
-          setIsHovering(false);
-          cursorX.set(-100);
-          cursorY.set(-100);
-        }}
-        onMouseMove={handleMouseMove}
-        onClick={handleViewportClick}
-        className="relative w-full [overflow:clip] cursor-pointer md:cursor-none"
-      >
-        {/* Con trỏ mũi tên tròn bay theo chuột (Desktop) */}
-        <motion.div
-          aria-hidden="true"
-          style={{
-            x: springX,
-            y: springY,
-            opacity: isHovering ? 1 : 0,
-            scale: isHovering ? 1 : 0.85,
-          }}
-          className="hidden md:flex absolute top-0 left-0 z-30 w-14 h-14 rounded-full bg-[#FFFDF7] border border-[#0C310A]/15 shadow-md items-center justify-center text-[#0C310A] pointer-events-none"
-        >
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.8"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className={cursorDir === 'left' ? 'rotate-180' : 'rotate-0'}
-          >
-            <path d="M5 12h14" />
-            <path d="m12 5 7 7-7 7" />
-          </svg>
-        </motion.div>
-
-        {/* Dải slide vòng lặp vô tận 1 chiều */}
-        <motion.div
-          animate={{ x: targetX }}
-          transition={
-            isInstant
-              ? { duration: 0 }
-              : { duration: 0.65, ease: [0.33, 1, 0.68, 1] }
-          }
-          onAnimationComplete={handleAnimationComplete}
-          className="flex items-center w-max will-change-transform"
-          style={{ gap: `${CAROUSEL_GAP}px` }}
-        >
-          {extendedItems.map((item, idx) => (
-            <div
-              key={`${item.author}-${idx}`}
-              ref={idx === 0 ? firstSlideRef : undefined}
-              className="shrink-0 w-[88vw] md:w-[min(1040px,82vw)] flex flex-col lg:flex-row items-center select-none"
-            >
-              {/* Hộp chữ trắng kem bên trái */}
-              <div className="bg-[#FFFDF7] rounded-[22px] p-8 md:p-14 lg:pr-24 w-full lg:w-[68%] lg:min-h-[430px] flex flex-col justify-between gap-8 border border-[#0C310A]/5">
-                <div className="flex flex-col gap-5">
-                  <span
-                    aria-hidden="true"
-                    className="font-serif text-[76px] leading-[0.65] text-[#57772E] select-none"
-                  >
-                    “
-                  </span>
-                  <p className="font-serif font-normal text-[21px] md:text-[26px] leading-[1.36] text-[#0C310A]">
-                    {item.quote}
-                  </p>
-                </div>
-
-                <div className="flex flex-col gap-0.5 font-sans">
-                  <span className="text-[14px] font-medium text-[#0C310A]">
-                    {item.author}
-                  </span>
-                  <span className="text-[13.5px] text-[#664A42]">
-                    {item.location}
-                  </span>
-                </div>
-              </div>
-
-              {/* Hộp ảnh bên phải chồng nhẹ sang trái */}
-              <div className="relative z-10 w-full lg:w-[40%] lg:-ml-[8%] aspect-[4/3] lg:aspect-[1/1.02] rounded-[22px] overflow-hidden shadow-sm mt-4 lg:mt-0 bg-[#EAE6DF]">
-                <img
-                  src={`${item.image}?w=1200&q=85&auto=format`}
-                  alt={item.author}
-                  className="w-full h-full object-cover"
-                  draggable={false}
-                  loading="eager"
-                  decoding="async"
-                />
-                <span className="absolute top-4 right-4 px-3.5 py-1.5 rounded-full bg-[#1E1414]/45 backdrop-blur-md text-[#FAF7ED] text-[12px] font-sans">
-                  {item.tag}
-                </span>
-              </div>
-            </div>
-          ))}
-        </motion.div>
-      </div>
-    </section>
-  );
-};
-
 export const OurServicesPage: React.FC = () => {
   const openConfigurator = useConfiguratorStore((s) => s.openConfigurator);
   const all8Standards = getAllStandards();
@@ -532,7 +301,9 @@ export const OurServicesPage: React.FC = () => {
       </section>
 
       {/* Section 4: Testimonials Carousel vòng lặp vô tận chuẩn HUTS */}
-      <ServicesTestimonialsCarousel items={SERVICES_DATA.testimonials} />
+      <section className="py-16 md:py-24 w-full [overflow:clip] bg-[#FAF7ED]">
+        <TestimonialsCarousel items={SERVICES_DATA.testimonials} />
+      </section>
 
       {/* Section 5: Our Standards Catalog (Sticky Horizontal Scroll + 3D Flip Cards) */}
       <StandardsHorizontalSlider

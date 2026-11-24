@@ -1,239 +1,25 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { ArrowRight } from 'lucide-react';
-import { motion, useMotionValue, useSpring, PanInfo } from 'framer-motion';
+import React from 'react';
+import { TestimonialsCarousel } from '../common/TestimonialsCarousel';
+import { SERVICES_DATA } from '../how-it-works/howItWorksData';
 
-// Authentic Client Testimonials with Real High-Resolution Realized Builds
-const TESTIMONIALS = [
-  {
-    id: 'test-1',
-    quote:
-      'As a couple with no experience in this field or idea on where to begin, TIE made something like building a home feel possible, organized, and deeply intentional.',
-    author: 'Elena & Marcus Vance',
-    location: 'The Overlook Dogtrot \u2022 Woodstock, NY',
-    tag: 'Second Home',
-    image:
-      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=85',
-    projectSlug: 'catskills-dogtrot-retreat',
-  },
-  {
-    id: 'test-2',
-    quote:
-      'From raw topography to fabrication drawings in weeks. The precision of the modular components and thermal envelope exceeded every expectation we had.',
-    author: 'Sarah & Julian Mercer',
-    location: 'Blueberry Hill ADU \u2022 Rhinebeck, NY',
-    tag: 'Hybrid Home',
-    image:
-      'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1200&q=85',
-    projectSlug: 'break-house',
-  },
-  {
-    id: 'test-3',
-    quote:
-      'The transparency on budget and schedule was unlike any construction project we’ve managed. A truly effortless experience from start to finish.',
-    author: 'David & Clara Thorne',
-    location: 'Sonoma Valley Big L \u2022 Sonoma, CA',
-    tag: 'Forever Home',
-    image:
-      'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=85',
-    projectSlug: 'arrowhead-ridge',
-  },
+// Sắp thứ tự đúng bản HUTS cho Trang chủ: [Lauren W., Steven D., Dan S.]
+const [danTestimonial, laurenTestimonial, stevenTestimonial] =
+  SERVICES_DATA.testimonials;
+const HOME_TESTIMONIALS = [
+  laurenTestimonial,
+  stevenTestimonial,
+  danTestimonial,
 ];
 
 export const TrustMetricsSection: React.FC = () => {
-  const [activeIndex, setActiveIndex] = useState(0);
-
-  // Magnetic Cursor state & coordinates (relative to carousel container)
-  const [cursorDirection, setCursorDirection] = useState<'left' | 'right'>('right');
-  const [isHoveringCarousel, setIsHoveringCarousel] = useState(false);
-  const carouselContainerRef = useRef<HTMLDivElement>(null);
-  const firstSlideRef = useRef<HTMLDivElement>(null);
-  const [slideStep, setSlideStep] = useState(0);
-
-  // Transition Lock (Chống Spam Click)
-  const isAnimatingRef = useRef(false);
-
-  const cursorX = useMotionValue(-100);
-  const cursorY = useMotionValue(-100);
-  const springX = useSpring(cursorX, { stiffness: 1500, damping: 50, mass: 0.05 });
-  const springY = useSpring(cursorY, { stiffness: 1500, damping: 50, mass: 0.05 });
-
-  // Accurately measure slide width + gap-28 (112px) for exact sliding
-  const updateSlideStep = useCallback(() => {
-    if (firstSlideRef.current) {
-      setSlideStep(firstSlideRef.current.offsetWidth + 112);
-    }
-  }, []);
-
-  useEffect(() => {
-    updateSlideStep();
-    window.addEventListener('resize', updateSlideStep);
-    return () => window.removeEventListener('resize', updateSlideStep);
-  }, [updateSlideStep]);
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!carouselContainerRef.current) return;
-    const rect = carouselContainerRef.current.getBoundingClientRect();
-
-    // Center 68px cursor by offset 34px
-    cursorX.set(e.clientX - rect.left - 34);
-    cursorY.set(e.clientY - rect.top - 34);
-
-    // Split screen in half by window.innerWidth / 2
-    const newDirection = e.clientX < window.innerWidth / 2 ? 'left' : 'right';
-    setCursorDirection((prev) => (prev !== newDirection ? newDirection : prev));
-  };
-
-  const handleMouseEnter = () => {
-    setIsHoveringCarousel(true);
-  };
-
-  const handleMouseLeave = () => {
-    setIsHoveringCarousel(false);
-    cursorX.set(-100);
-    cursorY.set(-100);
-  };
-
-  // Click handler with Transition Lock to prevent rapid spam clicking
-  const handleContainerClick = () => {
-    if (isAnimatingRef.current) return;
-    isAnimatingRef.current = true;
-
-    if (cursorDirection === 'left') {
-      setActiveIndex((prev) => (prev - 1 + TESTIMONIALS.length) % TESTIMONIALS.length);
-    } else {
-      setActiveIndex((prev) => (prev + 1) % TESTIMONIALS.length);
-    }
-
-    // Safety timeout in case onAnimationComplete is interrupted
-    setTimeout(() => {
-      isAnimatingRef.current = false;
-    }, 750);
-  };
-
-  const handleDragEnd = (_: any, info: PanInfo) => {
-    if (isAnimatingRef.current) return;
-
-    if (info.offset.x < -50 || info.velocity.x < -300) {
-      isAnimatingRef.current = true;
-      setActiveIndex((prev) => (prev + 1) % TESTIMONIALS.length);
-      setTimeout(() => {
-        isAnimatingRef.current = false;
-      }, 750);
-    } else if (info.offset.x > 50 || info.velocity.x > 300) {
-      isAnimatingRef.current = true;
-      setActiveIndex((prev) => (prev - 1 + TESTIMONIALS.length) % TESTIMONIALS.length);
-      setTimeout(() => {
-        isAnimatingRef.current = false;
-      }, 750);
-    }
-  };
-
   return (
     <section className="pt-6 pb-20 sm:pb-28 bg-[#FAF7ED] overflow-hidden select-none">
-      
-      {/* 1. Header aligned with slide 1 */}
-      <div className="w-full px-8 md:px-16 lg:px-24 mb-8 sm:mb-10">
-        <h2 className="font-serif text-[clamp(1.75rem,2.63vw+1.13rem,3.5rem)] font-normal tracking-[-0.025em] text-[#0C310A] leading-[1.1]">
-          But, don’t take it from us...
-        </h2>
-      </div>
-
-      {/* 2. Interactive Carousel Viewport (100% full screen width, cursor travels freely from edge to edge) */}
-      <div
-        ref={carouselContainerRef}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-        onMouseMove={handleMouseMove}
-        onClick={handleContainerClick}
-        className="relative w-full overflow-hidden py-4 select-none cursor-pointer mb-20 sm:mb-24"
-      >
-        {/* Absolute Magnetic Cursor Follower inside Container */}
-        <motion.div
-          className="absolute top-0 left-0 pointer-events-none z-50 w-[68px] h-[68px] rounded-full border border-[#182215]/60 bg-[#FAF7ED]/15 backdrop-blur-[2px] flex items-center justify-center text-[#182215]"
-          style={{ x: springX, y: springY }}
-          animate={{
-            opacity: isHoveringCarousel ? 1 : 0,
-            scale: isHoveringCarousel ? 1 : 0.75,
-          }}
-          transition={{ duration: 0.15 }}
-        >
-          <ArrowRight
-            className={`w-6 h-6 stroke-[1.5] text-[#182215] transition-transform duration-200 ${
-              cursorDirection === 'left' ? 'rotate-180' : 'rotate-0'
-            }`}
-          />
-        </motion.div>
-
-        {/* Sliding Track: Left aligned with Title via pl-8 md:pl-16 lg:pl-24 */}
-        <motion.div
-          drag="x"
-          dragConstraints={{ left: 0, right: 0 }}
-          dragElastic={0.2}
-          onDragEnd={handleDragEnd}
-          onAnimationComplete={() => {
-            isAnimatingRef.current = false;
-          }}
-          animate={{
-            x: slideStep > 0 ? -activeIndex * slideStep : 0,
-          }}
-          transition={{
-            duration: 0.7,
-            ease: [0.22, 1, 0.36, 1],
-          }}
-          className="flex items-end gap-28 pl-8 md:pl-16 lg:pl-24"
-        >
-          {TESTIMONIALS.map((item, idx) => (
-            <div
-              key={item.id}
-              ref={idx === 0 ? firstSlideRef : undefined}
-              className="w-[86vw] max-w-[1240px] shrink-0 flex items-end select-none"
-            >
-              {/* LEFT: Text Card (Warm Cream surface, angular green quote, min-h-[430px] md:min-h-[460px]) */}
-              <div className="w-[66%] min-h-[430px] md:min-h-[460px] bg-[#FAF7ED] border border-[#DFDCD0] rounded-[20px] p-10 md:p-14 pr-28 md:pr-36 flex flex-col justify-between shrink-0 shadow-sm">
-                <div>
-                  {/* Angular Olive Green Double Quotation SVG matching HUTS */}
-                  <svg
-                    className="w-12 h-10 text-[#4A772F] mb-6 fill-current"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
-                  </svg>
-
-                  {/* Clean Non-Italic Editorial Serif Quote */}
-                  <p className="font-serif not-italic text-[22px] md:text-[26px] leading-[1.42] text-[#182215] tracking-tight mb-10 font-normal">
-                    {item.quote}
-                  </p>
-                </div>
-
-                {/* Author & Location */}
-                <div className="pt-2">
-                  <div className="text-sm font-semibold text-[#182215] font-sans">
-                    {item.author}
-                  </div>
-                  <div className="text-xs text-stone-500 mt-0.5 font-sans">
-                    {item.location}
-                  </div>
-                </div>
-              </div>
-
-              {/* RIGHT: Overlapping Project Photography (Stepped lower than text card) */}
-              <div className="w-[42%] max-w-[450px] aspect-[1.05/1] -ml-20 md:-ml-24 mb-5 relative z-10 rounded-[20px] overflow-hidden shadow-md shrink-0 group border border-[#DFDCD0]/60">
-                <img
-                  src={item.image}
-                  alt={item.author}
-                  className="w-full h-full object-cover select-none pointer-events-none"
-                  loading="lazy"
-                />
-
-                {/* Top Right Floating Pill Tag */}
-                <div className="absolute top-4 right-4 bg-black/45 backdrop-blur-md text-white text-xs px-3.5 py-1.5 rounded-full font-sans font-medium pointer-events-none border border-white/15">
-                  {item.tag}
-                </div>
-              </div>
-            </div>
-          ))}
-        </motion.div>
-      </div>
+      {/* 1 & 2. Shared HUTS Testimonials Carousel with left-aligned header */}
+      <TestimonialsCarousel
+        title="But, don’t take it from us..."
+        items={HOME_TESTIMONIALS}
+        className="mb-20 sm:mb-24"
+      />
 
       {/* 3. 4 MASSIVE STAT COUNTERS WITH HAIRLINE DIVIDERS (Banghi.mp4 p6_640ms & p6_655ms) */}
       <div className="max-w-[1584px] mx-auto px-8 md:px-16 lg:px-24">
