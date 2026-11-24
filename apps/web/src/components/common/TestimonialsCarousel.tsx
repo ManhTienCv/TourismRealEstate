@@ -23,37 +23,38 @@ const TestimonialSlideCard: React.FC<{ item: TestimonialCarouselItem }> = ({
   return (
     <div className="flex flex-col lg:flex-row items-center select-none w-full">
       {/* Hộp chữ trắng kem bên trái */}
-      <div className="bg-[#FFFDF7] rounded-[22px] border border-[#0C310A]/10 w-full lg:w-[74%] lg:min-h-[clamp(560px,69vh,660px)] p-8 md:p-14 lg:pl-[72px] lg:pr-[16%] lg:py-[64px] flex flex-col justify-between gap-10">
-        <div className="flex flex-col gap-6">
-          <svg
-            viewBox="0 0 64 48"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            aria-hidden="true"
-            className="w-[54px] md:w-[66px] h-auto shrink-0 text-[#57772E] select-none"
-          >
-            <path
-              d="M14.2 48C6.3 48 0.5 42.1 0.5 33.4C0.5 19.6 10.6 6.8 25.4 0.5L28.6 6.4C19.8 11.1 14.9 17.5 14.3 23.6C15.4 23.3 16.5 23.2 17.6 23.2C24.5 23.2 29.6 28.4 29.6 35.5C29.6 42.8 23.2 48 14.2 48ZM48.6 48C40.7 48 34.9 42.1 34.9 33.4C34.9 19.6 45 6.8 59.8 0.5L63 6.4C54.2 11.1 49.3 17.5 48.7 23.6C49.8 23.3 50.9 23.2 52 23.2C58.9 23.2 64 28.4 64 35.5C64 42.8 57.6 48 48.6 48Z"
-              fill="currentColor"
-            />
-          </svg>
+      <div className="bg-[#FFFDF7] rounded-[22px] border border-[#0C310A]/15 w-full lg:w-[74%] lg:min-h-[clamp(560px,69vh,660px)] p-8 md:p-14 lg:pl-[72px] lg:pr-[14%] lg:py-[64px] flex flex-col justify-between">
+        <svg
+          viewBox="0 0 64 48"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+          className="w-[54px] md:w-[66px] h-auto shrink-0 text-[#57772E] select-none"
+        >
+          <path
+            d="M14.2 48C6.3 48 0.5 42.1 0.5 33.4C0.5 19.6 10.6 6.8 25.4 0.5L28.6 6.4C19.8 11.1 14.9 17.5 14.3 23.6C15.4 23.3 16.5 23.2 17.6 23.2C24.5 23.2 29.6 28.4 29.6 35.5C29.6 42.8 23.2 48 14.2 48ZM48.6 48C40.7 48 34.9 42.1 34.9 33.4C34.9 19.6 45 6.8 59.8 0.5L63 6.4C54.2 11.1 49.3 17.5 48.7 23.6C49.8 23.3 50.9 23.2 52 23.2C58.9 23.2 64 28.4 64 35.5C64 42.8 57.6 48 48.6 48Z"
+            fill="currentColor"
+          />
+        </svg>
+
+        <div className="flex flex-col gap-9 md:gap-11 mt-auto pt-10">
           <p className="font-serif font-normal text-[23px] md:text-[clamp(1.65rem,2.05vw,2.25rem)] leading-[1.32] tracking-[-0.015em] text-[#0C310A]">
             {item.quote}
           </p>
-        </div>
 
-        <div className="font-sans">
-          <div className="text-[15px] font-medium text-[#0C310A]">
-            {item.author}
-          </div>
-          <div className="text-[14px] text-[#664A42] mt-0.5">
-            {item.location}
+          <div className="font-sans">
+            <div className="text-[15px] font-medium text-[#0C310A]">
+              {item.author}
+            </div>
+            <div className="text-[14px] text-[#664A42] mt-0.5">
+              {item.location}
+            </div>
           </div>
         </div>
       </div>
 
       {/* Hộp ảnh bên phải chồng lên mép hộp trắng */}
-      <div className="relative z-10 w-full lg:w-[36%] lg:-ml-[10%] aspect-[4/3] lg:aspect-auto lg:h-[clamp(450px,56vh,530px)] rounded-[22px] overflow-hidden shadow-[0_8px_30px_rgba(12,49,10,0.08)] mt-4 lg:mt-0 shrink-0 bg-[#EAE6DF]">
+      <div className="relative z-10 w-full lg:w-[36%] lg:-ml-[8%] aspect-[4/3] lg:aspect-auto lg:h-[clamp(450px,56vh,530px)] rounded-[22px] overflow-hidden mt-4 lg:mt-0 shrink-0 bg-[#EAE6DF]">
         <img
           src={`${item.image}?w=1200&q=85&auto=format`}
           alt={item.author}
