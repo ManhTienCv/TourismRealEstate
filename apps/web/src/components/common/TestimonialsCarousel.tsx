@@ -15,7 +15,7 @@ export interface TestimonialsCarouselProps {
   className?: string;
 }
 
-const CLICK_COOLDOWN_MS = 550;
+const CLICK_COOLDOWN_MS = 420;
 
 const TestimonialSlideCard: React.FC<{ item: TestimonialCarouselItem }> = ({
   item,
@@ -114,8 +114,8 @@ export const TestimonialsCarousel: React.FC<TestimonialsCarouselProps> = ({
   // Theo dõi chuột qua useMotionValue + lò xo lơ lửng mềm chuẩn HUTS
   const rawX = useMotionValue(0);
   const rawY = useMotionValue(0);
-  const cursorX = useSpring(rawX, { stiffness: 200, damping: 26, mass: 0.35 });
-  const cursorY = useSpring(rawY, { stiffness: 200, damping: 26, mass: 0.35 });
+  const cursorX = useSpring(rawX, { stiffness: 380, damping: 34, mass: 0.2 });
+  const cursorY = useSpring(rawY, { stiffness: 380, damping: 34, mass: 0.2 });
 
   useEffect(() => {
     const vp = viewportRef.current;
@@ -260,7 +260,7 @@ export const TestimonialsCarousel: React.FC<TestimonialsCarouselProps> = ({
         <motion.div
           initial={false}
           animate={{ x: targetX }}
-          transition={{ duration: 0.82, ease: [0.65, 0, 0.35, 1] }}
+          transition={{ duration: 0.6, ease: [0.45, 0, 0.2, 1] }}
           className="absolute inset-0 will-change-transform"
         >
           {slots.map((s) => {
@@ -288,12 +288,12 @@ export const TestimonialsCarousel: React.FC<TestimonialsCarouselProps> = ({
               ? { scale: 1, opacity: 1 }
               : { scale: 0, opacity: 0 }
           }
-          transition={{ duration: 0.28, ease: [0.33, 1, 0.68, 1] }}
+          transition={{ duration: 0.2, ease: [0.33, 1, 0.68, 1] }}
           className="hidden min-[940px]:flex pointer-events-none absolute top-0 left-0 z-30 w-[6rem] h-[6rem] p-[2rem] rounded-full border border-white bg-transparent backdrop-blur-[4px] mix-blend-difference items-center justify-center will-change-transform"
         >
           <motion.div
-            animate={{ rotate: direction === 'prev' ? 180 : 0 }}
-            transition={{ duration: 0.35, ease: [0.33, 1, 0.68, 1] }}
+            animate={{ rotate: direction === 'prev' ? -180 : 0 }}
+            transition={{ duration: 0.26, ease: [0.33, 1, 0.68, 1] }}
             className="w-full h-full flex items-center justify-center"
           >
             <svg
