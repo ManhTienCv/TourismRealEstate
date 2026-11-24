@@ -352,19 +352,34 @@ export const MegaMenuNavbar: React.FC = () => {
         {/* Top Navbar Row (HUTS height: ~86px, padding py-6 px-[clamp(1.5rem,3.75587vw+0.619718rem,4rem)]) */}
         <div className="w-full py-6 px-[clamp(1.5rem,3.75587vw+0.619718rem,4rem)] flex items-center justify-between">
           
-          {/* Brand Wordmark (Bold HUTS-inspired Sans: "TIE", height 36px) */}
-          <div
-            onClick={() => scrollToSection('', 'home')}
-            className="cursor-pointer flex items-center group shrink-0"
+          {/* Brand Logo (Bold geometric SVG: "TIE", height 36px) */}
+          <a
+            href="/"
+            aria-label="TIE"
+            onClick={(e) => {
+              e.preventDefault();
+              if (typeof window !== 'undefined' && window.location.pathname !== '/') {
+                window.history.pushState({}, '', '/');
+                window.dispatchEvent(new PopStateEvent('popstate'));
+              }
+              scrollToSection('', 'home');
+            }}
+            className={`cursor-pointer inline-flex items-center shrink-0 transition-colors duration-200 ${
+              isDarkText ? 'text-[#1E1414]' : 'text-[#FAF7ED]'
+            }`}
           >
-            <span
-              className={`font-sans text-[34px] md:text-[36px] leading-none font-black tracking-[-0.04em] h-[36px] inline-flex items-center select-none transition-colors duration-200 ${
-                isDarkText ? 'text-[#1E1414]' : 'text-[#FAF7ED]'
-              }`}
+            <svg
+              viewBox="0 0 71 36"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+              className="h-[30px] md:h-[36px] w-auto block transition-colors duration-200"
             >
-              TIE
-            </span>
-          </div>
+              <path d="M0 0H26V8H17.6V36H8.4V8H0V0Z" fill="currentColor" />
+              <path d="M30 0H39.2V36H30V0Z" fill="currentColor" />
+              <path d="M45 0H71V7.8H54.2V14.1H68.5V21.5H54.2V28.2H71V36H45V0Z" fill="currentColor" />
+            </svg>
+          </a>
 
           {/* Right Group: Navigation Links & CTA Button gathered together */}
           <div className="flex items-center gap-6 lg:gap-7 ml-auto">
