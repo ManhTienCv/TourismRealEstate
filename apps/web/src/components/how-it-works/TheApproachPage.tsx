@@ -189,27 +189,32 @@ const PrincipleCardContent: React.FC<{ card: PrincipleCardItem; index: number }>
         {/* Cột 3: Testimonial (Thẻ 01 & 04) */}
         {testimonial && (
           <div className="w-full lg:w-[min(980px,78vw)] shrink-0 lg:h-full">
-            <blockquote className="bg-[#FAF7ED] rounded-[22px] p-8 md:p-14 h-full flex flex-col justify-between gap-8">
-              <div className="flex flex-col gap-6">
-                <span
+            <blockquote className="bg-[#FFFDF6] border border-[#D0D4C8] rounded-[22px] p-8 md:p-14 h-full flex flex-col justify-between">
+              <div className="h-[clamp(2rem,1.47183rem_+_2.25352vw,3.5rem)] shrink-0">
+                <svg
+                  viewBox="0 0 64 48"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
                   aria-hidden="true"
-                  className="font-serif text-[72px] leading-[0.7] text-[#57772E] select-none"
+                  className="h-full w-auto text-[#57772E] select-none"
                 >
-                  “
-                </span>
-                <p className="font-serif font-normal text-[24px] md:text-[32px] leading-[1.3] text-[#0C310A]">
-                  {testimonial.quote}
-                </p>
+                  <path
+                    d="M14.2 48C6.3 48 0.5 42.1 0.5 33.4C0.5 19.6 10.6 6.8 25.4 0.5L28.6 6.4C19.8 11.1 14.9 17.5 14.3 23.6C15.4 23.3 16.5 23.2 17.6 23.2C24.5 23.2 29.6 28.4 29.6 35.5C29.6 42.8 23.2 48 14.2 48ZM48.6 48C40.7 48 34.9 42.1 34.9 33.4C34.9 19.6 45 6.8 59.8 0.5L63 6.4C54.2 11.1 49.3 17.5 48.7 23.6C49.8 23.3 50.9 23.2 52 23.2C58.9 23.2 64 28.4 64 35.5C64 42.8 57.6 48 48.6 48Z"
+                    fill="currentColor"
+                  />
+                </svg>
               </div>
 
-              <footer className="flex flex-col gap-0.5 font-sans">
-                <span className="font-medium text-[15px] text-[#0C310A]">
-                  {testimonial.author}
-                </span>
-                <span className="text-[14px] text-[#664A42]">
-                  {testimonial.location}
-                </span>
-              </footer>
+              <div className="mt-auto pt-8">
+                <p className="font-serif font-normal text-[24px] md:text-[32px] leading-[1.32] tracking-[-0.015em] text-[#0C310A]">
+                  {testimonial.quote}
+                </p>
+
+                <footer className="mt-[clamp(1.5rem,1.14789rem_+_1.50235vw,2.5rem)] flex flex-col font-sans text-[#1E1414] text-[clamp(0.875rem,0.786972rem_+_0.375587vw,1.125rem)] leading-[clamp(1.225rem,1.06215rem_+_0.694836vw,1.6875rem)]">
+                  <span className="font-medium">{testimonial.author}</span>
+                  <span className="opacity-50">{testimonial.location}</span>
+                </footer>
+              </div>
             </blockquote>
           </div>
         )}

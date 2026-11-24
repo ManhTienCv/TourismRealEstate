@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useMotionValue, useSpring } from 'framer-motion';
 import {
   COMMON_GRAPHIC_CARDS,
   getAllStandards,
@@ -23,20 +23,25 @@ interface StandardImageSliderProps {
   slug?: string;
 }
 
+const SLIDER_CLICK_COOLDOWN_MS = 420;
+
 const StandardImageSlider: React.FC<StandardImageSliderProps> = ({ title, items, isADUs, slug }) => {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [cursorState, setCursorState] = useState({
-    x: 0,
-    y: 0,
-    isInside: false,
-    isLeft: false,
-  });
+  const [cursorVisible, setCursorVisible] = useState(false);
+  const [direction, setDirection] = useState<'prev' | 'next'>('next');
 
   const [snapOffsets, setSnapOffsets] = useState<number[]>([0]);
 
   const viewportRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const firstSlideRef = useRef<HTMLDivElement>(null);
+  const lastClickAtRef = useRef<number>(0);
+
+  // Theo dõi chuột qua useMotionValue + lò xo bám nhanh mượt đồng bộ với TestimonialsCarousel
+  const rawX = useMotionValue(0);
+  const rawY = useMotionValue(0);
+  const cursorX = useSpring(rawX, { stiffness: 820, damping: 38, mass: 0.15 });
+  const cursorY = useSpring(rawY, { stiffness: 820, damping: 38, mass: 0.15 });
 
   // Reset activeIndex = 0 khi đổi slug hoặc danh sách items
   useEffect(() => {
@@ -97,52 +102,61 @@ const StandardImageSlider: React.FC<StandardImageSliderProps> = ({ title, items,
   const canGoPrev = safeIndex > 0;
   const canGoNext = safeIndex < snapOffsets.length - 1;
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    setCursorState({
-      x,
-      y,
-      isInside: true,
-      isLeft: x < rect.width / 2,
-    });
-  };
-
   const handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
-    setCursorState({
-      x,
-      y,
-      isInside: true,
-      isLeft: x < rect.width / 2,
-    });
+    rawX.jump(x - 48);
+    rawY.jump(y - 48);
+    cursorX.jump(x - 48);
+    cursorY.jump(y - 48);
+    setDirection(x < rect.width / 2 ? 'prev' : 'next');
+    setCursorVisible(true);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    rawX.set(x - 48);
+    rawY.set(y - 48);
+
+    const nextDir = x < rect.width / 2 ? 'prev' : 'next';
+    setDirection((prev) => (prev !== nextDir ? nextDir : prev));
+    if (!cursorVisible) {
+      cursorX.jump(x - 48);
+      cursorY.jump(y - 48);
+      setCursorVisible(true);
+    }
   };
 
   const handleMouseLeave = () => {
-    setCursorState((prev) => ({ ...prev, isInside: false }));
+    setCursorVisible(false);
   };
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    const now = performance.now();
+    if (now - lastClickAtRef.current < SLIDER_CLICK_COOLDOWN_MS) return;
+
     const rect = e.currentTarget.getBoundingClientRect();
     const clickX = e.clientX - rect.left;
     if (clickX < rect.width / 2) {
       if (canGoPrev) {
+        lastClickAtRef.current = now;
         setActiveIndex((prev) => Math.max(prev - 1, 0));
       }
     } else {
       if (canGoNext) {
+        lastClickAtRef.current = now;
         setActiveIndex((prev) => Math.min(prev + 1, snapOffsets.length - 1));
       }
     }
   };
 
-  const isDimmed = (cursorState.isLeft && !canGoPrev) || (!cursorState.isLeft && !canGoNext);
+  const isDimmed = (direction === 'prev' && !canGoPrev) || (direction === 'next' && !canGoNext);
 
   return (
-    <section className="image-slider py-20 bg-[#FAF7ED] overflow-hidden">
+    <section className="image-slider py-20 bg-[#FAF7ED] [overflow-x:clip]">
       <div className="max-w-[1584px] mx-auto px-6 md:px-16 mb-8">
         <h4 className="text-[28px] lg:text-[36px] font-serif font-normal text-[#0C310A] tracking-[-0.02em]">
           {title}
@@ -151,45 +165,18 @@ const StandardImageSlider: React.FC<StandardImageSliderProps> = ({ title, items,
 
       <div
         ref={viewportRef}
-        className="relative overflow-hidden cursor-pointer md:cursor-none select-none"
+        className="relative overflow-visible cursor-pointer select-none"
         onMouseMove={handleMouseMove}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
+        onMouseDown={(e) => e.preventDefault()}
         onClick={handleClick}
       >
-        {/* Custom Circular Cursor Follower trên Desktop */}
-        {cursorState.isInside && (
-          <div
-            className="hidden md:flex pointer-events-none absolute z-30 w-16 h-16 rounded-full border border-[#0C310A]/40 bg-[#FAF7ED]/75 backdrop-blur-md items-center justify-center transition-opacity duration-200"
-            style={{
-              left: `${cursorState.x}px`,
-              top: `${cursorState.y}px`,
-              transform: 'translate(-50%, -50%)',
-              opacity: isDimmed ? 0.35 : 1,
-            }}
-          >
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="#0C310A"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className={`w-6 h-6 transition-transform duration-200 ${
-                cursorState.isLeft ? 'rotate-180' : 'rotate-0'
-              }`}
-            >
-              <path d="M5 12h14" />
-              <path d="m12 5 7 7-7 7" />
-            </svg>
-          </div>
-        )}
-
         {/* Dải Slides với Framer Motion kẹp chặn tuyệt đối targetOffset */}
         <motion.div
           ref={trackRef}
           animate={{ x: -targetOffset }}
-          transition={{ duration: 0.65, ease: [0.33, 1, 0.68, 1] }}
+          transition={{ duration: 0.6, ease: [0.45, 0, 0.2, 1] }}
           className="flex gap-6 w-max px-6 md:px-16 will-change-transform"
         >
           {items.map((item, idx) => (
@@ -200,11 +187,12 @@ const StandardImageSlider: React.FC<StandardImageSliderProps> = ({ title, items,
                 isADUs ? 'w-[78vw] md:w-[440px]' : 'w-[82vw] md:w-[620px]'
               }`}
             >
-              <div className="w-full h-[340px] md:h-[460px] rounded-[20px] overflow-hidden bg-[#EAE6DF] shadow-sm">
+              <div className="w-full h-[340px] md:h-[460px] rounded-[20px] overflow-hidden bg-[#EAE6DF]">
                 <img
                   src={`${item.image}?w=1200&q=85&auto=format`}
                   alt={item.title || ''}
                   className="w-full h-full object-cover select-none pointer-events-none"
+                  draggable={false}
                   loading="lazy"
                 />
               </div>
@@ -215,6 +203,42 @@ const StandardImageSlider: React.FC<StandardImageSliderProps> = ({ title, items,
               )}
             </div>
           ))}
+        </motion.div>
+
+        {/* Con trỏ vòng tròn mũi tên 96px (6rem) với mix-blend-difference đồng bộ HUTS */}
+        <motion.div
+          aria-hidden="true"
+          style={{ x: cursorX, y: cursorY }}
+          initial={false}
+          animate={
+            cursorVisible
+              ? { scale: 1, opacity: isDimmed ? 0.35 : 1 }
+              : { scale: 0, opacity: 0 }
+          }
+          transition={{ duration: 0.2, ease: [0.33, 1, 0.68, 1] }}
+          className="hidden md:flex pointer-events-none absolute top-0 left-0 z-30 w-[6rem] h-[6rem] p-[2rem] rounded-full border border-white bg-transparent backdrop-blur-[4px] mix-blend-difference items-center justify-center will-change-transform"
+        >
+          <motion.div
+            animate={{ rotate: direction === 'prev' ? -180 : 0 }}
+            transition={{ duration: 0.26, ease: [0.33, 1, 0.68, 1] }}
+            className="w-full h-full flex items-center justify-center"
+          >
+            <svg
+              width="19"
+              height="18"
+              viewBox="0 0 19 18"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-full h-full"
+            >
+              <path d="M0 8.99805H16.7802" stroke="#FFFDF6" strokeWidth="2" />
+              <path
+                d="M11.0684 17.7976C11.0684 12.77 14.3032 8.99938 18.0001 8.99938C15.6895 8.41283 11.0684 5.83203 11.0684 0.201172"
+                stroke="#FFFDF6"
+                strokeWidth="2"
+              />
+            </svg>
+          </motion.div>
         </motion.div>
       </div>
 

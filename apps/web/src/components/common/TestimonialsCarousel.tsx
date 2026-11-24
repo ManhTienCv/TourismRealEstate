@@ -111,11 +111,11 @@ export const TestimonialsCarousel: React.FC<TestimonialsCarouselProps> = ({
     setActiveIndex((prev) => prev + diff);
   };
 
-  // Theo dõi chuột qua useMotionValue + lò xo lơ lửng mềm chuẩn HUTS
+  // Theo dõi chuột qua useMotionValue + lò xo bám nhanh mượt chuẩn HUTS
   const rawX = useMotionValue(0);
   const rawY = useMotionValue(0);
-  const cursorX = useSpring(rawX, { stiffness: 380, damping: 34, mass: 0.2 });
-  const cursorY = useSpring(rawY, { stiffness: 380, damping: 34, mass: 0.2 });
+  const cursorX = useSpring(rawX, { stiffness: 820, damping: 38, mass: 0.15 });
+  const cursorY = useSpring(rawY, { stiffness: 820, damping: 38, mass: 0.15 });
 
   useEffect(() => {
     const vp = viewportRef.current;
