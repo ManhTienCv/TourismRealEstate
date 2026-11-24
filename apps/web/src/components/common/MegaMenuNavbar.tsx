@@ -173,19 +173,6 @@ const RESOURCES_ITEMS: MegaMenuItem[] = [
     byline: 'Step-by-step breakdowns on bringing a property to life.',
     image: 'https://cdn.sanity.io/images/xi1ruvdt/production/997745ca8c10354d1cb553c5b8c2d1b5892e0b7a-103x106.svg',
   },
-  {
-    slug: 'tools',
-    title: 'Tools',
-    byline: 'The tools behind every TIE project.',
-    image: 'https://cdn.sanity.io/images/xi1ruvdt/production/e7de0f76d667f37d82a0e3656302cdd18cbfce82-340x340.svg',
-  },
-  {
-    slug: 'space-planner',
-    title: 'Space Planner',
-    byline: "Start from a proven layout, then tell us what you'd change.",
-    image: 'https://cdn.sanity.io/images/xi1ruvdt/production/fcd324e9a54a7e8a1beed53e685a65c69c8dcea2-340x340.png?w=320&q=80&auto=format',
-    isCover: true,
-  },
 ];
 
 export const MegaMenuNavbar: React.FC = () => {
@@ -332,12 +319,12 @@ export const MegaMenuNavbar: React.FC = () => {
   // Navbar chỉ ẩn khi isHidden === true VÀ người dùng KHÔNG mở menu / KHÔNG hover trên navbar / KHÔNG mở mobile drawer
   const shouldHideNavbar = isHidden && !isMenuOpen && !isHeaderHovered && !mobileMenuOpen;
 
-  // Sibling dimming helper: dim other nav items to 50% opacity when a menu is open
+  // Sibling dimming helper: dim other nav items to 60% opacity when a menu is open
   const getItemOpacityClass = (itemKey: MenuType | 'portfolio') => {
     if (!isMenuOpen) return 'opacity-100 transition-opacity duration-150';
     return activeMenu === itemKey
       ? 'opacity-100 transition-opacity duration-150'
-      : 'opacity-50 hover:opacity-100 transition-opacity duration-150';
+      : 'opacity-60 hover:opacity-100 transition-opacity duration-150';
   };
 
   return (
@@ -360,18 +347,18 @@ export const MegaMenuNavbar: React.FC = () => {
             : isDarkText
               ? 'bg-transparent text-[#1E1414]'
               : 'bg-transparent text-[#FAF7ED]'
-        } ${isMenuOpen ? 'rounded-b-[24px] border-b border-[#E2DDD5]/70' : 'rounded-b-0 border-b-transparent'}`}
+        } ${isMenuOpen || isHeaderHovered ? 'rounded-b-[clamp(16px,13.1831px+0.751174vw,24px)] border-b border-[#E2DDD5]/70' : 'rounded-b-0 border-b-transparent'}`}
       >
-        {/* Top Navbar Row (HUTS height: 86px) */}
-        <div className="max-w-[1584px] mx-auto px-6 sm:px-10 lg:px-12 h-[86px] flex items-center justify-between">
+        {/* Top Navbar Row (HUTS height: ~86px, padding py-6 px-[clamp(1.5rem,3.75587vw+0.619718rem,4rem)]) */}
+        <div className="w-full py-6 px-[clamp(1.5rem,3.75587vw+0.619718rem,4rem)] flex items-center justify-between">
           
-          {/* Brand Wordmark (Bold HUTS-inspired Sans: "TIE") */}
+          {/* Brand Wordmark (Bold HUTS-inspired Sans: "TIE", height 36px) */}
           <div
             onClick={() => scrollToSection('', 'home')}
-            className="cursor-pointer flex items-center space-x-2 group shrink-0"
+            className="cursor-pointer flex items-center group shrink-0"
           >
             <span
-              className={`font-sans text-[26px] md:text-[28px] font-black tracking-[-0.03em] leading-none transition-colors duration-200 select-none ${
+              className={`font-sans text-[34px] md:text-[36px] leading-none font-black tracking-[-0.04em] h-[36px] inline-flex items-center select-none transition-colors duration-200 ${
                 isDarkText ? 'text-[#1E1414]' : 'text-[#FAF7ED]'
               }`}
             >
@@ -382,8 +369,8 @@ export const MegaMenuNavbar: React.FC = () => {
           {/* Right Group: Navigation Links & CTA Button gathered together */}
           <div className="flex items-center gap-6 lg:gap-7 ml-auto">
             
-            {/* Desktop Navigation Links (HUTS typography: 14px leading-none font-normal) */}
-            <nav className="hidden lg:flex items-center gap-6 lg:gap-7 font-sans text-[14px] leading-none font-normal">
+            {/* Desktop Navigation Links (HUTS typography: 14px leading-none font-normal, gap-x-6) */}
+            <nav className="hidden lg:flex items-center gap-x-6 font-sans text-[14px] leading-none font-normal">
               
               {/* 1. Housing Solutions + */}
               <div
@@ -392,17 +379,24 @@ export const MegaMenuNavbar: React.FC = () => {
               >
                 <button
                   onClick={() => scrollToSection('solutions-section', 'home')}
-                  className={`py-2 flex items-center gap-1 cursor-pointer transition-colors duration-150 ease-[cubic-bezier(0.33,1,0.68,1)] ${
+                  className={`py-2 flex items-center gap-x-2 cursor-pointer transition-colors duration-150 ease-[cubic-bezier(0.33,1,0.68,1)] ${
                     isDarkText
                       ? 'text-[#1E1414] hover:text-[#0C310A]'
                       : 'text-[#FAF7ED] hover:text-white'
                   } ${getItemOpacityClass('solutions')}`}
                 >
                   <span>Housing Solutions</span>
-                  <PlusCrossIcon
-                    isOpen={activeMenu === 'solutions'}
-                    colorClass={isDarkText ? 'text-[#1E1414]' : 'text-[#FAF7ED]'}
-                  />
+                  <span
+                    aria-hidden="true"
+                    className={`inline-flex items-center justify-center w-3 h-3 shrink-0 transition-transform duration-[400ms] ease-[cubic-bezier(0.175,0.885,0.32,1.125)] ${
+                      activeMenu === 'solutions' ? 'rotate-[135deg]' : 'rotate-0'
+                    }`}
+                  >
+                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round">
+                      <line x1="5" y1="1" x2="5" y2="9" />
+                      <line x1="1" y1="5" x2="9" y2="5" />
+                    </svg>
+                  </span>
                 </button>
               </div>
 
@@ -413,17 +407,24 @@ export const MegaMenuNavbar: React.FC = () => {
               >
                 <button
                   onClick={() => scrollToSection('standards-section', 'standards')}
-                  className={`py-2 flex items-center gap-1 cursor-pointer transition-colors duration-150 ease-[cubic-bezier(0.33,1,0.68,1)] ${
+                  className={`py-2 flex items-center gap-x-2 cursor-pointer transition-colors duration-150 ease-[cubic-bezier(0.33,1,0.68,1)] ${
                     isDarkText
                       ? 'text-[#1E1414] hover:text-[#0C310A]'
                       : 'text-[#FAF7ED] hover:text-white'
                   } ${getItemOpacityClass('standards')}`}
                 >
                   <span>Standards</span>
-                  <PlusCrossIcon
-                    isOpen={activeMenu === 'standards'}
-                    colorClass={isDarkText ? 'text-[#1E1414]' : 'text-[#FAF7ED]'}
-                  />
+                  <span
+                    aria-hidden="true"
+                    className={`inline-flex items-center justify-center w-3 h-3 shrink-0 transition-transform duration-[400ms] ease-[cubic-bezier(0.175,0.885,0.32,1.125)] ${
+                      activeMenu === 'standards' ? 'rotate-[135deg]' : 'rotate-0'
+                    }`}
+                  >
+                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round">
+                      <line x1="5" y1="1" x2="5" y2="9" />
+                      <line x1="1" y1="5" x2="9" y2="5" />
+                    </svg>
+                  </span>
                 </button>
               </div>
 
@@ -434,17 +435,24 @@ export const MegaMenuNavbar: React.FC = () => {
               >
                 <button
                   onClick={() => scrollToSection('process-section', 'home')}
-                  className={`py-2 flex items-center gap-1 cursor-pointer transition-colors duration-150 ease-[cubic-bezier(0.33,1,0.68,1)] ${
+                  className={`py-2 flex items-center gap-x-2 cursor-pointer transition-colors duration-150 ease-[cubic-bezier(0.33,1,0.68,1)] ${
                     isDarkText
                       ? 'text-[#1E1414] hover:text-[#0C310A]'
                       : 'text-[#FAF7ED] hover:text-white'
                   } ${getItemOpacityClass('how-it-works')}`}
                 >
                   <span>How It Works</span>
-                  <PlusCrossIcon
-                    isOpen={activeMenu === 'how-it-works'}
-                    colorClass={isDarkText ? 'text-[#1E1414]' : 'text-[#FAF7ED]'}
-                  />
+                  <span
+                    aria-hidden="true"
+                    className={`inline-flex items-center justify-center w-3 h-3 shrink-0 transition-transform duration-[400ms] ease-[cubic-bezier(0.175,0.885,0.32,1.125)] ${
+                      activeMenu === 'how-it-works' ? 'rotate-[135deg]' : 'rotate-0'
+                    }`}
+                  >
+                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round">
+                      <line x1="5" y1="1" x2="5" y2="9" />
+                      <line x1="1" y1="5" x2="9" y2="5" />
+                    </svg>
+                  </span>
                 </button>
               </div>
 
@@ -468,17 +476,24 @@ export const MegaMenuNavbar: React.FC = () => {
               >
                 <button
                   onClick={() => scrollToSection('process-section', 'home')}
-                  className={`py-2 flex items-center gap-1 cursor-pointer transition-colors duration-150 ease-[cubic-bezier(0.33,1,0.68,1)] ${
+                  className={`py-2 flex items-center gap-x-2 cursor-pointer transition-colors duration-150 ease-[cubic-bezier(0.33,1,0.68,1)] ${
                     isDarkText
                       ? 'text-[#1E1414] hover:text-[#0C310A]'
                       : 'text-[#FAF7ED] hover:text-white'
                   } ${getItemOpacityClass('resources')}`}
                 >
                   <span>Resources</span>
-                  <PlusCrossIcon
-                    isOpen={activeMenu === 'resources'}
-                    colorClass={isDarkText ? 'text-[#1E1414]' : 'text-[#FAF7ED]'}
-                  />
+                  <span
+                    aria-hidden="true"
+                    className={`inline-flex items-center justify-center w-3 h-3 shrink-0 transition-transform duration-[400ms] ease-[cubic-bezier(0.175,0.885,0.32,1.125)] ${
+                      activeMenu === 'resources' ? 'rotate-[135deg]' : 'rotate-0'
+                    }`}
+                  >
+                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round">
+                      <line x1="5" y1="1" x2="5" y2="9" />
+                      <line x1="1" y1="5" x2="9" y2="5" />
+                    </svg>
+                  </span>
                 </button>
               </div>
 
@@ -490,7 +505,7 @@ export const MegaMenuNavbar: React.FC = () => {
               withArrow={false}
               onMouseEnter={() => handleItemMouseEnter(null)}
               onClick={() => openConfigurator()}
-              className="shrink-0"
+              className="shrink-0 h-[38px] px-5 text-[14px] leading-none font-normal rounded-[104px]"
             >
               Get Started
             </HutsButton>
@@ -521,9 +536,9 @@ export const MegaMenuNavbar: React.FC = () => {
           }`}
         >
           <div className="overflow-hidden">
-            <div className="max-w-[1584px] mx-auto px-6 sm:px-10 lg:px-12 pt-2 pb-6 sm:pb-7">
+            <div className="w-full px-[clamp(1.5rem,3.75587vw+0.619718rem,4rem)] pt-7 pb-12">
               <div className="relative w-full">
-                {/* 1. HOUSING SOLUTIONS: 3 Columns x 8 Archetypes */}
+                {/* 1. HOUSING SOLUTIONS: 8 Archetypes */}
                 <div
                   className={
                     currentMenu === 'solutions'
@@ -531,7 +546,7 @@ export const MegaMenuNavbar: React.FC = () => {
                       : 'opacity-0 pointer-events-none absolute inset-0 invisible z-0 transition-opacity duration-150 ease-[cubic-bezier(0.33,1,0.68,1)]'
                   }
                 >
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 min-[1100px]:grid-cols-3 gap-x-8 gap-y-7">
                     {HOUSING_SOLUTIONS_ITEMS.map((item) => (
                       <a
                         key={item.slug}
@@ -540,22 +555,22 @@ export const MegaMenuNavbar: React.FC = () => {
                           e.preventDefault();
                           handleSolutionSelect(item.slug);
                         }}
-                        className="flex items-start space-x-4 p-2.5 rounded-[16px] hover:bg-[#F2EFE4]/60 cursor-pointer transition-colors duration-100 group"
+                        className="group grid grid-cols-[100px_1fr] gap-x-6 gap-y-2 items-start text-[#1E1414] no-underline cursor-pointer"
                       >
-                        <div className="w-[70px] h-[70px] rounded-[16px] bg-[#FAF7ED] shrink-0 flex items-center justify-center p-2.5 overflow-hidden border border-[#E2DDD5]/80 [contain:strict] [transform:translateZ(0)]">
+                        <figure className="w-[100px] h-[100px] shrink-0 rounded-[16px] bg-[#FFFDF6] border border-[#D0D4C8] overflow-hidden transition-colors duration-200 ease-[cubic-bezier(0.33,1,0.68,1)] group-hover:bg-[#D5E798] flex items-center justify-center">
                           <img
                             src={item.image}
                             alt={item.title}
-                            className="w-full h-full object-contain select-none pointer-events-none [transform:translateZ(0)]"
+                            className="w-[65%] h-[65%] object-contain select-none pointer-events-none"
                             loading="eager"
                             decoding="async"
                           />
-                        </div>
-                        <div className="space-y-0.5 min-w-0 flex-1 pt-0.5">
-                          <h4 className="font-serif text-[18px] text-[#0C310A] group-hover:text-[#2D4C23] leading-snug transition-colors">
+                        </figure>
+                        <div className="flex flex-col justify-center min-h-[100px] gap-1.5">
+                          <span className="font-serif font-normal text-[20px] leading-[1.2] tracking-[-0.4px] text-[#1E1414] transition-colors duration-200 group-hover:text-[#57772E]">
                             {item.title}
-                          </h4>
-                          <p className="text-[13.5px] leading-[1.4] text-[#664A42] font-sans mt-0.5">
+                          </span>
+                          <p className="font-sans font-normal text-[clamp(0.875rem,0.830986rem+0.187793vw,1rem)] leading-[clamp(1.225rem,1.12817rem+0.413146vw,1.5rem)] text-[#664A42]">
                             {item.byline}
                           </p>
                         </div>
@@ -564,7 +579,7 @@ export const MegaMenuNavbar: React.FC = () => {
                   </div>
                 </div>
 
-                {/* 2. STANDARDS: 3x3 Grid in 3 Columns */}
+                {/* 2. STANDARDS: 9 items */}
                 <div
                   className={
                     currentMenu === 'standards'
@@ -572,12 +587,13 @@ export const MegaMenuNavbar: React.FC = () => {
                       : 'opacity-0 pointer-events-none absolute inset-0 invisible z-0 transition-opacity duration-150 ease-[cubic-bezier(0.33,1,0.68,1)]'
                   }
                 >
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 min-[1100px]:grid-cols-3 gap-x-8 gap-y-7">
                     {STANDARDS_ITEMS.map((item) => {
                       const itemHref =
                         item.slug === 'what-is-a-standard'
                           ? '/what-is-a-standard'
                           : `/standards/${item.slug === 'adu' ? 'adus' : item.slug}`;
+                      const isIllustration = item.slug === 'what-is-a-standard';
                       return (
                         <a
                           key={item.slug}
@@ -586,22 +602,30 @@ export const MegaMenuNavbar: React.FC = () => {
                             e.preventDefault();
                             handleStandardItemClick(item.slug);
                           }}
-                          className="flex items-start space-x-4 p-2.5 rounded-[16px] hover:bg-[#F2EFE4]/60 cursor-pointer transition-colors duration-100 group"
+                          className="group grid grid-cols-[100px_1fr] gap-x-6 gap-y-2 items-start text-[#1E1414] no-underline cursor-pointer"
                         >
-                          <div className="w-[70px] h-[70px] rounded-[16px] bg-[#FAF7ED] shrink-0 overflow-hidden border border-[#E2DDD5]/80 [contain:strict] [transform:translateZ(0)]">
+                          <figure
+                            className={`w-[100px] h-[100px] shrink-0 rounded-[16px] bg-[#FFFDF6] border border-[#D0D4C8] overflow-hidden transition-colors duration-200 ease-[cubic-bezier(0.33,1,0.68,1)] group-hover:bg-[#D5E798] ${
+                              isIllustration ? 'flex items-center justify-center' : ''
+                            }`}
+                          >
                             <img
                               src={item.image}
                               alt={item.title}
-                              className="w-full h-full object-cover select-none pointer-events-none [transform:translateZ(0)]"
+                              className={`${
+                                isIllustration
+                                  ? 'w-[65%] h-[65%] object-contain'
+                                  : 'w-full h-full object-cover'
+                              } select-none pointer-events-none`}
                               loading="eager"
                               decoding="async"
                             />
-                          </div>
-                          <div className="space-y-0.5 min-w-0 flex-1 pt-0.5">
-                            <h4 className="font-serif text-[18px] text-[#0C310A] group-hover:text-[#2D4C23] leading-snug transition-colors">
+                          </figure>
+                          <div className="flex flex-col justify-center min-h-[100px] gap-1.5">
+                            <span className="font-serif font-normal text-[20px] leading-[1.2] tracking-[-0.4px] text-[#1E1414] transition-colors duration-200 group-hover:text-[#57772E]">
                               {item.title}
-                            </h4>
-                            <p className="text-[13.5px] leading-[1.4] text-[#664A42] font-sans mt-0.5">
+                            </span>
+                            <p className="font-sans font-normal text-[clamp(0.875rem,0.830986rem+0.187793vw,1rem)] leading-[clamp(1.225rem,1.12817rem+0.413146vw,1.5rem)] text-[#664A42]">
                               {item.byline}
                             </p>
                           </div>
@@ -611,7 +635,7 @@ export const MegaMenuNavbar: React.FC = () => {
                   </div>
                 </div>
 
-                {/* 3. HOW IT WORKS: 2 Columns Grid */}
+                {/* 3. HOW IT WORKS: 2 Columns Grid (.two-across) */}
                 <div
                   className={
                     currentMenu === 'how-it-works'
@@ -619,47 +643,51 @@ export const MegaMenuNavbar: React.FC = () => {
                       : 'opacity-0 pointer-events-none absolute inset-0 invisible z-0 transition-opacity duration-150 ease-[cubic-bezier(0.33,1,0.68,1)]'
                   }
                 >
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto py-2">
-                    {HOW_IT_WORKS_ITEMS.map((item) => (
-                      <div
-                        key={item.slug}
-                        onClick={() => {
-                          const targetPath =
-                            item.slug === 'our-services' ? '/our-services' : '/the-tie-approach';
-                          setActiveMenu(null);
-                          setIsHeaderHovered(false);
-                          setMobileMenuOpen(false);
-                          if (typeof window !== 'undefined') {
-                            window.history.pushState({}, '', targetPath);
-                            window.dispatchEvent(new PopStateEvent('popstate'));
-                            window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
-                          }
-                        }}
-                        className="flex items-start space-x-4 p-3 rounded-[16px] hover:bg-[#F2EFE4]/60 cursor-pointer transition-colors duration-100 group"
-                      >
-                        <div className="w-[70px] h-[70px] rounded-[16px] bg-[#FAF7ED] shrink-0 flex items-center justify-center p-2.5 overflow-hidden border border-[#E2DDD5]/80 [contain:strict] [transform:translateZ(0)]">
-                          <img
-                            src={item.image}
-                            alt={item.title}
-                            className="w-full h-full object-contain select-none pointer-events-none [transform:translateZ(0)]"
-                            loading="eager"
-                            decoding="async"
-                          />
-                        </div>
-                        <div className="space-y-0.5 min-w-0 flex-1 pt-0.5">
-                          <h4 className="font-serif text-[18px] text-[#0C310A] group-hover:text-[#2D4C23] leading-snug transition-colors">
-                            {item.title}
-                          </h4>
-                          <p className="text-[13.5px] leading-[1.4] text-[#664A42] font-sans mt-0.5">
-                            {item.byline}
-                          </p>
-                        </div>
-                      </div>
-                    ))}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-7 max-w-[960px] mx-auto">
+                    {HOW_IT_WORKS_ITEMS.map((item) => {
+                      const targetPath =
+                        item.slug === 'our-services' ? '/our-services' : '/the-tie-approach';
+                      return (
+                        <a
+                          key={item.slug}
+                          href={targetPath}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setActiveMenu(null);
+                            setIsHeaderHovered(false);
+                            setMobileMenuOpen(false);
+                            if (typeof window !== 'undefined') {
+                              window.history.pushState({}, '', targetPath);
+                              window.dispatchEvent(new PopStateEvent('popstate'));
+                              window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
+                            }
+                          }}
+                          className="group grid grid-cols-[100px_1fr] gap-x-6 gap-y-2 items-start text-[#1E1414] no-underline cursor-pointer"
+                        >
+                          <figure className="w-[100px] h-[100px] shrink-0 rounded-[16px] bg-[#FFFDF6] border border-[#D0D4C8] overflow-hidden transition-colors duration-200 ease-[cubic-bezier(0.33,1,0.68,1)] group-hover:bg-[#D5E798] flex items-center justify-center">
+                            <img
+                              src={item.image}
+                              alt={item.title}
+                              className="w-[65%] h-[65%] object-contain select-none pointer-events-none"
+                              loading="eager"
+                              decoding="async"
+                            />
+                          </figure>
+                          <div className="flex flex-col justify-center min-h-[100px] gap-1.5">
+                            <span className="font-serif font-normal text-[20px] leading-[1.2] tracking-[-0.4px] text-[#1E1414] transition-colors duration-200 group-hover:text-[#57772E]">
+                              {item.title}
+                            </span>
+                            <p className="font-sans font-normal text-[clamp(0.875rem,0.830986rem+0.187793vw,1rem)] leading-[clamp(1.225rem,1.12817rem+0.413146vw,1.5rem)] text-[#664A42]">
+                              {item.byline}
+                            </p>
+                          </div>
+                        </a>
+                      );
+                    })}
                   </div>
                 </div>
 
-                {/* 4. RESOURCES: 3 Columns Grid (6 items) */}
+                {/* 4. RESOURCES: 4 items (.large-card) */}
                 <div
                   className={
                     currentMenu === 'resources'
@@ -667,42 +695,34 @@ export const MegaMenuNavbar: React.FC = () => {
                       : 'opacity-0 pointer-events-none absolute inset-0 invisible z-0 transition-opacity duration-150 ease-[cubic-bezier(0.33,1,0.68,1)]'
                   }
                 >
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 min-[1100px]:grid-cols-4 gap-6">
                     {RESOURCES_ITEMS.map((item) => (
                       <div
                         key={item.slug}
                         onClick={() => {
                           if (item.slug === 'the-field-report') {
                             scrollToSection('field-report-section', 'field-report');
-                          } else if (item.slug === 'tools' || item.slug === 'space-planner') {
-                            setActiveMenu(null);
-                            setIsHeaderHovered(false);
-                            openConfigurator();
                           } else {
                             scrollToSection('standards-section', 'home');
                           }
                         }}
-                        className="flex items-start space-x-4 p-2.5 rounded-[16px] hover:bg-[#F2EFE4]/60 cursor-pointer transition-colors duration-100 group"
+                        className="group bg-[#FFFDF6] border border-[#D0D4C8] rounded-[16px] p-8 flex flex-col items-center justify-center text-center h-full transition-colors cursor-pointer"
                       >
-                        <div className="w-[70px] h-[70px] rounded-[16px] bg-[#FAF7ED] shrink-0 flex items-center justify-center p-2.5 overflow-hidden border border-[#E2DDD5]/80 [contain:strict] [transform:translateZ(0)]">
+                        <figure className="w-[100px] h-[100px] mb-8 bg-transparent border-0 flex items-center justify-center shrink-0">
                           <img
                             src={item.image}
                             alt={item.title}
-                            className={`w-full h-full ${
-                              item.isCover ? 'object-cover' : 'object-contain'
-                            } select-none pointer-events-none [transform:translateZ(0)]`}
+                            className="w-[90%] h-[90%] object-contain select-none pointer-events-none"
                             loading="eager"
                             decoding="async"
                           />
-                        </div>
-                        <div className="space-y-0.5 min-w-0 flex-1 pt-0.5">
-                          <h4 className="font-serif text-[18px] text-[#0C310A] group-hover:text-[#2D4C23] leading-snug transition-colors">
-                            {item.title}
-                          </h4>
-                          <p className="text-[13.5px] leading-[1.4] text-[#664A42] font-sans mt-0.5">
-                            {item.byline}
-                          </p>
-                        </div>
+                        </figure>
+                        <span className="font-serif font-normal text-[20px] leading-[1.2] tracking-[-0.4px] text-[#1E1414] group-hover:text-[#57772E] mb-2 transition-colors">
+                          {item.title}
+                        </span>
+                        <p className="font-sans font-normal text-[clamp(0.875rem,0.830986rem+0.187793vw,1rem)] leading-[clamp(1.225rem,1.12817rem+0.413146vw,1.5rem)] text-[#664A42]">
+                          {item.byline}
+                        </p>
                       </div>
                     ))}
                   </div>
@@ -715,7 +735,7 @@ export const MegaMenuNavbar: React.FC = () => {
 
       {/* Dimmed backdrop overlay when MegaMenu is active */}
       <div
-        className={`fixed inset-0 bg-[#1E1414]/55 z-40 transition-opacity duration-[350ms] ease-[cubic-bezier(0.33,1,0.68,1)] [transform:translateZ(0)] ${
+        className={`fixed inset-0 bg-[#1E1414]/60 z-40 transition-opacity duration-[350ms] ease-[cubic-bezier(0.33,1,0.68,1)] [transform:translateZ(0)] ${
           isMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         }`}
         onClick={() => {

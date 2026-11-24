@@ -519,3 +519,16 @@ section.card-slider div.h-scroll-content .card.standard div.card-back div.tags-w
 .button.button-text:hover div.btn-icon svg .stroke {
   stroke: #57772E;
 }
+
+/* --------------------------------------------------------------------------
+   HUTS TYPOGRAPHY SCALE UTILITIES
+   -------------------------------------------------------------------------- */
+.huts-h1 { font-family: "HW Cigars", serif; font-weight: 400; color: #0C310A; font-size: clamp(3.125rem, 2.11268rem + 4.31925vw, 6rem); line-height: clamp(3.125rem, 1.69014rem + 6.12207vw, 7.2rem); letter-spacing: clamp(-0.12rem, -0.133333vw, -0.03125rem); }
+.huts-h2 { font-family: "HW Cigars", serif; font-weight: 400; color: #0C310A; font-size: clamp(2.375rem, 1.62676rem + 3.19249vw, 4.5rem); line-height: 1; letter-spacing: clamp(-0.045rem, -0.0162676rem - 0.0319249vw, -0.02375rem); }
+.huts-h3 { font-family: "HW Cigars", serif; font-weight: 400; color: #0C310A; font-size: clamp(1.75rem, 1.1338rem + 2.62911vw, 3.5rem); line-height: 1.1; letter-spacing: clamp(-0.07rem, -0.0226761rem - 0.0525822vw, -0.035rem); }
+.huts-h4 { font-family: "HW Cigars", serif; font-weight: 400; color: #0C310A; font-size: clamp(1.375rem, 0.978873rem + 1.69014vw, 2.5rem); line-height: clamp(1.925rem, 1.63451rem + 1.23944vw, 2.75rem); letter-spacing: clamp(-0.05rem, -0.0195775rem - 0.0338028vw, -0.0275rem); }
+.huts-h5 { font-family: "HW Cigars", serif; font-weight: 400; color: #0C310A; font-size: clamp(1.375rem, 1.15493rem + 0.938967vw, 2rem); line-height: clamp(1.925rem, 1.68732rem + 1.01408vw, 2.6rem); letter-spacing: clamp(-0.04rem, -0.0230986rem - 0.0187793vw, -0.0275rem); }
+.huts-h6 { font-family: "HW Cigars", serif; font-weight: 400; color: #0C310A; font-size: clamp(1.125rem, 0.992958rem + 0.56338vw, 1.5rem); line-height: clamp(1.575rem, 1.33732rem + 1.01408vw, 2.25rem); letter-spacing: clamp(-0.03rem, -0.0198592rem - 0.0112676vw, -0.0225rem); }
+.huts-p { font-family: "ABC Walter Neue", sans-serif; font-weight: 400; color: #664A42; font-size: clamp(0.875rem, 0.830986rem + 0.187793vw, 1rem); line-height: clamp(1.225rem, 1.12817rem + 0.413146vw, 1.5rem); }
+.huts-p-large { font-family: "ABC Walter Neue", sans-serif; font-weight: 400; color: #664A42; font-size: clamp(1rem, 0.867958rem + 0.56338vw, 1.375rem); line-height: 1.4; }
+.huts-p-small { font-family: "ABC Walter Neue", sans-serif; font-weight: 400; color: #664A42; font-size: clamp(0.75rem, 0.705986rem + 0.187793vw, 0.875rem); line-height: 1.4; }
